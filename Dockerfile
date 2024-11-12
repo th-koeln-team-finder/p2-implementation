@@ -4,18 +4,18 @@ FROM node:22-alpine
 # Set the working directory
 WORKDIR /app
 
-# Copy the package.json and package-lock.json files
-COPY package.json ./
+# Copy the rest of the application code
+COPY . .
+
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
 
 # Install dependencies
 RUN npm i -g pnpm
 RUN pnpm install
 
-# Copy the rest of the application code
-COPY . .
-
 # Build the Next.js application
-RUN pnpm run build
+RUN pnpm build
 
 # Expose the port that Next.js will run on
 EXPOSE 3000

@@ -1,10 +1,13 @@
 services:
-  frontend:
-    container_name: 'frontend'
+  app:
+    container_name: 'app'
     build:
-      context: ./apps/frontend
+      context: .
       dockerfile: Dockerfile
+      args:
+        - DATABASE_URL=postgresql://dbadmin:dbadmin@database:5432/collaborize
     environment:
+      - DATABASE_URL=postgresql://dbadmin:dbadmin@database:5432/collaborize
       - NODE_ENV=production
     ports:
       - "3000:3000"  # Expose frontend on port 3000
