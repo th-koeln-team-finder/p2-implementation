@@ -1,0 +1,71 @@
+services:
+  frontend:
+    container_name: 'frontend'
+    build:
+      context: ./apps/frontend
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"  # Expose frontend on port 3000
+    networks:
+      - web
+    depends_on:
+      - database
+
+  database:
+    container_name: 'database'
+    image: postgres:17
+    environment:
+      POSTGRES_USER: dbadmin
+      POSTGRES_PASSWORD: dbadmin
+      POSTGRES_DB: collaborize
+    ports:
+      - "5432:5432"  # Ensure this line is present
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - web
+
+  file-storage:
+    container_name: 'file-storage'
+    image: minio/minio:latest
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
+    environment:
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin
+      - MINIO_DEFAULT_BUCKET=collaborize
+    command: server /data
+    ports:
+      - '9000:9000'
+      - '9090:9090'
+    volumes:
+      - 'minio_data:/data'
+      - ./minio-entrypoint.sh:/usr/bin/minio-entrypoint.sh
+    networks:
+      - web
+    entrypoint: [ "sh", "/usr/bin/minio-entrypoint.sh" ]
+
+  reverse-proxy:
+    container_name: 'reverse-proxy'
+    image: caddy:latest
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./certs:/etc/caddy/certs
+    ports:
+      - "80:80"  # HTTPS
+      - "443:443"  # HTTPS
+    networks:
+      - web
+
+volumes:
+  postgres_data:
+  minio_data:
+
+networks:
+  web:

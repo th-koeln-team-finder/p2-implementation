@@ -1,0 +1,36 @@
+{
+  "name": "@project/database",
+  "version": "1.0.0",
+  "exports": {
+    "./schema": "./dist/schema.js",
+    "./db": "./dist/db.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "db:push": "drizzle-kit push",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "style": "prettier . --check",
+    "style:fix": "prettier --write ."
+  },
+  "dependencies": {
+    "babel-eslint": "^10.1.0",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.36.1",
+    "pg": "^8.13.1",
+    "typescript": "^5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.14.0",
+    "@types/pg": "^8.11.10",
+    "drizzle-kit": "^0.28.0",
+    "eslint": "^8.57.1",
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "globals": "^15.12.0",
+    "prettier": "^3.3.3",
+    "tsx": "^4.19.2",
+    "typescript-eslint": "^8.14.0"
+  }
+}
