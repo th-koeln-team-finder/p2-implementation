@@ -1,4 +1,4 @@
 
 collaborize.localhost {
-    reverse_proxy app:3000
+    reverse_proxy host.docker.internal:3000
 }
