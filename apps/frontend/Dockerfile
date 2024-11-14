@@ -24,4 +24,3 @@ ENV PORT=3000
 EXPOSE 3000
 
 CMD [ "node", "./standalone/apps/frontend/server.js" ]
-#ENTRYPOINT ["ls", ".next"]
