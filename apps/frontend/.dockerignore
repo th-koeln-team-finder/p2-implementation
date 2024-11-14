@@ -1,6 +1,5 @@
 .next
 .turbo
-dist
 node_modules
+Dockerfile
 .env*
-!.env.docker

@@ -1,6 +1,8 @@
 .next
+.git
+.gitignore
 .turbo
-dist
 node_modules
+Dockerfile
 .env*
 !.env.docker

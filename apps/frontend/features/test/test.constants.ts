@@ -1,3 +1,3 @@
 export const TestTags = {
-  data: 'test',
-};
+  items: 'test-items',
+}

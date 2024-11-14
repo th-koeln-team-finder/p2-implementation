@@ -5,13 +5,21 @@
     "start": "turbo start",
     "dev": "turbo dev",
     "build": "turbo build",
-    "lint": "turbo lint",
-    "style": "turbo style",
-    "db:push": "turbo db:push",
-    "db:migrate": "turbo db:migrate"
+    "style": "biome check",
+    "style:fix": "biome check --fix",
+    "style:fix:unsafe": "biome check --fix --unsafe",
+    "db:migrate": "pnpm --filter @repo/database run migrate",
+    "db:generate": "pnpm --filter @repo/database run generate",
+    "db:push": "pnpm --filter @repo/database run push"
   },
   "devDependencies": {
-    "turbo": "^2.2.3"
+    "@biomejs/biome": "^1.9.4",
+    "@repo/typescript-config": "workspace:*",
+    "turbo": "^2.2.3",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=22"
   },
   "packageManager": "pnpm@9.12.3"
 }

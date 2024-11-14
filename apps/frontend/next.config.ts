@@ -1,9 +1,11 @@
-import 'env/client';
-import 'env/server';
-import type { NextConfig } from 'next';
+import '@repo/env'
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+  output: 'standalone',
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+}
 
-export default nextConfig;
+export default nextConfig

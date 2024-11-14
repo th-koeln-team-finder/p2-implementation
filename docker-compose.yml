@@ -1,21 +1,4 @@
 services:
-  app:
-    container_name: 'app'
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - DATABASE_URL=postgresql://dbadmin:dbadmin@database:5432/collaborize
-    environment:
-      - DATABASE_URL=postgresql://dbadmin:dbadmin@database:5432/collaborize
-      - NODE_ENV=production
-    ports:
-      - "3000:3000"  # Expose frontend on port 3000
-    networks:
-      - web
-    depends_on:
-      - database
-
   database:
     container_name: 'database'
     image: postgres:17
@@ -24,51 +7,39 @@ services:
       POSTGRES_PASSWORD: dbadmin
       POSTGRES_DB: collaborize
     ports:
-      - "5432:5432"  # Ensure this line is present
+      - '5432:5432' # Ensure this line is present
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - web
 
-  file-storage:
-    container_name: 'file-storage'
-    image: minio/minio:latest
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 10s
-      timeout: 10s
-      retries: 5
-    restart: always
+  app:
+    container_name: 'app'
+    build:
+      context: .
+      dockerfile: ./apps/frontend/Dockerfile
     environment:
-      - MINIO_ACCESS_KEY=minioadmin
-      - MINIO_SECRET_KEY=minioadmin
-      - MINIO_DEFAULT_BUCKET=collaborize
-    command: server /data
+      DATABASE_URL: postgres://dbadmin:dbadmin@database:5432/collaborize
     ports:
-      - '9000:9000'
-      - '9090:9090'
-    volumes:
-      - 'minio_data:/data'
-      - ./minio-entrypoint.sh:/usr/bin/minio-entrypoint.sh
+      - '3000:3000'
     networks:
       - web
-    entrypoint: [ "sh", "/usr/bin/minio-entrypoint.sh" ]
 
   reverse-proxy:
     container_name: 'reverse-proxy'
     image: caddy:latest
+    environment:
+      APP_URL: host.docker.internal:3000
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./certs:/etc/caddy/certs
     ports:
-      - "80:80"  # HTTPS
-      - "443:443"  # HTTPS
+      - '80:80' # HTTPS
+      - '443:443' # HTTPS
     networks:
       - web
 
 volumes:
   postgres_data:
-  minio_data:
 
 networks:
   web:

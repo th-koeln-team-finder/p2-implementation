@@ -1,6 +1,7 @@
 node_modules
 
 # local env files
+.env
 .env*.local
 
 # ide
@@ -10,3 +11,5 @@ node_modules
 # monorepo
 .turbo
 
+#next
+.next

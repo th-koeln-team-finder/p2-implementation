@@ -1,17 +1,18 @@
-import type { Metadata } from 'next';
-import { Rubik, Saira_Condensed } from 'next/font/google';
-import './globals.css';
-import { ThemeProvider } from '@components/theme-provider';
+import '@repo/design-system/styles/globals.css'
+import { DesignSystemProvider } from '@repo/design-system'
+import type { Metadata } from 'next'
+import { Rubik, Saira_Condensed } from 'next/font/google'
+import './globals.css'
 
 const rubik = Rubik({
-  variable: '--font-rubik',
+  variable: '--font-sans',
   subsets: ['latin'],
-});
+})
 const sairaCondensed = Saira_Condensed({
-  variable: '--font-saira-condensed',
+  variable: '--font-head',
   weight: '500',
   subsets: ['latin'],
-});
+})
 
 export const metadata: Metadata = {
   title: 'Collaborize',
@@ -30,22 +31,20 @@ export const metadata: Metadata = {
       },
     ],
   },
-};
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${rubik.variable} ${sairaCondensed.variable} bg-background font-sans text-foreground antialiased`}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
-        </ThemeProvider>
+        <DesignSystemProvider>{children}</DesignSystemProvider>
       </body>
     </html>
-  );
+  )
 }

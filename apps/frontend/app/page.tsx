@@ -1,28 +1,26 @@
-import { TestButton } from '@/features/test';
-import { getAllTestItems } from '@/features/test/server';
+import { AddTestButton, RemoveTestButton, TestItemList } from '@/features/test'
 
-export default async function Home() {
-  const data = await getAllTestItems();
+// TODO remove - Only for testing
+export const dynamic = 'force-dynamic'
 
+export default function Home() {
   return (
     <div className="container mx-auto my-4">
-      <h1 className="text-5xl font-semibold">Normal heading</h1>
+      <h1 className="font-semibold text-5xl">Normal heading</h1>
       <h2 className="mb-8 text-3xl">Normal font</h2>
 
-      <h1 className="font-head text-5xl font-semibold">Other Heading</h1>
+      <h1 className="font-head font-semibold text-5xl">Other Heading</h1>
       <h2 className="mb-8 font-head text-3xl">Other font</h2>
 
-      <div className="align-center flex flex-row justify-between gap-2 bg-card">
-        <h3 className="mb-2 mt-4 font-head text-3xl">Test Data</h3>
-        <TestButton />
+      <div className="flex flex-row justify-between gap-2 bg-card align-center">
+        <h3 className="mt-4 mb-2 font-head text-3xl">Test Data</h3>
+        <div className="ml-auto flex flex-row gap-2">
+          <AddTestButton />
+          <RemoveTestButton />
+        </div>
       </div>
 
-      <ul className="list-inside list-decimal">
-        {data.map((item) => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
-      {data.length === 0 && <p className="text-muted-foreground">No items found</p>}
+      <TestItemList />
     </div>
-  );
+  )
 }
