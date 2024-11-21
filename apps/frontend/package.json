@@ -23,11 +23,11 @@
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "@repo/database": "workspace:*",
-    "@repo/tailwind-config": "workspace:*",
     "@repo/design-system": "workspace:*",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@repo/tailwind-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^20",
     "@types/react": "^18",

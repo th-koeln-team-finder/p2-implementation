@@ -47,7 +47,6 @@
         "noNestedTernary": "warn",
         "noIrregularWhitespace": "error",
         "useAtIndex": "warn",
-        "useConsistentCurlyBraces": "warn",
         "useConsistentMemberAccessibility": "warn",
         "useSortedClasses": "warn",
         "useValidAutocomplete": "warn"

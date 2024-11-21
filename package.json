@@ -8,8 +8,8 @@
     "style": "biome check",
     "style:fix": "biome check --fix",
     "style:fix:unsafe": "biome check --fix --unsafe",
-    "db:migrate": "pnpm --filter @repo/database run migrate",
     "db:generate": "pnpm --filter @repo/database run generate",
+    "db:migrate": "pnpm --filter @repo/database run migrate",
     "db:push": "pnpm --filter @repo/database run push"
   },
   "devDependencies": {
