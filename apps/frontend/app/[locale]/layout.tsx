@@ -1,7 +1,11 @@
 import '@repo/design-system/styles/globals.css'
+import { routing } from '@/features/i18n/routing'
 import { DesignSystemProvider } from '@repo/design-system'
 import type { Metadata } from 'next'
+import { NextIntlClientProvider } from 'next-intl'
+import { getMessages } from 'next-intl/server'
 import { Rubik, Saira_Condensed } from 'next/font/google'
+import { notFound } from 'next/navigation'
 
 const rubik = Rubik({
   variable: '--font-sans',
@@ -32,18 +36,29 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode
+  params: Promise<{ locale: string }>
 }>) {
+  const { locale } = await params
+  if (!routing.locales.includes(locale)) {
+    notFound()
+  }
+
+  const messages = await getMessages()
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
         className={`${rubik.variable} ${sairaCondensed.variable} bg-background font-sans text-foreground antialiased`}
       >
-        <DesignSystemProvider>{children}</DesignSystemProvider>
+        <NextIntlClientProvider messages={messages}>
+          <DesignSystemProvider>{children}</DesignSystemProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   )
