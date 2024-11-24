@@ -14,6 +14,9 @@ export const en = {
       removeAll: 'Remove All',
     },
   },
+  help: {
+    title: 'Help',
+  },
 }
 
 type PathOf<T> = {

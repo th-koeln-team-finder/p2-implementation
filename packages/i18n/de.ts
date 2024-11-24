@@ -16,4 +16,7 @@ export const de: Language = {
       removeAll: 'Alle entfernen',
     },
   },
+  help: {
+    title: 'Hilfe',
+  },
 }

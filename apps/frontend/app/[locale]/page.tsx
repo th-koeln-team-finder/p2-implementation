@@ -110,29 +110,29 @@ const tagScrollItems = Array.from({ length: 50 })
   ))
 
 export default async function Home() {
-  const t = await getTranslations()
+  const translate = await getTranslations()
   return (
     <div className="container mx-auto my-4">
-      <h1 className="font-semibold text-5xl">{t('test.normalHeading')}</h1>
-      <h2 className="mb-8 text-3xl">{t('test.normalFont')}</h2>
+      <h1 className="font-semibold text-5xl">
+        {translate('test.normalHeading')}
+      </h1>
+      <h2 className="mb-8 text-3xl">{translate('test.normalFont')}</h2>
 
       <h1 className="font-head font-semibold text-5xl">
-        {t('test.otherHeading')}
+        {translate('test.otherHeading')}
       </h1>
-      <h2 className="mb-8 font-head text-3xl">{t('test.otherFont')}</h2>
-
+      <h2 className="mb-8 font-head text-3xl">{translate('test.otherFont')}</h2>
       <div className="flex flex-row justify-between gap-2 bg-card align-center">
-        <h3 className="mt-4 mb-2 font-head text-3xl">{t('test.dataTitle')}</h3>
+        <h3 className="mt-4 mb-2 font-head text-3xl">
+          {translate('test.dataTitle')}
+        </h3>
         <div className="ml-auto flex flex-row gap-2">
           <AddTestButton />
           <RemoveTestButton />
         </div>
       </div>
-
       <TestItemList />
-
       <h3 className="mt-4 mb-2 font-head text-3xl">Components</h3>
-
       <div className="flex flex-col gap-2 px-4 pb-4">
         <AlertDialog>
           <AlertDialogTrigger asChild>
@@ -149,8 +149,10 @@ export default async function Home() {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>{t('general.cancel')}</AlertDialogCancel>
-              <AlertDialogAction>{t('general.save')}</AlertDialogAction>
+              <AlertDialogCancel>
+                {translate('general.cancel')}
+              </AlertDialogCancel>
+              <AlertDialogAction>{translate('general.save')}</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
