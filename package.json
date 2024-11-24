@@ -10,7 +10,8 @@
     "style:fix:unsafe": "biome check --fix --unsafe",
     "db:generate": "pnpm --filter @repo/database run generate",
     "db:migrate": "pnpm --filter @repo/database run migrate",
-    "db:push": "pnpm --filter @repo/database run push"
+    "db:push": "pnpm --filter @repo/database run push",
+    "db:seed": "pnpm --filter @repo/database run seed"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

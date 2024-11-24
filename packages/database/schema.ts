@@ -5,3 +5,6 @@ export const test = pgTable('test', {
   name: varchar({ length: 255 }).notNull(),
   checked: boolean().notNull().default(false),
 })
+
+export type TestInsert = typeof test.$inferInsert
+export type TestSelect = typeof test.$inferSelect
