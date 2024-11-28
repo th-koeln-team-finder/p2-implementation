@@ -52,7 +52,12 @@
         "useValidAutocomplete": "warn"
       },
       "style": {
-        "useNamingConvention": "warn",
+        "useNamingConvention": {
+          "level": "warn",
+          "options": {
+            "strictCase": false
+          }
+        },
         "useShorthandArrayType": "warn",
         "useShorthandAssign": "warn"
       },
