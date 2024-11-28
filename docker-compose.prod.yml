@@ -18,19 +18,12 @@ services:
     build:
       context: .
       dockerfile: ./apps/frontend/Dockerfile
-      target: dev
-    command: pnpm dev
     environment:
       DATABASE_URL: postgres://dbadmin:dbadmin@database:5432/collaborize
     ports:
       - '3000:3000'
     networks:
       - web
-    develop:
-      watch:
-        - action: sync
-          path: ./apps/frontend
-          target: ./app/apps/frontend
 
   reverse-proxy:
     container_name: 'reverse-proxy'
