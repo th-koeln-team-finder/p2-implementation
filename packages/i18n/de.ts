@@ -11,6 +11,7 @@ export const de: Language = {
     normalFont: 'Normaler Schriftart',
     otherHeading: 'Andere Titel',
     otherFont: 'Andere Schriftart',
+    toProjectPage: 'Zur Projektseite',
     actions: {
       addItem: 'Eintrag hinzufügen',
       removeAll: 'Alle entfernen',

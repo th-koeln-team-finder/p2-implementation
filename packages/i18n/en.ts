@@ -9,6 +9,7 @@ export const en = {
     normalFont: 'Normal Font',
     otherHeading: 'Other Heading',
     otherFont: 'Other Font',
+    toProjectPage: 'To project page',
     actions: {
       addItem: 'Add Item',
       removeAll: 'Remove All',

@@ -6,9 +6,9 @@ import { revalidateTag } from 'next/cache'
 
 export async function addRandomTest() {
   const _res = await db
-    .insert(Schema.test)
-    .values({ name: 'test', checked: false })
-    .execute()
+      .insert(Schema.test)
+      .values({ name: 'test', checked: false })
+      .execute()
   revalidateTag(TestTags.items)
 }
 

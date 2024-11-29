@@ -1,4 +1,4 @@
-import { AddTestButton, RemoveTestButton, TestItemList } from '@/features/test'
+import {AddTestButton, RemoveTestButton, TestItemList} from '@/features/test'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,12 +10,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@repo/design-system/components/ui/alert-dialog'
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@repo/design-system/components/ui/avatar'
-import { Badge } from '@repo/design-system/components/ui/badge'
+import {Avatar, AvatarFallback, AvatarImage,} from '@repo/design-system/components/ui/avatar'
+import {Badge} from '@repo/design-system/components/ui/badge'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -23,8 +19,8 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from '@repo/design-system/components/ui/breadcrumb'
-import { Button } from '@repo/design-system/components/ui/button'
-import { Calendar } from '@repo/design-system/components/ui/calendar'
+import {Button} from '@repo/design-system/components/ui/button'
+import {Calendar} from '@repo/design-system/components/ui/calendar'
 import {
   Card,
   CardContent,
@@ -40,7 +36,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@repo/design-system/components/ui/carousel'
-import { Checkbox } from '@repo/design-system/components/ui/checkbox'
+import {Checkbox} from '@repo/design-system/components/ui/checkbox'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -50,19 +46,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@repo/design-system/components/ui/dropdown-menu'
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from '@repo/design-system/components/ui/hover-card'
-import { Input } from '@repo/design-system/components/ui/input'
-import { Label } from '@repo/design-system/components/ui/label'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@repo/design-system/components/ui/popover'
-import { ScrollArea } from '@repo/design-system/components/ui/scroll-area'
+import {HoverCard, HoverCardContent, HoverCardTrigger,} from '@repo/design-system/components/ui/hover-card'
+import {Input} from '@repo/design-system/components/ui/input'
+import {Label} from '@repo/design-system/components/ui/label'
+import {Popover, PopoverContent, PopoverTrigger,} from '@repo/design-system/components/ui/popover'
+import {ScrollArea} from '@repo/design-system/components/ui/scroll-area'
 import {
   Select,
   SelectContent,
@@ -72,18 +60,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@repo/design-system/components/ui/select'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@repo/design-system/components/ui/tooltip'
-import {
-  ChevronDownIcon,
-  SendHorizontalIcon,
-  Settings2Icon,
-} from 'lucide-react'
-import { getTranslations } from 'next-intl/server'
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,} from '@repo/design-system/components/ui/tooltip'
+import {ChevronDownIcon, SendHorizontalIcon, Settings2Icon,} from 'lucide-react'
+import {getTranslations} from 'next-intl/server'
+import {Link} from "@/features/i18n/routing";
 
 // TODO remove - Only for testing
 export const dynamic = 'force-dynamic'
@@ -132,6 +112,9 @@ export default async function Home() {
         </div>
       </div>
       <TestItemList />
+      <Link href="/projects">
+        {translate('test.toProjectPage')}
+      </Link>
       <h3 className="mt-4 mb-2 font-head text-3xl">Components</h3>
       <div className="flex flex-col gap-2 px-4 pb-4">
         <AlertDialog>
