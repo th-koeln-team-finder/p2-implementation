@@ -1,8 +1,8 @@
-import {makeTests} from '@/factory/test.factory'
-import {config} from 'dotenv'
-import {drizzle} from 'drizzle-orm/node-postgres'
+import { makeProjects } from '@/factory/projects.factory'
+import { makeTests } from '@/factory/test.factory'
+import { config } from 'dotenv'
+import { drizzle } from 'drizzle-orm/node-postgres'
 import * as Schema from './schema'
-import {makeProjects} from "@/factory/projects.factory";
 
 config()
 config({ path: '.env.local', override: true })
