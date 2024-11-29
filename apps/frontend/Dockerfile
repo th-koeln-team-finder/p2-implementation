@@ -7,8 +7,10 @@ RUN corepack enable
 WORKDIR /app
 COPY . .
 
-FROM base AS build
+FROM base AS dev
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+
+FROM dev AS build
 RUN pnpm run build
 
 FROM base

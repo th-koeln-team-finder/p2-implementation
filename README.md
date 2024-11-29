@@ -46,6 +46,12 @@ Run the frontend locally:
 pnpm dev
 ```
 
+or to run it locally with docker in development mode run
+
+```bash
+docker compose watch app
+```
+
 ---
 
 or to run the app in a single command:
