@@ -1,4 +1,8 @@
-import { boolean, integer, json, pgTable,
+import {
+  boolean,
+  integer,
+  json,
+  pgTable,
   primaryKey,
   text,
   timestamp,
@@ -32,6 +36,9 @@ export const users = pgTable('user', {
 export type UserInsert = typeof users.$inferInsert
 export type UserSelect = typeof users.$inferSelect
 
+/**
+ * Data specific for one project
+ */
 export const projects = pgTable('projects', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
@@ -46,6 +53,7 @@ export const projects = pgTable('projects', {
 export type ProjectInsert = typeof projects.$inferInsert
 export type ProjectSelect = typeof projects.$inferSelect
 
+//region Technical Tables
 /**
  * Data used for authentication of a user, a user can have multiple accounts (so multiple login methods)
  */
@@ -119,3 +127,4 @@ export const authenticators = pgTable(
 )
 export type AuthenticatorInsert = typeof authenticators.$inferInsert
 export type AuthenticatorSelect = typeof authenticators.$inferSelect
+//endregion
