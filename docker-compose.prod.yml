@@ -20,6 +20,11 @@ services:
       dockerfile: ./apps/frontend/Dockerfile
     environment:
       DATABASE_URL: postgres://dbadmin:dbadmin@database:5432/collaborize
+      AUTH_TRUST_HOST: true
+      FRONTEND_URL: https://collaborize.localhost
+      API_URL: http://host.docker.internal/api
+      AUTH_SECRET: ITU6sRToXsdrDTPW1Uiip/KkDBv1QoyZzUGmbgSSwV4=
+      AUTH_REDIRECT_PROXY_URL: https://collaborize.localhost/api/auth
     ports:
       - '3000:3000'
     networks:
