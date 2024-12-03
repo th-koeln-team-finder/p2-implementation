@@ -4,7 +4,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "declaration": false
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"],

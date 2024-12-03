@@ -1,6 +1,10 @@
+"use client"
+
 import * as React from "react"
 
 import { cn } from "../../lib/utils"
+import { Signal, useComputed } from '@preact/signals-react'
+import { useFieldContext } from '@formsignals/form-react'
 
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
   ({ className, type, ...props }, ref) => {
@@ -19,4 +23,30 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
 )
 Input.displayName = "Input"
 
-export { Input }
+type InputSignalsProps = Omit<React.ComponentProps<"input">, "value" | "onChange"> & {
+  value?: Signal<string>
+}
+const InputSignals = ({value, ...props}: InputSignalsProps) => {
+  return (
+    <Input
+      {...props}
+      value={value?.value}
+      onChange={value && ((event) => {
+        value.value = event.target.value
+      })}
+    />
+  )
+}
+InputSignals.displayName = "InputSignals"
+
+const InputForm = ({ className, ...props }: Omit<InputSignalsProps, "value">) => {
+  const field = useFieldContext()
+  const errorClassName = useComputed(() => !field.isValid.value && "border-destructive")
+  const classNames = cn(className, errorClassName.value)
+  return (
+    <InputSignals className={classNames} value={field.data} {...props} />
+  )
+}
+InputForm.displayName = "InputForm"
+
+export { Input, InputSignals, InputForm }
