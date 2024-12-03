@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
+    "@formsignals/form-core": "^0.4.6",
+    "@formsignals/form-react": "^0.4.6",
+    "@preact/signals-react": "^2.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.2",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-checkbox": "^1.1.2",
