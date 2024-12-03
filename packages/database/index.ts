@@ -1,6 +1,7 @@
 import 'server-only'
 
-import { serverEnv } from '@repo/env'
+import { DrizzleAdapter } from '@auth/drizzle-adapter'
+import { serverEnv } from '@repo/env/server'
 import { drizzle } from 'drizzle-orm/node-postgres'
 import * as schema from './schema'
 
@@ -11,4 +12,12 @@ export const db = drizzle({
   connection: {
     connectionString: serverEnv.DATABASE_URL,
   },
+  logger: true,
+})
+
+export const AuthDrizzleAdapter = DrizzleAdapter(db, {
+  usersTable: schema.users,
+  accountsTable: schema.accounts,
+  sessionsTable: schema.sessions,
+  authenticatorsTable: schema.authenticators,
 })
