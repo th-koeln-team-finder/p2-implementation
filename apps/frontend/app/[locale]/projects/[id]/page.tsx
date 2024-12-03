@@ -2,7 +2,10 @@ import { Links } from '@/features/projects/components/Links'
 import { Location } from '@/features/projects/components/Location'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
 import { Toolbar } from '@/features/projects/components/Toolbar'
-import { getProjectItem } from '@/features/projects/projects.queries'
+import {getProjectItem} from '@/features/projects/projects.queries'
+import ImageCarousel from "@/features/projects/components/ImageCarousel";
+import SkillScale from "@/features/projects/components/SkillScale";
+import TeamMembers from "@/features/projects/components/TeamMembers";
 
 export default async function Projects({
   params,
@@ -23,13 +26,13 @@ export default async function Projects({
   }
 
   return (
-    <div className="max-w-screen-xl p-4 mx-auto flex-col justify-start items-center gap-12 inline-flex">
-      <div className="self-stretch h-20 justify-center items-center inline-flex">
-        <div className="h-20 px-4 py-2 justify-center items-center inline-flex">
-          <div className="w-16 h-16 relative flex-col justify-start items-start flex" />
+    <div className="max-w-screen-xl w-full p-4 mx-auto flex-col justify-start items-center gap-12 inline-flex">
+      <div className="self-stretch justify-center items-center inline-flex">
+        <div className="px-4 py-2 justify-center items-center inline-flex">
+          <div className="relative flex-col justify-start items-start flex" />
           <div className="grow shrink basis-0 self-stretch justify-end items-center gap-6 inline-flex">
             <div className="grow shrink basis-0 px-6 flex-col justify-center items-end gap-2.5 inline-flex">
-              <div className="w-[276px] h-9 relative">
+              <div className="relative">
                 <div className="left-0 top-0 absolute flex-col justify-start items-start gap-1.5 inline-flex">
                   <div className="justify-start items-start gap-2 inline-flex">
                     <div className="w-[276px] flex-col justify-start items-start gap-1.5 inline-flex">
@@ -66,10 +69,7 @@ export default async function Projects({
               </div>
             </div>
             <div className="w-8 h-8 justify-center items-center flex">
-              <img
-                className="w-8 h-8 rounded-full"
-                src="https://via.placeholder.com/32x32"
-              />
+              <img className="w-8 h-8 rounded-full" src="https://via.placeholder.com/32x32"/>
             </div>
           </div>
         </div>
@@ -79,112 +79,120 @@ export default async function Projects({
           <ProjectTitle title={project.name} subtitle={project.status} />
           <Toolbar />
         </div>
-        <div className="w-[1248px] h-[1230px] relative">
-          <div className="w-[1246px] h-[284px] left-0 top-0 absolute">
-            <div className="w-[608px] h-[195.29px] left-[638px] top-0 absolute flex-col justify-start items-start gap-2 inline-flex">
-              <div className="w-[216px] h-[25px] text-2xl font-medium leading-loose">
-                Skills needed
-              </div>
-              <div className="self-stretch h-[184px] justify-start items-start gap-6 inline-flex">
-                <div className="grow shrink basis-0 flex-col justify-start items-start gap-2 inline-flex">
-                  <div className="self-stretch justify-between items-center inline-flex">
-                    <div className="text-base font-normal leading-normal">
-                      Java (Programming Language)
-                    </div>
-                    <div className="h-2.5 py-px justify-center items-center gap-2.5 flex">
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-200 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-200 rounded-full" />
-                    </div>
-                  </div>
-                  <div className="self-stretch justify-between items-center inline-flex">
-                    <div className="text-base font-normal leading-normal">
-                      Python (Programming Language)
-                    </div>
-                    <div className="h-2.5 py-px justify-center items-center gap-2.5 flex">
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-200 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-200 rounded-full" />
-                    </div>
-                  </div>
-                  <div className="self-stretch justify-between items-center inline-flex">
-                    <div className="text-base font-normal leading-normal">
-                      Teamwork
-                    </div>
-                    <div className="h-2.5 py-px justify-center items-center gap-2.5 flex">
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-200 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-200 rounded-full" />
-                    </div>
-                  </div>
-                  <div className="self-stretch justify-between items-center inline-flex">
-                    <div className="text-base font-normal leading-normal">
-                      Cooking
-                    </div>
-                    <div className="h-2.5 py-px justify-center items-center gap-2.5 flex">
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-200 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-200 rounded-full" />
-                    </div>
-                  </div>
-                  <div className="self-stretch justify-between items-center inline-flex">
-                    <div className="text-base font-normal leading-normal">
-                      Cooking
-                    </div>
-                    <div className="h-2.5 py-px justify-center items-center gap-2.5 flex">
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-200 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-200 rounded-full" />
-                    </div>
-                  </div>
-                  <div className="self-stretch justify-between items-center inline-flex">
-                    <div className="text-base font-normal leading-normal">
-                      Cooking
-                    </div>
-                    <div className="h-2.5 py-px justify-center items-center gap-2.5 flex">
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-200 rounded-full" />
-                      <div className="w-2 h-2 bg-fuchsia-200 rounded-full" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="h-[22px] justify-center items-center inline-flex">
-                <div className="self-stretch origin-top-left rotate-180 justify-center items-center gap-4 inline-flex">
-                  <div className="w-[110px] h-[22px] origin-top-left rotate-180 text-fuchsia-700 text-base font-normal leading-normal">
-                    Mehr anzeigen
-                  </div>
-                </div>
-              </div>
+        <div className="relative w-full">
+          <div className="relative flex flex-row gap-8 mb-16">
+            <div className="w-1/2 relative flex-col justify-start items-center gap-2 inline-flex">
+              <ImageCarousel/>
             </div>
-            <div className="w-[608px] h-[284px] left-0 top-0 absolute flex-col justify-start items-center gap-2 inline-flex">
-              <div className="rounded-lg justify-end items-center inline-flex">
-                <img
-                  className="w-[1217px] h-[572px]"
-                  src="https://via.placeholder.com/1217x572"
-                />
+            <div className="w-1/2 relative flex-col justify-start items-start gap-2 inline-flex">
+              <SkillScale title={"Skills needed"}/>
+            </div>
+          </div>
+          <div className="relative flex flex-row gap-8 mb-16">
+            <div className="w-1/2 relative flex-col justify-start gap-2 inline-flex">
+              <h1 className="text-2xl font-medium">Team Members</h1>
+              <TeamMembers/>
+            </div>
+            <div className="w-1/2 relative flex-col justify-start items-start gap-2 inline-flex">
+              <div className="text-2xl font-medium leading-loose">Timetable
               </div>
-              <div className="w-20 py-px justify-center items-center gap-2.5 inline-flex">
-                <div className="w-2 h-2 bg-fuchsia-200 rounded-full" />
-                <div className="w-2 h-2 bg-fuchsia-200 rounded-full" />
-                <div className="w-2 h-2 bg-fuchsia-200 rounded-full" />
-                <div className="w-2 h-2 bg-fuchsia-800 rounded-full" />
-                <div className="w-2 h-2 bg-fuchsia-200 rounded-full" />
+              <div
+                  className="self-stretch h-24 rounded border border-zinc-300 flex-col justify-start items-start flex">
+                <div className="self-stretch h-12  justify-start items-start inline-flex">
+                  <div
+                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 rounded-tl border border-zinc-300 justify-center items-center gap-2.5 flex">
+                    <div
+                        className="text-zinc-500 text-sm font-normal leading-tight">Mon
+                    </div>
+                  </div>
+                  <div
+                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
+                    <div
+                        className="text-zinc-500 text-sm font-normal leading-tight">Tue
+                    </div>
+                  </div>
+                  <div
+                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
+                    <div
+                        className="text-zinc-500 text-sm font-normal leading-tight">Wed
+                    </div>
+                  </div>
+                  <div
+                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
+                    <div
+                        className="text-zinc-500 text-sm font-normal leading-tight">Thu
+                    </div>
+                  </div>
+                  <div
+                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
+                    <div
+                        className="text-zinc-500 text-sm font-normal leading-tight">Fri
+                    </div>
+                  </div>
+                  <div
+                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
+                    <div
+                        className="text-zinc-500 text-sm font-normal leading-tight">Sat
+                    </div>
+                  </div>
+                  <div
+                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 rounded-tr border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
+                    <div
+                        className="text-zinc-500 text-sm font-normal leading-tight">Son
+                    </div>
+                  </div>
+                </div>
+                <div className="self-stretch h-12 justify-start items-start inline-flex">
+                  <div
+                      className="grow shrink basis-0 self-stretch rounded-bl justify-center items-center flex">
+                    <div
+                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">4pm
+                      - 5pm
+                    </div>
+                  </div>
+                  <div
+                      className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
+                    <div
+                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">-
+                    </div>
+                  </div>
+                  <div
+                      className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
+                    <div
+                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">-
+                    </div>
+                  </div>
+                  <div
+                      className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
+                    <div
+                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">4pm
+                      - 5pm
+                    </div>
+                  </div>
+                  <div
+                      className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
+                    <div
+                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">-
+                    </div>
+                  </div>
+                  <div
+                      className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
+                    <div
+                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">-
+                    </div>
+                  </div>
+                  <div
+                      className="grow shrink basis-0 self-stretch rounded-br border-l border-zinc-300 justify-center items-center flex">
+                    <div
+                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">12am
+                      - 7pm
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          {/*
           <div className="w-[1248px] left-0 top-[348px] absolute text-base font-normal leading-normal">
             Jorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu
             turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus
@@ -207,8 +215,8 @@ export default async function Projects({
                   <div className="w-20 flex-col justify-start items-center gap-2 inline-flex">
                     <div className="rounded-[200px] justify-end items-center inline-flex">
                       <img
-                        className="w-[154px] h-[71px]"
-                        src="https://via.placeholder.com/154x71"
+                          className="w-[154px] h-[71px]"
+                          src="https://via.placeholder.com/154x71"
                       />
                     </div>
                     <div className="self-stretch text-center text-base font-normal leading-normal">
@@ -219,29 +227,32 @@ export default async function Projects({
                     <div className="w-20 left-0 top-[72px] absolute text-center text-base font-normal leading-normal">
                       Jonathan
                     </div>
-                    <div className="w-16 h-16 left-[5.48px] top-0 absolute rounded-[200px] justify-end items-center inline-flex">
+                    <div
+                        className="w-16 h-16 left-[5.48px] top-0 absolute rounded-[200px] justify-end items-center inline-flex">
                       <img
-                        className="w-[154px] h-[71px]"
-                        src="https://via.placeholder.com/154x71"
+                          className="w-[154px] h-[71px]"
+                          src="https://via.placeholder.com/154x71"
                       />
                     </div>
                   </div>
                   <div className="w-[78.75px] h-24 relative">
-                    <div className="w-[75px] left-[3.75px] top-[72px] absolute text-center text-base font-normal leading-normal">
+                    <div
+                        className="w-[75px] left-[3.75px] top-[72px] absolute text-center text-base font-normal leading-normal">
                       Thomas
                     </div>
-                    <div className="w-16 h-16 left-0 top-0 absolute rounded-[200px] justify-end items-center inline-flex">
+                    <div
+                        className="w-16 h-16 left-0 top-0 absolute rounded-[200px] justify-end items-center inline-flex">
                       <img
-                        className="w-[154px] h-[71px]"
-                        src="https://via.placeholder.com/154x71"
+                          className="w-[154px] h-[71px]"
+                          src="https://via.placeholder.com/154x71"
                       />
                     </div>
                   </div>
                   <div className="w-20 flex-col justify-start items-center gap-2 inline-flex">
                     <div className="rounded-[200px] justify-end items-center inline-flex">
                       <img
-                        className="w-[154px] h-[71px]"
-                        src="https://via.placeholder.com/154x71"
+                          className="w-[154px] h-[71px]"
+                          src="https://via.placeholder.com/154x71"
                       />
                     </div>
                     <div className="self-stretch text-center text-base font-normal leading-normal">
@@ -251,20 +262,20 @@ export default async function Projects({
                   <div className="w-20 flex-col justify-start items-center gap-2 inline-flex">
                     <div className="rounded-[200px] justify-end items-center inline-flex">
                       <img
-                        className="w-[154px] h-[71px]"
-                        src="https://via.placeholder.com/154x71"
+                          className="w-[154px] h-[71px]"
+                          src="https://via.placeholder.com/154x71"
                       />
                     </div>
                     <div className="self-stretch h-6 text-center text-base font-normal leading-normal">
                       Andrea
-                      <br />
+                      <br/>
                     </div>
                   </div>
                   <div className="w-20 flex-col justify-start items-center gap-2 inline-flex">
                     <div className="rounded-[200px] justify-end items-center inline-flex">
                       <img
-                        className="w-[154px] h-[71px]"
-                        src="https://via.placeholder.com/154x71"
+                          className="w-[154px] h-[71px]"
+                          src="https://via.placeholder.com/154x71"
                       />
                     </div>
                     <div className="self-stretch text-center text-base font-normal leading-normal">
@@ -280,37 +291,44 @@ export default async function Projects({
               </div>
               <div className="self-stretch h-24 rounded border border-zinc-300 flex-col justify-start items-start flex">
                 <div className="self-stretch h-12  justify-start items-start inline-flex">
-                  <div className="grow shrink basis-0 self-stretch bg-fuchsia-100 rounded-tl border border-zinc-300 justify-center items-center gap-2.5 flex">
+                  <div
+                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 rounded-tl border border-zinc-300 justify-center items-center gap-2.5 flex">
                     <div className="text-zinc-500 text-sm font-normal leading-tight">
                       Mon
                     </div>
                   </div>
-                  <div className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
+                  <div
+                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
                     <div className="text-zinc-500 text-sm font-normal leading-tight">
                       Tue
                     </div>
                   </div>
-                  <div className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
+                  <div
+                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
                     <div className="text-zinc-500 text-sm font-normal leading-tight">
                       Wed
                     </div>
                   </div>
-                  <div className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
+                  <div
+                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
                     <div className="text-zinc-500 text-sm font-normal leading-tight">
                       Thu
                     </div>
                   </div>
-                  <div className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
+                  <div
+                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
                     <div className="text-zinc-500 text-sm font-normal leading-tight">
                       Fri
                     </div>
                   </div>
-                  <div className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
+                  <div
+                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
                     <div className="text-zinc-500 text-sm font-normal leading-tight">
                       Sat
                     </div>
                   </div>
-                  <div className="grow shrink basis-0 self-stretch bg-fuchsia-100 rounded-tr border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
+                  <div
+                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 rounded-tr border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
                     <div className="text-zinc-500 text-sm font-normal leading-tight">
                       Son
                     </div>
@@ -322,32 +340,38 @@ export default async function Projects({
                       4pm - 5pm
                     </div>
                   </div>
-                  <div className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
+                  <div
+                      className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
                     <div className="grow shrink basis-0 text-center text-sm font-normal leading-tight">
                       -
                     </div>
                   </div>
-                  <div className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
+                  <div
+                      className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
                     <div className="grow shrink basis-0 text-center text-sm font-normal leading-tight">
                       -
                     </div>
                   </div>
-                  <div className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
+                  <div
+                      className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
                     <div className="grow shrink basis-0 text-center text-sm font-normal leading-tight">
                       4pm - 5pm
                     </div>
                   </div>
-                  <div className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
+                  <div
+                      className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
                     <div className="grow shrink basis-0 text-center text-sm font-normal leading-tight">
                       -
                     </div>
                   </div>
-                  <div className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
+                  <div
+                      className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
                     <div className="grow shrink basis-0 text-center text-sm font-normal leading-tight">
                       -
                     </div>
                   </div>
-                  <div className="grow shrink basis-0 self-stretch rounded-br border-l border-zinc-300 justify-center items-center flex">
+                  <div
+                      className="grow shrink basis-0 self-stretch rounded-br border-l border-zinc-300 justify-center items-center flex">
                     <div className="grow shrink basis-0 text-center text-sm font-normal leading-tight">
                       12am - 7pm
                     </div>
@@ -356,13 +380,15 @@ export default async function Projects({
               </div>
             </div>
           </div>
-          <div className="w-[1240px] h-[298px] left-0 top-[708px] absolute justify-start items-start gap-6 inline-flex">
-            <div className="w-[611px] h-[265px] flex-col justify-start items-start gap-4 inline-flex">
+          */}
+          <div className="relative flex flex-row gap-8 mb-16">
+            {/*<div className="w-[611px] h-[265px] flex-col justify-start items-start gap-4 inline-flex">
               <div className="self-stretch h-[25px] text-2xl font-medium leading-loose">
                 Open issues for starters
               </div>
               <div className="self-stretch h-56 flex-col justify-start items-start gap-4 flex">
-                <div className="self-stretch h-16 p-2  rounded border border-zinc-300 flex-col justify-start items-start flex">
+                <div
+                    className="self-stretch h-16 p-2  rounded border border-zinc-300 flex-col justify-start items-start flex">
                   <div className="self-stretch justify-between items-center inline-flex">
                     <div className="text-base font-medium leading-7">
                       Change Title Page
@@ -375,7 +401,8 @@ export default async function Projects({
                     Update the text on the title page to “Great being here”
                   </div>
                 </div>
-                <div className="self-stretch h-16 p-2 rounded border border-zinc-300 flex-col justify-start items-start flex">
+                <div
+                    className="self-stretch h-16 p-2 rounded border border-zinc-300 flex-col justify-start items-start flex">
                   <div className="self-stretch justify-between items-center inline-flex">
                     <div className="text-base font-medium leading-7">
                       Change Title Page
@@ -388,7 +415,8 @@ export default async function Projects({
                     Update the text on the title page to “Great being here”
                   </div>
                 </div>
-                <div className="self-stretch h-16 p-2 rounded border border-zinc-300 flex-col justify-start items-start flex">
+                <div
+                    className="self-stretch h-16 p-2 rounded border border-zinc-300 flex-col justify-start items-start flex">
                   <div className="self-stretch justify-between items-center inline-flex">
                     <div className="text-base font-medium leading-7">
                       Change Title Page
@@ -402,29 +430,29 @@ export default async function Projects({
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
             <Location
-              location={{
-                latitude: 51.023197847815915,
-                longitude: 7.56205608469124,
-              }}
+                location={{
+                  latitude: 51.023197847815915,
+                  longitude: 7.56205608469124,
+                }}
             />
           </div>
         </div>
 
         <Links
-          links={[
-            {
-              label: 'Download Project Brief',
-              href: 'https://via.placeholder.com/32x32',
-              isDocument: true,
-            },
-            {
-              label: 'Download Project Brief',
-              href: 'https://via.placeholder.com/32x32',
-              isDocument: false,
-            },
-          ]}
+            links={[
+              {
+                label: 'Download Project Brief',
+                href: 'https://via.placeholder.com/32x32',
+                isDocument: true,
+              },
+              {
+                label: 'Download Project Brief',
+                href: 'https://via.placeholder.com/32x32',
+                isDocument: false,
+              },
+            ]}
         />
       </div>
     </div>
