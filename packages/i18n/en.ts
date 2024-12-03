@@ -15,6 +15,12 @@ export const en = {
       removeAll: 'Remove All',
     },
   },
+  projects: {
+    title: 'Projekte',
+    location: 'Location',
+    join: 'Join the team',
+    links: 'Links and other resources',
+  },
   help: {
     title: 'Help',
   },
