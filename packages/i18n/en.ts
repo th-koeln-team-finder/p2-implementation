@@ -15,6 +15,10 @@ export const en = {
       removeAll: 'Remove All',
     },
   },
+  project:{
+    issuesTitle:'open issues for starters',
+
+  },
   help: {
     title: 'Help',
   },

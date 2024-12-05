@@ -46,5 +46,6 @@ export default function RootLayout({
         <DesignSystemProvider>{children}</DesignSystemProvider>
       </body>
     </html>
+
   )
 }

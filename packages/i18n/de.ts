@@ -17,6 +17,10 @@ export const de: Language = {
       removeAll: 'Alle entfernen',
     },
   },
+  project:{
+  issuesTitle:'Offene Aufgaben für neue Mitglieder',
+
+  },
   help: {
     title: 'Hilfe',
   },
