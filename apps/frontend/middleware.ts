@@ -1,9 +1,15 @@
+import { authMiddleware } from '@/auth'
 import { routing } from '@/features/i18n/routing'
 import createMiddleware from 'next-intl/middleware'
 
-export default createMiddleware(routing)
+const intlMiddleware = createMiddleware(routing)
+
+export default authMiddleware(intlMiddleware)
 
 export const config = {
-  // Match only internationalized pathnames
-  matcher: ['/', '/(de|en)/:path*'],
+  matcher: [
+    '/',
+    '/(de|en)/:path*',
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+  ],
 }

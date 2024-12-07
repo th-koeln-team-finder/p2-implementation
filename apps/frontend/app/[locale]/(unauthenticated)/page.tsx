@@ -118,7 +118,6 @@ export default async function Home() {
         {translate('test.normalHeading')}
       </h1>
       <h2 className="mb-8 text-3xl">{translate('test.normalFont')}</h2>
-
       <h1 className="font-head font-semibold text-5xl">
         {translate('test.otherHeading')}
       </h1>
@@ -176,7 +175,7 @@ export default async function Home() {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">Home</BreadcrumbLink>
+              <BreadcrumbLink href="/apps/frontend/public">Home</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>

@@ -19,8 +19,43 @@ export const en = {
     issuesTitle:'open issues for starters',
 
   },
+  projects: {
+    title: 'Projekte',
+    location: 'Location',
+    join: 'Join the team',
+    links: 'Links and other resources',
+  },
   help: {
     title: 'Help',
+  },
+  auth: {
+    register: {
+      button: 'Register',
+      formTitle: 'Register',
+      formDescription: 'Create a new account',
+      username: 'Username',
+      email: 'Email',
+      submitButton: 'Register',
+      alreadyHaveAccount: 'Already have an account?',
+    },
+    login: {
+      button: 'Login',
+      formTitle: 'Login',
+      formDescription: 'Sign in to your account',
+      email: 'Email',
+      submitButton: 'Login',
+    },
+    logout: {
+      button: 'Logout',
+    },
+  },
+  validation: {
+    inProgress: 'Validating...',
+    required: 'This field is required',
+    email: 'This field must be a valid email',
+    usernameTaken: 'This username is already taken',
+    minLengthX:
+      'This field must be at least {amount, plural, =1 {one character} other {# characters}} long',
   },
 }
 
