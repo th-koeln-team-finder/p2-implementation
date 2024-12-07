@@ -17,15 +17,13 @@ export const de: Language = {
       removeAll: 'Alle entfernen',
     },
   },
-  project:{
-  issuesTitle:'Offene Aufgaben für neue Mitglieder',
 
-  },
   projects: {
     title: 'Projekte',
     location: 'Standort/Treffpunkt',
     join: 'Dem Team beitreten',
     links: 'Links und andere Ressourcen',
+    issuesTitle:'Offene Issues für neue Mitglieder',
   },
   help: {
     title: 'Hilfe',

@@ -15,15 +15,14 @@ export const en = {
       removeAll: 'Remove All',
     },
   },
-  project:{
-    issuesTitle:'open issues for starters',
 
-  },
   projects: {
     title: 'Projekte',
     location: 'Location',
     join: 'Join the team',
     links: 'Links and other resources',
+    issuesTitle:'open issues for starters',
+
   },
   help: {
     title: 'Help',

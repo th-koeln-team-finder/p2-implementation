@@ -6,6 +6,8 @@ import {getProjectItem} from '@/features/projects/projects.queries'
 import ImageCarousel from "@/features/projects/components/ImageCarousel";
 import SkillScale from "@/features/projects/components/SkillScale";
 import TeamMembers from "@/features/projects/components/TeamMembers";
+import {ProjectTimetable, Timetable, Weekdays} from "@/features/projects/components/ProjectTimetable";
+import {ProjectIssuesList} from "@/features/projects/components/ProjectIssuesList";
 
 export default async function Projects({
   params,
@@ -20,6 +22,18 @@ export default async function Projects({
     console.error(e)
     project = {}
   }
+  let timetable=new Timetable([
+      [Weekdays.Monday,2,5],
+      [Weekdays.Thursday,5,7]]
+  )
+  let issues = [
+    { title: "Bug in Login", description: "User cannot log in with correct credentials", id: 1 },
+    { title: "UI glitch on homepage", description: "The homepage layout breaks on small screens", id: 2 },
+    { title: "Performance issue", description: "App slows down when opening settings", id: 3 },
+    { title: "Performance issue", description: "App slows down when opening settings", id: 4 },
+    { title: "Performance issue", description: "App slows down when opening settings", id: 5 },
+    { title: "Performance issue", description: "App slows down when opening settings", id: 6 },
+  ];
 
   if (!project) {
     return <div>Project not found</div>
@@ -94,102 +108,13 @@ export default async function Projects({
               <TeamMembers/>
             </div>
             <div className="w-1/2 relative flex-col justify-start items-start gap-2 inline-flex">
-              <div className="text-2xl font-medium leading-loose">Timetable
-              </div>
-              <div
-                  className="self-stretch h-24 rounded border border-zinc-300 flex-col justify-start items-start flex">
-                <div className="self-stretch h-12  justify-start items-start inline-flex">
-                  <div
-                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 rounded-tl border border-zinc-300 justify-center items-center gap-2.5 flex">
-                    <div
-                        className="text-zinc-500 text-sm font-normal leading-tight">Mon
-                    </div>
-                  </div>
-                  <div
-                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
-                    <div
-                        className="text-zinc-500 text-sm font-normal leading-tight">Tue
-                    </div>
-                  </div>
-                  <div
-                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
-                    <div
-                        className="text-zinc-500 text-sm font-normal leading-tight">Wed
-                    </div>
-                  </div>
-                  <div
-                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
-                    <div
-                        className="text-zinc-500 text-sm font-normal leading-tight">Thu
-                    </div>
-                  </div>
-                  <div
-                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
-                    <div
-                        className="text-zinc-500 text-sm font-normal leading-tight">Fri
-                    </div>
-                  </div>
-                  <div
-                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
-                    <div
-                        className="text-zinc-500 text-sm font-normal leading-tight">Sat
-                    </div>
-                  </div>
-                  <div
-                      className="grow shrink basis-0 self-stretch bg-fuchsia-100 rounded-tr border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
-                    <div
-                        className="text-zinc-500 text-sm font-normal leading-tight">Son
-                    </div>
-                  </div>
-                </div>
-                <div className="self-stretch h-12 justify-start items-start inline-flex">
-                  <div
-                      className="grow shrink basis-0 self-stretch rounded-bl justify-center items-center flex">
-                    <div
-                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">4pm
-                      - 5pm
-                    </div>
-                  </div>
-                  <div
-                      className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
-                    <div
-                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">-
-                    </div>
-                  </div>
-                  <div
-                      className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
-                    <div
-                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">-
-                    </div>
-                  </div>
-                  <div
-                      className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
-                    <div
-                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">4pm
-                      - 5pm
-                    </div>
-                  </div>
-                  <div
-                      className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
-                    <div
-                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">-
-                    </div>
-                  </div>
-                  <div
-                      className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
-                    <div
-                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">-
-                    </div>
-                  </div>
-                  <div
-                      className="grow shrink basis-0 self-stretch rounded-br border-l border-zinc-300 justify-center items-center flex">
-                    <div
-                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">12am
-                      - 7pm
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ProjectTimetable timetable={timetable}/>
+            </div>
+          </div>
+          <div className="relative flex flex-row gap-8 mb-16">
+            <div className="w-1/2 relative flex-col justify-start gap-2 inline-flex">
+              <h1 className="text-2xl font-medium">Team Members</h1>
+              <ProjectIssuesList listOfIssues={issues} />
             </div>
           </div>
           {/*
