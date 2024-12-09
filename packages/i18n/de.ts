@@ -48,4 +48,14 @@ export const de: Language = {
     minLengthX:
       'Dieses Feld muss mindestens {amount, plural, =1 {ein Zeichen} other {# Zeichen}} lang sein',
   },
+  errors: {
+    genericPageError: 'Oops, da ist etwas schiefgelaufen',
+    auth: {
+      configuration: 'Es gibt ein Problem mit der Konfiguration',
+      accessDenied:
+        'Es gab ein Problem beim Authentifizieren: Zugriff verweigert',
+      verification: 'Es gab ein Problem beim Überprüfen der Authentifizierung',
+      default: 'Es gab ein Problem beim Authentifizieren',
+    },
+  },
 }

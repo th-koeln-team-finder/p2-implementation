@@ -46,6 +46,16 @@ export const en = {
     minLengthX:
       'This field must be at least {amount, plural, =1 {one character} other {# characters}} long',
   },
+  errors: {
+    genericPageError: 'Oops something went wrong',
+    auth: {
+      configuration: 'There is an issue with the configuration',
+      accessDenied:
+        'There was a problem when trying to authenticate: Access Denied',
+      verification: 'There was a problem when trying to verify authentication',
+      default: 'There was a problem when trying to authenticate',
+    },
+  },
 }
 
 type PathOf<T> = {
