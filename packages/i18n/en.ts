@@ -25,6 +25,9 @@ export const en = {
       toggleLess: 'Show less',
       toggleMore: 'Show more',
     },
+    team: {
+      title: 'Team Members',
+    },
   },
   help: {
     title: 'Help',

@@ -27,6 +27,9 @@ export const de: Language = {
       toggleLess: 'Weniger anzeigen',
       toggleMore: 'Mehr anzeigen',
     },
+    team: {
+      title: 'Team-Mitglieder',
+    },
   },
   help: {
     title: 'Hilfe',

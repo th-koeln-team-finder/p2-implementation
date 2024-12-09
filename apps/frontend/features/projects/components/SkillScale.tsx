@@ -4,8 +4,8 @@ import { getTranslations } from 'next-intl/server'
 import {useEffect, useRef, useState} from "react";
 
 // @ts-ignore
-export async function SkillScale({ skills }: { title?: string, skills?: { name: string, level: number }[] }) {
-  const t = await getTranslations('projects')
+export function SkillScale({ skills }: { title?: string, skills?: { name: string, level: number }[] }) {
+  //const t = await getTranslations('projects')
 
   const [showAll, setShowAll] = useState(false)
   // Funktion zum Umschalten der Sichtbarkeit
@@ -18,40 +18,46 @@ export async function SkillScale({ skills }: { title?: string, skills?: { name: 
   // Berechne die Höhe eines Items, sobald das DOM geladen ist
   useEffect(() => {
     if (itemRef.current) {
-      setItemHeight(itemRef.current.offsetHeight);
+      // Hole den computedStyle für das Element
+      const computedStyle = window.getComputedStyle(itemRef.current);
+
+      // Berechne die tatsächliche Höhe einschließlich des Margins
+      const marginBottom = parseFloat(computedStyle.marginBottom);
+      const totalHeight = itemRef.current.offsetHeight + marginBottom;
+
+      setItemHeight(totalHeight);
+      //setItemHeight(itemRef.current.offsetHeight);
     }
   }, [itemRef.current]);
 
   const maxHeight = showAll
       ? `${skills.length * itemHeight}px`
-      : `${3 * itemHeight}px`;
+      : `${6 * itemHeight}px`;
 
   return (
-    <div className="SkillScale w-full">
-      <div className="text-2xl font-medium mb-2">{t('skills.title')}</div>
+    <div className='SkillScale flex w-full flex-col'>
+      <div className='mb-2 font-medium text-2xl'>Skills needed {/*t('skills.title')*/}</div>
 
-      <div className="flex flex-col">
-        <div className="inline-flex mb-2">
-          <div className="overflow-hidden transition-all duration-300 ease-in-out" style={{maxHeight}} />
-          {skills.map((skill, index) => (
-            <div key={index} ref={index === 0 ? itemRef : null} className={`w-full self-stretch justify-between inline-flex mb-2 opacity-0 transition-opacity duration-300 ${showAll || index < 6 ? 'opacity-100' : ''}`}>
-              <div className="text-base">{skill.name}</div>
-              <div className="py-px justify-center items-center gap-2.5 flex">
-                {[...Array(5)].map((_, i) => (
-                  // biome-ignore lint/suspicious/noArrayIndexKey: <Skill Level>
-                  <div key={i} className={`w-2 h-2 rounded-full ${i < skill.level ? 'bg-fuchsia-800' : 'bg-fuchsia-200'}`}/>
-                ))}
-              </div>
+      <div className="flex flex-col" style={{maxHeight}}>
+        <div className="overflow-hidden transition-all duration-300 ease-in-out" /*style={{maxHeight}} */ />
+        {skills.map((skill, index) => (
+          <div key={index} ref={index === 0 ? itemRef : null} className={`mb-2 inline-flex w-full justify-between self-stretch opacity-0 transition-opacity duration-300 ${showAll || index < 6 ? 'opacity-100' : ''}`}>
+            <div className="text-base">{skill.name}</div>
+            <div className='flex items-center justify-center gap-2.5 py-px'>
+              {[...Array(5)].map((_, i) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: <Skill Level>
+                <div key={i} className={`h-2 w-2 rounded-full ${i < skill.level ? 'bg-fuchsia-800' : 'bg-fuchsia-200'}`}/>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
         {skills.length > 6 && (
           <div className="mx-auto inline-flex">
             {/* biome-ignore lint/a11y/useButtonType: <mehr anzeigen> */}
-            <button onClick={toggleShowAll} className="self-stretch gap-4 inline-flex">
+            <button onClick={toggleShowAll} className='inline-flex gap-4 self-stretch'>
               <div className="text-fuchsia-700">
-                {showAll ? t('skills.toggleLess') : t('skills.toggleMore')}
+                {showAll ? "Weniger anzeigen" : "Mehr anzeigen" /*t('skills.toggleLess') : t('skills.toggleMore')*/}
               </div>
               <div className={`my-auto transform transition-transform ${showAll ? '-rotate-180' : 'rotate-0'} duration-300`}>
                 {/* biome-ignore lint/a11y/noSvgWithoutTitle: <svg> */}

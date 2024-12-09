@@ -99,7 +99,6 @@ export default async function Projects({
           </div>
           <div className="relative flex flex-row gap-8 mb-16">
             <div className="w-1/2 relative flex-col justify-start gap-2 inline-flex">
-              <h1 className="text-2xl font-medium">Team Members</h1>
               <TeamMembers />
             </div>
             <div className="w-1/2 relative flex-col justify-start items-start gap-2 inline-flex">
