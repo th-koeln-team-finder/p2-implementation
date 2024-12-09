@@ -20,8 +20,13 @@ export const de: Language = {
   projects: {
     title: 'Projekte',
     location: 'Standort/Treffpunkt',
-    join: 'Dem Team beitreten',
+    join: 'Team beitreten',
     links: 'Links und andere Ressourcen',
+    skills:{
+      title: 'Deine Fähigkeiten',
+      toggleLess: 'Weniger anzeigen',
+      toggleMore: 'Mehr anzeigen',
+    },
   },
   help: {
     title: 'Hilfe',

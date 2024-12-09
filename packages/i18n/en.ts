@@ -20,6 +20,11 @@ export const en = {
     location: 'Location',
     join: 'Join the team',
     links: 'Links and other resources',
+    skills:{
+      title: 'Skills needed',
+      toggleLess: 'Show less',
+      toggleMore: 'Show more',
+    },
   },
   help: {
     title: 'Help',
