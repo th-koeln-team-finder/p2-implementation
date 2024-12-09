@@ -10,7 +10,29 @@ export enum Weekdays {
     Saturday="Saturday",
     Sunday="Sunday"
 }
-type WorkTime = { start: number; end: number };
+//Type for all Timetables
+export type Timetable = { id: number; projectId: number; weekdays: "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"; startTime: string; endTime: string; }
+
+
+//checks, if data ist a Timetable
+export function isTimetable(data: unknown): data is Timetable[] {
+    return (
+        Array.isArray(data) &&
+        data.every((item) =>
+            item &&
+            typeof item.id === "number" &&
+            typeof item.projectId === "number" &&
+            typeof item.weekdays === "string" &&
+            ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].includes(item.weekdays) &&
+            typeof item.startTime === "string" &&
+            typeof item.endTime === "string"
+        )
+    );
+}
+
+
+
+/*
 export class Timetable {
 
     private timetable:  Record<Weekdays, WorkTime | null>;
@@ -54,26 +76,36 @@ export class Timetable {
     }
 
 }
-
+*/
 
 
 
 export async function ProjectTimetable({
                                             timetable,
                                         }: {
-                                           timetable: Timetable;
+                                           timetable: Timetable[];
                                         }
-                                        //const data = await getTimetable()
+
 ) {
 
     const weekdays = Object.keys(Weekdays).filter(key => {return isNaN(Number(key))});
-    for (let i in weekdays) {
-        let timeForDays
+
+    let timeoutput:[Weekdays, string][]=[[Weekdays.Monday," - "],[Weekdays.Tuesday," - "],[Weekdays.Wednesday," - "],[Weekdays.Thursday," - "],[Weekdays.Friday," - "],[Weekdays.Saturday," - "],[Weekdays.Sunday," - "]]
+
+    timetable.forEach((item) => {
+        const i = timeoutput.findIndex(([day]) => day === item.weekdays);
+        if (i !== -1) {
+            // set the meeting time for the day
+            timeoutput[i][1] = `${item.startTime} - ${item.endTime}`;
+        }
+    })
 
 
-
-
+    /*
+    if(timetable.filter((item) => item.weekdays === Weekdays.Monday)){
+        monday=
     }
+*/
 
 
 
@@ -130,43 +162,43 @@ export async function ProjectTimetable({
                 <div
                     className="grow shrink basis-0 self-stretch rounded-bl justify-center items-center flex">
                     <div
-                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">****
+                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">{timeoutput[0][1]}
                     </div>
                 </div>
                 <div
                     className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
                     <div
-                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">****
+                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">{timeoutput[1][1]}
                     </div>
                 </div>
                 <div
                     className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
                     <div
-                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">****
+                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">{timeoutput[2][1]}
                     </div>
                 </div>
                 <div
                     className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
                     <div
-                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">****
+                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">{timeoutput[3][1]}
                     </div>
                 </div>
                 <div
                     className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
                     <div
-                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">****
+                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">{timeoutput[4][1]}
                     </div>
                 </div>
                 <div
                     className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
                     <div
-                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">****
+                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">{timeoutput[5][1]}
                     </div>
                 </div>
                 <div
                     className="grow shrink basis-0 self-stretch rounded-br border-l border-zinc-300 justify-center items-center flex">
                     <div
-                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">****
+                        className="grow shrink basis-0 text-center text-sm font-normal leading-tight">{timeoutput[6][1]}
                     </div>
                 </div>
             </div>

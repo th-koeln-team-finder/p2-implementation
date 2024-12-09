@@ -1,15 +1,17 @@
 import {
-  boolean,
-  integer,
-  json,
-  pgTable,
-  primaryKey,
-  text,
-  timestamp,
-  uuid,
-  varchar,
+    boolean,
+    integer,
+    json,
+    pgTable,
+    primaryKey,
+    text, time,
+    timestamp, uniqueIndex,
+    uuid,
+    varchar,
+  check,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
+import {sql} from "drizzle-orm";
 
 /**
  * Test data should only demonstrate the usage of the library
@@ -50,6 +52,26 @@ export const projects = pgTable('projects', {
   allowApplications: boolean().notNull().default(true),
   additionalInfo: json().default({}),
 })
+export const ProjectIssue = pgTable('ProjectIssue', {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    projectId: integer().notNull().references(() => projects.id), // Fremdschlüssel auf projects.id
+    title: varchar({ length: 255 }).notNull(),
+    description: varchar({ length: 255 }).notNull(),
+    createdAt: varchar({ length: 255 }).notNull(),
+    updatedAt: varchar({ length: 255 }).notNull(),
+});
+export const ProjectTimetable = pgTable('ProjectTimetable', {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    projectId: integer().notNull().references(() => projects.id),
+    weekdays: varchar({enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']}).notNull(),
+    startTime: time('startTime').notNull(),
+    endTime: time('endTime').notNull(),
+}, (timeTable) => ({
+    uniqueWeekday: uniqueIndex('unique_weekday').on(timeTable.weekdays), //
+    validTimeRange: check('valid_time_range',  sql`${timeTable.startTime} < ${timeTable.endTime}`) //
+}))
+
+
 export type ProjectInsert = typeof projects.$inferInsert
 export type ProjectSelect = typeof projects.$inferSelect
 

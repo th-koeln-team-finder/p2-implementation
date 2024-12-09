@@ -2,12 +2,16 @@ import { Links } from '@/features/projects/components/Links'
 import { Location } from '@/features/projects/components/Location'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
 import { Toolbar } from '@/features/projects/components/Toolbar'
-import {getProjectItem} from '@/features/projects/projects.queries'
+import {
+  getProjectIssueList,
+  getProjectItem,
+  getProjectTimetable,
+} from '@/features/projects/projects.queries'
 import ImageCarousel from "@/features/projects/components/ImageCarousel";
 import SkillScale from "@/features/projects/components/SkillScale";
 import TeamMembers from "@/features/projects/components/TeamMembers";
-import {ProjectTimetable, Timetable, Weekdays} from "@/features/projects/components/ProjectTimetable";
-import {ProjectIssuesList} from "@/features/projects/components/ProjectIssuesList";
+import {isTimetable, ProjectTimetable, Timetable, Weekdays} from "@/features/projects/components/ProjectTimetable";
+import {Issue, ProjectIssuesList} from "@/features/projects/components/ProjectIssuesList";
 
 export default async function Projects({
   params,
@@ -16,12 +20,17 @@ export default async function Projects({
 }>) {
   const id: number = (await params).id
   let project
+  let issues
+  let timetable
   try {
     project = await getProjectItem(id)
+    issues = await getProjectIssueList(id)
+    timetable = await getProjectTimetable(id)
   } catch (e) {
     console.error(e)
     project = {}
   }
+  /*
   let timetable=new Timetable([
       [Weekdays.Monday,2,5],
       [Weekdays.Thursday,5,7]]
@@ -34,10 +43,24 @@ export default async function Projects({
     { title: "Performance issue", description: "App slows down when opening settings", id: 5 },
     { title: "Performance issue", description: "App slows down when opening settings", id: 6 },
   ];
-
+*/
   if (!project) {
     return <div>Project not found</div>
   }
+  let TimetableData:Timetable[]=[]
+  let issuesData: Issue[]=[]
+
+  if (isTimetable(timetable)){
+  TimetableData=timetable
+  }
+  if (Array.isArray(issues)){
+        issuesData=issues
+  }
+
+
+
+
+
 
   return (
     <div className="max-w-screen-xl w-full p-4 mx-auto flex-col justify-start items-center gap-12 inline-flex">
@@ -108,13 +131,13 @@ export default async function Projects({
               <TeamMembers/>
             </div>
             <div className="w-1/2 relative flex-col justify-start items-start gap-2 inline-flex">
-              <ProjectTimetable timetable={timetable}/>
+              <ProjectTimetable timetable={TimetableData}/>
             </div>
           </div>
           <div className="relative flex flex-row gap-8 mb-16">
             <div className="w-1/2 relative flex-col justify-start gap-2 inline-flex">
               <h1 className="text-2xl font-medium">Team Members</h1>
-              <ProjectIssuesList listOfIssues={issues} />
+              <ProjectIssuesList listOfIssues={issuesData} />
             </div>
           </div>
           {/*

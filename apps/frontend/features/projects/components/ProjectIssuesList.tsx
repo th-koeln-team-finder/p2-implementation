@@ -12,10 +12,12 @@ import {
 //TODO import {getTranslations} from "next-intl/server";
 import {useEffect, useRef, useState} from "react";
 
+export type Issue = { title: string; description: string; id: number }
+
 export function ProjectIssuesList({
                                               listOfIssues,
                                           }: {
-                                              listOfIssues: { title: string; description: string; id: number }[];
+                                              listOfIssues: Issue[]
                                           }
                                           //const data = await getProjectIssues()
 ) {
@@ -23,7 +25,6 @@ export function ProjectIssuesList({
 
     const toggleShowAll = () => setShowAll(!showAll);
 
-//TODO    const t = await getTranslations('projects')
     if(!Array.isArray(listOfIssues) || listOfIssues.length === 0)
         return <p className="text-muted-foreground italic">No Issues</p>
 
