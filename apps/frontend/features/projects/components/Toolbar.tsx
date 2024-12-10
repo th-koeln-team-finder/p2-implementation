@@ -8,20 +8,22 @@ export async function Toolbar({ stars }: { stars?: number }) {
   const starsString = stars.toLocaleString('en', { notation: 'compact' })
 
   return (
-    <div className="justify-end items-center gap-2 flex">
-      <Button variant="ghost">
-        {starsString}
+    <div className="justify-end items-center gap-4 flex">
+      <Button variant="ghost" className="p-0">
+          <div className="my-auto leading-normal">{starsString}</div>
         <StarIcon />
       </Button>
-      <Button variant="ghost" size="icon">
+      <Button variant="ghost" size="icon" className="h-fit w-fit">
         <LinkIcon />
       </Button>
-      <Button variant="ghost" size="icon">
+      <Button variant="ghost" size="icon" className="h-fit w-fit">
         <BookmarkIcon />
       </Button>
-      <Button variant="default" size="default">
+      <Button variant="default" size="default" className="ml-2">
         {t('join')}
       </Button>
     </div>
   )
 }
+
+//TODO Logik der einzelnen Buttons hinzufügen (Teilen, Merken etc.)
