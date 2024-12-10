@@ -1,4 +1,4 @@
-import type { Language } from './en'
+import type {Language} from './en'
 
 export const de: Language = {
   general: {
@@ -39,9 +39,12 @@ export const de: Language = {
     logout: {
       button: 'Abmelden',
     },
-    profile: {
-      button: 'Profile',
-    }
+  },
+  users: {
+    title: 'Profil',
+    lastActivity: 'Letzte Aktivität',
+    skills: 'Skills',
+    previously_worked_on: 'Hat zuvor gearbeitet an',
   },
   validation: {
     inProgress: 'Validiere...',

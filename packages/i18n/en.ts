@@ -37,9 +37,12 @@ export const en = {
     logout: {
       button: 'Logout',
     },
-    profile: {
-        button: 'Profile',
-    }
+  },
+  users: {
+    title: 'Profile',
+    lastActivity: 'Last activity',
+    skills: 'Skills',
+    previously_worked_on: 'Previously worked on',
   },
   validation: {
     inProgress: 'Validating...',
