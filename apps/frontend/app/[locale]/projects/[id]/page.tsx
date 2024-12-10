@@ -11,7 +11,7 @@ import {
   getProjectTimetable,
 } from '@/features/projects/projects.queries'
 import ImageCarousel from "@/features/projects/components/ImageCarousel";
-import {isTimetable, ProjectTimetable, Timetable, Weekdays} from "@/features/projects/components/ProjectTimetable";
+import {isTimetable, ProjectTimetable, Timetable} from "@/features/projects/components/ProjectTimetable";
 import {Issue, ProjectIssuesList} from "@/features/projects/components/ProjectIssuesList";
 
 
@@ -24,6 +24,7 @@ export default async function Projects({
   let project
   let issues
   let timetable
+
   try {
     project = await getProjectItem(id)
     issues = await getProjectIssueList(id)
@@ -38,13 +39,17 @@ export default async function Projects({
   }
   let TimetableData:Timetable[]=[]
   let issuesData: Issue[]=[]
-
+/*
   if (isTimetable(timetable)){
   TimetableData=timetable
   }
   if (Array.isArray(issues)){
         issuesData=issues
   }
+*/
+
+
+
 
   return (
     <div className="max-w-screen-xl w-full p-4 mx-auto flex-col justify-start items-center gap-12 inline-flex">
@@ -78,36 +83,28 @@ export default async function Projects({
             <Text description={project.description}/>
           </div>
 
-          <div className='relative mb-16 flex flex-row gap-8'>
-            <div className='relative inline-flex w-1/2 flex-col justify-start gap-2'>
-              <TeamMembers/>
-            </div>
-            <div className='relative inline-flex w-1/2 flex-col items-start justify-start gap-2'>
-                <div className="w-1/2 relative flex-col justify-start items-start gap-2 inline-flex">
-                    <ProjectTimetable timetable={TimetableData}/>
+            <div className='relative mb-16 flex flex-row gap-8'>
+                <div className='relative inline-flex w-1/2 flex-col justify-start gap-2'>
+                    <TeamMembers/>
+                </div>
+                <div className='relative inline-flex w-1/2 flex-col items-start justify-start gap-2'>
+                        <ProjectTimetable timetable={TimetableData}/>
                 </div>
             </div>
-              <div className="relative flex flex-row gap-8 mb-16">
-                  <div className="w-1/2 relative flex-col justify-start gap-2 inline-flex">
-                      <h1 className="text-2xl font-medium">Team Members</h1>
-                      <ProjectIssuesList listOfIssues={issuesData} />
-                  </div>
-              </div>
-            </div>
-          </div>
+        </div>
 
           <div className='relative mb-16 flex flex-row gap-8'>
-            <div className='relative inline-flex w-1/2 flex-col justify-start'>
-              Issues
-            </div>
-            <div className='relative inline-flex w-1/2 flex-col justify-start'>
-              <Location
-                  location={{
-                    latitude: 51.023197847815915,
-                    longitude: 7.56205608469124,
-                  }}
-              />
-            </div>
+              <div className='relative inline-flex w-1/2 flex-col justify-start'>
+                  <ProjectIssuesList listOfIssues={issuesData}/>
+              </div>
+              <div className='relative inline-flex w-1/2 flex-col justify-start'>
+                  <Location
+                      location={{
+                          latitude: 51.023197847815915,
+                          longitude: 7.56205608469124,
+                      }}
+                  />
+              </div>
           </div>
 
             <div className='relative mb-16 flex flex-row gap-8'>

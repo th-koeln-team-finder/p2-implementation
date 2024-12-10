@@ -16,5 +16,5 @@ export const getProjectIssueList=cache(
     (id:number)=> db.query.ProjectIssue.findMany({where: eq(ProjectIssue.projectId, id)})
 )
 export const getProjectTimetable=cache(
-    (id:number)=> db.query.ProjectTimetable.findFirst({where: eq(ProjectTimetable.projectId, id)})
+    (id:number)=> db.query.ProjectTimetable.findMany({where: eq(ProjectTimetable.projectId, id)})
 )
