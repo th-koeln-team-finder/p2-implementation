@@ -2,6 +2,7 @@ import {getTranslations} from "next-intl/server";
 import {Avatar, AvatarFallback, AvatarImage} from "@repo/design-system/components/ui/avatar";
 import {authMiddleware} from "@/auth";
 import {UserSelect} from "@repo/database/schema";
+import {ProjectCard} from "@/features/projects/components/ProjectCard";
 
 export default async function Admin() {
   const translate = await getTranslations()
@@ -9,6 +10,16 @@ export default async function Admin() {
   const user = session!.user! as UserSelect
 
   const lastActivity = new Date()
+  const previouslyWorkedOn: Array<any> = []
+  for (let i = 0; i < 10; i++) {
+    previouslyWorkedOn.push(    {
+        name: 'Project ' + (i + 1),
+        description: 'This is a project',
+        image: 'https://via.placeholder.com/150',
+        tags: ['tag 1', 'category', 'project', 'title', 'tag']
+      },
+    )
+  }
 
   return (
     <main className="container mx-auto my-4">
@@ -81,7 +92,11 @@ export default async function Admin() {
       </div>
       <div className="mt-8">
         <h2 className="font-bold text-2xl mb-4">{translate('users.previously_worked_on')}</h2>
-
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {previouslyWorkedOn.map((project) => (
+            <ProjectCard key={project.name} project={project} />
+          ))}
+        </div>
       </div>
     </main>
   )
