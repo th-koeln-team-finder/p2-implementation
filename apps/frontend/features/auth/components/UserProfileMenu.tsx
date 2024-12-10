@@ -1,11 +1,11 @@
-import { authMiddleware } from '@/auth'
-import { clientSignOut } from '@/features/auth/auth.actions'
+import {authMiddleware} from '@/auth'
+import {clientSignOut} from '@/features/auth/auth.actions'
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from '@repo/design-system/components/ui/avatar'
-import { Button } from '@repo/design-system/components/ui/button'
+import {Button} from '@repo/design-system/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,11 +14,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@repo/design-system/components/ui/dropdown-menu'
-import { LogOutIcon } from 'lucide-react'
-import { getTranslations } from 'next-intl/server'
-import type { PropsWithChildren } from 'react'
+import {LogOutIcon} from 'lucide-react'
+import {getTranslations} from 'next-intl/server'
+import type {PropsWithChildren} from 'react'
+import {Link} from "@/features/i18n/routing";
 
-export async function UserProfileMenu({ children }: PropsWithChildren) {
+export async function UserProfileMenu({children}: PropsWithChildren) {
   const session = await authMiddleware()
   const translate = await getTranslations()
 
@@ -46,19 +47,21 @@ export async function UserProfileMenu({ children }: PropsWithChildren) {
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="font-medium text-sm leading-none">
-                {session.user.name}
-              </p>
+              <Link href="/profile" className="hover:underline">
+                <p className="font-medium text-sm leading-none">
+                  {session.user.name}
+                </p>
+              </Link>
               <p className="text-muted-foreground text-xs leading-none">
                 {session.user.email}
               </p>
             </div>
           </DropdownMenuLabel>
-          <DropdownMenuSeparator />
+          <DropdownMenuSeparator/>
           {children}
-          {children && <DropdownMenuSeparator />}
+          {children && <DropdownMenuSeparator/>}
           <DropdownMenuItem onClick={clientSignOut} className="cursor-pointer">
-            <LogOutIcon />
+            <LogOutIcon/>
             {translate('auth.logout.button')}
           </DropdownMenuItem>
         </DropdownMenuContent>

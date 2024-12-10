@@ -25,12 +25,6 @@ export default async function UnauthenticatedLayout({
                 Admin
               </DropdownMenuItem>
             </Link>
-              <Link href="/profile">
-                  <DropdownMenuItem className="cursor-pointer">
-                      <UserIcon />
-                      {translate('auth.profile.button')}
-                  </DropdownMenuItem>
-              </Link>
           </UserProfileMenu>
         ) : (
           <>
