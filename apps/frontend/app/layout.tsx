@@ -2,6 +2,7 @@ import '@repo/design-system/styles/globals.css'
 import { DesignSystemProvider } from '@repo/design-system'
 import type { Metadata } from 'next'
 import { Rubik, Saira_Condensed } from 'next/font/google'
+import Header from "@/features/header/header";
 
 const rubik = Rubik({
   variable: '--font-sans',
@@ -41,8 +42,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={`${rubik.variable} ${sairaCondensed.variable} bg-background font-sans text-foreground antialiased flex`}
+        className={`${rubik.variable} ${sairaCondensed.variable} bg-background font-sans text-foreground antialiased flex flex-col`}
       >
+        <Header />
         <DesignSystemProvider>{children}</DesignSystemProvider>
       </body>
     </html>

@@ -29,54 +29,6 @@ export default async function Projects({
   return (
     <div className="max-w-screen-xl w-full p-4 mx-auto flex-col justify-start items-center gap-12 inline-flex">
 
-      {/* //TODO Header */}
-      <div className="self-stretch justify-center items-center inline-flex">
-        <div className="px-4 py-2 justify-center items-center inline-flex">
-          <div className="relative flex-col justify-start items-start flex" />
-          <div className="grow shrink basis-0 self-stretch justify-end items-center gap-6 inline-flex">
-            <div className="grow shrink basis-0 px-6 flex-col justify-center items-end gap-2.5 inline-flex">
-              <div className="relative">
-                <div className="left-0 top-0 absolute flex-col justify-start items-start gap-1.5 inline-flex">
-                  <div className="justify-start items-start gap-2 inline-flex">
-                    <div className="w-[276px] flex-col justify-start items-start gap-1.5 inline-flex">
-                      <div className="self-stretch pl-3 pr-14 py-2 rounded-md border border-zinc-300 justify-start items-center inline-flex">
-                        <div className="text-zinc-500 text-sm font-medium font-['Inter'] leading-tight">
-                          {' '}
-                          Search everywhere...
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="w-4 h-4 left-[8px] top-[10px] absolute" />
-              </div>
-            </div>
-            <div className="w-24 h-5 justify-center items-center flex">
-              <div className="text-sm font-medium font-['Inter'] leading-tight">
-                Find Someone
-              </div>
-            </div>
-            <div className="w-24 h-5 pr-1 justify-start items-center flex">
-              <div className="text-sm font-medium font-['Inter'] leading-tight">
-                Find a Project
-              </div>
-            </div>
-            <div className="w-[110px] h-5 pr-0.5 justify-center items-center flex">
-              <div className="text-sm font-medium font-['Inter'] leading-tight">
-                Create a Project
-              </div>
-            </div>
-            <div className="w-[73px] h-5 justify-center items-center flex">
-              <div className="text-sm font-medium font-['Inter'] leading-tight">
-                Brainstorm
-              </div>
-            </div>
-            <div className='flex h-8 w-8 items-center justify-center'>
-              <img className="w-8 h-8 rounded-full" src="https://via.placeholder.com/32x32" alt=""/>
-            </div>
-          </div>
-        </div>
-      </div>
       <div className='inline-flex flex-col items-start justify-start gap-8 self-stretch'>
         <div className='inline-flex items-start justify-between self-stretch'>
           <ProjectTitle title={project.name} subtitle={project.status}/>
