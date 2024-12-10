@@ -39,6 +39,9 @@ export const de: Language = {
     logout: {
       button: 'Abmelden',
     },
+    profile: {
+      button: 'Profile',
+    }
   },
   validation: {
     inProgress: 'Validiere...',

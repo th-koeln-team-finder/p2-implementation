@@ -4,7 +4,7 @@ import { UserProfileMenu } from '@/features/auth/components/UserProfileMenu'
 import { Link } from '@/features/i18n/routing'
 import { Button } from '@repo/design-system/components/ui/button'
 import { DropdownMenuItem } from '@repo/design-system/components/ui/dropdown-menu'
-import { LockIcon } from 'lucide-react'
+import {LockIcon, UserIcon} from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 export default async function UnauthenticatedLayout({
@@ -25,6 +25,12 @@ export default async function UnauthenticatedLayout({
                 Admin
               </DropdownMenuItem>
             </Link>
+              <Link href="/profile">
+                  <DropdownMenuItem className="cursor-pointer">
+                      <UserIcon />
+                      {translate('auth.profile.button')}
+                  </DropdownMenuItem>
+              </Link>
           </UserProfileMenu>
         ) : (
           <>

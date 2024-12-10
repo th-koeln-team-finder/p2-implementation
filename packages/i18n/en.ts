@@ -37,6 +37,9 @@ export const en = {
     logout: {
       button: 'Logout',
     },
+    profile: {
+        button: 'Profile',
+    }
   },
   validation: {
     inProgress: 'Validating...',
