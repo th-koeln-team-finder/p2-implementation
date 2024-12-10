@@ -1,14 +1,5 @@
-import {
-  boolean,
-  integer,
-  pgTable,
-  primaryKey,
-  text,
-  timestamp,
-  uuid,
-  varchar,
-} from 'drizzle-orm/pg-core'
-import type { AdapterAccountType } from 'next-auth/adapters'
+import {boolean, integer, pgTable, primaryKey, text, timestamp, uuid, varchar,} from 'drizzle-orm/pg-core'
+import type {AdapterAccountType} from 'next-auth/adapters'
 
 /**
  * Test data should only demonstrate the usage of the library
@@ -30,6 +21,7 @@ export const users = pgTable('user', {
   email: text('email').unique().notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
+  bio: text('bio'),
 })
 export type UserInsert = typeof users.$inferInsert
 export type UserSelect = typeof users.$inferSelect
