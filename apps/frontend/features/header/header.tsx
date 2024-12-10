@@ -1,10 +1,21 @@
+import {Input} from "@repo/design-system/components/ui/input";
+import {Button} from "@repo/design-system/components/ui/button";
+import {Link} from '@/features/i18n/routing'
+import {DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem} from "@repo/design-system/components/ui/dropdown-menu";
+import {
+    BellIcon,
+    BrainCircuitIcon,
+    SettingsIcon, User2Icon, Users2Icon,
+} from "lucide-react";
+
 
 export default function Header() {
 
 
     return (
-        <header className='header flex w-full self-stretch px-4 py-6'>
+        <header className='header flex w-full self-stretch px-4 py-2'>
             <div className="icon relative h-16 w-16">
+                {/* biome-ignore lint/a11y/noSvgWithoutTitle: <Logo> */}
                 <svg viewBox="0 0 400 400" fill="none">
                     <path
                         d="M166.61 142.88C162.89 144.97 159.04 146.84 155.1 148.54C142.45 153.98 129.05 158.26 115.28 158.48C110.63 158.55 105.69 158.06 101.95 155.29C97.94 152.33 96.38 145.88 98.75 141.38C101.55 136.06 109.5 135.45 114.71 134.88C136.93 132.46 159.57 120.88 175.72 105.42C177.1 104.1 179.73 101.74 181.55 102.32C183.24 102.86 184.67 104.92 185.5 106.35C187 108.93 190.68 115.47 190.68 115.47C190.68 115.47 192.24 117.7 192.44 119.99C192.67 122.72 187.38 127.67 187.38 127.67C181.31 133.93 174.14 138.65 166.62 142.87L166.61 142.88Z"
@@ -45,50 +56,72 @@ export default function Header() {
                 </svg>
             </div>
 
-            <div className="grow shrink basis-0 self-stretch justify-end items-center gap-6 inline-flex">
-                <div className="grow shrink basis-0 px-6 flex-col justify-center items-end gap-2.5 inline-flex">
-                    <div className="relative">
-                        <div
-                            className="left-0 top-0 absolute flex-col justify-start items-start gap-1.5 inline-flex">
-                            <div className="justify-start items-start gap-2 inline-flex">
-                                <div className="w-[276px] flex-col justify-start items-start gap-1.5 inline-flex">
-                                    <div
-                                        className="self-stretch pl-3 pr-14 py-2 rounded-md border border-zinc-300 justify-start items-center inline-flex">
-                                        <div
-                                            className="text-zinc-500 text-sm font-medium font-['Inter'] leading-tight">
-                                            {' '}
-                                            Search everywhere...
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="w-4 h-4 left-[8px] top-[10px] absolute"/>
-                    </div>
+            <div className='flex w-full items-center justify-end gap-12 self-stretch'>
+                <div className='relative inline-flex min-w-64 items-center'>
+
+                    <Input className='rounded-md border-gray-300' type="search"
+                           placeholder={'Search everywhere...'}/>
+                    {/*<SearchIcon className="stroke-gray-300"/>*/}
+
+                    {//TODO Search Icon
+                        /*<div className="flex items-center border rounded-md border-gray-300 px-3">
+                        <SearchIcon className="h-5 w-5 text-gray-400"/>
+                        <Input
+                            className="flex-1 border-none focus:ring-0 focus:outline-none ml-2"
+                            type="search"
+                            placeholder="Search everywhere..."
+                        />
+                    </div>*/}
+
                 </div>
-                <div className="w-24 h-5 justify-center items-center flex">
-                    <div className="text-sm font-medium font-['Inter'] leading-tight">
-                        Find Someone
-                    </div>
-                </div>
-                <div className="w-24 h-5 pr-1 justify-start items-center flex">
-                    <div className="text-sm font-medium font-['Inter'] leading-tight">
-                        Find a Project
-                    </div>
-                </div>
-                <div className="w-[110px] h-5 pr-0.5 justify-center items-center flex">
-                    <div className="text-sm font-medium font-['Inter'] leading-tight">
-                        Create a Project
-                    </div>
-                </div>
-                <div className="w-[73px] h-5 justify-center items-center flex">
-                    <div className="text-sm font-medium font-['Inter'] leading-tight">
-                        Brainstorm
-                    </div>
-                </div>
-                <div className='flex h-8 w-8 items-center justify-center'>
-                    <img className="w-8 h-8 rounded-full" src="https://via.placeholder.com/32x32" alt=""/>
-                </div>
+
+                <nav className='nav flex items-center gap-6'>
+                    <Button asChild variant="link"
+                            className='h-fit justify-start p-0 font-medium text-foreground text-sm'>
+                        <Link href="/find-someone">Find Someone</Link>
+                    </Button>
+
+                    <Button asChild variant="link"
+                            className='h-fit justify-start p-0 font-medium text-foreground text-sm'>
+                        <Link href="/find-a-project">Find a Project</Link>
+                    </Button>
+
+                    <Button asChild variant="link"
+                            className='h-fit justify-start p-0 font-medium text-foreground text-sm'>
+                        <Link href="/create-a-project">Create a Project</Link>
+                    </Button>
+
+                    <Button asChild variant="link"
+                            className='h-fit justify-start p-0 font-medium text-foreground text-sm'>
+                        <Link href="/brainstorm">Brainstorm</Link>
+                    </Button>
+
+                    {/* //TODO Anmelden und Registrieren Buttons & weitere Account etc. verlinken */}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger className="focus:outline-none focus-visible:outline-none">
+                            <img className='h-8 w-8 rounded-full' src="https://via.placeholder.com/32x32" alt=""/>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuItem className='cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary'>
+                                <User2Icon/> Account
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className='cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary'>
+                                <Users2Icon/> My Projects
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className='cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary'>
+                                <BrainCircuitIcon/> My Brainstorms
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className='cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary'>
+                                <BellIcon/> Notifications
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className='cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary'>
+                                <SettingsIcon/> Settings
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </nav>
+
+
             </div>
         </header>
     )
