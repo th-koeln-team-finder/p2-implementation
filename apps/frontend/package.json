@@ -14,6 +14,7 @@
     "@preact/signals-react": "^2.2.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@repo/database": "workspace:*",
+    "@repo/authorization": "workspace:*",
     "@repo/design-system": "workspace:*",
     "@repo/env": "workspace:*",
     "@repo/i18n": "workspace:*",

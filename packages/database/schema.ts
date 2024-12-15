@@ -1,6 +1,8 @@
+import { Roles, type RolesType, RolesValues } from '@/constants'
 import {
   boolean,
   integer,
+  pgEnum,
   pgTable,
   primaryKey,
   text,
@@ -9,6 +11,8 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
+
+export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
 
 /**
  * Test data should only demonstrate the usage of the library
@@ -30,6 +34,11 @@ export const users = pgTable('user', {
   email: text('email').unique().notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
+  roles: pgRoles()
+    .array()
+    .notNull()
+    .$type<RolesType[]>()
+    .$defaultFn(() => [Roles.defaultUser]),
 })
 export type UserInsert = typeof users.$inferInsert
 export type UserSelect = typeof users.$inferSelect

@@ -43,6 +43,9 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.1.0
         version: 1.1.0(@types/react@18.3.12)(react@19.0.0-rc-66855b96-20241106)
+      '@repo/authorization':
+        specifier: workspace:*
+        version: link:../../packages/authorization
       '@repo/database':
         specifier: workspace:*
         version: link:../../packages/database
@@ -142,6 +145,25 @@ importers:
         version: 3.4.14(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@20.17.6)(typescript@5.6.3))
       typescript:
         specifier: ^5
+        version: 5.6.3
+
+  packages/authorization:
+    dependencies:
+      '@repo/database':
+        specifier: workspace:*
+        version: link:../database
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: 22.9.0
+        version: 22.9.0
+      tsconfig-paths:
+        specifier: ^4.2.0
+        version: 4.2.0
+      typescript:
+        specifier: ^5.6.3
         version: 5.6.3
 
   packages/database:
@@ -3735,7 +3757,7 @@ snapshots:
 
   '@types/pg@8.11.10':
     dependencies:
-      '@types/node': 20.17.6
+      '@types/node': 22.9.0
       pg-protocol: 1.7.0
       pg-types: 4.0.2
 
