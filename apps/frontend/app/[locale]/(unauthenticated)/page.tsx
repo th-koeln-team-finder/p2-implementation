@@ -1,3 +1,4 @@
+import { Link } from '@/features/i18n/routing'
 import { AddTestButton, RemoveTestButton, TestItemList } from '@/features/test'
 import {
   AlertDialog,
@@ -131,6 +132,7 @@ export default async function Home() {
         </div>
       </div>
       <TestItemList />
+      <Link href="/projects">{translate('test.toProjectPage')}</Link>
       <h3 className="mt-4 mb-2 font-head text-3xl">Components</h3>
       <div className="flex flex-col gap-2 px-4 pb-4">
         <AlertDialog>

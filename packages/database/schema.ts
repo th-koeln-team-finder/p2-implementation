@@ -1,5 +1,5 @@
-import {boolean, integer, pgTable, primaryKey, text, timestamp, uuid, varchar,} from 'drizzle-orm/pg-core'
-import type {AdapterAccountType} from 'next-auth/adapters'
+import {boolean, integer,json, pgTable, primaryKey, text,time, timestamp,uniqueIndex, uuid, varchar,check,} from 'drizzle-orm/pg-core'
+import type {AdapterAccountType} from 'next-auth/adapters'import {sql} from "drizzle-orm";
 
 /**
  * Test data should only demonstrate the usage of the library
@@ -9,6 +9,7 @@ export const test = pgTable('test', {
   name: varchar({ length: 255 }).notNull(),
   checked: boolean().notNull().default(false),
 })
+
 export type TestInsert = typeof test.$inferInsert
 export type TestSelect = typeof test.$inferSelect
 
@@ -26,6 +27,44 @@ export const users = pgTable('user', {
 export type UserInsert = typeof users.$inferInsert
 export type UserSelect = typeof users.$inferSelect
 
+/**
+ * Data specific for one project
+ */
+export const projects = pgTable('projects', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  name: varchar({ length: 255 }).notNull(),
+  description: varchar({ length: 255 }).notNull(),
+  status: varchar({ enum: ['open', 'closed'] }).notNull(),
+  createdAt: varchar({ length: 255 }).notNull(),
+  updatedAt: varchar({ length: 255 }).notNull(),
+  isPublic: boolean().notNull().default(true),
+  allowApplications: boolean().notNull().default(true),
+  additionalInfo: json().default({}),
+})
+export const ProjectIssue = pgTable('ProjectIssue', {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    projectId: integer().notNull().references(() => projects.id), // Fremdschlüssel auf projects.id
+    title: varchar({ length: 255 }).notNull(),
+    description: varchar({ length: 255 }).notNull(),
+    createdAt: varchar({ length: 255 }).notNull(),
+    updatedAt: varchar({ length: 255 }).notNull(),
+});
+export const ProjectTimetable = pgTable('ProjectTimetable', {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    projectId: integer().notNull().references(() => projects.id),
+    weekdays: varchar({enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']}).notNull(),
+    startTime: time('startTime').notNull(),
+    endTime: time('endTime').notNull(),
+}, (timeTable) => ({
+    uniqueWeekday: uniqueIndex('unique_weekday').on(timeTable.weekdays), //
+    validTimeRange: check('valid_time_range',  sql`${timeTable.startTime} < ${timeTable.endTime}`) //
+}))
+
+
+export type ProjectInsert = typeof projects.$inferInsert
+export type ProjectSelect = typeof projects.$inferSelect
+
+//region Technical Tables
 /**
  * Data used for authentication of a user, a user can have multiple accounts (so multiple login methods)
  */
@@ -99,3 +138,4 @@ export const authenticators = pgTable(
 )
 export type AuthenticatorInsert = typeof authenticators.$inferInsert
 export type AuthenticatorSelect = typeof authenticators.$inferSelect
+//endregion
