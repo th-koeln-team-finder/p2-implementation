@@ -65,6 +65,7 @@ export const de: Language = {
     lastActivity: 'Letzte Aktivität',
     skills: 'Skills',
     previously_worked_on: 'Hat zuvor gearbeitet an',
+    load_more_projects: 'Mehr Projekte laden',
   },
   validation: {
     inProgress: 'Validiere...',

@@ -1,5 +1,6 @@
 import {boolean, integer,json, pgTable, primaryKey, text,time, timestamp,uniqueIndex, uuid, varchar,check,} from 'drizzle-orm/pg-core'
-import type {AdapterAccountType} from 'next-auth/adapters'import {sql} from "drizzle-orm";
+import type {AdapterAccountType} from 'next-auth/adapters'
+import {sql} from "drizzle-orm";
 
 /**
  * Test data should only demonstrate the usage of the library

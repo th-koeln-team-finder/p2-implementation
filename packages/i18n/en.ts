@@ -63,6 +63,7 @@ export const en = {
     lastActivity: 'Last activity',
     skills: 'Skills',
     previously_worked_on: 'Previously worked on',
+    load_more_projects: 'Mehr Projekte laden',
   },
   validation: {
     inProgress: 'Validating...',
