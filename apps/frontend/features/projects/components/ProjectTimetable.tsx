@@ -1,4 +1,5 @@
 import {getTranslations} from "next-intl/server";
+import {ProjectTimetableSelect} from "@repo/database/schema";
 
 
 export enum Weekdays {
@@ -11,11 +12,11 @@ export enum Weekdays {
     Sunday="Sunday"
 }
 //Type for all Timetables
-export type Timetable = { id: number; projectId: number; weekdays: "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"; startTime: string; endTime: string; }
+//export type Timetable = { id: number; projectId: number; weekdays: "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"; startTime: string; endTime: string; }
 
 
 //checks, if data ist a Timetable
-export function isTimetable(data: unknown): data is Timetable[] {
+export function isTimetable(data: unknown): data is ProjectTimetableSelect[] {
     return (
         Array.isArray(data) &&
         data.every((item) =>
@@ -83,7 +84,7 @@ export class Timetable {
 export async function ProjectTimetable({
                                             timetable,
                                         }: {
-                                           timetable: Timetable[];
+                                           timetable: ProjectTimetableSelect[];
                                         }
 
 ) {

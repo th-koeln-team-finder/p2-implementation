@@ -11,13 +11,14 @@ import {
 } from '@repo/design-system/components/ui/card'
 //TODO import {getTranslations} from "next-intl/server";
 import {useEffect, useRef, useState} from "react";
+import {ProjectIssueSelect} from "@repo/database/schema";
 
-export type Issue = { title: string; description: string; id: number }
+//export type Issue = { title: string; description: string; id: number }
 
 export function ProjectIssuesList({
                                               listOfIssues,
                                           }: {
-                                              listOfIssues: Issue[]
+                                              listOfIssues: ProjectIssueSelect[]
                                           }
                                           //const data = await getProjectIssues()
 ) {

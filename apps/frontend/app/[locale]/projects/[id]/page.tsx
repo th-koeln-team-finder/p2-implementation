@@ -11,8 +11,9 @@ import {
     getProjectTimetable,
 } from '@/features/projects/projects.queries'
 import ImageCarousel from "@/features/projects/components/ImageCarousel";
-import {isTimetable, ProjectTimetable, Timetable} from "@/features/projects/components/ProjectTimetable";
-import {Issue, ProjectIssuesList} from "@/features/projects/components/ProjectIssuesList";
+import {ProjectTimetable} from "@/features/projects/components/ProjectTimetable";
+import {ProjectIssuesList} from "@/features/projects/components/ProjectIssuesList";
+import {ProjectIssueSelect, ProjectTimetableSelect} from "@repo/database/schema";
 
 
 export default async function Projects({
@@ -28,9 +29,9 @@ export default async function Projects({
 
   try {
     project = await getProjectItem(id)
-    issues = await getProjectIssueList(id)
-    timetable = await getProjectTimetable(id)
-    skills = await getProjectSkills(id)
+    //issues = await getProjectIssueList(id)
+    //timetable = await getProjectTimetable(id)
+    //skills = await getProjectSkills(id)
   } catch (e) {
     console.error(e)
     project = {}
@@ -39,8 +40,8 @@ export default async function Projects({
   if (!project) {
     return <div>Project not found</div>
   }
-  let TimetableData:Timetable[]=[]
-  let issuesData: Issue[]=[]
+  let TimetableData:ProjectTimetableSelect[]=[]
+  let issuesData: ProjectIssueSelect[]=[]
 /*
   if (isTimetable(timetable)){
   TimetableData=timetable
