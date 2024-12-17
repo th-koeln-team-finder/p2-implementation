@@ -6,9 +6,9 @@ import { Text } from '@/features/projects/components/Text'
 import TeamMembers from '@/features/projects/components/TeamMembers'
 import { Toolbar } from '@/features/projects/components/Toolbar'
 import {
-  getProjectIssueList,
-  getProjectItem,
-  getProjectTimetable,
+    getProjectIssueList,
+    getProjectItem, getProjectSkills,
+    getProjectTimetable,
 } from '@/features/projects/projects.queries'
 import ImageCarousel from "@/features/projects/components/ImageCarousel";
 import {isTimetable, ProjectTimetable, Timetable} from "@/features/projects/components/ProjectTimetable";
@@ -24,11 +24,13 @@ export default async function Projects({
   let project
   let issues
   let timetable
+  let skills
 
   try {
     project = await getProjectItem(id)
     issues = await getProjectIssueList(id)
     timetable = await getProjectTimetable(id)
+    skills = await getProjectSkills(id)
   } catch (e) {
     console.error(e)
     project = {}

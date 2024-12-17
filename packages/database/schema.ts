@@ -37,7 +37,25 @@ export const users = pgTable('user', {
 })
 export type UserInsert = typeof users.$inferInsert
 export type UserSelect = typeof users.$inferSelect
+/*
+* SkillData for a User and a Project. All can have multiple skills
+*/
+export const SkillData = pgTable('SkillData', {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    name:varchar().notNull(),
+    level: integer().notNull(),
+    isUserOrProject: varchar({enum: ['user', 'project']}).notNull(),
+    userId: uuid().references(() => users.id),
+    projectsId: integer().references(() => projects.id),
 
+}, (skillData) => ({
+    validLevel: check('valid_level',  sql`${skillData.level} >= 0 AND ${skillData.level} <= 5`)
+}))
+export type SkillDataInsert = typeof SkillData.$inferInsert
+export type SkillDataSelect = typeof SkillData.$inferSelect
+
+
+//Project Tables
 /**
  * Data specific for one project
  */
@@ -52,6 +70,12 @@ export const projects = pgTable('projects', {
   allowApplications: boolean().notNull().default(true),
   additionalInfo: json().default({}),
 })
+export type ProjectInsert = typeof projects.$inferInsert
+export type ProjectSelect = typeof projects.$inferSelect
+
+/**
+ * ProjectIssues for a project. A project can have multiple issues
+ */
 export const ProjectIssue = pgTable('ProjectIssue', {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     projectId: integer().notNull().references(() => projects.id), // Fremdschlüssel auf projects.id
@@ -60,6 +84,11 @@ export const ProjectIssue = pgTable('ProjectIssue', {
     createdAt: varchar({ length: 255 }).notNull(),
     updatedAt: varchar({ length: 255 }).notNull(),
 });
+export type ProjectIssueInsert = typeof ProjectIssue.$inferInsert
+export type ProjectIssueSelect = typeof ProjectIssue.$inferSelect
+/**
+ * ProjectTimetable for a project. Data for set Working Times
+ */
 export const ProjectTimetable = pgTable('ProjectTimetable', {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     projectId: integer().notNull().references(() => projects.id),
@@ -70,11 +99,8 @@ export const ProjectTimetable = pgTable('ProjectTimetable', {
     uniqueWeekday: uniqueIndex('unique_weekday').on(timeTable.weekdays), //
     validTimeRange: check('valid_time_range',  sql`${timeTable.startTime} < ${timeTable.endTime}`) //
 }))
-
-
-export type ProjectInsert = typeof projects.$inferInsert
-export type ProjectSelect = typeof projects.$inferSelect
-
+export type ProjectTimetableInsert = typeof ProjectTimetable.$inferInsert
+export type ProjectTimetableSelect = typeof ProjectTimetable.$inferSelect
 //region Technical Tables
 /**
  * Data used for authentication of a user, a user can have multiple accounts (so multiple login methods)
