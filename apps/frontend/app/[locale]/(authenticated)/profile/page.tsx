@@ -3,6 +3,9 @@ import {Avatar, AvatarFallback, AvatarImage} from "@repo/design-system/component
 import {authMiddleware} from "@/auth";
 import {UserSelect} from "@repo/database/schema";
 import PreviouslyWorkedOn from "@/features/users/components/PreviouslyWorkedOn";
+import {Button} from "@repo/design-system/components/ui/button";
+import {UserPlus} from "lucide-react";
+import Ratings from "@/features/users/components/Ratings";
 
 export default async function Admin() {
   const translate = await getTranslations()
@@ -35,7 +38,12 @@ export default async function Admin() {
             Developer/Student
           </p>
           <div>
-            <h1 className="font-bold text-3xl">{user.name}</h1>
+            <h1 className="inline font-bold text-3xl">{user.name}</h1>
+            <Button className="ml-4">
+              <UserPlus />
+              {translate('users.follow')}
+            </Button>
+            <Ratings />
           </div>
           <p className="text-muted-foreground text-xs leading-none">
             {translate('users.lastActivity')}: {lastActivity.toLocaleDateString()}
