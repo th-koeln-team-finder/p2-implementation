@@ -37,9 +37,9 @@ export default async function Admin() {
           <p className="font-bold text-xs">
             Developer/Student
           </p>
-          <div>
+          <div className="flex items-center gap-4">
             <h1 className="inline font-bold text-3xl">{user.name}</h1>
-            <Button className="ml-4">
+            <Button>
               <UserPlus />
               {translate('users.follow')}
             </Button>
@@ -89,9 +89,9 @@ export default async function Admin() {
         </div>
       </div>
       <div className="mt-8">
-        <h2 className="font-bold text-2xl mb-4">{translate('users.previously_worked_on')}</h2>
+        <h2 className="font-bold text-2xl mb-4">{translate('users.previouslyWorkedOn')}</h2>
         <PreviouslyWorkedOn
-          loadMoreProjectsText={translate('users.load_more_projects')}
+          loadMoreProjectsText={translate('users.loadMoreProjects')}
         />
       </div>
     </main>

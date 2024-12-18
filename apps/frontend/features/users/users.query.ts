@@ -12,7 +12,7 @@ export async function checkUsernameTaken(username: string) {
 
 export async function getUserProjects(userId: number, limit: number, offset: number) {
   const previouslyWorkedOn: Array<any> = []
-  for (let i = offset; i < limit; i++) {
+  for (let i = offset; i < offset + limit; i++) {
     previouslyWorkedOn.push({
         name: 'Project ' + (i + 1),
         description: 'This is a project',

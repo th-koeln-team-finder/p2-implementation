@@ -4,22 +4,20 @@ import {Button} from "@repo/design-system/components/ui/button";
 import {ProjectCard} from "@/features/projects/components/ProjectCard";
 import {loadMoreProjects} from "@/features/users/users.actions";
 import {ChevronDown} from "lucide-react";
-import {useState} from "react";
+import {useState, useEffect } from "react";
 import {ProjectSelect} from "@repo/database/schema";
 
 export default function PreviouslyWorkedOn({loadMoreProjectsText}: { loadMoreProjectsText: string }) {
   const [previouslyWorkedOn, setPreviouslyWorkedOn] = useState<ProjectSelect[]>([])
 
-
-  loadMoreProjects(3).then((projects: ProjectSelect[]) => {
-    setPreviouslyWorkedOn([...previouslyWorkedOn, ...projects])
-  })
-
-  function loadMore () {
-    loadMoreProjects(10, previouslyWorkedOn.length).then((projects: ProjectSelect[]) => {
+  function loadMore (count = 10) {
+    loadMoreProjects(count, previouslyWorkedOn.length).then((projects: ProjectSelect[]) => {
       setPreviouslyWorkedOn([...previouslyWorkedOn, ...projects])
     })
   }
+  useEffect(() => {
+    loadMore(3)
+  }, [])
 
   return <div className="text-center">
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -29,7 +27,8 @@ export default function PreviouslyWorkedOn({loadMoreProjectsText}: { loadMorePro
     </div>
     <Button
       variant="link"
-      onClick={() => loadMore}
+      className="my-2"
+      onClick={() => loadMore()}
     > <ChevronDown/>{loadMoreProjectsText}
     </Button>
   </div>;
