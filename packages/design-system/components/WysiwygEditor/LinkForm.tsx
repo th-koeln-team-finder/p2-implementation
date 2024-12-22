@@ -83,7 +83,7 @@ export function LinkForm({ editor, isEditing }: LinkFormProps) {
         form.handleChange('openInNewTab', false)
       }
     })
-  }, [editor])
+  }, [editor, form.handleChange])
 
   return (
     <form

@@ -8,7 +8,7 @@ import {
 } from '@formsignals/form-core'
 import { $isLinkNode } from '@lexical/link'
 import { $isListNode, ListNode } from '@lexical/list'
-import { $isHeadingNode } from '@lexical/rich-text'
+import { $isHeadingNode, type HeadingNode } from '@lexical/rich-text'
 import { $isAtNodeEnd } from '@lexical/selection'
 import {
   $findMatchingParent,
@@ -30,6 +30,7 @@ import {
   FORMAT_TEXT_COMMAND,
   KEY_DOWN_COMMAND,
   type LexicalEditor,
+  type LexicalNode,
   type RangeSelection,
   SELECTION_CHANGE_COMMAND,
   type TextFormatType,
@@ -68,6 +69,43 @@ const WysiwygStateInitial = {
 }
 export type WysiwygState = SignalifiedData<typeof WysiwygStateInitial>
 
+function getElementFromAnchor(anchorNode: TextNode | ElementNode) {
+  let element =
+    anchorNode.getKey() === 'root'
+      ? anchorNode
+      : $findMatchingParent(anchorNode, (e) => {
+          const parent = e.getParent()
+          return (
+            parent !== null &&
+            ($isRootNode(parent) ||
+              ($isElementNode(parent) && parent.isShadowRoot()))
+          )
+        })
+  if (element === null) {
+    element = anchorNode.getTopLevelElementOrThrow()
+  }
+  return element
+}
+
+function getBlockElementType(
+  elementDOM: HTMLElement | null,
+  element: LexicalNode | ListNode | HeadingNode,
+  anchorNode: TextNode | ElementNode,
+) {
+  if (elementDOM === null) {
+    return 'paragraph'
+  }
+  if ($isListNode(element)) {
+    const parentList = $getNearestNodeOfType<ListNode>(anchorNode, ListNode)
+    return parentList ? parentList.getListType() : element.getListType()
+  }
+  const type = $isHeadingNode(element) ? element.getTag() : element.getType()
+  if (!(type in blockTypeToBlockName)) {
+    return 'paragraph'
+  }
+  return type as keyof typeof blockTypeToBlockName
+}
+
 // Inspired by https://github.com/facebook/lexical/blob/main/packages/lexical-playground/src/plugins/ToolbarPlugin/index.tsx#L469
 export function useWysiwygStates(editor: LexicalEditor) {
   const states = useMemo(() => deepSignalifyValue(WysiwygStateInitial), [])
@@ -77,22 +115,9 @@ export function useWysiwygStates(editor: LexicalEditor) {
     if (!$isRangeSelection(selection)) {
       return
     }
-    const anchorNode = selection.anchor.getNode()
-    let element =
-      anchorNode.getKey() === 'root'
-        ? anchorNode
-        : $findMatchingParent(anchorNode, (e) => {
-            const parent = e.getParent()
-            return (
-              parent !== null &&
-              ($isRootNode(parent) ||
-                ($isElementNode(parent) && parent.isShadowRoot()))
-            )
-          })
-    if (element === null) {
-      element = anchorNode.getTopLevelElementOrThrow()
-    }
 
+    const anchorNode = selection.anchor.getNode()
+    const element = getElementFromAnchor(anchorNode)
     const elementKey = element.getKey()
     const elementDOM = editor.getElementByKey(elementKey)
 
@@ -101,25 +126,13 @@ export function useWysiwygStates(editor: LexicalEditor) {
     const parent = node.getParent()
     states.peek().isLink.value = $isLinkNode(parent) || $isLinkNode(node)
 
-    if (elementDOM !== null) {
-      if ($isListNode(element)) {
-        const parentList = $getNearestNodeOfType<ListNode>(anchorNode, ListNode)
-        const type = parentList
-          ? parentList.getListType()
-          : element.getListType()
+    states.peek().blockType.value = getBlockElementType(
+      elementDOM,
+      element,
+      anchorNode,
+    )
 
-        states.peek().blockType.value = type
-      } else {
-        const type = $isHeadingNode(element)
-          ? element.getTag()
-          : element.getType()
-        if (type in blockTypeToBlockName) {
-          states.peek().blockType.value =
-            type as keyof typeof blockTypeToBlockName
-        }
-      }
-    }
-    let matchingParent
+    let matchingParent = null as LexicalNode | null
     if ($isLinkNode(parent)) {
       // If node is a link, we need to fetch the parent paragraph node to set format
       matchingParent = $findMatchingParent(
@@ -129,11 +142,13 @@ export function useWysiwygStates(editor: LexicalEditor) {
     }
 
     // If matchingParent is a valid node, pass it's format type
-    states.peek().elementFormat.value = $isElementNode(matchingParent)
-      ? matchingParent.getFormatType()
-      : $isElementNode(node)
-        ? node.getFormatType()
-        : parent?.getFormatType() || 'left'
+    if ($isElementNode(matchingParent)) {
+      states.peek().elementFormat.value = matchingParent.getFormatType()
+    } else if ($isElementNode(node)) {
+      states.peek().elementFormat.value = node.getFormatType()
+    } else {
+      states.peek().elementFormat.value = parent?.getFormatType() || 'left'
+    }
 
     // Update text format
     states.peek().isBold.value = selection.hasFormat('bold')
@@ -151,7 +166,7 @@ export function useWysiwygStates(editor: LexicalEditor) {
     states.peek().isCapitalize.value = selection.hasFormat(
       'capitalize' as TextFormatType,
     )
-  }, [states])
+  }, [states, editor])
 
   useEffect(() => {
     return mergeRegister(
@@ -238,7 +253,7 @@ export function useWysiwygStates(editor: LexicalEditor) {
         COMMAND_PRIORITY_LOW,
       ),
     )
-  }, [editor, $updateToolbar])
+  }, [editor, $updateToolbar, states])
 
   return states
 }
