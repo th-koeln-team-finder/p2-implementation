@@ -80,6 +80,7 @@ export function EditorToolbar({ className }: EditorToolbarProps) {
       <div className={cn('flex flex-row items-center gap-1 p-1', className)}>
         <ShortcutTooltip shortcut="Ctrl + Z">
           <Button
+            variant="ghost"
             disabled={!editorStates.peek().canUndo.value}
             className={toggleVariants()}
             onClick={() => editor.dispatchCommand(UNDO_COMMAND, undefined)}
@@ -89,6 +90,7 @@ export function EditorToolbar({ className }: EditorToolbarProps) {
         </ShortcutTooltip>
         <ShortcutTooltip shortcut="Ctrl + Y">
           <Button
+            variant="ghost"
             disabled={!editorStates.peek().canRedo.value}
             className={toggleVariants()}
             onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}
@@ -230,6 +232,7 @@ export function EditorToolbar({ className }: EditorToolbarProps) {
           </PopoverContent>
         </Popover>
         <Button
+          variant="ghost"
           className={toggleVariants()}
           onClick={() =>
             editor.dispatchCommand(INSERT_HORIZONTAL_RULE_COMMAND, undefined)
