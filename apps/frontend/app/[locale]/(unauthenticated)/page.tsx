@@ -1,5 +1,6 @@
 import { CanUserServer } from '@/features/auth/components/CanUser.server'
 import { AddTestButton, RemoveTestButton, TestItemList } from '@/features/test'
+import { WysiwygEditor } from '@repo/design-system/components/WysiwygEditor'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -140,6 +141,13 @@ export default async function Home() {
       </CanUserServer>
       <h3 className="mt-4 mb-2 font-head text-3xl">Components</h3>
       <div className="flex flex-col gap-2 px-4 pb-4">
+        <WysiwygEditor
+          placeholder="Write your description here..."
+          onChange={(editorState) =>
+            console.log('Changed WYSIWYG', editorState)
+          }
+        />
+
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="outline">Open alert dialog</Button>
