@@ -5,6 +5,9 @@ import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { Check, CheckIcon } from 'lucide-react'
 
 import { cn } from "../../lib/utils"
+import { CheckboxProps, CheckedState } from '@radix-ui/react-checkbox'
+import { Signal } from '@preact/signals-react'
+import { useFieldContext } from '@formsignals/form-react'
 
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
@@ -27,4 +30,26 @@ const Checkbox = React.forwardRef<
 ))
 Checkbox.displayName = CheckboxPrimitive.Root.displayName
 
-export { Checkbox }
+type CheckboxSignalProps = Omit<CheckboxProps, "checked" | "onCheckedChange"> & {
+  checked: Signal<CheckedState>
+}
+function CheckboxSignal({checked, ...props}: CheckboxSignalProps) {
+  return (
+    <Checkbox
+      checked={checked.value}
+      onCheckedChange={newChecked => (checked.value = newChecked)}
+      {...props}
+    />
+  )
+}
+CheckboxSignal.displayName = "CheckboxSignal"
+
+function CheckboxForm(props: Omit<CheckboxProps, "checked" | "onCheckedChange">) {
+  const field = useFieldContext<CheckedState, "">()
+  return (
+    <CheckboxSignal checked={field.data} {...props} />
+  )
+}
+CheckboxForm.displayName = "CheckboxForm"
+
+export { Checkbox, CheckboxSignal, CheckboxForm }

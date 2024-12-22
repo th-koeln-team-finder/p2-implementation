@@ -1,5 +1,6 @@
 import { CanUserServer } from '@/features/auth/components/CanUser.server'
 import { AddTestButton, RemoveTestButton, TestItemList } from '@/features/test'
+import { LoggingWysiwygEditor } from '@/features/test/components/LoggingWysiwygEditor'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -140,6 +141,8 @@ export default async function Home() {
       </CanUserServer>
       <h3 className="mt-4 mb-2 font-head text-3xl">Components</h3>
       <div className="flex flex-col gap-2 px-4 pb-4">
+        <LoggingWysiwygEditor />
+
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="outline">Open alert dialog</Button>
