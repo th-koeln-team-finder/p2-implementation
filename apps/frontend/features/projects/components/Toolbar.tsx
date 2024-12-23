@@ -10,7 +10,7 @@ export async function Toolbar({ stars }: { stars?: number }) {
   return (
     <div className="justify-end items-center gap-4 flex">
       <Button variant="ghost" className="p-0">
-          <div className="my-auto leading-normal">{starsString}</div>
+        <div className="my-auto leading-normal">{starsString}</div>
         <StarIcon />
       </Button>
       <Button variant="ghost" size="icon" className="h-fit w-fit">

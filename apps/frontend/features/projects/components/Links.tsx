@@ -9,18 +9,19 @@ export async function Links({
   const linkElements: JSX.Element[] = []
   links.forEach((link) => {
     linkElements.push(
-      <Button variant="link" className='h-fit justify-start p-0 font-normal text-base text-foreground'>
+      <Button
+        variant="link"
+        className="h-fit justify-start p-0 font-normal text-base text-foreground"
+      >
         {link.isDocument ? <DownloadIcon /> : <ExternalLinkIcon />}
         {link.label}
       </Button>,
     )
   })
   return (
-      <>
-        <h3 className='mb-2 font-medium text-2xl'>{t('links')}</h3>
-        <div className="flex flex-col gap-2">
-          {linkElements}
-        </div>
-      </>
+    <>
+      <h3 className="mb-2 font-medium text-2xl">{t('links')}</h3>
+      <div className="flex flex-col gap-2">{linkElements}</div>
+    </>
   )
 }

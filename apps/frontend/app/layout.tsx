@@ -1,8 +1,8 @@
 import '@repo/design-system/styles/globals.css'
+import Header from '@/features/header/header'
 import { DesignSystemProvider } from '@repo/design-system'
 import type { Metadata } from 'next'
 import { Rubik, Saira_Condensed } from 'next/font/google'
-import Header from "@/features/header/header";
 
 const rubik = Rubik({
   variable: '--font-sans',
@@ -48,6 +48,5 @@ export default function RootLayout({
         <DesignSystemProvider>{children}</DesignSystemProvider>
       </body>
     </html>
-
   )
 }
