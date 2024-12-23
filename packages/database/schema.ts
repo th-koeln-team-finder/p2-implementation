@@ -46,8 +46,8 @@ export const projects = pgTable('projects', {
   name: varchar({ length: 255 }).notNull(),
   description: varchar({ length: 255 }).notNull(),
   status: varchar({ enum: ['open', 'closed'] }).notNull(),
-  createdAt: varchar({ length: 255 }).notNull(),
-  updatedAt: varchar({ length: 255 }).notNull(),
+  createdAt: timestamp().defaultNow(),
+  updatedAt: timestamp().defaultNow(),
   isPublic: boolean().notNull().default(true),
   allowApplications: boolean().notNull().default(true),
   additionalInfo: json().default({}),
@@ -57,8 +57,8 @@ export const ProjectIssue = pgTable('ProjectIssue', {
     projectId: integer().notNull().references(() => projects.id), // Fremdschlüssel auf projects.id
     title: varchar({ length: 255 }).notNull(),
     description: varchar({ length: 255 }).notNull(),
-    createdAt: varchar({ length: 255 }).notNull(),
-    updatedAt: varchar({ length: 255 }).notNull(),
+    createdAt: timestamp().defaultNow(),
+    updatedAt: timestamp().defaultNow(),
 });
 export const ProjectTimetable = pgTable('ProjectTimetable', {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),

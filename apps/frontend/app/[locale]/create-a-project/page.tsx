@@ -1,14 +1,14 @@
 'use client'
 
 import { useFieldGroup, useForm } from '@formsignals/form-react'
-import { configureZodAdapter } from '@formsignals/validation-adapter-zod'
+import {configureZodAdapter, type ZodAdapter} from '@formsignals/validation-adapter-zod'
 import { FieldError } from '@repo/design-system/components/FormErrors'
 import {
   ContentItem,
   StepperComponent,
 } from '@repo/design-system/components/stepper'
 import { Button } from '@repo/design-system/components/ui/button'
-import { Input } from '@repo/design-system/components/ui/input'
+import {Input, InputForm} from '@repo/design-system/components/ui/input'
 import { Label } from '@repo/design-system/components/ui/label'
 import {
   Select,
@@ -20,6 +20,8 @@ import {
 import { MinusIcon, PlusIcon } from 'lucide-react'
 import { useState } from 'react'
 import { z } from 'zod'
+import * as Schema from "@repo/database/schema";
+import {db} from "@repo/database";
 
 const registerAdapter = configureZodAdapter({
   takeFirstError: true,
@@ -27,16 +29,19 @@ const registerAdapter = configureZodAdapter({
 
 //TODO Eingaben in Datenbank speichern
 
+type CreateProjectForm = {
+    name: string
+    shortDescription: string
+    email: string
+    status: 'open' | 'closed'
+    issues: { description: string, title: string }[]
+}
+
 export default function CreateAProject() {
   //Stepper
   const steps = [
     { id: 'basics', title: 'Basis', description: 'Provide shipping details' },
     { id: 'skills', title: 'Fähigkeiten', description: 'Review your details' },
-    {
-      id: 'team',
-      title: 'Team-Mitglieder',
-      description: 'Review your details',
-    },
     { id: 'timetable', title: 'Zeitplan', description: 'Review your details' },
     { id: 'links', title: 'Links', description: 'Review your details' },
     { id: 'review', title: 'Überblick', description: 'Review your details' },
@@ -44,29 +49,28 @@ export default function CreateAProject() {
 
   //TODO Form Errors
   //Form Field Provider
-  const form = useForm({
+  const form = useForm<CreateProjectForm, typeof ZodAdapter>({
     validatorAdapter: registerAdapter,
     defaultValues: {
       name: '',
       shortDescription: '',
       email: '',
+      status: 'open',
+      issues: [],
     },
-    // onSubmit: async (values) => {
-    //     const project = await db.insert(Schema.projects).values({
-    //         name: values.name,
-    //         description: values.shortDescription
-    //     }).returning()
-    //     await db.insert(Schema.ProjectIssue).values([
-    //         {
-    //             projectId: project[0].id,
-    //             description: values.issues[0].description
-    //         },
-    //         {
-    //             projectId: project[0].id,
-    //             description: values.issues[0].description
-    //         }
-    //     ])
-    // }
+    onSubmit: async (values) => {
+        const project = await db.insert(Schema.projects).values({
+            name: values.name,
+            description: values.shortDescription,
+            status: values.status
+        }).returning()
+      const issuesToCreate = values.issues.map((issue) => ({
+        projectId: project[0].id,
+        description: issue.description,
+        title: issue.title,
+      }))
+        await db.insert(Schema.ProjectIssue).values(issuesToCreate)
+    }
   })
 
   const basicFieldGroup = useFieldGroup(form, ['name'])
@@ -123,7 +127,7 @@ export default function CreateAProject() {
                   }}
                 >
                   <Label>Projektname</Label>
-                  <Input id="name" placeholder="Type here..." />
+                  <InputForm id="name" placeholder="Type here..." />
                   <FieldError />
                 </form.FieldProvider>
               </div>
@@ -142,7 +146,7 @@ export default function CreateAProject() {
               <div className="w-1/2">
                 <Label>Description</Label>
                 <br />
-                Textarea/WYSIWYG?
+                WYSIWYG
               </div>
             </div>
           </form.FormProvider>
@@ -194,11 +198,6 @@ export default function CreateAProject() {
               </div>
             </div>
           ))}
-        </ContentItem>
-        <ContentItem stepId="team">
-          <div>
-            Liste an Team Members - fügt man die überhaupt selbst hinzu?
-          </div>
         </ContentItem>
         <ContentItem stepId="timetable">
           <div className="flex w-full flex-col gap-4">
@@ -252,8 +251,8 @@ export default function CreateAProject() {
             )}
             {timetableFormat === 'custom' && (
               <div className="w-1/2">
-                <Label>Timetable - WYSIWYG? Andere Idee?</Label>
-                <Input id="tt-custom" placeholder="Type here..." />
+                <Label>Timetable</Label>
+                <br/> WYSIWYG
               </div>
             )}
           </div>
@@ -275,6 +274,7 @@ export default function CreateAProject() {
           <div className="flex w-full flex-row gap-4">
             <div className="w-1/2">
               <Label>Links & other Resources</Label>
+              <br/> Genauso wie die Skills erweiterbar und Upload Field oder Link Auswahl
               <Input id="links" placeholder="Type here..." />
             </div>
           </div>
