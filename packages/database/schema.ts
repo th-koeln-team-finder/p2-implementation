@@ -1,17 +1,23 @@
+import { Roles, type RolesType, RolesValues } from '@/constants'
 import {
-    boolean,
-    integer,
-    json,
-    pgTable,
-    primaryKey,
-    text, time,
-    timestamp, uniqueIndex,
-    uuid,
-    varchar,
+  boolean,
+  integer,
+  pgEnum,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
+  uuid,
+  varchar,
+  json,
+  time,
+  uniqueIndex,
   check,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
 import {sql} from "drizzle-orm";
+
+export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
 
 /**
  * Test data should only demonstrate the usage of the library
@@ -34,6 +40,11 @@ export const users = pgTable('user', {
   email: text('email').unique().notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
+  roles: pgRoles()
+    .array()
+    .notNull()
+    .$type<RolesType[]>()
+    .$defaultFn(() => [Roles.defaultUser]),
 })
 export type UserInsert = typeof users.$inferInsert
 export type UserSelect = typeof users.$inferSelect

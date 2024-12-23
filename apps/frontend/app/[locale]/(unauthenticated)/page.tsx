@@ -1,5 +1,7 @@
 import { Link } from '@/features/i18n/routing'
+import { CanUserServer } from '@/features/auth/components/CanUser.server'
 import { AddTestButton, RemoveTestButton, TestItemList } from '@/features/test'
+import { LoggingWysiwygEditor } from '@/features/test/components/LoggingWysiwygEditor'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -122,19 +124,27 @@ export default async function Home() {
         {translate('test.otherHeading')}
       </h1>
       <h2 className="mb-8 font-head text-3xl">{translate('test.otherFont')}</h2>
-      <div className="flex flex-row justify-between gap-2 bg-card align-center">
-        <h3 className="mt-4 mb-2 font-head text-3xl">
-          {translate('test.dataTitle')}
-        </h3>
-        <div className="ml-auto flex flex-row gap-2">
-          <AddTestButton />
-          <RemoveTestButton />
+      <CanUserServer target="test" action="view">
+        <div className="flex flex-row justify-between gap-2 bg-card align-center">
+          <h3 className="mt-4 mb-2 font-head text-3xl">
+            {translate('test.dataTitle')}
+          </h3>
+          <div className="ml-auto flex flex-row gap-2">
+            <CanUserServer target="test" action="create">
+              <AddTestButton />
+            </CanUserServer>
+            <CanUserServer target="test" action="delete.all">
+              <RemoveTestButton />
+            </CanUserServer>
+          </div>
         </div>
-      </div>
-      <TestItemList />
+        <TestItemList />
+      </CanUserServer>
       <Link href="/projects">{translate('test.toProjectPage')}</Link>
       <h3 className="mt-4 mb-2 font-head text-3xl">Components</h3>
       <div className="flex flex-col gap-2 px-4 pb-4">
+        <LoggingWysiwygEditor />
+
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="outline">Open alert dialog</Button>
