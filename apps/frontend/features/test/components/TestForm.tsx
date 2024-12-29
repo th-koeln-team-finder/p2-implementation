@@ -5,6 +5,7 @@ import { ZodAdapter } from '@formsignals/validation-adapter-zod'
 import { batch } from '@preact/signals-react'
 import { useSignalEffect, useSignals } from '@preact/signals-react/runtime'
 import { FieldError } from '@repo/design-system/components/FormErrors'
+import { WysiwygEditorForm } from '@repo/design-system/components/WysiwygEditor'
 import { Button } from '@repo/design-system/components/ui/button'
 import { CheckboxForm } from '@repo/design-system/components/ui/checkbox'
 import { DatePickerForm } from '@repo/design-system/components/ui/datepicker'
@@ -26,6 +27,7 @@ type TestFormValues = {
   gender: 'male' | 'female' | 'not yet decided'
   dateOfBirth?: Date
   phoneNumbers: string[]
+  description: string
 }
 
 export function TestForm() {
@@ -42,7 +44,39 @@ export function TestForm() {
       age: 1,
       dateOfBirth: undefined,
       phoneNumbers: [],
+      description: JSON.stringify({
+        root: {
+          children: [
+            {
+              children: [
+                {
+                  detail: 0,
+                  format: 0,
+                  mode: 'normal',
+                  style: '',
+                  text: 'This is the default node',
+                  type: 'text',
+                  version: 1,
+                },
+              ],
+              direction: 'ltr',
+              format: '',
+              indent: 0,
+              type: 'paragraph',
+              version: 1,
+              textFormat: 0,
+              textStyle: '',
+            },
+          ],
+          direction: 'ltr',
+          format: '',
+          indent: 0,
+          type: 'root',
+          version: 1,
+        },
+      }),
     },
+    onSubmit: (values) => alert(JSON.stringify(values, null, 2)),
   })
 
   return (
@@ -88,6 +122,13 @@ export function TestForm() {
               </SelectContent>
             </SelectForm>
             <FieldError />
+          </div>
+        </form.FieldProvider>
+
+        <form.FieldProvider name="description">
+          <div>
+            <Label>Description</Label>
+            <WysiwygEditorForm />
           </div>
         </form.FieldProvider>
 

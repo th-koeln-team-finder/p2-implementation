@@ -142,8 +142,6 @@ export default async function Home() {
       </CanUserServer>
       <h3 className="mt-4 mb-2 font-head text-3xl">Components</h3>
       <div className="flex flex-col gap-2 px-4 pb-4">
-        <LoggingWysiwygEditor />
-
         <TestForm />
 
         <AlertDialog>
@@ -330,6 +328,8 @@ export default async function Home() {
             <TooltipContent>This is the content of a tooltip</TooltipContent>
           </Tooltip>
         </TooltipProvider>
+
+        <LoggingWysiwygEditor />
       </div>
     </div>
   )

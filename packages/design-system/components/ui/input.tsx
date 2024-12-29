@@ -5,6 +5,7 @@ import * as React from 'react'
 import { useFieldContext } from '@formsignals/form-react'
 import { useComputed } from '@preact/signals-react'
 import { cn } from '../../lib/utils'
+import {useSignals} from "@preact/signals-react/runtime";
 
 type InputProps = React.ComponentProps<'input'>
 
@@ -30,6 +31,7 @@ type InputFormProps = Omit<InputProps, 'value' | 'onChange' | 'onBlur'> & {
 }
 
 const InputForm = ({ className, useTransformed, ...props }: InputFormProps) => {
+  useSignals()
   const field = useFieldContext()
   const errorClassName = useComputed(
     () => !field.isValid.value && 'border-destructive',

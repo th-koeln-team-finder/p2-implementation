@@ -11,12 +11,14 @@ import { cn } from '@/lib/utils'
 import { useFieldContext } from '@formsignals/form-react'
 import { useComputed } from '@preact/signals-react'
 import { CalendarIcon } from 'lucide-react'
+import {useSignals} from "@preact/signals-react/runtime";
 
 type DatePickerProps = {
   placeholder?: string
 }
 
 export function DatePickerForm({ placeholder }: DatePickerProps) {
+  useSignals()
   const field = useFieldContext<Date, '', string>()
 
   const classNames = useComputed(() => {
@@ -31,7 +33,7 @@ export function DatePickerForm({ placeholder }: DatePickerProps) {
   return (
     <Popover>
       <div className="relative min-w-[280px] flex-1">
-        <InputForm useTransformed placeholder="dd.MM.yyyy" type="string" />
+        <InputForm useTransformed placeholder="dd.MM.yyyy" />
         <PopoverTrigger asChild>
           <Button
             variant="outline"
