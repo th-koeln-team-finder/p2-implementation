@@ -4,11 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-patchedDependencies:
-  pg:
-    hash: z2ap3tbp77i326wpge6d6akdra
-    path: patches/pg.patch
-
 importers:
 
   .:
@@ -19,6 +14,9 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:packages/typescript-config
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.10.2
       turbo:
         specifier: ^2.2.3
         version: 2.2.3
@@ -73,9 +71,12 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       drizzle-orm:
         specifier: ^0.36.1
-        version: 0.36.1(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1(patch_hash=z2ap3tbp77i326wpge6d6akdra))(react@19.0.0-rc-66855b96-20241106)
+        version: 0.36.1(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(react@19.0.0-rc-66855b96-20241106)
       install:
         specifier: ^0.13.0
         version: 0.13.0
@@ -94,9 +95,6 @@ importers:
       next-themes:
         specifier: ^0.4.3
         version: 0.4.3(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
-      pg:
-        specifier: ^8.13.1
-        version: 8.13.1(patch_hash=z2ap3tbp77i326wpge6d6akdra)
       react:
         specifier: 19.0.0-rc-66855b96-20241106
         version: 19.0.0-rc-66855b96-20241106
@@ -114,7 +112,7 @@ importers:
         version: 2.5.4
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@3.4.14(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@20.17.6)(typescript@5.6.3)))
+        version: 1.0.7(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@20.17.6)(typescript@5.6.3)))
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -125,9 +123,6 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
-      '@types/next-auth':
-        specifier: ^3.15.0
-        version: 3.15.0(next@15.0.3(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
       '@types/node':
         specifier: ^20
         version: 20.17.6
@@ -142,7 +137,7 @@ importers:
         version: 8.4.49
       tailwindcss:
         specifier: ^3.4.1
-        version: 3.4.14(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@20.17.6)(typescript@5.6.3))
+        version: 3.4.14(ts-node@10.9.2(@types/node@20.17.6)(typescript@5.6.3))
       typescript:
         specifier: ^5
         version: 5.6.3
@@ -179,13 +174,13 @@ importers:
         version: link:../env
       drizzle-orm:
         specifier: ^0.36.1
-        version: 0.36.1(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1(patch_hash=z2ap3tbp77i326wpge6d6akdra))(react@19.0.0-rc-66855b96-20241106)
+        version: 0.36.1(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(react@19.0.0-rc-66855b96-20241106)
       next-auth:
         specifier: 5.0.0-beta.25
         version: 5.0.0-beta.25(@simplewebauthn/browser@9.0.1)(@simplewebauthn/server@9.0.3)(next@15.0.3(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
       pg:
         specifier: ^8.13.1
-        version: 8.13.1(patch_hash=z2ap3tbp77i326wpge6d6akdra)
+        version: 8.13.1
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
@@ -193,9 +188,6 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
-      '@types/next-auth':
-        specifier: ^3.15.0
-        version: 3.15.0(next@15.0.3(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
       '@types/node':
         specifier: 22.9.0
         version: 22.9.0
@@ -210,7 +202,7 @@ importers:
         version: 0.28.1
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@22.9.0)(typescript@5.6.3)
+        version: 10.9.2(@swc/core@1.9.2)(@types/node@22.9.0)(typescript@5.6.3)
       tsconfig-paths:
         specifier: ^4.2.0
         version: 4.2.0
@@ -333,7 +325,7 @@ importers:
         version: 2.5.4
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@3.4.14(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@20.17.6)(typescript@5.6.3)))
+        version: 1.0.7(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.6.3)))
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -386,20 +378,20 @@ importers:
     dependencies:
       '@tailwindcss/typography':
         specifier: ^0.5.15
-        version: 0.5.15(tailwindcss@3.4.14(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@22.9.0)(typescript@5.6.3)))
+        version: 0.5.15(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.6.3)))
       tailwind-merge:
         specifier: ^2.5.4
         version: 2.5.4
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@3.4.14(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@22.9.0)(typescript@5.6.3)))
+        version: 1.0.7(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.6.3)))
     devDependencies:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       tailwindcss:
         specifier: ^3.4.14
-        version: 3.4.14(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@22.9.0)(typescript@5.6.3))
+        version: 3.4.14(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.6.3))
 
   packages/typescript-config: {}
 
@@ -1969,12 +1961,11 @@ packages:
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
 
-  '@types/next-auth@3.15.0':
-    resolution: {integrity: sha512-ZVfejlu81YiIRX1m0iKAfvZ3nK7K9EyZWhNARNKsFop8kNAgEvMnlKpTpwN59xkK2OhyWLagPuiDAVBYSO9jSA==}
-    deprecated: This is a stub types definition. next-auth provides its own type definitions, so you do not need this installed.
-
   '@types/node@20.17.6':
     resolution: {integrity: sha512-VEI7OdvK2wP7XHnsuXbAJnEpEkF6NjSN45QJlL4VGqZSXsnicpesdTWsg9RISeSdYd3yeRj/y3k5KGjUXYnFwQ==}
+
+  '@types/node@22.10.2':
+    resolution: {integrity: sha512-Xxr6BBRCAOQixvonOye19wnzyDiUtTeqldOOmj3CkeblonbccA12PFwlufvRdrpjXxqnmUaeiU5EOA+7s5diUQ==}
 
   '@types/node@22.9.0':
     resolution: {integrity: sha512-vuyHg81vvWA1Z1ELfvLko2c8f34gyA0zaic0+Rllc5lbCnbSyuvb2Oxpm6TAUAC/2xZN3QGqxBNggD1nNR2AfQ==}
@@ -2403,9 +2394,6 @@ packages:
     resolution: {integrity: sha512-2yTgeWTWzMWkHu6Jp9NKgePDaYHbntiwvYuuJLbbN9vl7DC9DvXKOB2BC3ZZ92D3cvV/aflH0osDfwpHepQ53w==}
     hasBin: true
 
-  jose@4.15.9:
-    resolution: {integrity: sha512-1vUQX+IdDMVPj4k8kOxgUqlcK518yluMuGZwqlr44FS1ppZB/5GWh4rZG89erpOBOJjU/OBsnCVFfapsRz6nEA==}
-
   jose@5.9.6:
     resolution: {integrity: sha512-AMlnetc9+CV9asI19zHmrgS/WYsWUwCn2R7RzlbJWD7F9eWYUTGyBmU9o6PxngtLGOiDGPRu+Uc4fhKzbpteZQ==}
 
@@ -2452,10 +2440,6 @@ packages:
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
 
-  lru-cache@6.0.0:
-    resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
-    engines: {node: '>=10'}
-
   lucide-react@0.456.0:
     resolution: {integrity: sha512-DIIGJqTT5X05sbAsQ+OhA8OtJYyD4NsEMCA/HQW/Y6ToPQ7gwbtujIoeAaup4HpHzV35SQOarKAWH8LYglB6eA==}
     peerDependencies:
@@ -2497,20 +2481,6 @@ packages:
   negotiator@1.0.0:
     resolution: {integrity: sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg==}
     engines: {node: '>= 0.6'}
-
-  next-auth@4.24.10:
-    resolution: {integrity: sha512-8NGqiRO1GXBcVfV8tbbGcUgQkAGsX4GRzzXXea4lDikAsJtD5KiEY34bfhUOjHLvr6rT6afpcxw2H8EZqOV6aQ==}
-    peerDependencies:
-      '@auth/core': 0.34.2
-      next: ^12.2.5 || ^13 || ^14 || ^15
-      nodemailer: ^6.6.5
-      react: ^17.0.2 || ^18
-      react-dom: ^17.0.2 || ^18
-    peerDependenciesMeta:
-      '@auth/core':
-        optional: true
-      nodemailer:
-        optional: true
 
   next-auth@5.0.0-beta.25:
     resolution: {integrity: sha512-2dJJw1sHQl2qxCrRk+KTQbeH+izFbGFPuJj5eGgBZFYyiYYtvlrBeUw1E/OJJxTRjuxbSYGnCTkUIRsIIW0bog==}
@@ -2577,16 +2547,9 @@ packages:
   oauth4webapi@3.1.3:
     resolution: {integrity: sha512-dik5wEMdFL5p3JlijYvM7wMNCgaPhblLIDCZtdXcaZp5wgu5Iwmsu7lMzgFhIDTi5d0BJo03LVoOoFQvXMeOeQ==}
 
-  oauth@0.9.15:
-    resolution: {integrity: sha512-a5ERWK1kh38ExDEfoO6qUHJb32rd7aYmPHuyCu3Fta/cnICvYmgd2uhuKXvPD+PXB+gCEYYEaQdIRAjCOwAKNA==}
-
   object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
     engines: {node: '>=0.10.0'}
-
-  object-hash@2.2.0:
-    resolution: {integrity: sha512-gScRMn0bS5fH+IuwyIFgnh9zBdo4DV+6GhygmWM9HyNJSgS0hScp1f5vjtm7oIIOiT9trXrShAkLFSc2IqKNgw==}
-    engines: {node: '>= 6'}
 
   object-hash@3.0.0:
     resolution: {integrity: sha512-RSn9F68PjH9HqtltsSnqYC1XXoWe9Bju5+213R98cNGttag9q9yAOTzdbsqvIa7aNm5WffBZFpWYr2aWrklWAw==}
@@ -2594,13 +2557,6 @@ packages:
 
   obuf@1.1.2:
     resolution: {integrity: sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==}
-
-  oidc-token-hash@5.0.3:
-    resolution: {integrity: sha512-IF4PcGgzAr6XXSff26Sk/+P4KZFJVuHAJZj3wgO3vX2bMdNVp/QXTP3P7CEm9V1IdG8lDLY3HhiqpsE/nOwpPw==}
-    engines: {node: ^10.13.0 || >=12.0.0}
-
-  openid-client@5.7.1:
-    resolution: {integrity: sha512-jDBPgSVfTnkIh71Hg9pRvtJc6wTwqjRkN88+gCFtYWrlP4Yx2Dsrow8uPi3qLr/aeymPF3o2+dS+wOpglK04ew==}
 
   package-json-from-dist@1.0.1:
     resolution: {integrity: sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw==}
@@ -3093,6 +3049,9 @@ packages:
   undici-types@6.19.8:
     resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
 
+  undici-types@6.20.0:
+    resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
+
   use-callback-ref@1.3.2:
     resolution: {integrity: sha512-elOQwe6Q8gqZgDA8mrh44qRTQqpIHDcZ3hXTLjBe1i4ph8XpNJnO+aQf3NaG+lriLopI4HMx9VjQLfPQ6vhnoA==}
     engines: {node: '>=10'}
@@ -3136,10 +3095,6 @@ packages:
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
-  uuid@8.3.2:
-    resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
-    hasBin: true
-
   v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
 
@@ -3165,9 +3120,6 @@ packages:
   xtend@4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
     engines: {node: '>=0.4'}
-
-  yallist@4.0.0:
-    resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
 
   yaml@2.6.0:
     resolution: {integrity: sha512-a6ae//JvKDEra2kdi1qzCyrJW/WZCgFi8ydDV+eXExl95t+5R+ijnqHJbz9tmMh8FUjx3iv2fCQ4dclAQlO2UQ==}
@@ -4566,7 +4518,7 @@ snapshots:
   '@swc/core-win32-x64-msvc@1.9.2':
     optional: true
 
-  '@swc/core@1.9.2(@swc/helpers@0.5.13)':
+  '@swc/core@1.9.2':
     dependencies:
       '@swc/counter': 0.1.3
       '@swc/types': 0.1.17
@@ -4581,7 +4533,6 @@ snapshots:
       '@swc/core-win32-arm64-msvc': 1.9.2
       '@swc/core-win32-ia32-msvc': 1.9.2
       '@swc/core-win32-x64-msvc': 1.9.2
-      '@swc/helpers': 0.5.13
     optional: true
 
   '@swc/counter@0.1.3': {}
@@ -4608,13 +4559,13 @@ snapshots:
     optionalDependencies:
       typescript: 5.6.3
 
-  '@tailwindcss/typography@0.5.15(tailwindcss@3.4.14(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@22.9.0)(typescript@5.6.3)))':
+  '@tailwindcss/typography@0.5.15(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.6.3)))':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 3.4.14(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@22.9.0)(typescript@5.6.3))
+      tailwindcss: 3.4.14(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.6.3))
 
   '@tsconfig/node10@1.0.11': {}
 
@@ -4626,19 +4577,13 @@ snapshots:
 
   '@types/cookie@0.6.0': {}
 
-  '@types/next-auth@3.15.0(next@15.0.3(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)':
-    dependencies:
-      next-auth: 4.24.10(next@15.0.3(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
-    transitivePeerDependencies:
-      - '@auth/core'
-      - next
-      - nodemailer
-      - react
-      - react-dom
-
   '@types/node@20.17.6':
     dependencies:
       undici-types: 6.19.8
+
+  '@types/node@22.10.2':
+    dependencies:
+      undici-types: 6.20.0
 
   '@types/node@22.9.0':
     dependencies:
@@ -4646,7 +4591,7 @@ snapshots:
 
   '@types/pg@8.11.10':
     dependencies:
-      '@types/node': 22.9.0
+      '@types/node': 22.10.2
       pg-protocol: 1.7.0
       pg-types: 4.0.2
 
@@ -4824,11 +4769,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.36.1(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1(patch_hash=z2ap3tbp77i326wpge6d6akdra))(react@19.0.0-rc-66855b96-20241106):
+  drizzle-orm@0.36.1(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(react@19.0.0-rc-66855b96-20241106):
     optionalDependencies:
       '@types/pg': 8.11.10
       '@types/react': 18.3.12
-      pg: 8.13.1(patch_hash=z2ap3tbp77i326wpge6d6akdra)
+      pg: 8.13.1
       react: 19.0.0-rc-66855b96-20241106
 
   eastasianwidth@0.2.0: {}
@@ -5010,8 +4955,6 @@ snapshots:
 
   jiti@1.21.6: {}
 
-  jose@4.15.9: {}
-
   jose@5.9.6: {}
 
   js-tokens@4.0.0: {}
@@ -5041,10 +4984,6 @@ snapshots:
       js-tokens: 4.0.0
 
   lru-cache@10.4.3: {}
-
-  lru-cache@6.0.0:
-    dependencies:
-      yallist: 4.0.0
 
   lucide-react@0.456.0(react@19.0.0-rc-66855b96-20241106):
     dependencies:
@@ -5078,21 +5017,6 @@ snapshots:
   nanoid@3.3.7: {}
 
   negotiator@1.0.0: {}
-
-  next-auth@4.24.10(next@15.0.3(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106):
-    dependencies:
-      '@babel/runtime': 7.26.0
-      '@panva/hkdf': 1.2.1
-      cookie: 0.7.1
-      jose: 4.15.9
-      next: 15.0.3(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
-      oauth: 0.9.15
-      openid-client: 5.7.1
-      preact: 10.24.3
-      preact-render-to-string: 5.2.3(preact@10.24.3)
-      react: 19.0.0-rc-66855b96-20241106
-      react-dom: 19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106)
-      uuid: 8.3.2
 
   next-auth@5.0.0-beta.25(@simplewebauthn/browser@9.0.1)(@simplewebauthn/server@9.0.3)(next@15.0.3(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106):
     dependencies:
@@ -5149,24 +5073,11 @@ snapshots:
 
   oauth4webapi@3.1.3: {}
 
-  oauth@0.9.15: {}
-
   object-assign@4.1.1: {}
-
-  object-hash@2.2.0: {}
 
   object-hash@3.0.0: {}
 
   obuf@1.1.2: {}
-
-  oidc-token-hash@5.0.3: {}
-
-  openid-client@5.7.1:
-    dependencies:
-      jose: 4.15.9
-      lru-cache: 6.0.0
-      object-hash: 2.2.0
-      oidc-token-hash: 5.0.3
 
   package-json-from-dist@1.0.1: {}
 
@@ -5188,9 +5099,9 @@ snapshots:
 
   pg-numeric@1.0.2: {}
 
-  pg-pool@3.7.0(pg@8.13.1(patch_hash=z2ap3tbp77i326wpge6d6akdra)):
+  pg-pool@3.7.0(pg@8.13.1):
     dependencies:
-      pg: 8.13.1(patch_hash=z2ap3tbp77i326wpge6d6akdra)
+      pg: 8.13.1
 
   pg-protocol@1.7.0: {}
 
@@ -5212,10 +5123,10 @@ snapshots:
       postgres-interval: 3.0.0
       postgres-range: 1.1.4
 
-  pg@8.13.1(patch_hash=z2ap3tbp77i326wpge6d6akdra):
+  pg@8.13.1:
     dependencies:
       pg-connection-string: 2.7.0
-      pg-pool: 3.7.0(pg@8.13.1(patch_hash=z2ap3tbp77i326wpge6d6akdra))
+      pg-pool: 3.7.0(pg@8.13.1)
       pg-protocol: 1.7.0
       pg-types: 2.2.0
       pgpass: 1.0.5
@@ -5246,21 +5157,21 @@ snapshots:
       camelcase-css: 2.0.1
       postcss: 8.4.49
 
-  postcss-load-config@4.0.2(postcss@8.4.49)(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@20.17.6)(typescript@5.6.3)):
+  postcss-load-config@4.0.2(postcss@8.4.49)(ts-node@10.9.2(@types/node@20.17.6)(typescript@5.6.3)):
     dependencies:
       lilconfig: 3.1.2
       yaml: 2.6.0
     optionalDependencies:
       postcss: 8.4.49
-      ts-node: 10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@20.17.6)(typescript@5.6.3)
+      ts-node: 10.9.2(@types/node@20.17.6)(typescript@5.6.3)
 
-  postcss-load-config@4.0.2(postcss@8.4.49)(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@22.9.0)(typescript@5.6.3)):
+  postcss-load-config@4.0.2(postcss@8.4.49)(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.6.3)):
     dependencies:
       lilconfig: 3.1.2
       yaml: 2.6.0
     optionalDependencies:
       postcss: 8.4.49
-      ts-node: 10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@22.9.0)(typescript@5.6.3)
+      ts-node: 10.9.2(@types/node@22.10.2)(typescript@5.6.3)
 
   postcss-nested@6.2.0(postcss@8.4.49):
     dependencies:
@@ -5316,11 +5227,6 @@ snapshots:
   preact-render-to-string@5.2.3(preact@10.11.3):
     dependencies:
       preact: 10.11.3
-      pretty-format: 3.8.0
-
-  preact-render-to-string@5.2.3(preact@10.24.3):
-    dependencies:
-      preact: 10.24.3
       pretty-format: 3.8.0
 
   preact-render-to-string@6.5.11(preact@10.24.3):
@@ -5555,15 +5461,15 @@ snapshots:
 
   tailwind-merge@2.5.4: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@3.4.14(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@20.17.6)(typescript@5.6.3))):
+  tailwindcss-animate@1.0.7(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@20.17.6)(typescript@5.6.3))):
     dependencies:
-      tailwindcss: 3.4.14(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@20.17.6)(typescript@5.6.3))
+      tailwindcss: 3.4.14(ts-node@10.9.2(@types/node@20.17.6)(typescript@5.6.3))
 
-  tailwindcss-animate@1.0.7(tailwindcss@3.4.14(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@22.9.0)(typescript@5.6.3))):
+  tailwindcss-animate@1.0.7(tailwindcss@3.4.14(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.6.3))):
     dependencies:
-      tailwindcss: 3.4.14(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@22.9.0)(typescript@5.6.3))
+      tailwindcss: 3.4.14(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.6.3))
 
-  tailwindcss@3.4.14(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@20.17.6)(typescript@5.6.3)):
+  tailwindcss@3.4.14(ts-node@10.9.2(@types/node@20.17.6)(typescript@5.6.3)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -5582,7 +5488,7 @@ snapshots:
       postcss: 8.4.49
       postcss-import: 15.1.0(postcss@8.4.49)
       postcss-js: 4.0.1(postcss@8.4.49)
-      postcss-load-config: 4.0.2(postcss@8.4.49)(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@20.17.6)(typescript@5.6.3))
+      postcss-load-config: 4.0.2(postcss@8.4.49)(ts-node@10.9.2(@types/node@20.17.6)(typescript@5.6.3))
       postcss-nested: 6.2.0(postcss@8.4.49)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.8
@@ -5590,7 +5496,7 @@ snapshots:
     transitivePeerDependencies:
       - ts-node
 
-  tailwindcss@3.4.14(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@22.9.0)(typescript@5.6.3)):
+  tailwindcss@3.4.14(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.6.3)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -5609,7 +5515,7 @@ snapshots:
       postcss: 8.4.49
       postcss-import: 15.1.0(postcss@8.4.49)
       postcss-js: 4.0.1(postcss@8.4.49)
-      postcss-load-config: 4.0.2(postcss@8.4.49)(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@22.9.0)(typescript@5.6.3))
+      postcss-load-config: 4.0.2(postcss@8.4.49)(ts-node@10.9.2(@types/node@22.10.2)(typescript@5.6.3))
       postcss-nested: 6.2.0(postcss@8.4.49)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.8
@@ -5633,28 +5539,7 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@20.17.6)(typescript@5.6.3):
-    dependencies:
-      '@cspotcode/source-map-support': 0.8.1
-      '@tsconfig/node10': 1.0.11
-      '@tsconfig/node12': 1.0.11
-      '@tsconfig/node14': 1.0.3
-      '@tsconfig/node16': 1.0.4
-      '@types/node': 20.17.6
-      acorn: 8.14.0
-      acorn-walk: 8.3.4
-      arg: 4.1.3
-      create-require: 1.1.1
-      diff: 4.0.2
-      make-error: 1.3.6
-      typescript: 5.6.3
-      v8-compile-cache-lib: 3.0.1
-      yn: 3.1.1
-    optionalDependencies:
-      '@swc/core': 1.9.2(@swc/helpers@0.5.13)
-    optional: true
-
-  ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.13))(@types/node@22.9.0)(typescript@5.6.3):
+  ts-node@10.9.2(@swc/core@1.9.2)(@types/node@22.9.0)(typescript@5.6.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
@@ -5672,7 +5557,45 @@ snapshots:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     optionalDependencies:
-      '@swc/core': 1.9.2(@swc/helpers@0.5.13)
+      '@swc/core': 1.9.2
+
+  ts-node@10.9.2(@types/node@20.17.6)(typescript@5.6.3):
+    dependencies:
+      '@cspotcode/source-map-support': 0.8.1
+      '@tsconfig/node10': 1.0.11
+      '@tsconfig/node12': 1.0.11
+      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.4
+      '@types/node': 20.17.6
+      acorn: 8.14.0
+      acorn-walk: 8.3.4
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      typescript: 5.6.3
+      v8-compile-cache-lib: 3.0.1
+      yn: 3.1.1
+    optional: true
+
+  ts-node@10.9.2(@types/node@22.10.2)(typescript@5.6.3):
+    dependencies:
+      '@cspotcode/source-map-support': 0.8.1
+      '@tsconfig/node10': 1.0.11
+      '@tsconfig/node12': 1.0.11
+      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.4
+      '@types/node': 22.10.2
+      acorn: 8.14.0
+      acorn-walk: 8.3.4
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      typescript: 5.6.3
+      v8-compile-cache-lib: 3.0.1
+      yn: 3.1.1
+    optional: true
 
   tsconfig-paths@4.2.0:
     dependencies:
@@ -5713,6 +5636,8 @@ snapshots:
 
   undici-types@6.19.8: {}
 
+  undici-types@6.20.0: {}
+
   use-callback-ref@1.3.2(@types/react@18.3.12)(react@19.0.0-rc-66855b96-20241106):
     dependencies:
       react: 19.0.0-rc-66855b96-20241106
@@ -5747,8 +5672,6 @@ snapshots:
 
   util-deprecate@1.0.2: {}
 
-  uuid@8.3.2: {}
-
   v8-compile-cache-lib@3.0.1: {}
 
   webidl-conversions@3.0.1: {}
@@ -5775,8 +5698,6 @@ snapshots:
       strip-ansi: 7.1.0
 
   xtend@4.0.2: {}
-
-  yallist@4.0.0: {}
 
   yaml@2.6.0: {}
 
