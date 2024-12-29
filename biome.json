@@ -71,7 +71,7 @@
       "indentWidth": 2,
       "jsxQuoteStyle": "double",
       "quoteStyle": "single",
-      "lineEnding": "crlf",
+      "lineEnding": "cr",
       "lineWidth": 80,
       "quoteProperties": "asNeeded",
       "semicolons": "asNeeded",
