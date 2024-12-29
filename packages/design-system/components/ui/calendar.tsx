@@ -4,8 +4,9 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type * as React from 'react'
 import { DayPicker } from 'react-day-picker'
 
-import { buttonVariants } from '../../components/ui/button'
-import { cn } from '../../lib/utils'
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { useFieldContext } from '@formsignals/form-react'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
@@ -50,7 +51,7 @@ function Calendar({
         day_range_end: 'day-range-end',
         day_selected:
           'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground',
-        day_today: 'bg-accent text-accent-foreground',
+        day_today: buttonVariants({ variant: 'outline' }),
         day_outside:
           'day-outside text-muted-foreground aria-selected:bg-accent/50 aria-selected:text-muted-foreground',
         day_disabled: 'text-muted-foreground opacity-50',
@@ -69,4 +70,17 @@ function Calendar({
 }
 Calendar.displayName = 'Calendar'
 
-export { Calendar }
+type CalendarFormProps = Omit<CalendarProps, 'selected' | 'onSelect'>
+
+const CalendarForm = (props: CalendarFormProps) => {
+  const field = useFieldContext()
+  return (
+    <Calendar
+      selected={field.data.value}
+      onSelect={(date: unknown) => field.handleChange(date)}
+      {...props}
+    />
+  )
+}
+
+export { Calendar, CalendarForm }
