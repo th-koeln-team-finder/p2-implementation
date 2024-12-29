@@ -9,7 +9,6 @@
   "files": {
     "ignoreUnknown": false,
     "ignore": [
-      "**/design-system/components/ui/**",
       "**/env/**",
       "**/tailwind-config/**",
       "**/typescript-config/**",
@@ -77,7 +76,7 @@
       "indentWidth": 2,
       "jsxQuoteStyle": "double",
       "quoteStyle": "single",
-      "lineEnding": "lf",
+      "lineEnding": "crlf",
       "lineWidth": 80,
       "quoteProperties": "asNeeded",
       "semicolons": "asNeeded",
