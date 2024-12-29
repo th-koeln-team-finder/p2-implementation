@@ -55,18 +55,12 @@ export const accounts = pgTable(
     type: text('type').$type<AdapterAccountType>().notNull(),
     provider: text('provider').notNull(),
     providerAccountId: text('providerAccountId').notNull(),
-    // biome-ignore lint/style/useNamingConvention: This is a column name given by the library
     refresh_token: text('refresh_token'),
-    // biome-ignore lint/style/useNamingConvention: This is a column name given by the library
     access_token: text('access_token'),
-    // biome-ignore lint/style/useNamingConvention: This is a column name given by the library
     expires_at: integer('expires_at'),
-    // biome-ignore lint/style/useNamingConvention: This is a column name given by the library
     token_type: text('token_type'),
     scope: text('scope'),
-    // biome-ignore lint/style/useNamingConvention: This is a column name given by the library
     id_token: text('id_token'),
-    // biome-ignore lint/style/useNamingConvention: This is a column name given by the library
     session_state: text('session_state'),
   },
   (account) => ({
