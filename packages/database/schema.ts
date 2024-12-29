@@ -1,4 +1,18 @@
-import {boolean, integer,json, pgTable, primaryKey, text,time, timestamp,uniqueIndex, uuid, varchar,check,} from 'drizzle-orm/pg-core'
+import {
+  boolean,
+  integer,
+  json,
+  pgTable,
+  primaryKey,
+  text,
+  time,
+  timestamp,
+  uniqueIndex,
+  uuid,
+  varchar,
+  check,
+  date,
+} from 'drizzle-orm/pg-core'
 import type {AdapterAccountType} from 'next-auth/adapters'
 import {sql} from "drizzle-orm";
 
@@ -27,6 +41,90 @@ export const users = pgTable('user', {
 })
 export type UserInsert = typeof users.$inferInsert
 export type UserSelect = typeof users.$inferSelect
+
+/**
+ * Data specific for one user
+*/
+export const skills = pgTable('skills', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  skill: varchar({ length: 255 }).notNull(),
+  createdAt: timestamp().notNull(),
+  updatedAt: timestamp().notNull(),
+})
+export type SkillsInsert = typeof skills.$inferInsert
+export type SkillsSelect = typeof skills.$inferSelect
+
+export const userSkills = pgTable('userSkills', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  userId: uuid('userId').notNull().references(() => users.id),
+  skillId: integer('skillId').notNull().references(() => skills.id),
+  level: integer().notNull(),
+  createdAt: timestamp().notNull(),
+  updatedAt: timestamp().notNull(),
+})
+export type UserSkillsInsert = typeof userSkills.$inferInsert
+export type UserSkillsSelect = typeof userSkills.$inferSelect
+
+export const userSkillVerification = pgTable('userSkillVerification', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  verifierId: uuid('userId').notNull().references(() => users.id),
+  userSkillId: integer('skillId').notNull().references(() => userSkills.id),
+  status: varchar({ enum: ['pending', 'approved', 'rejected'] }).notNull(),
+  createdAt: timestamp().notNull(),
+  updatedAt: timestamp().notNull(),
+})
+export type UserSkillVerificationInsert = typeof userSkillVerification.$inferInsert
+export type UserSkillVerificationSelect = typeof userSkillVerification.$inferSelect
+
+export const userRatings = pgTable('userRatings', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  raterId: uuid('userId').notNull().references(() => users.id),
+  rateeId: uuid('userId').notNull().references(() => users.id),
+  ratingType: varchar({ enum: ['friendly', 'reliable'] }).notNull(),
+  createdAt: timestamp().notNull(),
+})
+export type UserRatingsInsert = typeof userRatings.$inferInsert
+export type UserRatingsSelect = typeof userRatings.$inferSelect
+
+export const userFollows = pgTable('userFollows', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  followerId: uuid('userId').notNull().references(() => users.id),
+  followeeId: uuid('userId').notNull().references(() => users.id),
+  createdAt: timestamp().notNull(),
+})
+export type UserFollowsInsert = typeof userRatings.$inferInsert
+
+/**
+ * This table stores all the projects a user is and was part of.
+ * They may also add other projects to their timeline that they worked on
+ * but did not use this platform.
+ */
+export const userProjects = pgTable('userProjects', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  userId: uuid('userId').notNull().references(() => users.id),
+  // for projects from this platform
+  projectId: integer('projectId').notNull().references(() => projects.id),
+  // for projects not from this platform
+  projectName: varchar({ length: 255 }),
+  projectJoinedDate: date().notNull(),
+  projectLeftDate: date(),
+  projectDescription: varchar({ length: 255 }),
+  visible: boolean().notNull().default(true),
+  createdAt: timestamp().notNull(),
+  updatedAt: timestamp().notNull(),
+})
+export type UserProjectsInsert = typeof userProjects.$inferInsert
+export type UserProjectsSelect = typeof userProjects.$inferSelect
+
+export const userProjectSettings = pgTable('userProjectSettings', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  userId: uuid('userId').notNull().references(() => users.id),
+  projectId: integer('projectId').notNull().references(() => projects.id),
+  enableNotifications: boolean().notNull().default(true),
+  preferredNotificationChannel: varchar({ enum: ['email', 'push', 'both'] }).notNull().default('email'),
+  createdAt: timestamp().notNull(),
+  updatedAt: timestamp().notNull(),
+})
 
 /**
  * Data specific for one project
