@@ -1,22 +1,27 @@
 import type { RolesType } from '@repo/database/constants'
 import type { UserSelect } from '@repo/database/schema'
 
-type PermissionCheck<Permission extends keyof Permissions> =
+type PermissionCheck<Data> =
   | boolean
-  | ((user: UserSelect, data: Permissions[Permission]['dataType']) => boolean)
+  | ((user: UserSelect, data: Data) => boolean)
 
 type RolesWithPermissions = {
   [Role in RolesType]: Partial<{
     [Obj in keyof Permissions]: Partial<{
-      [Action in Permissions[Obj]['action']]: PermissionCheck<Obj>
+      [Action in keyof Permissions[Obj]]: PermissionCheck<
+        Permissions[Obj][Action]
+      >
     }>
   }>
 }
 
 export type Permissions = {
   test: {
-    dataType: { id: number }
-    action: 'view' | 'create' | 'delete' | 'delete.all' | 'become-admin'
+    view: never
+    create: never
+    delete: { id: number }
+    'delete.all': never
+    'become-admin': never
   }
 }
 
@@ -47,16 +52,19 @@ export const PERMISSIONS = {
   },
 } as const satisfies RolesWithPermissions
 
-export function hasPermission<Obj extends keyof Permissions>(
+export function hasPermission<
+  Obj extends keyof Permissions,
+  Action extends keyof Permissions[Obj],
+>(
   user: UserSelect,
   obj: Obj,
-  action: Permissions[Obj]['action'],
-  data?: Permissions[Obj]['dataType'],
+  action: Action,
+  data = undefined as Permissions[Obj][Action],
 ) {
   return user.roles.some((role: RolesType) => {
     const permission = (PERMISSIONS as RolesWithPermissions)[role][obj]?.[
       action
-    ] as PermissionCheck<Obj>
+    ] as PermissionCheck<Permissions[Obj][Action]>
     if (permission === undefined) return false
     if (typeof permission === 'boolean') return permission
     return data !== undefined && permission(user, data)
