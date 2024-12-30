@@ -3,6 +3,8 @@ import { makeTests } from '@/factory/test.factory'
 import { config } from 'dotenv'
 import { drizzle } from 'drizzle-orm/node-postgres'
 import * as Schema from './schema'
+import {makeIssues} from "@/factory/issues.factory";
+import {makeTimetableElements} from "@/factory/Timetable.factory";
 
 config()
 config({ path: '.env.local', override: true })
@@ -26,7 +28,20 @@ export async function seed() {
 
   console.log('Creating 10 project records')
   const projectData = makeProjects(10)
-  await db.insert(Schema.projects).values(projectData).execute()
+  const projectQueryIDs=  await db.insert(Schema.projects).values(projectData).returning()
+
+  console.log('Creating 6 Issue records for each project')
+  projectQueryIDs.map(async (project)=> {
+  const issueData = makeIssues(6,project.id)
+  await db.insert(Schema.projectIssue).values(issueData).execute()
+})
+  console.log('Creating 3 TimeTable Elements for each project')
+  projectQueryIDs.map(async (project)=> {
+    const timetableData = makeTimetableElements(3,project.id)
+    await db.insert(Schema.projectTimetable).values(timetableData).execute()
+  })
+
+
 
   console.log('### Seeding complete ###')
   process.exit(0)

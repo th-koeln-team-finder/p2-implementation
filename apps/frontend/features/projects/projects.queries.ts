@@ -1,5 +1,5 @@
 import { db } from '@repo/database'
-import { projects,ProjectTimetable,ProjectIssue } from '@repo/database/schema'
+import { projects,projectTimetable,ProjectIssue } from '@repo/database/schema'
 import { eq } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
 
@@ -16,9 +16,9 @@ export const getProjectIssueList=cache(
     (id:number)=> db.query.ProjectIssue.findMany({where: eq(ProjectIssue.projectId, id)})
 )
 export const getProjectTimetable=cache(
-    (id:number)=> db.query.ProjectTimetable.findMany({where: eq(ProjectTimetable.projectId, id)})
+    (id:number)=> db.query.ProjectTimetable.findMany({where: eq(projectTimetable.projectId, id)})
 )
 
 export const getProjectSkills=cache(
-    (id:number)=> db.query.SkillData.findMany({where: eq(ProjectTimetable.projectId, id)})
+    (id:number)=> db.query.SkillData.findMany({where: eq(projectTimetable.projectId, id)})
 )

@@ -8,7 +8,7 @@ import {
     timestamp, uniqueIndex,
     uuid,
     varchar,
-  check,
+    check, pgEnum,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
 import {sql} from "drizzle-orm";
@@ -49,7 +49,7 @@ export const SkillData = pgTable('SkillData', {
     projectsId: integer().references(() => projects.id),
 
 }, (skillData) => ({
-    validLevel: check('valid_level',  sql`${skillData.level} >= 0 AND ${skillData.level} <= 5`)
+    validLevel: check('valid_level',  sql`${skillData.level} >= 0`)
 }))
 export type SkillDataInsert = typeof SkillData.$inferInsert
 export type SkillDataSelect = typeof SkillData.$inferSelect
@@ -64,8 +64,8 @@ export const projects = pgTable('projects', {
   name: varchar({ length: 255 }).notNull(),
   description: varchar({ length: 255 }).notNull(),
   status: varchar({ enum: ['open', 'closed'] }).notNull(),
-  createdAt: varchar({ length: 255 }).notNull(),
-  updatedAt: varchar({ length: 255 }).notNull(),
+    createdAt: timestamp( {mode:"date"}).defaultNow(),
+    updatedAt: timestamp({mode:"date"}).defaultNow().$onUpdate(() => sql`current_timestamp`),
   isPublic: boolean().notNull().default(true),
   allowApplications: boolean().notNull().default(true),
   additionalInfo: json().default({}),
@@ -76,31 +76,42 @@ export type ProjectSelect = typeof projects.$inferSelect
 /**
  * ProjectIssues for a project. A project can have multiple issues
  */
-export const ProjectIssue = pgTable('ProjectIssue', {
+export const projectIssue = pgTable('projectIssue', {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     projectId: integer().notNull().references(() => projects.id), // Fremdschlüssel auf projects.id
     title: varchar({ length: 255 }).notNull(),
     description: varchar({ length: 255 }).notNull(),
-    createdAt: varchar({ length: 255 }).notNull(),
-    updatedAt: varchar({ length: 255 }).notNull(),
+    createdAt: timestamp( {mode:"date"}).defaultNow(),
+    updatedAt: timestamp({mode:"date"}).defaultNow().$onUpdate(() => sql`current_timestamp`),
 });
-export type ProjectIssueInsert = typeof ProjectIssue.$inferInsert
-export type ProjectIssueSelect = typeof ProjectIssue.$inferSelect
+export type ProjectIssueInsert = typeof projectIssue.$inferInsert
+export type ProjectIssueSelect = typeof projectIssue.$inferSelect
 /**
  * ProjectTimetable for a project. Data for set Working Times
  */
-export const ProjectTimetable = pgTable('ProjectTimetable', {
+export const Weekdays = {
+    monday: 'Monday',
+    tuesday: 'Tuesday',
+    wednesday: 'Wednesday',
+    thursday: 'Thursday',
+    friday: 'Friday',
+    saturday: 'Saturday',
+    sunday: 'Sunday',
+} as const
+const weekdayEnum = pgEnum("WeekdayEnum", Object.values(Weekdays) as [string, ...string[]])
+
+export const projectTimetable = pgTable('projectTimetable', {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     projectId: integer().notNull().references(() => projects.id),
-    weekdays: varchar({enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']}).notNull(),
+    weekdays: weekdayEnum().notNull(),
     startTime: time('startTime').notNull(),
     endTime: time('endTime').notNull(),
 }, (timeTable) => ({
     uniqueWeekday: uniqueIndex('unique_weekday').on(timeTable.weekdays), //
     validTimeRange: check('valid_time_range',  sql`${timeTable.startTime} < ${timeTable.endTime}`) //
 }))
-export type ProjectTimetableInsert = typeof ProjectTimetable.$inferInsert
-export type ProjectTimetableSelect = typeof ProjectTimetable.$inferSelect
+export type ProjectTimetableInsert = typeof projectTimetable.$inferInsert
+export type ProjectTimetableSelect = typeof projectTimetable.$inferSelect
 //region Technical Tables
 /**
  * Data used for authentication of a user, a user can have multiple accounts (so multiple login methods)
