@@ -1,8 +1,10 @@
 import { useFieldContext } from '@formsignals/form-react'
+import { useSignals } from '@preact/signals-react/runtime'
 import { Loader2Icon, XCircleIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 export function FieldError() {
+  useSignals()
   const field = useFieldContext()
   const translate = useTranslations()
 

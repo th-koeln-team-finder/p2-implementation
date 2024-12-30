@@ -11,6 +11,10 @@ export const de: Language = {
     normalFont: 'Normaler Schriftart',
     otherHeading: 'Andere Titel',
     otherFont: 'Andere Schriftart',
+    validation: {
+      nice: 'Alle Menschen sind nett',
+      age: 'Das Alter muss auf dem Geburtsdatum basieren',
+    },
     actions: {
       addItem: 'Eintrag hinzufügen',
       removeAll: 'Alle entfernen',
@@ -47,6 +51,9 @@ export const de: Language = {
     usernameTaken: 'Dieser Benutzername ist bereits vergeben',
     minLengthX:
       'Dieses Feld muss mindestens {amount, plural, =1 {ein Zeichen} other {# Zeichen}} lang sein',
+    number: 'Dieses Feld muss eine Zahl sein',
+    positive: 'Dieses Feld muss eine positive Zahl sein',
+    date: 'Dieses Feld muss ein gültiges Datum sein',
   },
   errors: {
     genericPageError: 'Oops, da ist etwas schiefgelaufen',

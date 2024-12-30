@@ -4,6 +4,7 @@ import { EditorToolbar } from '@/components/WysiwygEditor/EditorToolbar'
 import { initialWysiwygConfig } from '@/components/WysiwygEditor/wysiwyg.config'
 import { URL_MATCHERS } from '@/components/WysiwygEditor/wysiwyg.urls'
 import { cn } from '@/lib/utils'
+import { useFieldContext } from '@formsignals/form-react'
 import { AutoLinkPlugin } from '@lexical/react/LexicalAutoLinkPlugin'
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
@@ -17,10 +18,12 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { SelectionAlwaysOnDisplay } from '@lexical/react/LexicalSelectionAlwaysOnDisplay'
 import type { EditorState, LexicalEditor } from 'lexical'
+import { useMemo } from 'react'
 
 type WysiwygEditorProps = {
   className?: string
   placeholder?: string
+  defaultValue?: EditorState
   onChange?: (
     editorState: EditorState,
     editor: LexicalEditor,
@@ -33,10 +36,15 @@ type WysiwygEditorProps = {
 export function WysiwygEditor({
   className,
   placeholder,
+  defaultValue,
   onChange,
 }: WysiwygEditorProps) {
+  const initialConfig = useMemo(
+    () => ({ ...initialWysiwygConfig, editorState: defaultValue }),
+    [defaultValue],
+  )
   return (
-    <LexicalComposer initialConfig={initialWysiwygConfig}>
+    <LexicalComposer initialConfig={initialConfig}>
       <EditorToolbar />
       <div className="relative">
         <RichTextPlugin
@@ -67,5 +75,18 @@ export function WysiwygEditor({
       <AutoLinkPlugin matchers={URL_MATCHERS} />
       <HorizontalRulePlugin />
     </LexicalComposer>
+  )
+}
+
+export function WysiwygEditorForm(
+  props: Omit<WysiwygEditorProps, 'defaultValue'>,
+) {
+  const field = useFieldContext()
+  return (
+    <WysiwygEditor
+      defaultValue={field.data.value}
+      onChange={(state) => field.handleChange(JSON.stringify(state.toJSON()))}
+      {...props}
+    />
   )
 }
