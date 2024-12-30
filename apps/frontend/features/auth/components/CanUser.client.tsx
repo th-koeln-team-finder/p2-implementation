@@ -4,29 +4,28 @@ import type { UserSelect } from '@repo/database/schema'
 import { useSession } from 'next-auth/react'
 import type { PropsWithChildren, ReactNode } from 'react'
 
-type CanUserProps<Obj extends keyof Permissions> = {
+type CanUserProps<
+  Obj extends keyof Permissions,
+  Action extends keyof Permissions[Obj],
+> = {
   target: Obj
-  action: Permissions[Obj]['action']
-  data?: Permissions[Obj]['dataType']
+  action: Action
+  data?: Permissions[Obj][Action]
   fallback?: ReactNode
 }
 
-export function CanUserClient<Obj extends keyof Permissions>({
+export function CanUserClient<
+  Obj extends keyof Permissions,
+  Action extends keyof Permissions[Obj],
+>({
   target,
   action,
-  data,
+  data = undefined as Permissions[Obj][Action],
   children,
   fallback,
-}: PropsWithChildren<CanUserProps<Obj>>): ReactNode {
+}: PropsWithChildren<CanUserProps<Obj, Action>>): ReactNode {
   const { data: session } = useSession()
   if (!session?.user) return fallback
-  console.log(
-    'session',
-    session.user,
-    target,
-    action,
-    hasPermission(session.user as UserSelect, target, action, data),
-  )
   if (!hasPermission(session.user as UserSelect, target, action, data))
     return fallback
   return children

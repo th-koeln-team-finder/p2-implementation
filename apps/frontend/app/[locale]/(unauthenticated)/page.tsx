@@ -2,6 +2,7 @@ import { CanUserServer } from '@/features/auth/components/CanUser.server'
 import { Link } from '@/features/i18n/routing'
 import { AddTestButton, RemoveTestButton, TestItemList } from '@/features/test'
 import { LoggingWysiwygEditor } from '@/features/test/components/LoggingWysiwygEditor'
+import { TestForm } from '@/features/test/components/TestForm'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -143,7 +144,7 @@ export default async function Home() {
       <Link href="/projects">{translate('test.toProjectPage')}</Link>
       <h3 className="mt-4 mb-2 font-head text-3xl">Components</h3>
       <div className="flex flex-col gap-2 px-4 pb-4">
-        <LoggingWysiwygEditor />
+        <TestForm />
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
@@ -329,6 +330,8 @@ export default async function Home() {
             <TooltipContent>This is the content of a tooltip</TooltipContent>
           </Tooltip>
         </TooltipProvider>
+
+        <LoggingWysiwygEditor />
       </div>
     </div>
   )

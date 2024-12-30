@@ -11,13 +11,9 @@ export default async function ErrorPage({
   const translate = await getTranslations()
   const errorText =
     {
-      // biome-ignore lint/style/useNamingConvention: AuthJs uses a different naming convention
       Configuration: translate('errors.auth.configuration'),
-      // biome-ignore lint/style/useNamingConvention: AuthJs uses a different naming convention
       AccessDenied: translate('errors.auth.accessDenied'),
-      // biome-ignore lint/style/useNamingConvention: AuthJs uses a different naming convention
       Verification: translate('errors.auth.verification'),
-      // biome-ignore lint/style/useNamingConvention: AuthJs uses a different naming convention
       Default: translate('errors.auth.default'),
     }[error as string] || 'genericPageError'
   return (

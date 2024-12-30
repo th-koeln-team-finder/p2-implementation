@@ -10,6 +10,10 @@ export const en = {
     otherHeading: 'Other Heading',
     otherFont: 'Other Font',
     toProjectPage: 'To project page',
+    validation: {
+      nice: 'All people are nice',
+      age: 'The age must be correct based on the date of birth',
+    },
     actions: {
       addItem: 'Add Item',
       removeAll: 'Remove All',
@@ -65,6 +69,9 @@ export const en = {
     usernameTaken: 'This username is already taken',
     minLengthX:
       'This field must be at least {amount, plural, =1 {one character} other {# characters}} long',
+    number: 'This field must be a number',
+    positive: 'This field must be a positive number',
+    date: 'This field must be a valid date',
   },
   errors: {
     genericPageError: 'Oops something went wrong',

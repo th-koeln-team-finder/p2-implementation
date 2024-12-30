@@ -64,7 +64,6 @@ export function RegisterForm() {
               <form.FieldProvider
                 name="name"
                 validator={z
-                  // biome-ignore lint/style/useNamingConvention: zod uses camelCase
                   .string({ required_error: translate('validation.required') })
                   .min(3, translate('validation.minLengthX', { amount: 3 }))}
                 validatorAsync={async (name) => {
