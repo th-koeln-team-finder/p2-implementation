@@ -1,6 +1,6 @@
 'use server'
 
-import {Schema, db} from '@repo/database'
+import {db, Schema} from '@repo/database'
 import {eq} from 'drizzle-orm'
 
 export async function checkUsernameTaken(username: string) {
@@ -22,9 +22,13 @@ export async function getUserProjects(userId: number, limit: number, offset: num
     )
   }
   return previouslyWorkedOn
-  /*return await db.query.projects.findMany({
-    where: eq(Schema.projects.userId, userId),
-    limit,
-    offset
-  })*/
+}
+
+export async function getUserSkills(userId: string) {
+  return db.query.userSkills.findMany({
+    where: eq(Schema.userSkills.userId, userId),
+    with: {
+      skill: true,
+    }
+  });
 }

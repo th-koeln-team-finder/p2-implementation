@@ -14,7 +14,7 @@ import {
   date,
 } from 'drizzle-orm/pg-core'
 import type {AdapterAccountType} from 'next-auth/adapters'
-import {sql} from "drizzle-orm";
+import {relations, sql} from "drizzle-orm";
 
 /**
  * Test data should only demonstrate the usage of the library
@@ -56,8 +56,8 @@ export type SkillsSelect = typeof skills.$inferSelect
 
 export const userSkills = pgTable('userSkills', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  userId: uuid('userId').notNull().references(() => users.id),
-  skillId: integer('skillId').notNull().references(() => skills.id),
+  userId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),
+  skillId: integer('skillId').notNull().references(() => skills.id, {onDelete: 'cascade'}),
   level: integer().notNull(),
   createdAt: timestamp().notNull(),
   updatedAt: timestamp().notNull(),
@@ -65,10 +65,17 @@ export const userSkills = pgTable('userSkills', {
 export type UserSkillsInsert = typeof userSkills.$inferInsert
 export type UserSkillsSelect = typeof userSkills.$inferSelect
 
+export const userSkillRelations = relations(userSkills, ({one}) => ({
+  skill: one(skills, {
+    fields: [userSkills.skillId],
+    references: [skills.id],
+  }),
+}))
+
 export const userSkillVerification = pgTable('userSkillVerification', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  verifierId: uuid('userId').notNull().references(() => users.id),
-  userSkillId: integer('skillId').notNull().references(() => userSkills.id),
+  verifierId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),
+  userSkillId: integer('skillId').notNull().references(() => userSkills.id, {onDelete: 'cascade'}),
   status: varchar({ enum: ['pending', 'approved', 'rejected'] }).notNull(),
   createdAt: timestamp().notNull(),
   updatedAt: timestamp().notNull(),
@@ -88,8 +95,8 @@ export type UserRatingsSelect = typeof userRatings.$inferSelect
 
 export const userFollows = pgTable('userFollows', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  followerId: uuid('userId').notNull().references(() => users.id),
-  followeeId: uuid('userId').notNull().references(() => users.id),
+  followerId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),
+  followeeId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),
   createdAt: timestamp().notNull(),
 })
 export type UserFollowsInsert = typeof userRatings.$inferInsert
