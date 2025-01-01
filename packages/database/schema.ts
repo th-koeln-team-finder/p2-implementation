@@ -37,22 +37,46 @@ export const users = pgTable('user', {
 })
 export type UserInsert = typeof users.$inferInsert
 export type UserSelect = typeof users.$inferSelect
-/*
-* SkillData for a User and a Project. All can have multiple skills
+/**
+* Skills for a User and a Project. All can have multiple skills
 */
-export const SkillData = pgTable('SkillData', {
+export const skill = pgTable('Skill', {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     name:varchar().notNull(),
+})
+export type SkillInsert = typeof skill.$inferInsert
+export type SkillSelect = typeof skill.$inferSelect
+/**
+ * Skills for a project, referencing Project and Skill
+ */
+export const projectSkill = pgTable('ProjectSkill', {
+    projectId: integer().notNull().primaryKey().references(() => projects.id),
+    skillId: integer().notNull().primaryKey().references(() => skill.id),
     level: integer().notNull(),
-    isUserOrProject: varchar({enum: ['user', 'project']}).notNull(),
-    userId: uuid().references(() => users.id),
-    projectsId: integer().references(() => projects.id),
-
-}, (skillData) => ({
-    validLevel: check('valid_level',  sql`${skillData.level} >= 0`)
+    createdAt: timestamp( {mode:"date"}).defaultNow(),
+    updatedAt: timestamp({mode:"date"}).defaultNow().$onUpdate(() => sql`current_timestamp`),
+}, (projectSkill) => ({
+    uniqueSkill: uniqueIndex('unique_skill').on(projectSkill.projectId, projectSkill.skillId), //
+    validLevel: check('valid_level',  sql`${projectSkill.level} >= 0`)
 }))
-export type SkillDataInsert = typeof SkillData.$inferInsert
-export type SkillDataSelect = typeof SkillData.$inferSelect
+export type ProjectSkillInsert = typeof projectSkill.$inferInsert
+export type ProjectSkillSelect = typeof projectSkill.$inferSelect
+
+/**
+ *
+ */
+export const userSkill = pgTable('UserSkill', {
+    UserId: integer().notNull().primaryKey().references(() => users.id),
+    skillId: integer().notNull().primaryKey().references(() => skill.id),
+    level: integer().notNull(),
+    createdAt: timestamp( {mode:"date"}).defaultNow(),
+    updatedAt: timestamp({mode:"date"}).defaultNow().$onUpdate(() => sql`current_timestamp`),
+}, (UserSkill) => ({
+    uniqueSkill: uniqueIndex('unique_skill').on(UserSkill.UserId, UserSkill.skillId), //
+    validLevel: check('valid_level',  sql`${UserSkill.level} >= 0`)
+}))
+export type UserSkillInsert = typeof userSkill.$inferInsert
+export type UserSkillSelect = typeof userSkill.$inferSelect
 
 
 //Project Tables
@@ -60,15 +84,14 @@ export type SkillDataSelect = typeof SkillData.$inferSelect
  * Data specific for one project
  */
 export const projects = pgTable('projects', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  name: varchar({ length: 255 }).notNull(),
-  description: varchar({ length: 255 }).notNull(),
-  status: varchar({ enum: ['open', 'closed'] }).notNull(),
-    createdAt: timestamp( {mode:"date"}).defaultNow(),
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    name: varchar({ length: 255 }).notNull(),
+    description: varchar({ length: 255 }).notNull(),
+    status: varchar({ enum: ['open', 'closed'] }).notNull(), createdAt: timestamp( {mode:"date"}).defaultNow(),
     updatedAt: timestamp({mode:"date"}).defaultNow().$onUpdate(() => sql`current_timestamp`),
-  isPublic: boolean().notNull().default(true),
-  allowApplications: boolean().notNull().default(true),
-  additionalInfo: json().default({}),
+    isPublic: boolean().notNull().default(true),
+    allowApplications: boolean().notNull().default(true),
+    additionalInfo: json().default({}),
 })
 export type ProjectInsert = typeof projects.$inferInsert
 export type ProjectSelect = typeof projects.$inferSelect
@@ -112,6 +135,9 @@ export const projectTimetable = pgTable('projectTimetable', {
 }))
 export type ProjectTimetableInsert = typeof projectTimetable.$inferInsert
 export type ProjectTimetableSelect = typeof projectTimetable.$inferSelect
+
+
+
 //region Technical Tables
 /**
  * Data used for authentication of a user, a user can have multiple accounts (so multiple login methods)

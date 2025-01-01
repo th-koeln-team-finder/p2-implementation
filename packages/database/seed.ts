@@ -4,7 +4,9 @@ import { config } from 'dotenv'
 import { drizzle } from 'drizzle-orm/node-postgres'
 import * as Schema from './schema'
 import {makeIssues} from "@/factory/issues.factory";
-import {makeTimetableElements} from "@/factory/Timetable.factory";
+import {makeTimetableElements} from "@/factory/timetable.factory";
+import {makeProjectSkills,makeUserSkill} from "@/factory/skill.factory";
+import {projectSkill} from "./schema";
 
 config()
 config({ path: '.env.local', override: true })
@@ -39,6 +41,16 @@ export async function seed() {
   projectQueryIDs.map(async (project)=> {
     const timetableData = makeTimetableElements(3,project.id)
     await db.insert(Schema.projectTimetable).values(timetableData).execute()
+  })
+  console.log('Creating 5 ProjectSkills for each project')
+  projectQueryIDs.map(async (project)=> {
+    const projectSkills = makeProjectSkills(project.id,5)
+    await db.insert(Schema.projectSkill).values(projectSkills).execute()
+  })
+    console.log('Creating 5 UserSkills for each User')
+  projectQueryIDs.map(async(user)=>{
+    const userSkills=makeUserSkill(user.id,5)
+    await db.insert(Schema.userSkill).values(userSkills).execute()
   })
 
 
