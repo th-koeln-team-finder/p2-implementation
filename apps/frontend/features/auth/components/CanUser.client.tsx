@@ -9,9 +9,10 @@ type CanUserProps<
 > = {
   target: Obj
   action: Action
-  data?: Permissions[Obj][Action]
   fallback?: ReactNode
-}
+} & (Permissions[Obj][Action] extends never
+  ? { data?: undefined }
+  : { data: Permissions[Obj][Action] })
 
 export function CanUserClient<
   Obj extends keyof Permissions,
@@ -19,11 +20,13 @@ export function CanUserClient<
 >({
   target,
   action,
-  data = undefined as Permissions[Obj][Action],
+  data,
   children,
   fallback,
 }: PropsWithChildren<CanUserProps<Obj, Action>>): ReactNode {
   const { data: session } = useSession()
-  if (!hasPermission(session?.user, target, action, data)) return fallback
+  // biome-ignore lint/suspicious/noExplicitAny: This is the correct type, TypeScript just doesn't know
+  if (!hasPermission(session?.user, target, action, ...([data] as any)))
+    return fallback
   return children
 }

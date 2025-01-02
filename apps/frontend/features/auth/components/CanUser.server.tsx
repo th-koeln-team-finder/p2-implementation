@@ -9,9 +9,10 @@ type CanUserProps<
 > = {
   target: Obj
   action: Action
-  data?: Permissions[Obj][Action]
   fallback?: ReactNode
-}
+} & (Permissions[Obj][Action] extends never
+  ? { data?: undefined }
+  : { data: Permissions[Obj][Action] })
 
 export async function CanUserServer<
   Obj extends keyof Permissions,
@@ -19,12 +20,14 @@ export async function CanUserServer<
 >({
   target,
   action,
-  data = undefined as Permissions[Obj][Action],
+  data,
   children,
   fallback,
   // @ts-expect-error This technically has to return a promise, but TypeScript cannot handle async react components yet
 }: PropsWithChildren<CanUserProps<Obj, Action>>): ReactNode {
   const session = await authMiddleware()
-  if (!hasPermission(session?.user, target, action, data)) return fallback
+  // biome-ignore lint/suspicious/noExplicitAny: This is the correct type, TypeScript just doesn't know
+  if (!hasPermission(session?.user, target, action, ...([data] as any)))
+    return fallback
   return children
 }

@@ -1,4 +1,7 @@
+// noinspection RequiredAttributes This is only for Webstorm, since the types seem to be too advanced for it
+
 'use client'
+
 import { CanUserClient } from '@/features/auth/components/CanUser.client'
 import { useRouter } from '@/features/i18n/routing'
 import { toggleAdminRole } from '@/features/test/test.actions'

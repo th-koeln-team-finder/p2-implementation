@@ -59,7 +59,7 @@ export function hasPermission<
   user: UserSelect | undefined,
   obj: Obj,
   action: Action,
-  data = undefined as Permissions[Obj][Action],
+  ...data: ConditionalMethodParam<Permissions[Obj][Action]>
 ) {
   const roles = user?.roles ?? (['guest'] as const)
   return roles.some((role: RolesType) => {
@@ -68,6 +68,11 @@ export function hasPermission<
     ] as PermissionCheck<Permissions[Obj][Action]>
     if (permission === undefined) return false
     if (typeof permission === 'boolean') return permission
-    return data !== undefined && permission(user, data)
+    return (
+      data !== undefined &&
+      permission(user, data?.[0] as Permissions[Obj][Action])
+    )
   })
 }
+
+type ConditionalMethodParam<Value> = Value extends never ? [] : [Value]
