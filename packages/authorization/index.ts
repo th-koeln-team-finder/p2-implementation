@@ -3,7 +3,7 @@ import type { UserSelect } from '@repo/database/schema'
 
 type PermissionCheck<Data> =
   | boolean
-  | ((user: UserSelect, data: Data) => boolean)
+  | ((user: UserSelect | undefined, data: Data) => boolean)
 
 type RolesWithPermissions = {
   [Role in RolesType]: Partial<{
@@ -56,12 +56,13 @@ export function hasPermission<
   Obj extends keyof Permissions,
   Action extends keyof Permissions[Obj],
 >(
-  user: UserSelect,
+  user: UserSelect | undefined,
   obj: Obj,
   action: Action,
   data = undefined as Permissions[Obj][Action],
 ) {
-  return user.roles.some((role: RolesType) => {
+  const roles = user?.roles ?? (['guest'] as const)
+  return roles.some((role: RolesType) => {
     const permission = (PERMISSIONS as RolesWithPermissions)[role][obj]?.[
       action
     ] as PermissionCheck<Permissions[Obj][Action]>

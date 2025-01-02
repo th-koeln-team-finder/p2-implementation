@@ -1,6 +1,5 @@
 'use client'
 import { type Permissions, hasPermission } from '@repo/authorization'
-import type { UserSelect } from '@repo/database/schema'
 import { useSession } from 'next-auth/react'
 import type { PropsWithChildren, ReactNode } from 'react'
 
@@ -25,8 +24,6 @@ export function CanUserClient<
   fallback,
 }: PropsWithChildren<CanUserProps<Obj, Action>>): ReactNode {
   const { data: session } = useSession()
-  if (!session?.user) return fallback
-  if (!hasPermission(session.user as UserSelect, target, action, data))
-    return fallback
+  if (!hasPermission(session?.user, target, action, data)) return fallback
   return children
 }

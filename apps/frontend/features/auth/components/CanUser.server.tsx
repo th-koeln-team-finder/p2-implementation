@@ -1,7 +1,6 @@
 import 'server-only'
 import { authMiddleware } from '@/auth'
 import { type Permissions, hasPermission } from '@repo/authorization'
-import type { UserSelect } from '@repo/database/schema'
 import type { PropsWithChildren, ReactNode } from 'react'
 
 type CanUserProps<
@@ -26,8 +25,6 @@ export async function CanUserServer<
   // @ts-expect-error This technically has to return a promise, but TypeScript cannot handle async react components yet
 }: PropsWithChildren<CanUserProps<Obj, Action>>): ReactNode {
   const session = await authMiddleware()
-  if (!session?.user) return null
-  if (!hasPermission(session.user as UserSelect, target, action, data))
-    return fallback
+  if (!hasPermission(session?.user, target, action, data)) return fallback
   return children
 }
