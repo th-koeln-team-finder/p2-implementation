@@ -4,6 +4,8 @@ export const de: Language = {
   general: {
     save: 'Speichern',
     cancel: 'Abbrechen',
+    delete: 'Löschen',
+    continue: 'Fortfahren',
   },
   test: {
     dataTitle: 'Testdaten',
@@ -70,6 +72,19 @@ export const de: Language = {
     friendly: 'Freundlich',
     veryFriendly: 'Sehr freundlich',
     ratingText: 'Personen haben die Person als "sehr freundlich" bewertet',
+    settings: {
+      title: 'Benutzereinstellungen',
+      profile: 'Profil',
+      account: 'Konto',
+      notifications: 'Benachrichtigungen',
+      security: 'Sicherheit',
+      dangerZone: 'Gefahrenzone',
+      deleteAccount: 'Account löschen',
+      removeSkill: 'Remove skill',
+      deleteAreYouSure: 'Are you sure you want to delete your account?',
+      activateNotifications: 'Benachrichtigungen aktivieren',
+      selectNotificationType: 'Benachrichtigungstyp auswählen',
+    }
   },
   validation: {
     inProgress: 'Validiere...',

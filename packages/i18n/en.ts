@@ -2,6 +2,8 @@ export const en = {
   general: {
     save: 'Save',
     cancel: 'Cancel',
+    delete: 'Delete',
+    continue: 'Continue',
   },
   test: {
     dataTitle: 'Test Data',
@@ -68,6 +70,20 @@ export const en = {
     friendly: 'Friendly',
     veryFriendly: 'Very friendly',
     ratingText: 'people have rated the person as “very friendly”',
+    settings: {
+      title: 'User settings',
+      profile: 'Profile',
+      account: 'Account',
+      notifications: 'Notifications',
+      security: 'Security',
+      dangerZone: 'Danger Zone',
+      deleteAccount: 'Delete account',
+      addSkill: 'Add skill',
+      removeSkill: 'Remove skill',
+      deleteAreYouSure: 'Are you sure you want to delete your account?',
+      activateNotifications: 'Activate notifications',
+      selectNotificationType: 'Select notification type',
+    }
   },
   validation: {
     inProgress: 'Validating...',

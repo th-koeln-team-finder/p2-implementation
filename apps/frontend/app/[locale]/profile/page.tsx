@@ -7,7 +7,7 @@ import {Button} from "@repo/design-system/components/ui/button";
 import {UserPlus} from "lucide-react";
 import Ratings from "@/features/users/components/Ratings";
 
-export default async function Admin() {
+export default async function Page() {
   const translate = await getTranslations()
   const session = await authMiddleware()
   const user = session!.user! as UserSelect
