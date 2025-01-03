@@ -22,6 +22,7 @@ export const en = {
     makeActionButton: 'Create the project',
     headingResources: 'Links & Other Resources',
     comments: {
+      loginCommentWarning: 'You need to login to comment',
       empty: "There aren't any comments yet",
       heading: 'Comments',
       inputPlaceholder: 'Add a comment...',

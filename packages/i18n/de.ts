@@ -24,6 +24,7 @@ export const de: Language = {
     makeActionButton: 'Erstelle das Projekt',
     headingResources: 'Links & andere Ressourcen',
     comments: {
+      loginCommentWarning: 'Sie müssen sich anmelden, um zu kommentieren',
       empty: 'Es gibt noch keine Kommentare',
       heading: 'Kommentare',
       inputPlaceholder: 'Kommentar hinterlassen...',
