@@ -13,6 +13,7 @@ import {
 import { Label } from '@repo/design-system/components/ui/label'
 import { ChevronDownIcon, ClockIcon, HeartIcon, PinIcon } from 'lucide-react'
 import { useSession } from 'next-auth/react'
+import { useTranslations } from 'next-intl'
 import { useOptimistic, useTransition } from 'react'
 
 type BrainstormCommentListProps = {
@@ -30,10 +31,11 @@ type OptimisticPayload =
       values: { id: string }
     }
 
-export function BrainstormCommentList({
+export function BrainstormComments({
   brainstormId,
   comments,
 }: BrainstormCommentListProps) {
+  const translate = useTranslations('brainstorm.comments')
   const { data: session } = useSession()
   const [_, startTransition] = useTransition()
   const [optimisticComments, setOptimistic] = useOptimistic(
@@ -86,7 +88,9 @@ export function BrainstormCommentList({
 
   if (!optimisticComments.length) {
     return (
-      <p className="py-4 text-center text-muted-foreground">No comments yet</p>
+      <p className="py-4 text-center text-muted-foreground">
+        {translate('empty')}
+      </p>
     )
   }
   return (
@@ -98,26 +102,26 @@ export function BrainstormCommentList({
         }}
       />
       <div className="flex flex-row items-center justify-between">
-        <Label>Comments</Label>
+        <Label>{translate('heading')}</Label>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost">
-              Sort by
+              {translate('sortButtonLabel')}
               <ChevronDownIcon />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem>
               <PinIcon />
-              Pinned
+              {translate('sortOptionPinned')}
             </DropdownMenuItem>
             <DropdownMenuItem>
               <ClockIcon />
-              Most recent
+              {translate('sortOptionMostRecent')}
             </DropdownMenuItem>
             <DropdownMenuItem>
               <HeartIcon />
-              Most liked
+              {translate('sortOptionMostPopular')}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

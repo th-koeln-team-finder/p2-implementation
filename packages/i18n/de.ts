@@ -20,6 +20,21 @@ export const de: Language = {
       removeAll: 'Alle entfernen',
     },
   },
+  brainstorm: {
+    makeActionButton: 'Erstelle das Projekt',
+    headingResources: 'Links & andere Ressourcen',
+    comments: {
+      empty: 'Es gibt noch keine Kommentare',
+      heading: 'Kommentare',
+      inputPlaceholder: 'Kommentar hinterlassen...',
+      inputSubmitButton: 'Kommentieren',
+      sortButtonLabel: 'Sortieren nach',
+      sortOptionPinned: 'Angepinnt',
+      sortOptionMostRecent: 'Neueste',
+      sortOptionMostPopular: 'Beliebteste',
+      reply: 'Antworten',
+    },
+  },
   help: {
     title: 'Hilfe',
   },

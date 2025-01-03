@@ -7,7 +7,7 @@ import { RemoveBrainstormCommentButton } from '@/features/brainstorm/components/
 import { BrainstormCommentForm } from '@/features/brainstorm/components/brainstorm-details/comments/BrainstormCommentForm'
 import { Button } from '@repo/design-system/components/ui/button'
 import { HeartIcon, PinIcon, ReplyIcon } from 'lucide-react'
-import { useFormatter } from 'next-intl'
+import { useFormatter, useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 type BrainstormCommentProps = {
@@ -24,6 +24,7 @@ export function BrainstormComment({
   onAddComment,
   onDeleteComment,
 }: BrainstormCommentProps) {
+  const translate = useTranslations('brainstorm.comments')
   const [replying, setReplying] = useState(false)
   const formatter = useFormatter()
   const canLike = useSessionPermission('commentBrainstorm', 'like')
@@ -48,7 +49,7 @@ export function BrainstormComment({
               onClick={() => setReplying((prev) => !prev)}
             >
               <ReplyIcon />
-              Reply
+              {translate('reply')}
             </Button>
           </CanUserClient>
           <Button

@@ -14,6 +14,7 @@ import { Button } from '@repo/design-system/components/ui/button'
 import { InputForm } from '@repo/design-system/components/ui/input'
 import { cn } from '@repo/design-system/lib/utils'
 import { MessageCircleIcon, SendHorizonalIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { z } from 'zod'
 
 type BrainstormCommentFormProps = {
@@ -32,6 +33,8 @@ export function BrainstormCommentForm({
   parentCommentId,
   onAddComment,
 }: BrainstormCommentFormProps) {
+  const translateError = useTranslations('validation')
+  const translate = useTranslations('brainstorm.comments')
   const canCreate = useSessionPermission('commentBrainstorm', 'create')
 
   useSignals()
@@ -65,12 +68,17 @@ export function BrainstormCommentForm({
       }}
     >
       <form.FormProvider>
-        <form.FieldProvider name="comment" validator={z.string().min(1)}>
+        <form.FieldProvider
+          name="comment"
+          validator={z
+            .string({ required_error: translateError('required') })
+            .min(1, translateError('minLengthX', { amount: 1 }))}
+        >
           <div className="mx-1 mt-2 flex flex-row items-center gap-2">
             <div className="relative flex-1">
               <MessageCircleIcon className="-translate-y-1/2 absolute top-1/2 left-2 h-4 w-4 text-muted-foreground" />
               <InputForm
-                placeholder="Add a comment"
+                placeholder={translate('inputPlaceholder')}
                 className="pr-8 pl-8"
                 disabled={!canCreate || form.isSubmitting.value}
               />
@@ -79,8 +87,8 @@ export function BrainstormCommentForm({
               type="submit"
               disabled={!canCreate || !form.canSubmit.value}
             >
+              {translate('inputSubmitButton')}
               <SendHorizonalIcon className="h-4 w-4" />
-              Comment
             </Button>
           </div>
           <FieldError />

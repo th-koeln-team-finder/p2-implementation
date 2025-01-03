@@ -18,6 +18,21 @@ export const en = {
       removeAll: 'Remove All',
     },
   },
+  brainstorm: {
+    makeActionButton: 'Create the project',
+    headingResources: 'Links & Other Resources',
+    comments: {
+      empty: "There aren't any comments yet",
+      heading: 'Comments',
+      inputPlaceholder: 'Add a comment...',
+      inputSubmitButton: 'Comment',
+      sortButtonLabel: 'Sort by',
+      sortOptionPinned: 'Pinned',
+      sortOptionMostRecent: 'Most recent',
+      sortOptionMostPopular: 'Most popular',
+      reply: 'Reply',
+    },
+  },
   help: {
     title: 'Help',
   },

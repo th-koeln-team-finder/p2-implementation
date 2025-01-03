@@ -3,7 +3,7 @@ import { getSingleBrainstorm } from '@/features/brainstorm/brainstorm.queries'
 import { getCommentsForBrainstorm } from '@/features/brainstorm/brainstormComment.queries'
 import { BrainstormLinksResources } from '@/features/brainstorm/components/brainstorm-details/BrainstormLinksResources'
 import { BrainstormTagList } from '@/features/brainstorm/components/brainstorm-details/BrainstormTagList'
-import { BrainstormCommentList } from '@/features/brainstorm/components/brainstorm-details/comments/BrainstormCommentList'
+import { BrainstormComments } from '@/features/brainstorm/components/brainstorm-details/comments/BrainstormComments'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { Button } from '@repo/design-system/components/ui/button'
 import {
@@ -13,6 +13,7 @@ import {
 import { Label } from '@repo/design-system/components/ui/label'
 import { cn } from '@repo/design-system/lib/utils'
 import { BookmarkIcon, FolderPlusIcon, LinkIcon } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
 type BrainstormDetailsProps = {
   brainstormId: string
@@ -24,6 +25,7 @@ export async function BrainstormDialogHeader({
   brainstormId,
 }: { brainstormId: string }) {
   const brainstorm = await getSingleBrainstorm(brainstormId)
+  const translate = await getTranslations('brainstorm')
   if (!brainstorm) return null
   return (
     <DialogHeader className="pr-4">
@@ -40,7 +42,7 @@ export async function BrainstormDialogHeader({
           </Button>
           <Button type="button" size="sm">
             <FolderPlusIcon />
-            Create the project
+            {translate('makeActionButton')}
           </Button>
         </div>
       </div>
@@ -56,8 +58,11 @@ export async function BrainstormDetails({
   hideHeader,
   className,
 }: BrainstormDetailsProps) {
-  const brainstorm = await getSingleBrainstorm(brainstormId)
-  const brainstormComments = await getCommentsForBrainstorm(brainstormId)
+  const [translate, brainstorm, brainstormComments] = await Promise.all([
+    getTranslations('brainstorm'),
+    getSingleBrainstorm(brainstormId),
+    getCommentsForBrainstorm(brainstormId),
+  ])
   if (!brainstorm) {
     return <p>Brainstorm not found</p>
   }
@@ -93,7 +98,7 @@ export async function BrainstormDetails({
               </Button>
               <Button type="button" size="sm">
                 <FolderPlusIcon />
-                Create the project
+                {translate('makeActionButton')}
               </Button>
             </div>
           </nav>
@@ -105,11 +110,9 @@ export async function BrainstormDetails({
       {brainstorm.description && (
         <WysiwygRenderer value={brainstorm.description} />
       )}
-      <div className="grid min-h-96 place-items-center rounded border border-border">
-        THIS IS A VERY GOOD WHITEBOARD
-      </div>
+      <div className="grid min-h-96 place-items-center rounded border border-border" />
       <div>
-        <Label>Links & Other Resources</Label>
+        <Label>{translate('headingResources')}</Label>
         <BrainstormLinksResources
           links={[
             { href: 'https://usefullinks.com' },
@@ -117,7 +120,7 @@ export async function BrainstormDetails({
           ]}
         />
       </div>
-      <BrainstormCommentList
+      <BrainstormComments
         brainstormId={brainstormId}
         comments={brainstormComments}
       />
