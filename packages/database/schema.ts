@@ -1,5 +1,6 @@
-import { Roles, type RolesType, RolesValues } from '@/constants'
+import { relations } from 'drizzle-orm'
 import {
+  type AnyPgColumn,
   boolean,
   integer,
   pgEnum,
@@ -11,6 +12,7 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
+import { Roles, type RolesType, RolesValues } from './constants'
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
 
@@ -42,6 +44,44 @@ export const users = pgTable('user', {
 })
 export type UserInsert = typeof users.$inferInsert
 export type UserSelect = typeof users.$inferSelect
+
+/**
+ * Data for a single brainstorm
+ */
+export const brainstorms = pgTable('brainstorm', {
+  id: uuid().primaryKey().notNull().defaultRandom(),
+  title: text('name').notNull(),
+  description: text('description'),
+  createdById: uuid('userId')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
+})
+export type BrainstormInsert = typeof brainstorms.$inferInsert
+export type BrainstormSelect = typeof brainstorms.$inferSelect
+
+/**
+ * General comments for brainstorms
+ */
+export const brainstormComments = pgTable('brainstorm_comment', {
+  id: uuid().primaryKey().notNull().defaultRandom(),
+  comment: text('comment').notNull(),
+  brainstormId: uuid('brainstormId')
+    .notNull()
+    .references(() => brainstorms.id, { onDelete: 'cascade' }),
+  parentCommentId: uuid('parentCommentId').references(
+    (): AnyPgColumn => brainstormComments.id,
+    {
+      onDelete: 'cascade',
+    },
+  ),
+  createdById: uuid('userId')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
+})
+export type BrainstormCommentInsert = typeof brainstormComments.$inferInsert
+export type BrainstormCommentSelect = typeof brainstormComments.$inferSelect
 
 /**
  * Data used for authentication of a user, a user can have multiple accounts (so multiple login methods)
@@ -110,3 +150,35 @@ export const authenticators = pgTable(
 )
 export type AuthenticatorInsert = typeof authenticators.$inferInsert
 export type AuthenticatorSelect = typeof authenticators.$inferSelect
+
+export const brainstormRelations = relations(brainstorms, ({ one, many }) => ({
+  creator: one(users, {
+    fields: [brainstorms.createdById],
+    references: [users.id],
+  }),
+  comments: many(brainstormComments, {
+    relationName: 'brainstorm',
+  }),
+}))
+
+export const brainstormCommentRelations = relations(
+  brainstormComments,
+  ({ one, many }) => ({
+    brainstorm: one(brainstorms, {
+      fields: [brainstormComments.brainstormId],
+      references: [brainstorms.id],
+    }),
+    creator: one(users, {
+      fields: [brainstormComments.createdById],
+      references: [users.id],
+    }),
+    parentComment: one(brainstormComments, {
+      relationName: 'parentComment',
+      fields: [brainstormComments.parentCommentId],
+      references: [brainstormComments.id],
+    }),
+    childComments: many(brainstormComments, {
+      relationName: 'parentComment',
+    }),
+  }),
+)
