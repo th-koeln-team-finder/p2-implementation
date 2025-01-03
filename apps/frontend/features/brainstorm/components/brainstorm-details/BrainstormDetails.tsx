@@ -4,16 +4,25 @@ import { getCommentsForBrainstorm } from '@/features/brainstorm/brainstormCommen
 import { BrainstormLinksResources } from '@/features/brainstorm/components/brainstorm-details/BrainstormLinksResources'
 import { BrainstormTagList } from '@/features/brainstorm/components/brainstorm-details/BrainstormTagList'
 import { BrainstormComments } from '@/features/brainstorm/components/brainstorm-details/comments/BrainstormComments'
+import { Link, redirect } from '@/features/i18n/routing'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
-import { Button } from '@repo/design-system/components/ui/button'
+import {
+  Button,
+  buttonVariants,
+} from '@repo/design-system/components/ui/button'
 import {
   DialogHeader,
   DialogTitle,
 } from '@repo/design-system/components/ui/dialog'
 import { Label } from '@repo/design-system/components/ui/label'
 import { cn } from '@repo/design-system/lib/utils'
-import { BookmarkIcon, FolderPlusIcon, LinkIcon } from 'lucide-react'
-import { getTranslations } from 'next-intl/server'
+import {
+  BookmarkIcon,
+  ChevronLeftIcon,
+  FolderPlusIcon,
+  LinkIcon,
+} from 'lucide-react'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 type BrainstormDetailsProps = {
   brainstormId: string
@@ -58,13 +67,19 @@ export async function BrainstormDetails({
   hideHeader,
   className,
 }: BrainstormDetailsProps) {
-  const [translate, brainstorm, brainstormComments] = await Promise.all([
-    getTranslations('brainstorm'),
-    getSingleBrainstorm(brainstormId),
-    getCommentsForBrainstorm(brainstormId),
-  ])
+  const [locale, translate, brainstorm, brainstormComments] = await Promise.all(
+    [
+      getLocale(),
+      getTranslations('brainstorm'),
+      getSingleBrainstorm(brainstormId),
+      getCommentsForBrainstorm(brainstormId),
+    ],
+  )
   if (!brainstorm) {
-    return <p>Brainstorm not found</p>
+    return redirect({
+      locale,
+      href: '/brainstorm',
+    })
   }
   return (
     <section
@@ -76,18 +91,31 @@ export async function BrainstormDetails({
       {!hideHeader && (
         <>
           <nav className="sticky top-0 z-10 flex flex-row justify-between bg-card py-1 ring ring-card">
-            <div>
-              <h1 className="font-head font-medium text-3xl">
-                {brainstorm.title}
-              </h1>
-              <p className="inline-flex flex-row items-center gap-2 text-muted-foreground text-sm">
-                <UserAvatar
-                  user={brainstorm.creator}
-                  className="h-6 w-6"
-                  fallbackClassName="text-xs"
-                />
-                {brainstorm.creator.name}
-              </p>
+            <div className="flex flex-row gap-2">
+              <Link
+                locale={locale}
+                href="/brainstorm"
+                className={buttonVariants({
+                  size: 'icon',
+                  variant: 'ghost',
+                  className: '[&_svg]:size-6',
+                })}
+              >
+                <ChevronLeftIcon />
+              </Link>
+              <div>
+                <h1 className="font-head font-medium text-3xl">
+                  {brainstorm.title}
+                </h1>
+                <p className="inline-flex flex-row items-center gap-2 text-muted-foreground text-sm">
+                  <UserAvatar
+                    user={brainstorm.creator}
+                    className="h-6 w-6"
+                    fallbackClassName="text-xs"
+                  />
+                  {brainstorm.creator.name}
+                </p>
+              </div>
             </div>
             <div className="flex flex-row items-center gap-2">
               <Button variant="ghost" size="icon" type="button">
