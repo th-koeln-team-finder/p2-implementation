@@ -1,10 +1,6 @@
 import { authMiddleware } from '@/auth'
 import { clientSignOut } from '@/features/auth/auth.actions'
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@repo/design-system/components/ui/avatar'
+import { UserAvatar } from '@/features/auth/components/UserAvatar'
 import { Button } from '@repo/design-system/components/ui/button'
 import {
   DropdownMenu,
@@ -28,19 +24,7 @@ export async function UserProfileMenu({ children }: PropsWithChildren) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-            <Avatar className="h-10 w-10">
-              {session.user.image && (
-                <AvatarImage
-                  src={session.user.image}
-                  alt={session.user.name ?? session.user.email ?? ''}
-                />
-              )}
-              <AvatarFallback>
-                {session.user.name
-                  ? session.user.name.slice(0, 2).toUpperCase()
-                  : 'AN'}
-              </AvatarFallback>
-            </Avatar>
+            <UserAvatar user={session.user} className="h-10 w-10" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end" forceMount>
