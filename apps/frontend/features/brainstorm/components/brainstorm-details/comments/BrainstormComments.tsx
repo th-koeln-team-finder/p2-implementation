@@ -1,8 +1,8 @@
 'use client'
 import type { PopulatedBrainstormComment } from '@/features/brainstorm/brainstorm.types'
+import { useOptimisticComments } from '@/features/brainstorm/brainstormComment.hooks'
 import { BrainstormComment } from '@/features/brainstorm/components/brainstorm-details/comments/BrainstormComment'
 import { BrainstormCommentForm } from '@/features/brainstorm/components/brainstorm-details/comments/BrainstormCommentForm'
-import type { UserSelect } from '@repo/database/schema'
 import { Button } from '@repo/design-system/components/ui/button'
 import {
   DropdownMenu,
@@ -12,9 +12,7 @@ import {
 } from '@repo/design-system/components/ui/dropdown-menu'
 import { Label } from '@repo/design-system/components/ui/label'
 import { ChevronDownIcon, ClockIcon, HeartIcon, PinIcon } from 'lucide-react'
-import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
-import { useOptimistic, useTransition } from 'react'
 
 type BrainstormCommentListProps = {
   brainstormId: string
@@ -36,64 +34,14 @@ export function BrainstormComments({
   comments,
 }: BrainstormCommentListProps) {
   const translate = useTranslations('brainstorm.comments')
-  const { data: session } = useSession()
-  const [_, startTransition] = useTransition()
-  const [optimisticComments, setOptimistic] = useOptimistic(
-    comments,
-    (state, payload: OptimisticPayload) => {
-      switch (payload.action) {
-        case 'add': {
-          const newComment = {
-            id: Math.random().toString(),
-            creator: session?.user as UserSelect,
-            createdById: session?.user?.id as string,
-            createdAt: new Date(),
-            ...payload.values,
-          } as PopulatedBrainstormComment
-
-          if (!payload.values.parentCommentId) {
-            return [newComment, ...state]
-          }
-
-          return state.map((comment) => {
-            if (comment.id !== payload.values.parentCommentId) {
-              return comment
-            }
-
-            return {
-              ...comment,
-              childComments: [newComment, ...(comment?.childComments ?? [])],
-            }
-          })
-        }
-        case 'delete':
-          return state
-            .filter((comment) => comment.id !== payload.values.id)
-            .map((comment) => {
-              if (!comment.childComments) {
-                return comment
-              }
-              return {
-                ...comment,
-                childComments: comment.childComments.filter(
-                  (childComment) => childComment.id !== payload.values.id,
-                ),
-              }
-            })
-        default:
-          return state
-      }
-    },
-  )
+  const [optimisticComments, setOptimistic] = useOptimisticComments(comments)
 
   if (!optimisticComments.length) {
     return (
       <div>
         <BrainstormCommentForm
           brainstormId={brainstormId}
-          onAddComment={(values) => {
-            startTransition(() => setOptimistic(values))
-          }}
+          setOptimistic={setOptimistic}
         />
         <p className="mt-2 py-4 text-center text-muted-foreground">
           {translate('empty')}
@@ -105,9 +53,7 @@ export function BrainstormComments({
     <section className="space-y-2">
       <BrainstormCommentForm
         brainstormId={brainstormId}
-        onAddComment={(values) => {
-          startTransition(() => setOptimistic(values))
-        }}
+        setOptimistic={setOptimistic}
       />
       <div className="mt-4 flex flex-row items-center justify-between">
         <Label>{translate('heading')}</Label>
@@ -139,14 +85,7 @@ export function BrainstormComments({
           <BrainstormComment
             key={comment.id}
             comment={comment}
-            onAddComment={(values) => {
-              startTransition(() => setOptimistic(values))
-            }}
-            onDeleteComment={(id) => {
-              startTransition(() =>
-                setOptimistic({ action: 'delete', values: { id } }),
-              )
-            }}
+            setOptimistic={setOptimistic}
           />
         ))}
       </div>

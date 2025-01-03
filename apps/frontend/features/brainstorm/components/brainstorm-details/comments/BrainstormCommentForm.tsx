@@ -1,8 +1,11 @@
 import { useSessionPermission } from '@/features/auth/auth.hooks'
+import { LoginButton } from '@/features/auth/components/LoginButton'
+import { RegisterButton } from '@/features/auth/components/RegisterButton'
 import {
   addBrainstormComment,
   revalidateComments,
 } from '@/features/brainstorm/brainstormComment.actions'
+import type { OptimisticPayload } from '@/features/brainstorm/brainstormComment.hooks'
 import { useForm } from '@formsignals/form-react'
 import { ZodAdapter } from '@formsignals/validation-adapter-zod'
 import { useSignals } from '@preact/signals-react/runtime'
@@ -21,17 +24,14 @@ type BrainstormCommentFormProps = {
   className?: string
   brainstormId: string
   parentCommentId?: string
-  onAddComment: (action: {
-    action: 'add'
-    values: { comment: string; parentCommentId?: string }
-  }) => void
+  setOptimistic: (payload: OptimisticPayload) => void
 }
 
 export function BrainstormCommentForm({
   className,
   brainstormId,
   parentCommentId,
-  onAddComment,
+  setOptimistic,
 }: BrainstormCommentFormProps) {
   const translateError = useTranslations('validation')
   const translate = useTranslations('brainstorm.comments')
@@ -47,7 +47,7 @@ export function BrainstormCommentForm({
       comment: '',
     },
     onSubmit: async (values) => {
-      onAddComment({ action: 'add', values })
+      setOptimistic({ action: 'add', values })
       form.reset()
       addBrainstormComment(values).catch((err) => {
         console.error('Error adding brainstorm comment', err)
@@ -67,34 +67,46 @@ export function BrainstormCommentForm({
         await form.handleSubmit()
       }}
     >
-      <form.FormProvider>
-        <form.FieldProvider
-          name="comment"
-          validator={z
-            .string({ required_error: translateError('required') })
-            .min(1, translateError('minLengthX', { amount: 1 }))}
-        >
-          <div className="mx-1 mt-2 flex flex-row items-center gap-2">
-            <div className="relative flex-1">
-              <MessageCircleIcon className="-translate-y-1/2 absolute top-1/2 left-2 h-4 w-4 text-muted-foreground" />
-              <InputForm
-                placeholder={translate('inputPlaceholder')}
-                className="pr-8 pl-8"
-                disabled={!canCreate || form.isSubmitting.value}
-              />
+      {canCreate && (
+        <form.FormProvider>
+          <form.FieldProvider
+            name="comment"
+            validator={z
+              .string({ required_error: translateError('required') })
+              .min(1, translateError('minLengthX', { amount: 1 }))}
+          >
+            <div className="mx-1 mt-2 flex flex-row items-center gap-2">
+              <div className="relative flex-1">
+                <MessageCircleIcon className="-translate-y-1/2 absolute top-1/2 left-2 h-4 w-4 text-muted-foreground" />
+                <InputForm
+                  placeholder={translate('inputPlaceholder')}
+                  className="pr-8 pl-8"
+                  disabled={!canCreate || form.isSubmitting.value}
+                />
+              </div>
+              <Button
+                type="submit"
+                disabled={!canCreate || !form.canSubmit.value}
+              >
+                {translate('inputSubmitButton')}
+                <SendHorizonalIcon className="h-4 w-4" />
+              </Button>
             </div>
-            <Button
-              type="submit"
-              disabled={!canCreate || !form.canSubmit.value}
-            >
-              {translate('inputSubmitButton')}
-              <SendHorizonalIcon className="h-4 w-4" />
-            </Button>
-          </div>
-          <FieldError />
-        </form.FieldProvider>
-        <FormError />
-      </form.FormProvider>
+            <FieldError />
+          </form.FieldProvider>
+          <FormError />
+        </form.FormProvider>
+      )}
+
+      <div className="flex flex-col items-center gap-1">
+        <p className="text-muted-foreground text-sm">
+          {translate('loginCommentWarning')}
+        </p>
+        <div className="flex flex-row items-center gap-2">
+          <LoginButton />
+          <RegisterButton />
+        </div>
+      </div>
     </form>
   )
 }

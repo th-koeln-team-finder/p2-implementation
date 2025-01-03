@@ -15,6 +15,19 @@ export const getCommentsForBrainstorm = cache(
         childComments: {
           with: {
             creator: true,
+            // Technically not the best idea to load all likes instead of just the likes... but it's fine for now
+            likes: {
+              columns: {
+                userId: true,
+              },
+            },
+          },
+          orderBy: desc(Schema.brainstormComments.createdAt),
+        },
+        // Technically not the best idea to load all likes instead of just the likes... but it's fine for now
+        likes: {
+          columns: {
+            userId: true,
           },
         },
       },

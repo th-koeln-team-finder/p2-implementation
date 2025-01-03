@@ -4,7 +4,7 @@ import { authMiddleware } from '@/auth'
 import { hasSessionPermission } from '@/features/auth/auth.utils'
 import { redirect } from '@/features/i18n/routing'
 import { Schema, db } from '@repo/database'
-import { eq } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
 import { revalidateTag } from 'next/cache'
 
@@ -27,8 +27,6 @@ export async function addBrainstormComment(values: AddBrainstormPayload) {
       locale,
     })
   }
-
-  console.log('Adding brainstorm comment', values)
 
   await db
     .insert(Schema.brainstormComments)
@@ -64,6 +62,41 @@ export async function removeBrainstormComment(id: string) {
   await db
     .delete(Schema.brainstormComments)
     .where(eq(Schema.brainstormComments.id, id))
+}
+
+export async function toggleCommentLike(
+  commentId: string,
+  shouldLike: boolean,
+) {
+  const session = await authMiddleware()
+  const hasPermission = await hasSessionPermission('commentBrainstorm', 'like')
+  if (!hasPermission || !session?.user?.id) {
+    const locale = await getLocale()
+    return redirect({
+      href: '/error?error=AccessDenied',
+      locale,
+    })
+  }
+
+  const matchLike = and(
+    eq(Schema.brainstormCommentLikes.commentId, commentId),
+    eq(Schema.brainstormCommentLikes.userId, session.user.id),
+  )
+  const existingLike = await db.query.brainstormCommentLikes.findFirst({
+    where: matchLike,
+  })
+
+  if (shouldLike === !!existingLike) {
+    return
+  }
+  if (!shouldLike) {
+    await db.delete(Schema.brainstormCommentLikes).where(matchLike)
+    return
+  }
+  await db.insert(Schema.brainstormCommentLikes).values({
+    commentId,
+    userId: session.user.id,
+  })
 }
 
 export async function revalidateComments() {

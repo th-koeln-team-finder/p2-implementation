@@ -55,9 +55,7 @@ export async function BrainstormDialogHeader({
           </Button>
         </div>
       </div>
-      <BrainstormTagList
-        tags={['tag1', 'category', 'project', 'title', 'tag']}
-      />
+      <BrainstormTagList tags={brainstorm.tags} />
     </DialogHeader>
   )
 }
@@ -118,9 +116,7 @@ export async function BrainstormDetails({
               </div>
             </div>
             <div className="flex flex-row items-center gap-2">
-              <Button variant="ghost" size="icon" type="button">
-                <LinkIcon />
-              </Button>
+              {/* TODO implement bookmarks */}
               <Button variant="ghost" size="icon" type="button">
                 <BookmarkIcon />
               </Button>
@@ -130,9 +126,7 @@ export async function BrainstormDetails({
               </Button>
             </div>
           </nav>
-          <BrainstormTagList
-            tags={['tag1', 'category', 'project', 'title', 'tag']}
-          />
+          <BrainstormTagList tags={brainstorm.tags} />
         </>
       )}
       {brainstorm.description && (

@@ -1,29 +1,32 @@
-'use client'
 import { useSessionPermission } from '@/features/auth/auth.hooks'
 import { CanUserClient } from '@/features/auth/components/CanUser.client'
 import { UserAvatar } from '@/features/auth/components/UserAvatar'
 import type { PopulatedBrainstormComment } from '@/features/brainstorm/brainstorm.types'
+import {
+  revalidateComments,
+  toggleCommentLike,
+} from '@/features/brainstorm/brainstormComment.actions'
+import type { OptimisticPayload } from '@/features/brainstorm/brainstormComment.hooks'
 import { RemoveBrainstormCommentButton } from '@/features/brainstorm/components/brainstorm-details/RemoveBrainstormCommentButton'
 import { BrainstormCommentForm } from '@/features/brainstorm/components/brainstorm-details/comments/BrainstormCommentForm'
 import { Button } from '@repo/design-system/components/ui/button'
+import { cn } from '@repo/design-system/lib/utils'
 import { HeartIcon, PinIcon, ReplyIcon } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import { useFormatter, useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 type BrainstormCommentProps = {
   comment: PopulatedBrainstormComment
-  onAddComment: (action: {
-    action: 'add'
-    values: { comment: string; parentCommentId?: string }
-  }) => void
-  onDeleteComment: (id: string) => void
+  setOptimistic: (payload: OptimisticPayload) => void
 }
 
 export function BrainstormComment({
   comment,
-  onAddComment,
-  onDeleteComment,
+  setOptimistic,
 }: BrainstormCommentProps) {
+  const { data: session } = useSession()
+  const userId = session?.user?.id
   const translate = useTranslations('brainstorm.comments')
   const [replying, setReplying] = useState(false)
   const formatter = useFormatter()
@@ -57,9 +60,32 @@ export function BrainstormComment({
             className="disabled:opacity-100"
             variant="ghost"
             size="sm"
+            onClick={async () => {
+              const newLiked = !comment.likes.some(
+                (like) => like.userId === userId,
+              )
+              setOptimistic({
+                action: 'toggleLike',
+                values: {
+                  id: comment.id,
+                  liked: newLiked,
+                },
+              })
+              await toggleCommentLike(comment.id, newLiked)
+              await revalidateComments()
+            }}
           >
-            <HeartIcon className={'fill-destructive stroke-destructive'} />
-            21k
+            <HeartIcon
+              className={cn(
+                comment.likes.some((like) => like.userId === userId) &&
+                  'fill-destructive stroke-destructive',
+              )}
+            />
+            {formatter.number(comment.likes?.length, {
+              compactDisplay: 'short',
+              notation: 'compact',
+              maximumFractionDigits: 1,
+            })}
           </Button>
           <CanUserClient
             target="commentBrainstorm"
@@ -77,7 +103,9 @@ export function BrainstormComment({
           >
             <RemoveBrainstormCommentButton
               commentId={comment.id}
-              onDeleteComment={onDeleteComment}
+              onDeleteComment={(id) =>
+                setOptimistic({ action: 'delete', values: { id } })
+              }
             />
           </CanUserClient>
         </div>
@@ -86,26 +114,20 @@ export function BrainstormComment({
             className="mb-2"
             brainstormId={comment.brainstormId}
             parentCommentId={comment.id}
-            onAddComment={(values) => {
-              onAddComment(values)
+            setOptimistic={(values) => {
               setReplying(false)
+              setOptimistic(values)
             }}
           />
         )}
         <div>
-          {comment.childComments
-            ?.toSorted(
-              (a, b) =>
-                (b.createdAt?.getTime() ?? 0) - (a.createdAt?.getTime() ?? 0),
-            )
-            ?.map((childComment) => (
-              <BrainstormComment
-                key={childComment.id}
-                comment={childComment}
-                onAddComment={onAddComment}
-                onDeleteComment={onDeleteComment}
-              />
-            ))}
+          {comment.childComments?.map((childComment) => (
+            <BrainstormComment
+              key={childComment.id}
+              comment={childComment}
+              setOptimistic={setOptimistic}
+            />
+          ))}
         </div>
       </div>
     </div>

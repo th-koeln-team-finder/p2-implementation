@@ -10,6 +10,11 @@ export function getSingleBrainstorm(id: string) {
     where: eq(Schema.brainstorms.id, id),
     with: {
       creator: true,
+      tags: {
+        with: {
+          tag: true,
+        },
+      },
     },
   })
 }
