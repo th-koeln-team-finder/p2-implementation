@@ -88,9 +88,17 @@ export function BrainstormComments({
 
   if (!optimisticComments.length) {
     return (
-      <p className="py-4 text-center text-muted-foreground">
-        {translate('empty')}
-      </p>
+      <div>
+        <BrainstormCommentForm
+          brainstormId={brainstormId}
+          onAddComment={(values) => {
+            startTransition(() => setOptimistic(values))
+          }}
+        />
+        <p className="mt-2 py-4 text-center text-muted-foreground">
+          {translate('empty')}
+        </p>
+      </div>
     )
   }
   return (
@@ -101,7 +109,7 @@ export function BrainstormComments({
           startTransition(() => setOptimistic(values))
         }}
       />
-      <div className="flex flex-row items-center justify-between">
+      <div className="mt-4 flex flex-row items-center justify-between">
         <Label>{translate('heading')}</Label>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
