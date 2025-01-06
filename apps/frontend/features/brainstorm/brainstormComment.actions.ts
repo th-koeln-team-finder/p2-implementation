@@ -2,6 +2,7 @@
 
 import { authMiddleware } from '@/auth'
 import { hasSessionPermission } from '@/features/auth/auth.utils'
+import { BrainstormCacheTags } from '@/features/brainstorm/brainstorm.constants'
 import { redirect } from '@/features/i18n/routing'
 import { Schema, db } from '@repo/database'
 import { and, eq } from 'drizzle-orm'
@@ -12,6 +13,13 @@ type AddBrainstormPayload = {
   comment: string
   brainstormId: string
   parentCommentId?: string
+}
+
+export async function redirectServer(url: string) {
+  return redirect({
+    href: url,
+    locale: await getLocale(),
+  })
 }
 
 export async function addBrainstormComment(values: AddBrainstormPayload) {
@@ -45,7 +53,14 @@ export async function removeBrainstormComment(id: string) {
   const session = await authMiddleware()
   const brainstormComment = await db.query.brainstormComments.findFirst({
     where: eq(Schema.brainstormComments.id, id),
+    with: {
+      brainstorm: true,
+    },
   })
+  if (!brainstormComment) {
+    console.error('Comment not found')
+    return
+  }
   const hasPermission = await hasSessionPermission(
     'commentBrainstorm',
     'delete',
@@ -99,6 +114,39 @@ export async function toggleCommentLike(
   })
 }
 
-export async function revalidateComments() {
-  await revalidateTag('brainstormComments')
+export async function toggleCommentPin(id: string, shouldPin: boolean) {
+  const session = await authMiddleware()
+  const comment = await db.query.brainstormComments.findFirst({
+    where: eq(Schema.brainstormComments.id, id),
+    with: {
+      brainstorm: true,
+    },
+  })
+  if (!comment) {
+    console.error('Comment not found')
+    return
+  }
+  const hasPermission = await hasSessionPermission(
+    'commentBrainstorm',
+    'pin',
+    comment,
+  )
+  if (!hasPermission || !session?.user?.id) {
+    const locale = await getLocale()
+    return redirect({
+      href: '/error?error=AccessDenied',
+      locale,
+    })
+  }
+
+  await db
+    .update(Schema.brainstormComments)
+    .set({
+      isPinned: shouldPin,
+    })
+    .where(eq(Schema.brainstormComments.id, id))
+}
+
+export async function revalidateBrainstormComments() {
+  await revalidateTag(BrainstormCacheTags.comment)
 }

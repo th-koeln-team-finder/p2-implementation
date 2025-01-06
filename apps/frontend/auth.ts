@@ -14,7 +14,6 @@ declare module 'next-auth' {
 
 export const {
   handlers,
-  signIn,
   signOut,
   auth: authMiddleware,
 } = NextAuth({
@@ -66,7 +65,7 @@ export const {
       // Allows relative callback URLs
       if (url.startsWith('/')) res = `${baseUrl}${url}`
 
-      const urlOrigin = new URL(url).origin
+      const urlOrigin = new URL(res).origin
       // Allows callback URLs on the same origin or to the frontend host
       if (urlOrigin === baseUrl || url.includes(FRONTEND_HOST)) res = url
 

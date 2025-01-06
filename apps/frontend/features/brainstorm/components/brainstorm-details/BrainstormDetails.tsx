@@ -1,6 +1,8 @@
+import { authMiddleware } from '@/auth'
 import { UserAvatar } from '@/features/auth/components/UserAvatar'
 import { getSingleBrainstorm } from '@/features/brainstorm/brainstorm.queries'
 import { getCommentsForBrainstorm } from '@/features/brainstorm/brainstormComment.queries'
+import { BrainstormBookmarkButton } from '@/features/brainstorm/components/brainstorm-details/BrainstormBookmarkButton'
 import { BrainstormLinksResources } from '@/features/brainstorm/components/brainstorm-details/BrainstormLinksResources'
 import { BrainstormTagList } from '@/features/brainstorm/components/brainstorm-details/BrainstormTagList'
 import { BrainstormComments } from '@/features/brainstorm/components/brainstorm-details/comments/BrainstormComments'
@@ -16,24 +18,21 @@ import {
 } from '@repo/design-system/components/ui/dialog'
 import { Label } from '@repo/design-system/components/ui/label'
 import { cn } from '@repo/design-system/lib/utils'
-import {
-  BookmarkIcon,
-  ChevronLeftIcon,
-  FolderPlusIcon,
-  LinkIcon,
-} from 'lucide-react'
+import { ChevronLeftIcon, FolderPlusIcon } from 'lucide-react'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 type BrainstormDetailsProps = {
   brainstormId: string
   className?: string
   hideHeader?: boolean
+  sort?: string
 }
 
 export async function BrainstormDialogHeader({
   brainstormId,
 }: { brainstormId: string }) {
-  const brainstorm = await getSingleBrainstorm(brainstormId)
+  const session = await authMiddleware()
+  const brainstorm = await getSingleBrainstorm(brainstormId, session?.user?.id)
   const translate = await getTranslations('brainstorm')
   if (!brainstorm) return null
   return (
@@ -43,12 +42,10 @@ export async function BrainstormDialogHeader({
           {brainstorm.title}
         </DialogTitle>
         <div className="flex flex-row items-center gap-2">
-          <Button variant="ghost" size="icon" type="button">
-            <LinkIcon />
-          </Button>
-          <Button variant="ghost" size="icon" type="button">
-            <BookmarkIcon />
-          </Button>
+          <BrainstormBookmarkButton
+            brainstormId={brainstorm.id}
+            isBookmarked={brainstorm.isBookmarked}
+          />
           <Button type="button" size="sm">
             <FolderPlusIcon />
             {translate('makeActionButton')}
@@ -64,13 +61,15 @@ export async function BrainstormDetails({
   brainstormId,
   hideHeader,
   className,
+  sort,
 }: BrainstormDetailsProps) {
+  const session = await authMiddleware()
   const [locale, translate, brainstorm, brainstormComments] = await Promise.all(
     [
       getLocale(),
       getTranslations('brainstorm'),
-      getSingleBrainstorm(brainstormId),
-      getCommentsForBrainstorm(brainstormId),
+      getSingleBrainstorm(brainstormId, session?.user?.id),
+      getCommentsForBrainstorm(brainstormId, session?.user?.id, sort),
     ],
   )
   if (!brainstorm) {
@@ -116,10 +115,10 @@ export async function BrainstormDetails({
               </div>
             </div>
             <div className="flex flex-row items-center gap-2">
-              {/* TODO implement bookmarks */}
-              <Button variant="ghost" size="icon" type="button">
-                <BookmarkIcon />
-              </Button>
+              <BrainstormBookmarkButton
+                brainstormId={brainstorm.id}
+                isBookmarked={brainstorm.isBookmarked}
+              />
               <Button type="button" size="sm">
                 <FolderPlusIcon />
                 {translate('makeActionButton')}

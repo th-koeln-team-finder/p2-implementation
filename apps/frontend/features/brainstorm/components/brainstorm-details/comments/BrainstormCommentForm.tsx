@@ -3,7 +3,7 @@ import { LoginButton } from '@/features/auth/components/LoginButton'
 import { RegisterButton } from '@/features/auth/components/RegisterButton'
 import {
   addBrainstormComment,
-  revalidateComments,
+  revalidateBrainstormComments,
 } from '@/features/brainstorm/brainstormComment.actions'
 import type { OptimisticPayload } from '@/features/brainstorm/brainstormComment.hooks'
 import { useForm } from '@formsignals/form-react'
@@ -24,6 +24,7 @@ type BrainstormCommentFormProps = {
   className?: string
   brainstormId: string
   parentCommentId?: string
+  autoFocus?: boolean
   setOptimistic: (payload: OptimisticPayload) => void
 }
 
@@ -31,6 +32,7 @@ export function BrainstormCommentForm({
   className,
   brainstormId,
   parentCommentId,
+  autoFocus,
   setOptimistic,
 }: BrainstormCommentFormProps) {
   const translateError = useTranslations('validation')
@@ -52,7 +54,7 @@ export function BrainstormCommentForm({
       addBrainstormComment(values).catch((err) => {
         console.error('Error adding brainstorm comment', err)
       })
-      revalidateComments().catch((err) => {
+      revalidateBrainstormComments().catch((err) => {
         console.error('Error revalidating comments', err)
       })
     },
@@ -79,6 +81,7 @@ export function BrainstormCommentForm({
               <div className="relative flex-1">
                 <MessageCircleIcon className="-translate-y-1/2 absolute top-1/2 left-2 h-4 w-4 text-muted-foreground" />
                 <InputForm
+                  autoFocus={autoFocus}
                   placeholder={translate('inputPlaceholder')}
                   className="pr-8 pl-8"
                   disabled={!canCreate || form.isSubmitting.value}
@@ -97,16 +100,17 @@ export function BrainstormCommentForm({
           <FormError />
         </form.FormProvider>
       )}
-
-      <div className="flex flex-col items-center gap-1">
-        <p className="text-muted-foreground text-sm">
-          {translate('loginCommentWarning')}
-        </p>
-        <div className="flex flex-row items-center gap-2">
-          <LoginButton />
-          <RegisterButton />
+      {!canCreate && (
+        <div className="flex flex-col items-center gap-1">
+          <p className="text-muted-foreground text-sm">
+            {translate('loginCommentWarning')}
+          </p>
+          <div className="flex flex-row items-center gap-2">
+            <LoginButton />
+            <RegisterButton />
+          </div>
         </div>
-      </div>
+      )}
     </form>
   )
 }

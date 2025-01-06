@@ -1,5 +1,6 @@
 'use client'
 import type { PopulatedBrainstormComment } from '@/features/brainstorm/brainstorm.types'
+import { revalidateBrainstormComments } from '@/features/brainstorm/brainstormComment.actions'
 import { useOptimisticComments } from '@/features/brainstorm/brainstormComment.hooks'
 import { BrainstormComment } from '@/features/brainstorm/components/brainstorm-details/comments/BrainstormComment'
 import { BrainstormCommentForm } from '@/features/brainstorm/components/brainstorm-details/comments/BrainstormCommentForm'
@@ -13,26 +14,18 @@ import {
 import { Label } from '@repo/design-system/components/ui/label'
 import { ChevronDownIcon, ClockIcon, HeartIcon, PinIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { useQueryState } from 'nuqs'
 
 type BrainstormCommentListProps = {
   brainstormId: string
   comments: PopulatedBrainstormComment[]
 }
 
-type OptimisticPayload =
-  | {
-      action: 'add'
-      values: { comment: string; parentCommentId?: string }
-    }
-  | {
-      action: 'delete'
-      values: { id: string }
-    }
-
 export function BrainstormComments({
   brainstormId,
   comments,
 }: BrainstormCommentListProps) {
+  const [, setSort] = useQueryState('sort')
   const translate = useTranslations('brainstorm.comments')
   const [optimisticComments, setOptimistic] = useOptimisticComments(comments)
 
@@ -65,15 +58,30 @@ export function BrainstormComments({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={async () => {
+                await setSort('pinned')
+                await revalidateBrainstormComments()
+              }}
+            >
               <PinIcon />
               {translate('sortOptionPinned')}
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={async () => {
+                await setSort('newest')
+                await revalidateBrainstormComments()
+              }}
+            >
               <ClockIcon />
               {translate('sortOptionMostRecent')}
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={async () => {
+                await setSort('liked')
+                await revalidateBrainstormComments()
+              }}
+            >
               <HeartIcon />
               {translate('sortOptionMostPopular')}
             </DropdownMenuItem>

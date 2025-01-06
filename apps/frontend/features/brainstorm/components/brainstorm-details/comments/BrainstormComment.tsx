@@ -3,8 +3,9 @@ import { CanUserClient } from '@/features/auth/components/CanUser.client'
 import { UserAvatar } from '@/features/auth/components/UserAvatar'
 import type { PopulatedBrainstormComment } from '@/features/brainstorm/brainstorm.types'
 import {
-  revalidateComments,
+  revalidateBrainstormComments,
   toggleCommentLike,
+  toggleCommentPin,
 } from '@/features/brainstorm/brainstormComment.actions'
 import type { OptimisticPayload } from '@/features/brainstorm/brainstormComment.hooks'
 import { RemoveBrainstormCommentButton } from '@/features/brainstorm/components/brainstorm-details/RemoveBrainstormCommentButton'
@@ -26,13 +27,18 @@ export function BrainstormComment({
   setOptimistic,
 }: BrainstormCommentProps) {
   const { data: session } = useSession()
-  const userId = session?.user?.id
+  const _userId = session?.user?.id
   const translate = useTranslations('brainstorm.comments')
   const [replying, setReplying] = useState(false)
   const formatter = useFormatter()
   const canLike = useSessionPermission('commentBrainstorm', 'like')
   return (
-    <div className="flex w-full flex-row gap-4">
+    <div
+      className={cn(
+        'flex w-full flex-row gap-4 rounded p-2 pr-4',
+        comment.isPinned && 'bg-muted/30',
+      )}
+    >
       <UserAvatar user={comment.creator} />
       <div className="flex w-full flex-col gap-1">
         <p className="font-medium text-lg">{comment.creator?.name}</p>
@@ -61,39 +67,49 @@ export function BrainstormComment({
             variant="ghost"
             size="sm"
             onClick={async () => {
-              const newLiked = !comment.likes.some(
-                (like) => like.userId === userId,
-              )
+              const newLiked = !comment.isLiked
               setOptimistic({
-                action: 'toggleLike',
+                action: 'update',
                 values: {
                   id: comment.id,
-                  liked: newLiked,
+                  isLiked: newLiked,
+                  likeCount: comment.likeCount + (newLiked ? 1 : -1),
                 },
               })
               await toggleCommentLike(comment.id, newLiked)
-              await revalidateComments()
+              await revalidateBrainstormComments()
             }}
           >
             <HeartIcon
               className={cn(
-                comment.likes.some((like) => like.userId === userId) &&
-                  'fill-destructive stroke-destructive',
+                comment.isLiked && 'fill-destructive stroke-destructive',
               )}
             />
-            {formatter.number(comment.likes?.length, {
+            {formatter.number(comment.likeCount, {
               compactDisplay: 'short',
               notation: 'compact',
               maximumFractionDigits: 1,
             })}
           </Button>
-          <CanUserClient
-            target="commentBrainstorm"
-            action="pin"
-            data={comment.brainstorm}
-          >
-            <Button variant="ghost" size="icon">
-              <PinIcon />
+          <CanUserClient target="commentBrainstorm" action="pin" data={comment}>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={async () => {
+                setOptimistic({
+                  action: 'update',
+                  values: {
+                    id: comment.id,
+                    isPinned: !comment.isPinned,
+                  },
+                })
+                await toggleCommentPin(comment.id, !comment.isPinned)
+                await revalidateBrainstormComments()
+              }}
+            >
+              <PinIcon
+                className={comment.isPinned ? 'fill-foreground' : 'rotate-12'}
+              />
             </Button>
           </CanUserClient>
           <CanUserClient
@@ -112,6 +128,7 @@ export function BrainstormComment({
         {replying && (
           <BrainstormCommentForm
             className="mb-2"
+            autoFocus
             brainstormId={comment.brainstormId}
             parentCommentId={comment.id}
             setOptimistic={(values) => {

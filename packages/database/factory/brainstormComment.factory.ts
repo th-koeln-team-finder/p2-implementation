@@ -10,6 +10,7 @@ export function makeBrainstormComment(
     parentCommentId: parentCommentIds
       ? faker.helpers.arrayElement(parentCommentIds)
       : undefined,
+    isPinned: faker.datatype.boolean(0.1),
     brainstormId: faker.helpers.arrayElement(brainstormIds),
     comment: faker.lorem.paragraph(),
     createdById: faker.helpers.arrayElement(createdByIds),

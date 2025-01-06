@@ -10,8 +10,13 @@ import { Suspense } from 'react'
 
 export default async function BrainstormDetailPage({
   params,
-}: { params: Promise<{ brainstormId: string }> }) {
+  searchParams,
+}: {
+  params: Promise<{ brainstormId: string }>
+  searchParams: Promise<{ sort: string }>
+}) {
   const { brainstormId } = await params
+  const { sort } = await searchParams
   return (
     <NavigationModal>
       <DialogContent className="h-[80%] max-w-4xl">
@@ -22,6 +27,7 @@ export default async function BrainstormDetailPage({
           <BrainstormDetails
             className="h-[calc(80vh-136px)]"
             hideHeader
+            sort={sort}
             brainstormId={brainstormId}
           />
         </Suspense>

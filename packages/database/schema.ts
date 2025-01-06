@@ -66,6 +66,7 @@ export type BrainstormSelect = typeof brainstorms.$inferSelect
 export const brainstormComments = pgTable('brainstorm_comment', {
   id: uuid().primaryKey().notNull().defaultRandom(),
   comment: text('comment').notNull(),
+  isPinned: boolean('isPinned').notNull().default(false),
   brainstormId: uuid('brainstormId')
     .notNull()
     .references(() => brainstorms.id, { onDelete: 'cascade' }),

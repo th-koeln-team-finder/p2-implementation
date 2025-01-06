@@ -33,16 +33,17 @@ export type Permissions = {
   }
   commentBrainstorm: {
     create: never
-    view: { createdById: string }
+    view: { createdById: string | null }
     update: {
-      createdById: string
+      createdById: string | null
     }
     delete: {
-      createdById: string
-      brainstorm?: { createdById: string }
+      createdById: string | null
+      brainstorm?: { createdById: string | null } | undefined
     }
     pin: {
-      createdById: string
+      brainstorm?: { createdById: string | null } | undefined
+      parentCommentId: string | null
     }
     reply: {
       parentCommentId: string | null
@@ -74,7 +75,8 @@ export const PERMISSIONS = {
       delete: (user, data) =>
         data.createdById === user?.id ||
         data.brainstorm?.createdById === user?.id,
-      pin: (user, data) => user?.id === data.createdById,
+      pin: (user, data) =>
+        !data.parentCommentId && user?.id === data.brainstorm?.createdById,
       reply: (_, data) => !data.parentCommentId,
       like: true,
     },
@@ -112,7 +114,7 @@ export const PERMISSIONS = {
       create: true,
       update: true,
       delete: true,
-      pin: true,
+      pin: (_, data) => !data.parentCommentId,
       reply: (_, data) => !data.parentCommentId,
       like: true,
     },

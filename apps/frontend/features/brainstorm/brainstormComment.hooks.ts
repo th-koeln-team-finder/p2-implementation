@@ -13,8 +13,13 @@ export type OptimisticPayload =
       values: { id: string }
     }
   | {
-      action: 'toggleLike'
-      values: { id: string; liked: boolean }
+      action: 'update'
+      values: {
+        id: string
+        isPinned?: boolean
+        likeCount?: number
+        isLiked?: boolean
+      }
     }
 
 export function useOptimisticComments(comments: PopulatedBrainstormComment[]) {
@@ -30,7 +35,8 @@ export function useOptimisticComments(comments: PopulatedBrainstormComment[]) {
             creator: session?.user as UserSelect,
             createdById: session?.user?.id as string,
             createdAt: new Date(),
-            likes: [] as PopulatedBrainstormComment['likes'],
+            isLiked: false,
+            likeCount: 0,
             ...payload.values,
           } as PopulatedBrainstormComment
 
@@ -49,16 +55,14 @@ export function useOptimisticComments(comments: PopulatedBrainstormComment[]) {
             }
           })
         }
-        case 'toggleLike': {
+        case 'update': {
           const userId = session?.user?.id
           if (!userId) return state
           return state.map((comment) => {
             if (comment.id === payload.values.id) {
               return {
                 ...comment,
-                likes: payload.values.liked
-                  ? [...comment.likes, { userId }]
-                  : comment.likes.filter((like) => like.userId !== userId),
+                ...payload.values,
               }
             }
 
@@ -79,11 +83,7 @@ export function useOptimisticComments(comments: PopulatedBrainstormComment[]) {
                 }
                 return {
                   ...childComment,
-                  likes: payload.values.liked
-                    ? [...childComment.likes, { userId }]
-                    : childComment.likes.filter(
-                        (like) => like.userId !== userId,
-                      ),
+                  ...payload.values,
                 }
               }),
             }

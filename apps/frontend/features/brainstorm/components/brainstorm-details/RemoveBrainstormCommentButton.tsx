@@ -2,7 +2,7 @@
 
 import {
   removeBrainstormComment,
-  revalidateComments,
+  revalidateBrainstormComments,
 } from '@/features/brainstorm/brainstormComment.actions'
 import { Button } from '@repo/design-system/components/ui/button'
 import { TrashIcon } from 'lucide-react'
@@ -23,7 +23,7 @@ export function RemoveBrainstormCommentButton({
       onClick={async () => {
         onDeleteComment(commentId)
         await removeBrainstormComment(commentId)
-        await revalidateComments()
+        await revalidateBrainstormComments()
       }}
     >
       <TrashIcon />

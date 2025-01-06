@@ -12,7 +12,7 @@ type DialogHeaderLoadingProps = {
 export function DialogHeaderLoading({
   withoutIndent,
 }: DialogHeaderLoadingProps) {
-  return (
+  return !withoutIndent ? (
     <DialogHeader
       className={cn('flex flex-col gap-1', !withoutIndent && 'pr-4')}
     >
@@ -22,5 +22,13 @@ export function DialogHeaderLoading({
       </DialogTitle>
       <Skeleton className="h-4 w-1/4 rounded" />
     </DialogHeader>
+  ) : (
+    <div className={cn('flex flex-col gap-1', !withoutIndent && 'pr-4')}>
+      <div className="flex flex-row items-center justify-between">
+        <Skeleton className="h-9 w-1/3 rounded" />
+        <Skeleton className="h-9 w-1/4 rounded" />
+      </div>
+      <Skeleton className="h-4 w-1/4 rounded" />
+    </div>
   )
 }
