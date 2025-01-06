@@ -50,7 +50,15 @@ export function BrainstormCommentList({
       />
       <div className="mt-4 flex flex-row items-center justify-between">
         <Label>{translate('heading')}</Label>
-        <DropdownMenu>
+        <DropdownMenu
+          onOpenChange={() => {
+            // This fixes a bug with RadixUI where opening two modals
+            // (the dropdown is a modal) would cause the body to shift)
+            setTimeout(() => {
+              document.body.style.paddingRight = '0px'
+            }, 0)
+          }}
+        >
           <DropdownMenuTrigger asChild>
             <Button variant="ghost">
               {translate('sortButtonLabel')}
