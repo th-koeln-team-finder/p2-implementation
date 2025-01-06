@@ -18,27 +18,34 @@ import { Input, InputForm } from '@repo/design-system/components/ui/input'
 import { Label } from '@repo/design-system/components/ui/label'
 import {
   Select,
-  SelectContent,
+  SelectContent, SelectForm,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@repo/design-system/components/ui/select'
-import { MinusIcon, PlusIcon } from 'lucide-react'
 import { useState } from 'react'
 import { z } from 'zod'
-import {LoggingWysiwygEditor} from "@/features/test/components/LoggingWysiwygEditor";
+import {WysiwygEditorForm} from "@repo/design-system/components/WysiwygEditor";
+import {CreateProjectSkills} from "@/features/projects/components/CreateProjectForm/CreateProjectSkills";
 
 const registerAdapter = configureZodAdapter({
   takeFirstError: true,
 })
 
-//TODO Eingaben in Datenbank speichern
 type Index = {
   name: string
   description: string
   phase: string
   status: 'open' | 'closed'
+  skills: Array<{
+    skill: string
+    level: string
+  }>
   timetableOutput: string
+  timetableTable: Array<{
+    value: string
+  }>
+  timetableCustom: string
   issues: Array<{
     title: string
     description: string
@@ -50,22 +57,84 @@ export function CreateProjectForm() {
   //Stepper
   const steps = [
     { id: 'basics', title: 'Basis', description: 'Provide shipping details' },
-    //{ id: 'skills', title: 'Fähigkeiten', description: 'Review your details' },
+    { id: 'skills', title: 'Fähigkeiten', description: 'Review your details' },
     { id: 'timetable', title: 'Zeitplan', description: 'Review your details' },
     { id: 'links', title: 'Links', description: 'Review your details' },
     { id: 'review', title: 'Überblick', description: 'Review your details' },
   ]
 
-  //TODO Form Errors
   //Form Field Provider
   const form = useForm<Index, typeof ZodAdapter>({
     validatorAdapter: registerAdapter,
     defaultValues: {
       name: '',
-      description: '',
+      description: JSON.stringify({
+        root: {
+          children: [
+            {
+              children: [
+                {
+                  detail: 0,
+                  format: 0,
+                  mode: 'normal',
+                  style: '',
+                  text: 'This is the default node',
+                  type: 'text',
+                  version: 1,
+                },
+              ],
+              direction: 'ltr',
+              format: '',
+              indent: 0,
+              type: 'paragraph',
+              version: 1,
+              textFormat: 0,
+              textStyle: '',
+            },
+          ],
+          direction: 'ltr',
+          format: '',
+          indent: 0,
+          type: 'root',
+          version: 1,
+        },
+      }),
       phase: '',
       status: 'open',
+      skills: [{ skill: '', level: '' }],
       timetableOutput: '',
+      timetableTable: [],
+      timetableCustom: JSON.stringify({
+        root: {
+          children: [
+            {
+              children: [
+                {
+                  detail: 0,
+                  format: 0,
+                  mode: 'normal',
+                  style: '',
+                  text: 'This is the default node',
+                  type: 'text',
+                  version: 1,
+                },
+              ],
+              direction: 'ltr',
+              format: '',
+              indent: 0,
+              type: 'paragraph',
+              version: 1,
+              textFormat: 0,
+              textStyle: '',
+            },
+          ],
+          direction: 'ltr',
+          format: '',
+          indent: 0,
+          type: 'root',
+          version: 1,
+        },
+      }),
       issues: [],
     },
     onSubmit: async (values) => {
@@ -73,21 +142,10 @@ export function CreateProjectForm() {
     },
   })
 
-  const basicFieldGroup = useFieldGroup(form, ['name', 'phase', 'description', 'timetableOutput'])
+  const basicFieldGroup = useFieldGroup(form, ['name', 'phase', 'description', 'skills', 'timetableOutput', 'timetableTable', 'timetableCustom'])
 
-  //Skills
-  const [skills, setSkills] = useState([{ id: 1, name: '', level: '' }])
-
-  const addSkill = (index: number) => {
-    const newSkill = { id: Date.now(), name: '', level: '' }
-    const updatedSkills = [...skills]
-    updatedSkills.splice(index + 1, 0, newSkill)
-    setSkills(updatedSkills)
-  }
-
-  const removeSkill = (id: number) => {
-    setSkills(skills.filter((skill) => skill.id !== id))
-  }
+  console.log(form);
+  console.log(Object.keys(form));
 
   //Zeitplan
   const [timetableFormat, setTimetableFormat] = useState('')
@@ -98,12 +156,11 @@ export function CreateProjectForm() {
       steps={steps}
       currentIndex={currentIndex}
       onNext={async () => {
-        if (currentIndex === 0) {
+        if (currentIndex < steps.length) {
           await basicFieldGroup.handleSubmit()
           if (basicFieldGroup.isValid.peek()) {
-            setCurrentIndex(1)
+            setCurrentIndex(currentIndex + 1)
           }
-        } else if (currentIndex === 1) {
         }
       }}
       onPrevious={() => setCurrentIndex((prev) => prev - 1)}
@@ -151,137 +208,94 @@ export function CreateProjectForm() {
               FileUpload für Images
             </div>
             <div className="w-1/2">
-              {/*<form.FieldProvider
-                  name="description"
-                  validator={z.string().min(1)}
-                  validatorOptions={{
-                    validateOnChangeIfTouched: true,
-                  }}
-              >*/}
-                <Label>Description</Label>
-                {/*TODO Umbruch der Bearbeitungselemente & ID
-                <LoggingWysiwygEditor  id="description"/>
-                {<FieldError/>*/}
-              {/*</form.FieldProvider>*/}
+
+              <form.FieldProvider name="description">
+                <div>
+                  <Label>Description</Label>
+                  <WysiwygEditorForm/>
+                  {/*TODO Field Error <FieldError/>*/}
+                </div>
+              </form.FieldProvider>
             </div>
           </div>
         </form.FormProvider>
       </ContentItem>
 
       <ContentItem stepId="skills">
-        <form.FormProvider>
-          {skills.map((skill, index) => (
-              <div key={skill.id} className="flex w-full flex-row gap-4">
-                <div className="w-1/2">
-                  {/* TODO Skill Component auslagern */}
-                  <Label>Skill</Label>
-                  <Input id="skill" placeholder="Type here..."/>
-                </div>
-                <div className="flex w-1/2 flex-row justify-between">
-                  <div className="w-5/6">
-                    <Label>Skill-Level</Label>
-                    <br/>
-                    <Select>
-                      <SelectTrigger className="">
-                        <SelectValue
-                            id="skill-level"
-                            placeholder="Bitte auswählen..."
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1">1/Learning</SelectItem>
-                        <SelectItem value="2">2</SelectItem>
-                        <SelectItem value="3">3</SelectItem>
-                        <SelectItem value="4">4</SelectItem>
-                        <SelectItem value="5">5</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button
-                        onClick={() => removeSkill(skill.id)}
-                        variant="outline"
-                        className="mt-auto rounded-full p-2 hover:border-fuchsia-700"
-                    >
-                      <MinusIcon/>
-                    </Button>
-                    <Button
-                        onClick={() => addSkill(index)}
-                        variant="outline"
-                        className="mt-auto rounded-full border-fuchsia-700 p-2 text-fuchsia-700"
-                    >
-                      <PlusIcon/>
-                    </Button>
-                  </div>
-                </div>
-              </div>
-          ))}
-        </form.FormProvider>
+          <form.FieldProvider name="skills">
+            <CreateProjectSkills/>
+          </form.FieldProvider>
       </ContentItem>
       <ContentItem stepId="timetable">
-        <form.FormProvider>
+      <form.FormProvider>
           <div className="flex w-full flex-col gap-4">
             <div className="w-1/2">
               <form.FieldProvider
                   name="timetableOutput"
-                  validator={z.string().min(1, 'Bitte eine Auswahl treffen')}
-                  validatorOptions={{
-                    validateOnChangeIfTouched: true,
-                  }}
+                  validator={z
+                      .enum(['choose', 'table', 'custom'] as const)
+                      .refine(
+                          (v) => v !== 'choose',
+                          'Oh come on decide now already',
+                      )}
               >
-                <Label>Ausgabe der Timetable</Label>
-                <Select onValueChange={(value) => setTimetableFormat(value)}>
-                  <SelectTrigger>
-                    <SelectValue
-                        id="timetableOutput"
-                        placeholder="Bitte auswählen..."
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="table">Tabelle</SelectItem>
-                    <SelectItem value="custom">Benutzerdefiniert</SelectItem>
-                  </SelectContent>
-                </Select>
-              <FieldError/>
-            </form.FieldProvider>
-          </div>
-
-        {timetableFormat === 'table' && (
-            <div className="flex w-full flex-row gap-4">
-              <div className="w-1/7">
-                <Label>Montag</Label>
-                <Input id="tt-mon" placeholder="Type here..."/>
-                  </div>
-                  <div className="w-1/7">
-                    <Label>Dienstag</Label>
-                    <Input id="tt-tue" placeholder="Type here..."/>
-                  </div>
-                  <div className="w-1/7">
-                    <Label>Mittwoch</Label>
-                    <Input id="tt-wed" placeholder="Type here..."/>
-                  </div>
-                  <div className="w-1/7">
-                    <Label>Donnerstag</Label>
-                    <Input id="tt-thu" placeholder="Type here..."/>
-                  </div>
-                  <div className="w-1/7">
-                    <Label>Freitag</Label>
-                    <Input id="tt-fri" placeholder="Type here..."/>
-                  </div>
-                  <div className="w-1/7">
-                    <Label>Samstag</Label>
-                    <Input id="tt-sat" placeholder="Type here..."/>
-                  </div>
-                  <div className="w-1/7">
-                    <Label>Sontag</Label>
-                    <Input id="tt-sun" placeholder="Type here..."/>
-                  </div>
+                <div>
+                  <Label>Ausgabe der Timetable</Label>
+                  <SelectForm onValueChange={(value) => setTimetableFormat(value)}
+                              value={timetableFormat || 'choose'}>
+                    <SelectContent>
+                      <SelectItem value="choose">Bitte auswählen...</SelectItem>
+                      <SelectItem value="table">Tabelle</SelectItem>
+                      <SelectItem value="custom">Benutzerdefiniert</SelectItem>
+                    </SelectContent>
+                  </SelectForm>
+                  <FieldError/>
                 </div>
-            )}
+              </form.FieldProvider>
+            </div>
+
+            {timetableFormat === 'table' && (
+                <div className="flex w-full flex-row gap-4">
+                  <form.FieldProvider name="timetableTable">
+                    <div className="w-1/7">
+                      <Label>Montag</Label>
+                      <Input id="tt-mon" placeholder="Type here..."/>
+                    </div>
+                    <div className="w-1/7">
+                      <Label>Dienstag</Label>
+                      <Input id="tt-tue" placeholder="Type here..."/>
+                    </div>
+                    <div className="w-1/7">
+                      <Label>Mittwoch</Label>
+                      <Input id="tt-wed" placeholder="Type here..."/>
+                    </div>
+                    <div className="w-1/7">
+                      <Label>Donnerstag</Label>
+                      <Input id="tt-thu" placeholder="Type here..."/>
+                    </div>
+                    <div className="w-1/7">
+                      <Label>Freitag</Label>
+                      <Input id="tt-fri" placeholder="Type here..."/>
+                    </div>
+                    <div className="w-1/7">
+                      <Label>Samstag</Label>
+                      <Input id="tt-sat" placeholder="Type here..."/>
+                    </div>
+                    <div className="w-1/7">
+                      <Label>Sontag</Label>
+                      <Input id="tt-sun" placeholder="Type here..."/>
+                    </div>
+                  </form.FieldProvider>
+                </div>
+              )}
             {timetableFormat === 'custom' && (
                 <div className="w-1/2">
-                  <Label>Timetable</Label>
-                  <br/> WYSIWYG
+                  <form.FieldProvider name="timetableCustom">
+                    <div>
+                      <Label>Timetable</Label>
+                      <WysiwygEditorForm/>
+                    </div>
+                  </form.FieldProvider>
                 </div>
             )}
           </div>
@@ -316,7 +330,13 @@ export function CreateProjectForm() {
         </div>
       </ContentItem>
       <ContentItem stepId="review">
-        <div>Übersicht aller Angaben</div>
+        <form.FormProvider>
+          <h2 className='font-semibold text-lg'>Übersicht aller Angaben</h2>
+
+            <Label>Projektname</Label>
+          {/* <p>{form._data.v.name || 'Nicht angegeben'}</p> */}
+
+        </form.FormProvider>
       </ContentItem>
     </StepperComponent>
   )

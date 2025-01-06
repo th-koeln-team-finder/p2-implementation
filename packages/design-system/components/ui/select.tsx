@@ -8,29 +8,40 @@ import { cn } from '@/lib/utils'
 import { useFieldContext } from '@formsignals/form-react'
 import { useComputed } from '@preact/signals-react'
 import type { SelectProps, SelectValueProps } from '@radix-ui/react-select'
+import {util} from "zod";
+import Omit = util.Omit;
 
 const Select = SelectPrimitive.Root
 
 type SelectFormProps = Omit<SelectProps, 'value' | 'onValueChange'> & {
-  className?: string
-  valueProps?: Omit<SelectValueProps, 'className'>
+  className?: string,
+  valueProps?: Omit<SelectValueProps, 'className'>,
+  onValueChange?: (value: string) => void,
+  value?: string
 }
 const SelectForm = ({
-  children,
-  className,
-  valueProps,
-  ...props
-}: SelectFormProps) => {
+                      children,
+                      className,
+                      valueProps,
+                      onValueChange,
+                      value,
+                      ...props
+                    }: SelectFormProps) => {
   const field = useFieldContext()
   const errorClassName = useComputed(
     () => !field.isValid.value && 'border-destructive',
   )
   const classNames = cn(className, errorClassName.value)
 
+  const handleChange = (newValue: string) => {
+    field.handleChange(newValue)
+    onValueChange?.(newValue)
+  }
+
   return (
     <Select
       value={field.data?.value}
-      onValueChange={(newValue) => field.handleChange(newValue)}
+      onValueChange={handleChange}
       {...props}
     >
       <SelectTrigger>
