@@ -2,17 +2,23 @@
 
 import { initialWysiwygConfig } from '@/components/WysiwygEditor/wysiwyg.config'
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
-import type { EditorState } from 'lexical'
+import { $getRoot, type EditorState } from 'lexical'
 
 type WysiwygRendererProps = {
   className?: string
   value?: EditorState | string
+  renderAsString?: boolean
 }
 
-export function WysiwygRenderer({ className, value }: WysiwygRendererProps) {
+export function WysiwygRenderer({
+  className,
+  value,
+  renderAsString,
+}: WysiwygRendererProps) {
   return (
     <LexicalComposer
       initialConfig={{
@@ -21,10 +27,21 @@ export function WysiwygRenderer({ className, value }: WysiwygRendererProps) {
         editable: false,
       }}
     >
-      <RichTextPlugin
-        contentEditable={<ContentEditable className={className} />}
-        ErrorBoundary={LexicalErrorBoundary}
-      />
+      {!renderAsString && (
+        <RichTextPlugin
+          contentEditable={<ContentEditable className={className} />}
+          ErrorBoundary={LexicalErrorBoundary}
+        />
+      )}
+      {renderAsString && <LexicalTextContent />}
     </LexicalComposer>
   )
+}
+
+function LexicalTextContent({ className }: { className?: string }) {
+  const [editor] = useLexicalComposerContext()
+  const editorStateTextString = editor.read(() => $getRoot().getTextContent())
+  return editorStateTextString.split('\n').map((line, index) => {
+    return <p key={index}>{line}</p>
+  })
 }

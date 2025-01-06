@@ -19,13 +19,13 @@ export default async function BrainstormDetailPage({
   const { sort } = await searchParams
   return (
     <NavigationModal>
-      <DialogContent className="h-[80%] max-w-4xl">
+      <DialogContent className="flex h-full min-w-full flex-col sm:max-h-[80vh] sm:min-w-0 sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
         <Suspense fallback={<DialogHeaderLoading />}>
           <BrainstormDialogHeader brainstormId={brainstormId} />
         </Suspense>
         <Suspense fallback={<BrainstormDetailsLoading hideHeader />}>
           <BrainstormDetails
-            className="h-[calc(80vh-136px)]"
+            className="h-full"
             hideHeader
             sort={sort}
             brainstormId={brainstormId}

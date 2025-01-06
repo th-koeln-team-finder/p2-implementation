@@ -30,7 +30,9 @@ export function BrainstormBookmarkButton({
       variant="ghost"
       size="icon"
       type="button"
-      onClick={async () => {
+      onClick={async (e) => {
+        e.stopPropagation()
+        e.preventDefault()
         startTransition(() => dispatchOptimistic(!optimisticBookmarked))
         await toggleBrainstormBookmark(brainstormId, !optimisticBookmarked)
         await revalidateBrainstorms()

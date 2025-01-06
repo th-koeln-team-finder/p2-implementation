@@ -7,7 +7,7 @@ export function BrainstormDetailsLoading({
   hideHeader,
 }: BrainstormDetailsLoadingProps) {
   return (
-    <div className="-mr-3 mt-4 flex flex-col gap-2 overflow-auto pr-3 pb-4">
+    <div className="-mr-3 flex flex-col gap-2 overflow-auto pr-3 pb-4">
       {!hideHeader && <DialogHeaderLoading withoutIndent />}
       <Skeleton className="min-h-5 w-full rounded" />
       <Skeleton className="min-h-5 w-full rounded" />

@@ -6,9 +6,9 @@ type BrainstormTagListProps = {
 
 export function BrainstormTagList({ tags }: BrainstormTagListProps) {
   return (
-    <div className="flex flex-row gap-1">
+    <div className="flex flex-row flex-wrap gap-1">
       {tags.map(({ tag }) => (
-        <Badge variant="tag" key={tag.id}>
+        <Badge variant="tag" key={tag.id} className="text-nowrap">
           {tag.name}
         </Badge>
       ))}

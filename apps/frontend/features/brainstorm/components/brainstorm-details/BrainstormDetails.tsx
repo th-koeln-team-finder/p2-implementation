@@ -5,7 +5,7 @@ import { getCommentsForBrainstorm } from '@/features/brainstorm/brainstormCommen
 import { BrainstormBookmarkButton } from '@/features/brainstorm/components/brainstorm-details/BrainstormBookmarkButton'
 import { BrainstormLinksResources } from '@/features/brainstorm/components/brainstorm-details/BrainstormLinksResources'
 import { BrainstormTagList } from '@/features/brainstorm/components/brainstorm-details/BrainstormTagList'
-import { BrainstormComments } from '@/features/brainstorm/components/brainstorm-details/comments/BrainstormComments'
+import { BrainstormCommentList } from '@/features/brainstorm/components/brainstorm-details/comments/BrainstormCommentList'
 import { Link, redirect } from '@/features/i18n/routing'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import {
@@ -81,7 +81,7 @@ export async function BrainstormDetails({
   return (
     <section
       className={cn(
-        '-mr-3 mt-4 flex flex-col gap-2 overflow-auto pr-3 pb-4',
+        '-mr-3 flex flex-col gap-2 overflow-auto pr-3 pb-4',
         className,
       )}
     >
@@ -141,7 +141,7 @@ export async function BrainstormDetails({
           ]}
         />
       </div>
-      <BrainstormComments
+      <BrainstormCommentList
         brainstormId={brainstormId}
         comments={brainstormComments}
       />

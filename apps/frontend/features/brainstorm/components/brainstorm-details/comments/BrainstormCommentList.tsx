@@ -21,7 +21,7 @@ type BrainstormCommentListProps = {
   comments: PopulatedBrainstormComment[]
 }
 
-export function BrainstormComments({
+export function BrainstormCommentList({
   brainstormId,
   comments,
 }: BrainstormCommentListProps) {

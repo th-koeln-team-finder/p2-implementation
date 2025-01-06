@@ -4,8 +4,23 @@ import { eq, sql } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
 
 export const getBrainstorms = cache(
-  () => {
-    return db.query.brainstorms.findMany()
+  (userId?: string) => {
+    return db.query.brainstorms.findMany({
+      extras: {
+        isBookmarked: !userId
+          ? sql<boolean>`false`.as('isBookmarked')
+          : sql<boolean>`EXISTS (SELECT id FROM "brainstorm_bookmark" bookmark WHERE bookmark."brainstormId" = "brainstorms"."id" AND bookmark."userId" = ${userId})`.as(
+              'isBookmarked',
+            ),
+      },
+      with: {
+        tags: {
+          with: {
+            tag: true,
+          },
+        },
+      },
+    })
   },
   ['getBrainstorms'],
   { tags: [BrainstormCacheTags.base] },

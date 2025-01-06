@@ -12,7 +12,7 @@ export default async function BrainstormDetailPage({
   const { brainstormId } = await params
   const { sort } = await searchParams
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="container mx-auto px-4">
       <Suspense fallback={<BrainstormDetailsLoading />}>
         <BrainstormDetails brainstormId={brainstormId} sort={sort} />
       </Suspense>
