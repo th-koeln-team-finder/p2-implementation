@@ -8,7 +8,9 @@ export function useSessionPermission<
 >(
   target: Obj,
   action: Action,
-  ...data: ConditionalMethodParam<Permissions[Obj][Action]>
+  ...data: Permissions[Obj][Action] extends never
+    ? []
+    : [Permissions[Obj][Action]]
 ) {
   const { data: session } = useSession()
   const user = session?.user
@@ -17,5 +19,3 @@ export function useSessionPermission<
     [user, target, action, data],
   )
 }
-
-type ConditionalMethodParam<Value> = Value extends never ? [] : [Value]
