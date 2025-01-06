@@ -1,6 +1,5 @@
 'use client'
 import { type Permissions, hasPermission } from '@repo/authorization'
-import type { UserSelect } from '@repo/database/schema'
 import { useSession } from 'next-auth/react'
 import type { PropsWithChildren, ReactNode } from 'react'
 
@@ -10,9 +9,10 @@ type CanUserProps<
 > = {
   target: Obj
   action: Action
-  data?: Permissions[Obj][Action]
   fallback?: ReactNode
-}
+} & (Permissions[Obj][Action] extends never
+  ? { data?: undefined }
+  : { data: Permissions[Obj][Action] })
 
 export function CanUserClient<
   Obj extends keyof Permissions,
@@ -20,13 +20,13 @@ export function CanUserClient<
 >({
   target,
   action,
-  data = undefined as Permissions[Obj][Action],
+  data,
   children,
   fallback,
 }: PropsWithChildren<CanUserProps<Obj, Action>>): ReactNode {
   const { data: session } = useSession()
-  if (!session?.user) return fallback
-  if (!hasPermission(session.user as UserSelect, target, action, data))
+  // biome-ignore lint/suspicious/noExplicitAny: This is the correct type, TypeScript just doesn't know
+  if (!hasPermission(session?.user, target, action, ...([data] as any)))
     return fallback
   return children
 }
