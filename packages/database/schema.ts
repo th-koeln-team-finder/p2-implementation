@@ -63,6 +63,13 @@ export const projects = pgTable('projects', {
   allowApplications: boolean().notNull().default(true),
   additionalInfo: json().default({}),
 })
+export const ProjectSkill = pgTable('ProjectSkill', {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    projectId: integer().notNull().references(() => projects.id),
+    skill: varchar('skill', { length: 255 }).notNull(),
+    level: varchar('level', { length: 255 }).notNull(),
+});
+
 export const ProjectIssue = pgTable('ProjectIssue', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   projectId: integer()
