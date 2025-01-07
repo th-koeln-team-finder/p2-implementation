@@ -47,7 +47,7 @@ export type UserSelect = typeof users.$inferSelect
 */
 export const skills = pgTable('skills', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  skill: varchar({ length: 255 }).notNull(),
+  skill: varchar({ length: 255 }).notNull().unique(),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 })

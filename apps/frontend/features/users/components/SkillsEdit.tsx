@@ -2,7 +2,7 @@
 
 import {ScrollArea} from "@repo/design-system/components/ui/scroll-area";
 import {SkillsSelect, UserSkillsSelect} from "@repo/database/schema";
-import {PlusIcon} from "lucide-react";
+import {Delete, PlusIcon, Trash} from "lucide-react";
 import {useTranslations} from "next-intl";
 import {Button} from "@repo/design-system/components/ui/button";
 import {Popover, PopoverContent, PopoverTrigger} from "@repo/design-system/components/ui/popover";
@@ -11,7 +11,7 @@ import {searchSkills} from "@/features/skills/skills.queries";
 import {MutableRefObject, useCallback, useRef, useState} from "react";
 import {addSkill, revalidateSkills} from "@/features/skills/skills.actions";
 import {Combobox} from "@repo/design-system/components/ui/combobox";
-import {addUserSkill} from "@/features/users/users.actions";
+import {addUserSkill, removeUserSkill, updateUserSkillLevel} from "@/features/users/users.actions";
 
 function debounce<T extends (...args: any[]) => void>(func: T, timeout: number): (...args: Parameters<T>) => void {
   let timer: NodeJS.Timeout;
@@ -35,6 +35,7 @@ export default function SkillsEdit({userSkills, userId}: {
   const t = useTranslations()
 
   const [skillInput, setSkillInput] = useState('')
+  const [skillInputOpen, setSkillInputOpen] = useState(false)
   const [suggestions, setSuggestions] = useState<ComboboxOption[]>([])
   const [suggestionsLoading, setSuggestionsLoading] = useState(false)
   const popoverTrigger: MutableRefObject<HTMLButtonElement | null> = useRef(null);
@@ -82,51 +83,60 @@ export default function SkillsEdit({userSkills, userId}: {
     await revalidateSkills()
   }
 
+  const handleRemoveSkill = async (skillId: number) => {
+    await removeUserSkill(skillId)
+    await revalidateSkills()
+  }
+
+  const handleUpdateSkillLevel = async (skillId: number, level: number) => {
+    await updateUserSkillLevel(skillId, level)
+    await revalidateSkills()
+  }
+
   if (!userSkills) {
     return null
   }
 
   return (
     <ScrollArea
-      className="h-72 w-48 rounded-md border"
+      className="h-72 w-48 rounded-md border p-4 min-w-80"
     >
-      <div className="p-4">
         <h4 className="mb-4 font-medium text-sm leading-none">Skills</h4>
         {userSkills.map((userSkill, index) => (
-          <div key={index} className="flex items-center gap-2.5">
+          <div key={index} className="max-w-sm grid grid-cols-3 items-center justify-around py-1">
             <div className="text-sm">{userSkill.skill.skill}</div>
             <div className="flex items-center gap-2.5">
               {[...Array(5)].map((_, i) => (
-                <div key={i} className={`h-2 w-2 rounded-full ${i < userSkill.level ? 'bg-primary' : 'bg-gray-200'}`}/>
+                <div key={i}
+                     className={`h-2 w-2 rounded-full cursor-pointer ${i < userSkill.level ? 'bg-primary' : 'bg-gray-200'}`}
+                     onClick={() => handleUpdateSkillLevel(userSkill.id, i + 1)}
+                />
               ))}
             </div>
+            <Trash className="cursor-pointer place-self-end w-4 h-4 text-destructive" onClick={() => handleRemoveSkill(userSkill.id)}/>
           </div>
         ))}
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button ref={popoverTrigger} variant="outline" size="sm">
+        <div className="flex justify-center my-2">
+          {!skillInputOpen ? (
+            <Button ref={popoverTrigger} onClick={() => setSkillInputOpen(true)} variant="outline" size="sm">
               <PlusIcon/>
             </Button>
-          </PopoverTrigger>
-          <PopoverContent>
-            <Label htmlFor="search">Skill</Label>
-            <div className="flex w-full max-w-sm items-center space-x-2">
-              <Combobox
-                options={suggestions}
-                onInput={handleInput}
-                isLoading={suggestionsLoading}
-                onSelect={addSelectedSkill}
-              >
+          ) : (
+            <div>
+              <Label htmlFor="search">Skill</Label>
+              <div className="flex w-full max-w-sm items-center space-x-2">
+                <Combobox
+                  options={suggestions}
+                  onInput={handleInput}
+                  isLoading={suggestionsLoading}
+                  onSelect={addSelectedSkill}
+                >
 
-              </Combobox>
-              <Button size="sm" onClick={insertAndAddSkill}>
-                {t('general.add')}
-              </Button>
+                </Combobox>
+              </div>
             </div>
-
-          </PopoverContent>
-        </Popover>
-      </div>
+          )}
+        </div>
     </ScrollArea>
   )
 }

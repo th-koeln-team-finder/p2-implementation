@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
+import {Check, ChevronsUpDown} from "lucide-react"
 
-import { cn } from "@repo/design-system/lib/utils"
-import { Button } from "./button"
+import {cn} from "@repo/design-system/lib/utils"
+import {Button} from "./button"
 import {
   Command,
   CommandEmpty,
@@ -82,7 +82,7 @@ export function Combobox({
           className="w-[200px] justify-between"
         >
           {selectedOption?.label || placeholder}
-          <ChevronsUpDown className="opacity-50" />
+          <ChevronsUpDown className="opacity-50"/>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
