@@ -9,7 +9,7 @@ export async function loadMoreProjects(count = 10, offset = 0) {
 }
 
 export async function addUserSkill(userSkill: UserSkillsInsert) {
-  return await db
+  await db
     .insert(Schema.userSkills)
     .values(userSkill)
     .execute()

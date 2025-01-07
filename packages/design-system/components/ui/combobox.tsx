@@ -81,12 +81,12 @@ export function Combobox({
           aria-label={ariaLabel}
           className="w-[200px] justify-between"
         >
-          {selectedOption?.label || placeholder} {JSON.stringify(options)}
+          {selectedOption?.label || placeholder}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
-        <Command>
+        <Command shouldFilter={false}>
           <CommandInput
             placeholder="Search..."
             className="h-9"

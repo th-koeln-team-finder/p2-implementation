@@ -13,7 +13,7 @@ export async function checkUsernameTaken(username: string) {
 }
 
 export const getUser = cache(
-  async (id: string) => db.query.users.findFirst({ where: eq(users.id, id) }),
+  async (id: string) => db.query.users.findFirst({where: eq(users.id, id)}),
   ['getUser'],
 )
 
@@ -31,11 +31,15 @@ export async function getUserProjects(userId: number, limit: number, offset: num
   return previouslyWorkedOn
 }
 
-export async function getUserSkills(userId: string) {
-  return db.query.userSkills.findMany({
-    where: eq(Schema.userSkills.userId, userId),
-    with: {
-      skill: true,
-    }
-  });
-}
+export const getUserSkills = cache(
+  async (userId: string) => {
+    return db.query.userSkills.findMany({
+      where: eq(Schema.userSkills.userId, userId),
+      with: {
+        skill: true,
+      }
+    });
+  },
+  ['getUserSkills'],
+  {tags: ['user-skills']}
+)

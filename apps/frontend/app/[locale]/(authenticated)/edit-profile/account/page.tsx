@@ -29,8 +29,6 @@ export default async function Account() {
   const session = await authMiddleware()
   const user = session!.user! as UserSelect
 
-  const skills = await getUserSkills(user.id)
-
   function deleteAccount() {
     alert('Account deleted')
   }

@@ -9,7 +9,7 @@ import {Popover, PopoverContent, PopoverTrigger} from "@repo/design-system/compo
 import {Label} from "@repo/design-system/components/ui/label";
 import {searchSkills} from "@/features/skills/skills.queries";
 import {MutableRefObject, useCallback, useRef, useState} from "react";
-import {addSkill} from "@/features/skills/skills.actions";
+import {addSkill, revalidateSkills} from "@/features/skills/skills.actions";
 import {Combobox} from "@repo/design-system/components/ui/combobox";
 import {addUserSkill} from "@/features/users/users.actions";
 
@@ -64,11 +64,11 @@ export default function SkillsEdit({userSkills, userId}: {
     addSkill({
       skill: skillInput
     }).then(response => {
-      addSelectedSkill(response.id.toString())
+      addSelectedSkill(response.toString())
     })
   }
 
-  const addSelectedSkill = (value: string | null) => {
+  const addSelectedSkill = async (value: string | null) => {
     if (!value) {
       return
     }
@@ -79,6 +79,7 @@ export default function SkillsEdit({userSkills, userId}: {
     }).then(() => {
       popoverTrigger.current?.click()
     })
+    await revalidateSkills()
   }
 
   if (!userSkills) {
@@ -110,7 +111,6 @@ export default function SkillsEdit({userSkills, userId}: {
           <PopoverContent>
             <Label htmlFor="search">Skill</Label>
             <div className="flex w-full max-w-sm items-center space-x-2">
-              {JSON.stringify(suggestions)}
               <Combobox
                 options={suggestions}
                 onInput={handleInput}

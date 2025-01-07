@@ -7,8 +7,8 @@ import Ratings from "@/features/users/components/Ratings";
 import {getUser} from "@/features/users/users.query";
 
 export default async function Profile({
-                                        params,
-                                      }: Readonly<{
+  params,
+}: Readonly<{
   params: Promise<{ id: string }>
 }>) {
   const id: string = (await params).id
