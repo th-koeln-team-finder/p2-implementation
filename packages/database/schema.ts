@@ -48,8 +48,8 @@ export type UserSelect = typeof users.$inferSelect
 export const skills = pgTable('skills', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   skill: varchar({ length: 255 }).notNull(),
-  createdAt: timestamp().notNull(),
-  updatedAt: timestamp().notNull(),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
 })
 export type SkillsInsert = typeof skills.$inferInsert
 export type SkillsSelect = typeof skills.$inferSelect
@@ -59,8 +59,8 @@ export const userSkills = pgTable('userSkills', {
   userId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),
   skillId: integer('skillId').notNull().references(() => skills.id, {onDelete: 'cascade'}),
   level: integer().notNull(),
-  createdAt: timestamp().notNull(),
-  updatedAt: timestamp().notNull(),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
 })
 export type UserSkillsInsert = typeof userSkills.$inferInsert
 export type UserSkillsSelect = typeof userSkills.$inferSelect
@@ -77,8 +77,8 @@ export const userSkillVerification = pgTable('userSkillVerification', {
   verifierId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),
   userSkillId: integer('skillId').notNull().references(() => userSkills.id, {onDelete: 'cascade'}),
   status: varchar({ enum: ['pending', 'approved', 'rejected'] }).notNull(),
-  createdAt: timestamp().notNull(),
-  updatedAt: timestamp().notNull(),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
 })
 export type UserSkillVerificationInsert = typeof userSkillVerification.$inferInsert
 export type UserSkillVerificationSelect = typeof userSkillVerification.$inferSelect
@@ -88,7 +88,7 @@ export const userRatings = pgTable('userRatings', {
   raterId: uuid('userId').notNull().references(() => users.id),
   rateeId: uuid('userId').notNull().references(() => users.id),
   ratingType: varchar({ enum: ['friendly', 'reliable'] }).notNull(),
-  createdAt: timestamp().notNull(),
+  createdAt: timestamp().notNull().defaultNow(),
 })
 export type UserRatingsInsert = typeof userRatings.$inferInsert
 export type UserRatingsSelect = typeof userRatings.$inferSelect
@@ -97,7 +97,7 @@ export const userFollows = pgTable('userFollows', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   followerId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),
   followeeId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),
-  createdAt: timestamp().notNull(),
+  createdAt: timestamp().notNull().defaultNow(),
 })
 export type UserFollowsInsert = typeof userRatings.$inferInsert
 
@@ -117,8 +117,8 @@ export const userProjects = pgTable('userProjects', {
   projectLeftDate: date(),
   projectDescription: varchar({ length: 255 }),
   visible: boolean().notNull().default(true),
-  createdAt: timestamp().notNull(),
-  updatedAt: timestamp().notNull(),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
 })
 export type UserProjectsInsert = typeof userProjects.$inferInsert
 export type UserProjectsSelect = typeof userProjects.$inferSelect
@@ -129,8 +129,8 @@ export const userProjectSettings = pgTable('userProjectSettings', {
   projectId: integer('projectId').notNull().references(() => projects.id),
   enableNotifications: boolean().notNull().default(true),
   preferredNotificationChannel: varchar({ enum: ['email', 'push', 'both'] }).notNull().default('email'),
-  createdAt: timestamp().notNull(),
-  updatedAt: timestamp().notNull(),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
 })
 
 /**
