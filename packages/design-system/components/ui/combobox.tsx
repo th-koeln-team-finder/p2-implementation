@@ -81,7 +81,7 @@ export function Combobox({
           aria-label={ariaLabel}
           className="w-[200px] justify-between"
         >
-          {selectedOption?.label || placeholder}
+          {selectedOption?.label || placeholder} {JSON.stringify(options)}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>

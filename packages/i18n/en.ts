@@ -1,9 +1,12 @@
 export const en = {
   general: {
     save: 'Save',
+    search: 'Suchen',
     cancel: 'Cancel',
     delete: 'Delete',
     continue: 'Continue',
+    add: 'Add',
+    remove: 'Remove',
   },
   test: {
     dataTitle: 'Test Data',
@@ -84,6 +87,7 @@ export const en = {
       deleteAreYouSure: 'Are you sure you want to delete your account?',
       activateNotifications: 'Activate notifications',
       selectNotificationType: 'Select notification type',
+      searchSkills: 'Search skill',
     }
   },
   validation: {

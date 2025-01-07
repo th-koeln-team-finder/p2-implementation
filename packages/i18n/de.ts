@@ -3,9 +3,12 @@ import type {Language} from './en'
 export const de: Language = {
   general: {
     save: 'Speichern',
+    search: 'Suchen',
     cancel: 'Abbrechen',
     delete: 'Löschen',
     continue: 'Fortfahren',
+    add: 'Hinzufügen',
+    remove: 'Entfernen',
   },
   test: {
     dataTitle: 'Testdaten',
@@ -19,7 +22,6 @@ export const de: Language = {
       removeAll: 'Alle entfernen',
     },
   },
-
   projects: {
     title: 'Projekte',
     location: 'Standort/Treffpunkt',
@@ -85,6 +87,7 @@ export const de: Language = {
       deleteAreYouSure: 'Are you sure you want to delete your account?',
       activateNotifications: 'Benachrichtigungen aktivieren',
       selectNotificationType: 'Benachrichtigungstyp auswählen',
+      searchSkills: 'Skill suchen',
     }
   },
   validation: {
