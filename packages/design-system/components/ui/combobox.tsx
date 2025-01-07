@@ -19,73 +19,104 @@ import {
   PopoverTrigger,
 } from "./popover"
 
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-]
+type Option = {
+  value: string
+  label: string
+}
 
-export function ComboboxDemo() {
+type ComboboxProps = {
+  options: Option[]
+  placeholder?: string
+  noResultsMessage?: string
+  onSelect: (value: string | null) => void
+  selectedValue?: string | null
+  onOpen?: () => void
+  onInput?: (input: string) => void
+  isLoading?: boolean
+  ariaLabel?: string
+}
+
+export function Combobox({
+                           options,
+                           placeholder = "Select an option...",
+                           noResultsMessage = "No results found.",
+                           onSelect,
+                           selectedValue,
+                           onOpen,
+                           onInput,
+                           isLoading = false,
+                           ariaLabel = "combobox",
+                         }: ComboboxProps) {
   const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
+  const [inputValue, setInputValue] = React.useState("")
+
+  const handleOpenChange = (isOpen: boolean) => {
+    setOpen(isOpen)
+    if (isOpen && onOpen) {
+      onOpen()
+    }
+  }
+
+  const handleInputChange = (value: string) => {
+    setInputValue(value)
+    if (onInput) {
+      onInput(value)
+    }
+  }
+
+  const handleSelect = (value: string) => {
+    onSelect(value === selectedValue ? null : value)
+    setOpen(false)
+  }
+
+  const selectedOption = options.find((option) => option.value === selectedValue)
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
           role="combobox"
           aria-expanded={open}
+          aria-label={ariaLabel}
           className="w-[200px] justify-between"
         >
-          {value
-            ? frameworks.find((framework) => framework.value === value)?.label
-            : "Select framework..."}
+          {selectedOption?.label || placeholder}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." className="h-9" />
+          <CommandInput
+            placeholder="Search..."
+            className="h-9"
+            value={inputValue}
+            onValueChange={handleInputChange}
+          />
           <CommandList>
-            <CommandEmpty>No framework found.</CommandEmpty>
-            <CommandGroup>
-              {frameworks.map((framework) => (
-                <CommandItem
-                  key={framework.value}
-                  value={framework.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue)
-                    setOpen(false)
-                  }}
-                >
-                  {framework.label}
-                  <Check
-                    className={cn(
-                      "ml-auto",
-                      value === framework.value ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                </CommandItem>
-              ))}
-            </CommandGroup>
+            {isLoading ? (
+              <CommandEmpty>Loading...</CommandEmpty>
+            ) : options.length === 0 ? (
+              <CommandEmpty>{noResultsMessage}</CommandEmpty>
+            ) : (
+              <CommandGroup>
+                {options.map((option) => (
+                  <CommandItem
+                    key={option.value}
+                    value={option.value}
+                    onSelect={() => handleSelect(option.value)}
+                  >
+                    {option.label}
+                    <Check
+                      className={cn(
+                        "ml-auto",
+                        selectedValue === option.value ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
           </CommandList>
         </Command>
       </PopoverContent>
