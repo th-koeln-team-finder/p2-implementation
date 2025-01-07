@@ -61,7 +61,7 @@ export const en = {
     },
   },
   users: {
-    title: 'Profile',
+    title: 'Page',
     lastActivity: 'Last activity',
     skills: 'Skills',
     previouslyWorkedOn: 'Previously worked on',
@@ -70,6 +70,7 @@ export const en = {
     friendly: 'Friendly',
     veryFriendly: 'Very friendly',
     ratingText: 'people have rated the person as “very friendly”',
+    editProfile: 'Edit profile',
     settings: {
       title: 'User settings',
       profile: 'Profile',

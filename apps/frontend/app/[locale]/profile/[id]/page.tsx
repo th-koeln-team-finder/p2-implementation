@@ -1,17 +1,23 @@
 import {getTranslations} from "next-intl/server";
 import {Avatar, AvatarFallback, AvatarImage} from "@repo/design-system/components/ui/avatar";
-import {authMiddleware} from "@/auth";
-import {UserSelect} from "@repo/database/schema";
 import PreviouslyWorkedOn from "@/features/users/components/PreviouslyWorkedOn";
 import {Button} from "@repo/design-system/components/ui/button";
-import {UserPen} from "lucide-react";
+import {UserPlus} from "lucide-react";
 import Ratings from "@/features/users/components/Ratings";
-import {Link} from "@/features/i18n/routing";
+import {getUser} from "@/features/users/users.query";
 
-export default async function Page() {
+export default async function Profile({
+                                        params,
+                                      }: Readonly<{
+  params: Promise<{ id: string }>
+}>) {
+  const id: string = (await params).id
   const translate = await getTranslations()
-  const session = await authMiddleware()
-  const user = session!.user! as UserSelect
+  const user = await getUser(id)
+
+  if (!user) {
+    return null
+  }
 
   const lastActivity = new Date()
 
@@ -40,12 +46,10 @@ export default async function Page() {
           </p>
           <div className="flex items-center gap-4">
             <h1 className="inline font-bold text-3xl">{user.name}</h1>
-            <Link href="/edit-profile">
-              <Button>
-                <UserPen/>
-                {translate('users.editProfile')}
-              </Button>
-            </Link>
+            <Button>
+              <UserPlus/>
+              {translate('users.follow')}
+            </Button>
             <Ratings/>
           </div>
           <p className="text-muted-foreground text-xs leading-none">

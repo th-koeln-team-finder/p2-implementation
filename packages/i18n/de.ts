@@ -72,6 +72,7 @@ export const de: Language = {
     friendly: 'Freundlich',
     veryFriendly: 'Sehr freundlich',
     ratingText: 'Personen haben die Person als "sehr freundlich" bewertet',
+    editProfile: 'Profil bearbeiten',
     settings: {
       title: 'Benutzereinstellungen',
       profile: 'Profil',
