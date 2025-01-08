@@ -1,12 +1,12 @@
 'use client'
 
-import { initialWysiwygConfig } from '@/components/WysiwygEditor/wysiwyg.config'
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { $getRoot, type EditorState } from 'lexical'
+import { initialWysiwygConfig } from '../../components/WysiwygEditor/wysiwyg.config'
 
 type WysiwygRendererProps = {
   className?: string
