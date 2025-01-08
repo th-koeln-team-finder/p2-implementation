@@ -4,6 +4,9 @@ import { signOut } from '@/auth'
 import { revalidatePath } from 'next/cache'
 
 export async function clientSignOut() {
-  await signOut()
-  revalidatePath('/')
+  await signOut({ redirect: false })
+}
+
+export async function revalidateAll() {
+  await revalidatePath('/', 'layout')
 }

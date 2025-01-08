@@ -1,26 +1,18 @@
 import { authMiddleware } from '@/auth'
-import { clientSignOut } from '@/features/auth/auth.actions'
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@repo/design-system/components/ui/avatar'
+import { SignOutMenuItem } from '@/features/auth/components/SignOutMenuItem'
+import { UserAvatar } from '@/features/auth/components/UserAvatar'
 import { Button } from '@repo/design-system/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@repo/design-system/components/ui/dropdown-menu'
-import { LogOutIcon } from 'lucide-react'
-import { getTranslations } from 'next-intl/server'
 import type { PropsWithChildren } from 'react'
 
 export async function UserProfileMenu({ children }: PropsWithChildren) {
   const session = await authMiddleware()
-  const translate = await getTranslations()
 
   if (!session?.user) return null
   return (
@@ -28,19 +20,7 @@ export async function UserProfileMenu({ children }: PropsWithChildren) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-            <Avatar className="h-10 w-10">
-              {session.user.image && (
-                <AvatarImage
-                  src={session.user.image}
-                  alt={session.user.name ?? session.user.email ?? ''}
-                />
-              )}
-              <AvatarFallback>
-                {session.user.name
-                  ? session.user.name.slice(0, 2).toUpperCase()
-                  : 'AN'}
-              </AvatarFallback>
-            </Avatar>
+            <UserAvatar user={session.user} className="h-10 w-10" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end" forceMount>
@@ -57,10 +37,7 @@ export async function UserProfileMenu({ children }: PropsWithChildren) {
           <DropdownMenuSeparator />
           {children}
           {children && <DropdownMenuSeparator />}
-          <DropdownMenuItem onClick={clientSignOut} className="cursor-pointer">
-            <LogOutIcon />
-            {translate('auth.logout.button')}
-          </DropdownMenuItem>
+          <SignOutMenuItem />
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

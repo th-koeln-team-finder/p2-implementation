@@ -2,9 +2,6 @@
   "extends": "@repo/typescript-config/react-library.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"]
-    },
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "declaration": false
@@ -12,6 +9,9 @@
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"],
   "ts-node": {
-    "require": ["tsconfig-paths/register"]
+    "require": ["tsconfig-paths/register"],
+    "compilerOptions": {
+      "module": "commonjs"
+    }
   }
 }
