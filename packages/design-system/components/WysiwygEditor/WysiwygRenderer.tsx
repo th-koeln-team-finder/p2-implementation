@@ -38,10 +38,11 @@ export function WysiwygRenderer({
   )
 }
 
-function LexicalTextContent({ className }: { className?: string }) {
+function LexicalTextContent() {
   const [editor] = useLexicalComposerContext()
   const editorStateTextString = editor.read(() => $getRoot().getTextContent())
   return editorStateTextString.split('\n').map((line, index) => {
+    // biome-ignore lint/suspicious/noArrayIndexKey: There is no state associated here, so the index is just fine
     return <p key={index}>{line}</p>
   })
 }
