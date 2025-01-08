@@ -1,4 +1,3 @@
-import { relations } from 'drizzle-orm'
 import {
   type AnyPgColumn,
   boolean,

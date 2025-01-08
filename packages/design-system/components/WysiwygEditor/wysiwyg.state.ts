@@ -1,8 +1,4 @@
 import {
-  toggleList,
-  toggleQuote,
-} from '@/components/WysiwygEditor/wysiwyg.utils'
-import {
   type SignalifiedData,
   deepSignalifyValue,
 } from '@formsignals/form-core'
@@ -37,6 +33,10 @@ import {
   type TextNode,
 } from 'lexical'
 import { useCallback, useEffect, useMemo } from 'react'
+import {
+  toggleList,
+  toggleQuote,
+} from '../../components/WysiwygEditor/wysiwyg.utils'
 
 export const blockTypeToBlockName = {
   bullet: 'Bulleted List',

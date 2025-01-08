@@ -1,4 +1,3 @@
-import type { WysiwygSignalsState } from '@/components/WysiwygEditor/wysiwyg.signals'
 import {
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
@@ -16,6 +15,7 @@ import {
   $isRangeSelection,
   type LexicalEditor,
 } from 'lexical'
+import type { WysiwygSignalsState } from '../../components/WysiwygEditor/wysiwyg.signals'
 
 export function toggleHeading(editor: LexicalEditor, level?: HeadingTagType) {
   editor.update(() => {

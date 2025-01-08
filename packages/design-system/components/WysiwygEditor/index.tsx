@@ -1,9 +1,5 @@
 'use client'
 
-import { EditorToolbar } from '@/components/WysiwygEditor/EditorToolbar'
-import { initialWysiwygConfig } from '@/components/WysiwygEditor/wysiwyg.config'
-import { URL_MATCHERS } from '@/components/WysiwygEditor/wysiwyg.urls'
-import { cn } from '@/lib/utils'
 import { useFieldContext } from '@formsignals/form-react'
 import { AutoLinkPlugin } from '@lexical/react/LexicalAutoLinkPlugin'
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
@@ -19,6 +15,10 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { SelectionAlwaysOnDisplay } from '@lexical/react/LexicalSelectionAlwaysOnDisplay'
 import type { EditorState, LexicalEditor } from 'lexical'
 import { useMemo } from 'react'
+import { EditorToolbar } from '../../components/WysiwygEditor/EditorToolbar'
+import { initialWysiwygConfig } from '../../components/WysiwygEditor/wysiwyg.config'
+import { URL_MATCHERS } from '../../components/WysiwygEditor/wysiwyg.urls'
+import { cn } from '../../lib/utils'
 
 type WysiwygEditorProps = {
   className?: string
