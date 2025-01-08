@@ -72,6 +72,10 @@ export const userSkillRelations = relations(userSkills, ({one}) => ({
   }),
 }))
 
+export const skillRelations = relations(skills, ({many}) => ({
+  userSkills: many(userSkills),
+}))
+
 export const userSkillVerification = pgTable('userSkillVerification', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   verifierId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),

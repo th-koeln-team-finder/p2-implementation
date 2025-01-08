@@ -2,10 +2,9 @@
 
 import {ScrollArea} from "@repo/design-system/components/ui/scroll-area";
 import {SkillsSelect, UserSkillsSelect} from "@repo/database/schema";
-import {Delete, PlusIcon, Trash} from "lucide-react";
+import {PlusIcon, Trash} from "lucide-react";
 import {useTranslations} from "next-intl";
 import {Button} from "@repo/design-system/components/ui/button";
-import {Popover, PopoverContent, PopoverTrigger} from "@repo/design-system/components/ui/popover";
 import {Label} from "@repo/design-system/components/ui/label";
 import {searchSkills} from "@/features/skills/skills.queries";
 import {MutableRefObject, useCallback, useRef, useState} from "react";
@@ -25,7 +24,8 @@ function debounce<T extends (...args: any[]) => void>(func: T, timeout: number):
 
 type ComboboxOption = {
   value: string
-  label: string
+  label: string,
+  count?: number
 }
 
 export default function SkillsEdit({userSkills, userId}: {
@@ -47,7 +47,8 @@ export default function SkillsEdit({userSkills, userId}: {
         setSuggestions(
           skills.map(skill => ({
             value: skill.id.toString(),
-            label: skill.skill
+            label: skill.skill,
+            count: skill.usedCount
           }))
         )
         setSuggestionsLoading(false)

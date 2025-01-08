@@ -18,10 +18,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "./popover"
+import {Badge} from "@repo/design-system/components/ui/badge";
 
 type Option = {
   value: string
-  label: string
+  label: string,
+  count?: number
 }
 
 type ComboboxProps = {
@@ -71,6 +73,8 @@ export function Combobox({
 
   const selectedOption = options.find((option) => option.value === selectedValue)
 
+  const formatter = new Intl.NumberFormat(undefined, { notation:'compact' })
+
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
@@ -107,12 +111,17 @@ export function Combobox({
                     onSelect={() => handleSelect(option.value)}
                   >
                     {option.label}
-                    <Check
-                      className={cn(
-                        "ml-auto",
-                        selectedValue === option.value ? "opacity-100" : "opacity-0"
-                      )}
-                    />
+
+                    {option.count ? (<Badge
+                      variant="secondary"
+                      className="ml-auto"
+                    >{formatter.format(option.count)}</Badge>) : null}
+                    {selectedValue === option.value ? (
+                      <Check
+                        className="ml-auto"
+                      />
+                    ) : null}
+
                   </CommandItem>
                 ))}
               </CommandGroup>
