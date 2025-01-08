@@ -1,12 +1,5 @@
 'use client'
 
-import { FieldError } from '@/components/FormErrors'
-import { getSelectedNode } from '@/components/WysiwygEditor/wysiwyg.state'
-import { sanitizeUrl } from '@/components/WysiwygEditor/wysiwyg.urls'
-import { Button } from '@/components/ui/button'
-import { CheckboxForm } from '@/components/ui/checkbox'
-import { InputForm } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { useForm } from '@formsignals/form-react'
 import { ZodAdapter } from '@formsignals/validation-adapter-zod'
 import {
@@ -22,6 +15,13 @@ import { $getSelection, $isRangeSelection, type LexicalEditor } from 'lexical'
 import { LinkIcon, UnlinkIcon } from 'lucide-react'
 import { useEffect } from 'react'
 import { z } from 'zod'
+import { FieldError } from '../../components/FormErrors'
+import { getSelectedNode } from '../../components/WysiwygEditor/wysiwyg.state'
+import { sanitizeUrl } from '../../components/WysiwygEditor/wysiwyg.urls'
+import { Button } from '../../components/ui/button'
+import { CheckboxForm } from '../../components/ui/checkbox'
+import { InputForm } from '../../components/ui/input'
+import { Label } from '../../components/ui/label'
 
 type LinkFormProps = {
   editor: LexicalEditor

@@ -1,4 +1,3 @@
-import { Roles, type RolesType, RolesValues } from '@/constants'
 import {
   boolean,
   integer,
@@ -11,6 +10,7 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
+import { Roles, type RolesType, RolesValues } from './constants'
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
 
