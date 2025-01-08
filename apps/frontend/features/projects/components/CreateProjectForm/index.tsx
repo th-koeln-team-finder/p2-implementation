@@ -13,20 +13,17 @@ import {
   ContentItem,
   StepperComponent,
 } from '@repo/design-system/components/stepper'
-import { Button } from '@repo/design-system/components/ui/button'
-import { Input, InputForm } from '@repo/design-system/components/ui/input'
+import { InputForm } from '@repo/design-system/components/ui/input'
 import { Label } from '@repo/design-system/components/ui/label'
 import {
-  Select,
   SelectContent, SelectForm,
   SelectItem,
-  SelectTrigger,
-  SelectValue,
 } from '@repo/design-system/components/ui/select'
 import { useState } from 'react'
 import { z } from 'zod'
 import {WysiwygEditorForm} from "@repo/design-system/components/WysiwygEditor";
 import {CreateProjectSkills} from "@/features/projects/components/CreateProjectForm/CreateProjectSkills";
+import {CreateProjectLinksList} from "@/features/projects/components/CreateProjectForm/CreateProjectLinksList";
 
 const registerAdapter = configureZodAdapter({
   takeFirstError: true,
@@ -49,6 +46,11 @@ type Index = {
   issues: Array<{
     title: string
     description: string
+  }>
+  address: string
+  links: Array<{
+    url: string
+    file: string
   }>
 }
 
@@ -136,13 +138,15 @@ export function CreateProjectForm() {
         },
       }),
       issues: [],
+      address: '',
+      links: [],
     },
     onSubmit: async (values) => {
       await createProjectWithIssues(values)
     },
   })
 
-  const basicFieldGroup = useFieldGroup(form, ['name', 'phase', 'description', 'skills', 'timetableOutput', 'timetableTable', 'timetableCustom'])
+  const basicFieldGroup = useFieldGroup(form, ['name', 'phase', 'description', 'skills', 'timetableOutput', 'timetableTable', 'timetableCustom', 'address','links'])
 
   console.log(form);
   console.log(Object.keys(form));
@@ -222,7 +226,22 @@ export function CreateProjectForm() {
       </ContentItem>
 
       <ContentItem stepId="skills">
-          <form.FieldProvider name="skills">
+          <form.FieldProvider name="skills"
+                              /* Field Errors
+                              validator={z.object({
+                                skills: z.array(
+                                  z.object({
+                                    skill: z.string().min(1, "Skill is required"),
+                                    level: z.union([
+                                      z.string().min(1, "Level is required"),
+                                      z.number().min(1).max(5, "Level must be between 1 and 5")
+                                    ]),
+                                  })
+                                )}
+                              )}
+                              validatorOptions={{
+                                validateOnChangeIfTouched: true,
+                              }}*/>
             <CreateProjectSkills/>
           </form.FieldProvider>
       </ContentItem>
@@ -254,36 +273,44 @@ export function CreateProjectForm() {
               </form.FieldProvider>
             </div>
 
+            {/* TODO Field Errors */}
             {timetableFormat === 'table' && (
                 <div className="flex w-full flex-row gap-4">
                   <form.FieldProvider name="timetableTable">
                     <div className="w-1/7">
-                      <Label>Montag</Label>
-                      <Input id="tt-mon" placeholder="Type here..."/>
+                        <Label>Montag</Label>
+                        <InputForm id="tt-mon" placeholder="Type here..."/>
+                        <FieldError/>
                     </div>
                     <div className="w-1/7">
                       <Label>Dienstag</Label>
-                      <Input id="tt-tue" placeholder="Type here..."/>
+                      <InputForm id="tt-tue" placeholder="Type here..."/>
+                      <FieldError/>
                     </div>
                     <div className="w-1/7">
                       <Label>Mittwoch</Label>
-                      <Input id="tt-wed" placeholder="Type here..."/>
+                      <InputForm id="tt-wed" placeholder="Type here..."/>
+                      <FieldError/>
                     </div>
                     <div className="w-1/7">
                       <Label>Donnerstag</Label>
-                      <Input id="tt-thu" placeholder="Type here..."/>
+                      <InputForm id="tt-thu" placeholder="Type here..."/>
+                      <FieldError/>
                     </div>
                     <div className="w-1/7">
                       <Label>Freitag</Label>
-                      <Input id="tt-fri" placeholder="Type here..."/>
+                      <InputForm id="tt-fri" placeholder="Type here..."/>
+                      <FieldError/>
                     </div>
                     <div className="w-1/7">
                       <Label>Samstag</Label>
-                      <Input id="tt-sat" placeholder="Type here..."/>
+                      <InputForm id="tt-sat" placeholder="Type here..."/>
+                      <FieldError/>
                     </div>
                     <div className="w-1/7">
                       <Label>Sontag</Label>
-                      <Input id="tt-sun" placeholder="Type here..."/>
+                      <InputForm id="tt-sun" placeholder="Type here..."/>
+                      <FieldError/>
                     </div>
                   </form.FieldProvider>
                 </div>
@@ -302,38 +329,49 @@ export function CreateProjectForm() {
         </form.FormProvider>
       </ContentItem>
       <ContentItem stepId="links">
-        <div className="flex w-full flex-row gap-4">
-          <div className="w-1/2">
-            <Label>Link für Github Issues</Label>
-            <Input id="issue-link" placeholder="Type here..."/>
-            <div>
-              <form.FieldProvider name="issues">
-                <CreateProjectIssueList/>
+        <form.FormProvider>
+          <div className="flex w-full flex-row gap-4">
+            <div className="w-1/2">
+              <Label>Link für Github Issues</Label>
+              <div>
+                <form.FieldProvider name="issues">
+                  <CreateProjectIssueList/>
+                </form.FieldProvider>
+              </div>
+            </div>
+            <div className="w-1/2">
+              <Label>Location</Label>
+              <form.FieldProvider name="address"
+                                  validator={z.string().min(1)}
+                                  validatorOptions={{
+                                    validateOnChangeIfTouched: true,
+                                  }}>
+                <InputForm id="address" placeholder="Address..."/>
+                <FieldError/>
               </form.FieldProvider>
             </div>
           </div>
-          <div className="w-1/2">
-            <Label>Location</Label>
-            <div className="flex justify-between gap-4">
-              <Input id="location-lat" placeholder="Latitude..." />
-              <Input id="location-long" placeholder="Longitude..." />
+          <div className="flex w-full flex-row gap-4">
+            <div className="w-full">
+              <Label>Links & other Resources</Label>
+
+              <br/> Upload Field oder Link Auswahl
             </div>
           </div>
-        </div>
-        <div className="flex w-full flex-row gap-4">
-          <div className="w-1/2">
-            <Label>Links & other Resources</Label>
-            <br /> Genauso wie die Skills erweiterbar und Upload Field oder Link
-            Auswahl
-            <Input id="links" placeholder="Type here..." />
-          </div>
-        </div>
+        </form.FormProvider>
       </ContentItem>
       <ContentItem stepId="review">
         <form.FormProvider>
           <h2 className='font-semibold text-lg'>Übersicht aller Angaben</h2>
 
-            <Label>Projektname</Label>
+          <Label>Projektname</Label>
+
+
+          <div>
+            <form.FieldProvider name="links">
+              <CreateProjectLinksList/>
+            </form.FieldProvider>
+          </div>
           {/* <p>{form._data.v.name || 'Nicht angegeben'}</p> */}
 
         </form.FormProvider>

@@ -23,6 +23,16 @@ export type CreateProjectWithSkillsPayload = {
   }>
 }
 
+export type CreateProjectWithLinksPayload = {
+  name: string
+  description: string
+  status: 'open' | 'closed'
+  links: Array<{
+    url: string
+    file: string
+  }>
+}
+
 
 export async function createProjectWithIssues(
   payload: CreateProjectWithIssuesPayload,
@@ -61,4 +71,23 @@ export async function createProjectWithSkills(
     level: skill.level,
   }))
   await db.insert(Schema.ProjectSkill).values(skillsToCreate)
+}
+
+export async function createProjectWithLinks(
+    payload: CreateProjectWithLinksPayload,
+) {
+  const [project] = await db
+      .insert(Schema.projects)
+      .values({
+        name: payload.name,
+        description: payload.description,
+        status: payload.status,
+      })
+      .returning()
+  const linksToCreate = payload.links.map((link) => ({
+    projectId: project.id,
+    url: link.url,
+    file: link.file
+  }))
+  await db.insert(Schema.ProjectLink).values(linksToCreate)
 }
