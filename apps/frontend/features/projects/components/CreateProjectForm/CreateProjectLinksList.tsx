@@ -1,6 +1,5 @@
 'use client'
 
-import type { CreateProjectWithLinksPayload } from '@/features/projects/projects.actions'
 import { useFieldContext } from '@formsignals/form-react'
 import { FieldError } from '@repo/design-system/components/FormErrors'
 import { Button } from '@repo/design-system/components/ui/button'
@@ -10,6 +9,12 @@ import {MinusIcon, PlusIcon} from "lucide-react";
 import {z} from "zod";
 import {SelectContent, SelectForm, SelectItem} from "@repo/design-system/components/ui/select";
 import {useState} from "react";
+import {useSignals} from "@preact/signals-react/runtime";
+// biome-ignore lint/style/useImportType: import type {CreateProjectFormLinks} from "@/features/projects/projects.types";
+import {CreateProjectFormLinks} from "@/features/projects/projects.types";
+// biome-ignore lint/style/useImportType: zod adapter
+import {ZodAdapter} from "@formsignals/validation-adapter-zod";
+import {z} from "zod";
 
 
 export function CreateProjectLinksList() {

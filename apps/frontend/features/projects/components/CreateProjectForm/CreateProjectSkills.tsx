@@ -1,21 +1,27 @@
 'use client'
 
-import type { CreateProjectWithSkillsPayload } from '@/features/projects/projects.actions'
-import { useFieldContext } from '@formsignals/form-react'
+import {useFieldContext, useFormContext, ValidationError} from '@formsignals/form-react'
 import { FieldError } from '@repo/design-system/components/FormErrors'
 import { Button } from '@repo/design-system/components/ui/button'
 import { InputForm } from '@repo/design-system/components/ui/input'
 import { Label } from '@repo/design-system/components/ui/label'
 import {MinusIcon, PlusIcon} from "lucide-react";
+import {z} from "zod";
+// biome-ignore lint/style/useImportType: zod adapter
+import {ZodAdapter} from "@formsignals/validation-adapter-zod";
+import {useSignals} from "@preact/signals-react/runtime";
+// biome-ignore lint/style/useImportType: import type {CreateProjectFormSkills} from "@/features/projects/projects.types";
+import {CreateProjectFormSkills} from "@/features/projects/projects.types";
 
 export function CreateProjectSkills() {
-  const field = useFieldContext<CreateProjectWithSkillsPayload, 'skills'>()
+    useSignals()
+  const field = useFieldContext<CreateProjectFormSkills, 'skills', typeof ZodAdapter>()
   return (
       <>
           {field.data.value.map((skill, index) => (
               <div key={skill.key} className="flex flex-row gap-4">
                   <div className="w-1/2">
-                      <field.SubFieldProvider name={`${index}.skill`}>
+                      <field.SubFieldProvider name={`${index}.skill`} validator={z.string().min(1)}>
                           <Label>Skill</Label>
                           <InputForm placeholder="Type skill..."/>
                           <FieldError/>
@@ -23,9 +29,15 @@ export function CreateProjectSkills() {
                   </div>
                   <div className="flex w-1/2 flex-row justify-between">
                       <div className="w-5/6">
-                          <field.SubFieldProvider name={`${index}.level`}>
+                          <field.SubFieldProvider name={`${index}.level`} transformFromBinding={(value: string) => {
+                              const parsedValue = Number.parseInt(value)
+                              if(Number.isNaN(parsedValue)) return [0, "This must be a valid number"]
+                              return parsedValue
+                          }} transformToBinding={(value, isValid, buffer) => {
+                              return isValid ? value.toString() : (buffer ?? '')
+                          }} validator={z.number().min(1).max(5)}>
                               <Label>Skill Level</Label>
-                              <InputForm type="number" placeholder="1-5"/>
+                              <InputForm useTransformed type="number" placeholder="1-5"/>
                               <FieldError/>
                           </field.SubFieldProvider>
                       </div>

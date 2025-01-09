@@ -1,7 +1,7 @@
 'use client'
 
 import { CreateProjectIssueList } from '@/features/projects/components/CreateProjectForm/CreateProjectIssueList'
-import { createProjectWithIssues } from '@/features/projects/projects.actions'
+import {createProject} from '@/features/projects/projects.actions'
 import { useFieldGroup, useForm } from '@formsignals/form-react'
 import {
   type ZodAdapter,
@@ -24,6 +24,9 @@ import { z } from 'zod'
 import {WysiwygEditorForm} from "@repo/design-system/components/WysiwygEditor";
 import {CreateProjectSkills} from "@/features/projects/components/CreateProjectForm/CreateProjectSkills";
 import {CreateProjectLinksList} from "@/features/projects/components/CreateProjectForm/CreateProjectLinksList";
+import {CreateProjectPreview} from "@/features/projects/components/CreateProjectForm/CreateProjectPreview";
+// biome-ignore lint/style/useImportType: import type {CreateProjectFormValues} from "@/features/projects/projects.types";
+import {CreateProjectFormValues} from "@/features/projects/projects.types";
 
 const registerAdapter = configureZodAdapter({
   takeFirstError: true,
@@ -66,10 +69,10 @@ export function CreateProjectForm() {
   ]
 
   //Form Field Provider
-  const form = useForm<Index, typeof ZodAdapter>({
+  const form = useForm<CreateProjectFormValues, typeof ZodAdapter>({
     validatorAdapter: registerAdapter,
     defaultValues: {
-      name: '',
+      name: 'asd',
       description: JSON.stringify({
         root: {
           children: [
@@ -101,7 +104,7 @@ export function CreateProjectForm() {
           version: 1,
         },
       }),
-      phase: '',
+      phase: 'asd',
       status: 'open',
       skills: [{ skill: '', level: '' }],
       timetableOutput: '',
@@ -142,29 +145,64 @@ export function CreateProjectForm() {
       links: [],
     },
     onSubmit: async (values) => {
-      await createProjectWithIssues(values)
+      await createProject(values)
     },
   })
 
-  const basicFieldGroup = useFieldGroup(form, ['name', 'phase', 'description', 'skills', 'timetableOutput', 'timetableTable', 'timetableCustom', 'address','links'])
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  const basicFieldGroup = useFieldGroup(form, ['name', 'phase', 'description'], {
+    onSubmit: () => setCurrentIndex(1)
+  })
+  const skillsGroup = useFieldGroup(form, ['skills'], {
+    onSubmit: () => setCurrentIndex(2)
+  })
+  const timeGroup = useFieldGroup(form, ['timetableOutput', 'ttMon', 'ttTue', 'ttWed', 'ttThu', 'ttFri', 'ttSat','ttSun', 'timetableCustom'], {
+    onSubmit: () => setCurrentIndex(3)
+  })
+  const linksGroup = useFieldGroup(form, ['issues', 'address', 'ressources'], {
+    onSubmit: () => setCurrentIndex(4)
+  })
 
   console.log(form);
   console.log(Object.keys(form));
 
   //Zeitplan
   const [timetableFormat, setTimetableFormat] = useState('')
-  const [currentIndex, setCurrentIndex] = useState(0)
 
   return (
     <StepperComponent
       steps={steps}
       currentIndex={currentIndex}
       onNext={async () => {
-        if (currentIndex < steps.length) {
+        if (currentIndex === 0) {
+          return await basicFieldGroup.handleSubmit()
+        }
+        if (currentIndex === 1) {
+          const skillFields = form.fields.peek().filter(field => field.name.startsWith("skills"))
+          await Promise.all(skillFields.map(field => field.validateForEvent("onSubmit")))
+          const isSkillFieldInvalid = skillFields.some(field => !field.isValid.peek())
+          if(isSkillFieldInvalid) return
+          return await skillsGroup.handleSubmit()
+        }
+        if (currentIndex === 2) {
+          return await timeGroup.handleSubmit()
+        }
+        if (currentIndex === 3) {
+          const issueFields = form.fields.peek().filter(field => field.name.startsWith("issues"))
+          await Promise.all(issueFields.map(field => field.validateForEvent("onSubmit")))
+          const isIssueFieldInvalid = issueFields.some(field => !field.isValid.peek())
+          if(isIssueFieldInvalid) return
+
+          const ressourceFields = form.fields.peek().filter(field => field.name.startsWith("ressources"))
+          await Promise.all(ressourceFields.map(field => field.validateForEvent("onSubmit")))
+          const isRessourceFieldInvalid = ressourceFields.some(field => !field.isValid.peek())
+          if(isRessourceFieldInvalid) return
+
+          return await linksGroup.handleSubmit()
+        }
+        if (currentIndex >= steps.length) {
           await basicFieldGroup.handleSubmit()
-          if (basicFieldGroup.isValid.peek()) {
-            setCurrentIndex(currentIndex + 1)
-          }
         }
       }}
       onPrevious={() => setCurrentIndex((prev) => prev - 1)}
@@ -244,6 +282,7 @@ export function CreateProjectForm() {
                               }}*/>
             <CreateProjectSkills/>
           </form.FieldProvider>
+        </form.FormProvider>
       </ContentItem>
       <ContentItem stepId="timetable">
       <form.FormProvider>
@@ -252,18 +291,14 @@ export function CreateProjectForm() {
               <form.FieldProvider
                   name="timetableOutput"
                   validator={z
-                      .enum(['choose', 'table', 'custom'] as const)
-                      .refine(
-                          (v) => v !== 'choose',
-                          'Oh come on decide now already',
-                      )}
+                      .enum(['table', 'custom'] as const)
+              }
               >
                 <div>
                   <Label>Ausgabe der Timetable</Label>
                   <SelectForm onValueChange={(value) => setTimetableFormat(value)}
-                              value={timetableFormat || 'choose'}>
+                              value={timetableFormat} valueProps={{placeholder: "Bitte auswählen"}}>
                     <SelectContent>
-                      <SelectItem value="choose">Bitte auswählen...</SelectItem>
                       <SelectItem value="table">Tabelle</SelectItem>
                       <SelectItem value="custom">Benutzerdefiniert</SelectItem>
                     </SelectContent>

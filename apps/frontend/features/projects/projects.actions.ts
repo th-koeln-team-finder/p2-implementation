@@ -2,40 +2,12 @@
 
 import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
+import {
+    CreateProjectFormValues,
+} from "@/features/projects/projects.types";
 
-export type CreateProjectWithIssuesPayload = {
-  name: string
-  description: string
-  status: 'open' | 'closed'
-  issues: Array<{
-    title: string
-    description: string
-  }>
-}
-
-export type CreateProjectWithSkillsPayload = {
-  name: string
-  description: string
-  status: 'open' | 'closed'
-  skills: Array<{
-    skill: string
-    level: string
-  }>
-}
-
-export type CreateProjectWithLinksPayload = {
-  name: string
-  description: string
-  status: 'open' | 'closed'
-  links: Array<{
-    url: string
-    file: string
-  }>
-}
-
-
-export async function createProjectWithIssues(
-  payload: CreateProjectWithIssuesPayload,
+export async function createProject(
+  payload: CreateProjectFormValues,
 ) {
   const [project] = await db
     .insert(Schema.projects)
@@ -51,43 +23,4 @@ export async function createProjectWithIssues(
     title: issue.title,
   }))
   await db.insert(Schema.ProjectIssue).values(issuesToCreate)
-}
-
-
-export async function createProjectWithSkills(
-    payload: CreateProjectWithSkillsPayload,
-) {
-  const [project] = await db
-      .insert(Schema.projects)
-      .values({
-        name: payload.name,
-        description: payload.description,
-        status: payload.status,
-      })
-      .returning()
-  const skillsToCreate = payload.skills.map((skill) => ({
-    projectId: project.id,
-    skill: skill.skill,
-    level: skill.level,
-  }))
-  await db.insert(Schema.ProjectSkill).values(skillsToCreate)
-}
-
-export async function createProjectWithLinks(
-    payload: CreateProjectWithLinksPayload,
-) {
-  const [project] = await db
-      .insert(Schema.projects)
-      .values({
-        name: payload.name,
-        description: payload.description,
-        status: payload.status,
-      })
-      .returning()
-  const linksToCreate = payload.links.map((link) => ({
-    projectId: project.id,
-    url: link.url,
-    file: link.file
-  }))
-  await db.insert(Schema.ProjectLink).values(linksToCreate)
 }
