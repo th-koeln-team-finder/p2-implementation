@@ -101,8 +101,9 @@ export function CreateProjectForm() {
       address: '',
       ressources: [],
     },
-    onSubmit: async (_values) => {
-      await createProject(values)
+    onSubmit: async (values) => {
+      await creat
+      eProject(values)
       router.push('/projects')
     },
   })
