@@ -351,7 +351,7 @@ export function CreateProjectForm() {
             <div className="flex w-full flex-col">
               <Label>(Github) Issues</Label>
               <form.FieldProvider name="issues">
-                <CreateProjectIssueList/>
+                <CreateProjectIssueList editorRef={editorRef}/>
               </form.FieldProvider>
             </div>
           <div className="flex w-full flex-row gap-4">

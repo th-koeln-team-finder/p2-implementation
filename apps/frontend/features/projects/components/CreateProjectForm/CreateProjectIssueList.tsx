@@ -14,11 +14,12 @@ import {ZodAdapter} from "@formsignals/validation-adapter-zod";
 import {z} from "zod";
 import {MinusIcon, PlusIcon} from "lucide-react";
 
-export function CreateProjectIssueList() {
+export function CreateProjectIssueList({editorRef}) {
   useSignals()
   const field = useFieldContext<CreateProjectFormLinks, 'issues', typeof ZodAdapter>()
 
-  const editorRef = useLexicalEditorRef();
+  const content = getStringContentFromEditor(editorRef.current);
+  console.log("Editor Content:", content);
 
   return (
       <>
@@ -35,7 +36,7 @@ export function CreateProjectIssueList() {
               <div className="flex w-4/6 flex-row justify-between">
                 {/* TODO add wysiwyg editor with error */}
                 {/*<field.SubFieldProvider name={`${index}.description`} validator={() => {
-                  console.log(getStringContentFromEditor(editorRef.current));
+                  console.log("Editor Content:", getStringContentFromEditor(editorRef.current));
                   if (!editorRef.current) return null;
                   return getStringContentFromEditor(editorRef.current).length <= 0 ? "This field is required" : null;
               }}>
