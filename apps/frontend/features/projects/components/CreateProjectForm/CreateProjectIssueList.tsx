@@ -2,7 +2,7 @@
 
 import type { CreateProjectFormLinks } from '@/features/projects/projects.types'
 import { useFieldContext } from '@formsignals/form-react'
-import { ZodAdapter } from '@formsignals/validation-adapter-zod'
+import type { ZodAdapter } from '@formsignals/validation-adapter-zod'
 import { useSignals } from '@preact/signals-react/runtime'
 import { FieldError } from '@repo/design-system/components/FormErrors'
 import {
@@ -27,6 +27,8 @@ export function CreateProjectIssueList({
   const field = useFieldContext<
     CreateProjectFormLinks,
     'issues',
+    never,
+    typeof ZodAdapter,
     typeof ZodAdapter
   >()
   return (
@@ -35,7 +37,6 @@ export function CreateProjectIssueList({
         <div key={issue.key} className="flex flex-row gap-4">
           <div className="w-2/6">
             <field.SubFieldProvider
-              validatorAdapter={ZodAdapter}
               name={`${index}.title`}
               validator={z.string().min(1)}
             >
