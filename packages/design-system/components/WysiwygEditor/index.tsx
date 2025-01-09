@@ -5,6 +5,7 @@ import { useFieldContext } from '@formsignals/form-react'
 import { AutoLinkPlugin } from '@lexical/react/LexicalAutoLinkPlugin'
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
+import { EditorRefPlugin } from '@lexical/react/LexicalEditorRefPlugin'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { HorizontalRulePlugin } from '@lexical/react/LexicalHorizontalRulePlugin'
@@ -14,15 +15,14 @@ import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPl
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { SelectionAlwaysOnDisplay } from '@lexical/react/LexicalSelectionAlwaysOnDisplay'
+// biome-ignore lint/style/useImportType: <explanation>
+import { $getRoot, EditorState, LexicalEditor } from 'lexical'
+// biome-ignore lint/style/useImportType: <explanation>
+import { MutableRefObject, useMemo, useRef } from 'react'
 import { EditorToolbar } from '../../components/WysiwygEditor/EditorToolbar'
 import { initialWysiwygConfig } from '../../components/WysiwygEditor/wysiwyg.config'
 import { URL_MATCHERS } from '../../components/WysiwygEditor/wysiwyg.urls'
 import { cn } from '../../lib/utils'
-// biome-ignore lint/style/useImportType: <explanation>
-import {$getRoot, EditorState, LexicalEditor} from 'lexical'
-// biome-ignore lint/style/useImportType: <explanation>
-import {MutableRefObject, Ref, useMemo, useRef} from 'react'
-import {EditorRefPlugin} from "@lexical/react/LexicalEditorRefPlugin";
 
 type WysiwygEditorProps = {
   className?: string
@@ -33,17 +33,21 @@ type WysiwygEditorProps = {
     editor: LexicalEditor,
     tags: Set<string>,
   ) => void
-    editorRef?: MutableRefObject<LexicalEditor | undefined | null>
+  editorRef?: MutableRefObject<LexicalEditor | undefined | null>
 }
 
-export function useLexicalEditorRef () {
-    return useRef<LexicalEditor>()
+export function useLexicalEditorRef() {
+  return useRef<LexicalEditor>()
 }
 
-export function getStringContentFromEditor (editor?: LexicalEditor) {
-    return editor ? editor.getEditorState().read(() => {
-        return $getRoot().getTextContent();
-    }): ''
+export type LexicalEditorRef = ReturnType<typeof useLexicalEditorRef>
+
+export function getStringContentFromEditor(editor?: LexicalEditor) {
+  return editor
+    ? editor.getEditorState().read(() => {
+        return $getRoot().getTextContent()
+      })
+    : ''
 }
 
 // TODO Edit Links + Context Menu + subscript + superscript
@@ -53,10 +57,10 @@ export function WysiwygEditor({
   placeholder,
   defaultValue,
   onChange,
-    editorRef,
+  editorRef,
 }: WysiwygEditorProps) {
   const initialConfig = useMemo(
-    () => ({ ...initialWysiwygConfig, editorState: defaultValue }),
+    () => ({ ...initialWysiwygConfig, editorState: defaultValue || undefined }),
     [defaultValue],
   )
   return (
@@ -83,10 +87,13 @@ export function WysiwygEditor({
         />
       </div>
       {onChange && <OnChangePlugin onChange={onChange} />}
-      {editorRef &&  <EditorRefPlugin editorRef={(newRef) => {
-          console.log("Setting reft", newRef)
-          editorRef.current = newRef
-      }}/>}
+      {editorRef && (
+        <EditorRefPlugin
+          editorRef={(newRef) => {
+            editorRef.current = newRef
+          }}
+        />
+      )}
       <HistoryPlugin />
       <MarkdownShortcutPlugin />
       <SelectionAlwaysOnDisplay />
