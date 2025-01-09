@@ -7,7 +7,7 @@ import {
   type ZodAdapter,
   configureZodAdapter,
 } from '@formsignals/validation-adapter-zod'
-import { useSignals } from '@preact/signals-react/runtime'
+import {useSignals} from '@preact/signals-react/runtime'
 import { FieldError } from '@repo/design-system/components/FormErrors'
 import {
   ContentItem,
@@ -19,9 +19,13 @@ import {
   SelectContent, SelectForm,
   SelectItem,
 } from '@repo/design-system/components/ui/select'
-import { useState } from 'react'
+import {useState} from 'react'
 import { z } from 'zod'
-import {WysiwygEditorForm} from "@repo/design-system/components/WysiwygEditor";
+import {
+  getStringContentFromEditor,
+  useLexicalEditorRef,
+  WysiwygEditorForm
+} from "@repo/design-system/components/WysiwygEditor";
 import {CreateProjectSkills} from "@/features/projects/components/CreateProjectForm/CreateProjectSkills";
 import {CreateProjectLinksList} from "@/features/projects/components/CreateProjectForm/CreateProjectLinksList";
 import {CreateProjectPreview} from "@/features/projects/components/CreateProjectForm/CreateProjectPreview";
@@ -31,31 +35,6 @@ import {CreateProjectFormValues} from "@/features/projects/projects.types";
 const registerAdapter = configureZodAdapter({
   takeFirstError: true,
 })
-
-type Index = {
-  name: string
-  description: string
-  phase: string
-  status: 'open' | 'closed'
-  skills: Array<{
-    skill: string
-    level: string
-  }>
-  timetableOutput: string
-  timetableTable: Array<{
-    value: string
-  }>
-  timetableCustom: string
-  issues: Array<{
-    title: string
-    description: string
-  }>
-  address: string
-  links: Array<{
-    url: string
-    file: string
-  }>
-}
 
 export function CreateProjectForm() {
   useSignals()
@@ -106,9 +85,15 @@ export function CreateProjectForm() {
       }),
       phase: 'asd',
       status: 'open',
-      skills: [{ skill: '', level: '' }],
+      skills: [],
       timetableOutput: '',
-      timetableTable: [],
+      ttMon: '',
+      ttTue: '',
+      ttWed: '',
+      ttThu: '',
+      ttFri: '',
+      ttSat: '',
+      ttSun: '',
       timetableCustom: JSON.stringify({
         root: {
           children: [
@@ -142,7 +127,7 @@ export function CreateProjectForm() {
       }),
       issues: [],
       address: '',
-      links: [],
+      ressources: [],
     },
     onSubmit: async (values) => {
       await createProject(values)
@@ -164,11 +149,10 @@ export function CreateProjectForm() {
     onSubmit: () => setCurrentIndex(4)
   })
 
-  console.log(form);
-  console.log(Object.keys(form));
-
   //Zeitplan
   const [timetableFormat, setTimetableFormat] = useState('')
+
+  const editorRef = useLexicalEditorRef();
 
   return (
     <StepperComponent
@@ -251,11 +235,14 @@ export function CreateProjectForm() {
             </div>
             <div className="w-1/2">
 
-              <form.FieldProvider name="description">
+              <form.FieldProvider name="description" validator={() => {
+                if (!editorRef.current) return null;
+                return getStringContentFromEditor(editorRef.current).length <= 0 ? "This field is required" : null;
+              }}>
                 <div>
                   <Label>Description</Label>
-                  <WysiwygEditorForm/>
-                  {/*TODO Field Error <FieldError/>*/}
+                  <WysiwygEditorForm editorRef={editorRef}/>
+                  <FieldError/>
                 </div>
               </form.FieldProvider>
             </div>
@@ -264,26 +251,13 @@ export function CreateProjectForm() {
       </ContentItem>
 
       <ContentItem stepId="skills">
-          <form.FieldProvider name="skills"
-                              /* Field Errors
-                              validator={z.object({
-                                skills: z.array(
-                                  z.object({
-                                    skill: z.string().min(1, "Skill is required"),
-                                    level: z.union([
-                                      z.string().min(1, "Level is required"),
-                                      z.number().min(1).max(5, "Level must be between 1 and 5")
-                                    ]),
-                                  })
-                                )}
-                              )}
-                              validatorOptions={{
-                                validateOnChangeIfTouched: true,
-                              }}*/>
+        <form.FormProvider>
+          <form.FieldProvider name="skills">
             <CreateProjectSkills/>
           </form.FieldProvider>
         </form.FormProvider>
       </ContentItem>
+
       <ContentItem stepId="timetable">
       <form.FormProvider>
           <div className="flex w-full flex-col gap-4">
@@ -308,106 +282,106 @@ export function CreateProjectForm() {
               </form.FieldProvider>
             </div>
 
-            {/* TODO Field Errors */}
             {timetableFormat === 'table' && (
                 <div className="flex w-full flex-row gap-4">
-                  <form.FieldProvider name="timetableTable">
-                    <div className="w-1/7">
-                        <Label>Montag</Label>
-                        <InputForm id="tt-mon" placeholder="Type here..."/>
-                        <FieldError/>
-                    </div>
-                    <div className="w-1/7">
+                  <div className="w-1/7">
+                    <form.FieldProvider name="ttMon">
+                      <Label>Montag</Label>
+                      <InputForm id="tt-mon" placeholder="Type here..."/>
+                    </form.FieldProvider>
+                  </div>
+                  <div className="w-1/7">
+                    <form.FieldProvider name="ttTue">
                       <Label>Dienstag</Label>
                       <InputForm id="tt-tue" placeholder="Type here..."/>
-                      <FieldError/>
-                    </div>
-                    <div className="w-1/7">
+                    </form.FieldProvider>
+                  </div>
+                  <div className="w-1/7">
+                    <form.FieldProvider name="ttWed">
                       <Label>Mittwoch</Label>
                       <InputForm id="tt-wed" placeholder="Type here..."/>
-                      <FieldError/>
-                    </div>
-                    <div className="w-1/7">
+                    </form.FieldProvider>
+                  </div>
+                  <div className="w-1/7">
+                    <form.FieldProvider name="ttThu">
                       <Label>Donnerstag</Label>
                       <InputForm id="tt-thu" placeholder="Type here..."/>
-                      <FieldError/>
-                    </div>
-                    <div className="w-1/7">
+                    </form.FieldProvider>
+                  </div>
+                  <div className="w-1/7">
+                    <form.FieldProvider name="ttFri">
                       <Label>Freitag</Label>
                       <InputForm id="tt-fri" placeholder="Type here..."/>
-                      <FieldError/>
-                    </div>
-                    <div className="w-1/7">
+                    </form.FieldProvider>
+                  </div>
+                  <div className="w-1/7">
+                    <form.FieldProvider name="ttSat">
                       <Label>Samstag</Label>
                       <InputForm id="tt-sat" placeholder="Type here..."/>
-                      <FieldError/>
-                    </div>
-                    <div className="w-1/7">
-                      <Label>Sontag</Label>
+                    </form.FieldProvider>
+                  </div>
+                  <div className="w-1/7">
+                    <form.FieldProvider name="ttSun">
+                      <Label>Sonntag</Label>
                       <InputForm id="tt-sun" placeholder="Type here..."/>
-                      <FieldError/>
-                    </div>
-                  </form.FieldProvider>
-                </div>
+                    </form.FieldProvider>
+                  </div>
+              </div>
               )}
             {timetableFormat === 'custom' && (
                 <div className="w-1/2">
-                  <form.FieldProvider name="timetableCustom">
+                  <form.FieldProvider name="timetableCustom" validator={() => {
+                    if (!editorRef.current) return null;
+                    return getStringContentFromEditor(editorRef.current).length <= 0 ? "This field is required" : null;
+                  }}>
                     <div>
                       <Label>Timetable</Label>
-                      <WysiwygEditorForm/>
+                      <WysiwygEditorForm editorRef={editorRef}/>
+                      <FieldError/>
                     </div>
                   </form.FieldProvider>
                 </div>
             )}
           </div>
-        </form.FormProvider>
+      </form.FormProvider>
       </ContentItem>
+
       <ContentItem stepId="links">
         <form.FormProvider>
+            <div className="flex w-full flex-col">
+              <Label>(Github) Issues</Label>
+              <form.FieldProvider name="issues">
+                <CreateProjectIssueList/>
+              </form.FieldProvider>
+            </div>
           <div className="flex w-full flex-row gap-4">
             <div className="w-1/2">
-              <Label>Link für Github Issues</Label>
-              <div>
-                <form.FieldProvider name="issues">
-                  <CreateProjectIssueList/>
-                </form.FieldProvider>
-              </div>
-            </div>
-            <div className="w-1/2">
               <Label>Location</Label>
-              <form.FieldProvider name="address"
-                                  validator={z.string().min(1)}
-                                  validatorOptions={{
-                                    validateOnChangeIfTouched: true,
-                                  }}>
+              <form.FieldProvider name="address">
                 <InputForm id="address" placeholder="Address..."/>
-                <FieldError/>
               </form.FieldProvider>
             </div>
           </div>
           <div className="flex w-full flex-row gap-4">
             <div className="w-full">
               <Label>Links & other Resources</Label>
-
-              <br/> Upload Field oder Link Auswahl
+              <div>
+                <form.FieldProvider name="ressources">
+                  <CreateProjectLinksList/>
+                </form.FieldProvider>
+              </div>
             </div>
           </div>
         </form.FormProvider>
       </ContentItem>
+
       <ContentItem stepId="review">
         <form.FormProvider>
           <h2 className='font-semibold text-lg'>Übersicht aller Angaben</h2>
 
           <Label>Projektname</Label>
 
-
-          <div>
-            <form.FieldProvider name="links">
-              <CreateProjectLinksList/>
-            </form.FieldProvider>
-          </div>
-          {/* <p>{form._data.v.name || 'Nicht angegeben'}</p> */}
+          <CreateProjectPreview />
 
         </form.FormProvider>
       </ContentItem>
