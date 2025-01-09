@@ -1,9 +1,5 @@
 'use client'
 
-import { EditorToolbar } from '@/components/WysiwygEditor/EditorToolbar'
-import { initialWysiwygConfig } from '@/components/WysiwygEditor/wysiwyg.config'
-import { URL_MATCHERS } from '@/components/WysiwygEditor/wysiwyg.urls'
-import { cn } from '@/lib/utils'
 // @ts-ignore
 import { useFieldContext } from '@formsignals/form-react'
 import { AutoLinkPlugin } from '@lexical/react/LexicalAutoLinkPlugin'
@@ -18,6 +14,10 @@ import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPl
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { SelectionAlwaysOnDisplay } from '@lexical/react/LexicalSelectionAlwaysOnDisplay'
+import { EditorToolbar } from '../../components/WysiwygEditor/EditorToolbar'
+import { initialWysiwygConfig } from '../../components/WysiwygEditor/wysiwyg.config'
+import { URL_MATCHERS } from '../../components/WysiwygEditor/wysiwyg.urls'
+import { cn } from '../../lib/utils'
 // biome-ignore lint/style/useImportType: <explanation>
 import {$getRoot, EditorState, LexicalEditor} from 'lexical'
 // biome-ignore lint/style/useImportType: <explanation>

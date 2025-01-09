@@ -1,10 +1,10 @@
-import { CommandShortcut } from '@/components/ui/command'
+import type { PropsWithChildren } from 'react'
+import { CommandShortcut } from '../components/ui/command'
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/ui/tooltip'
-import type { PropsWithChildren } from 'react'
+} from '../components/ui/tooltip'
 
 type ShortcutTooltipProps = {
   shortcut: string

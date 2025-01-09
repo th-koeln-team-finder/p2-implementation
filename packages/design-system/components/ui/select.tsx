@@ -4,7 +4,7 @@ import * as SelectPrimitive from '@radix-ui/react-select'
 import { Check, ChevronDown, ChevronUp } from 'lucide-react'
 import * as React from 'react'
 
-import { cn } from '@/lib/utils'
+import { cn } from '../../lib/utils'
 import { useFieldContext } from '@formsignals/form-react'
 import { useComputed } from '@preact/signals-react'
 import type { SelectProps, SelectValueProps } from '@radix-ui/react-select'

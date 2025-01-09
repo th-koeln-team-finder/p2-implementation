@@ -40,6 +40,22 @@ export const de: Language = {
       title: 'Team-Mitglieder',
     },
   },
+  brainstorm: {
+    makeActionButton: 'Erstelle das Projekt',
+    headingResources: 'Links & andere Ressourcen',
+    comments: {
+      loginCommentWarning: 'Sie müssen sich anmelden, um zu kommentieren',
+      empty: 'Es gibt noch keine Kommentare',
+      heading: 'Kommentare',
+      inputPlaceholder: 'Kommentar hinterlassen...',
+      inputSubmitButton: 'Kommentieren',
+      sortButtonLabel: 'Sortieren nach',
+      sortOptionPinned: 'Angepinnt',
+      sortOptionMostRecent: 'Neueste',
+      sortOptionMostPopular: 'Beliebteste',
+      reply: 'Antworten',
+    },
+  },
   help: {
     title: 'Hilfe',
   },

@@ -1,30 +1,5 @@
 'use client'
 
-import { ShortcutTooltip } from '@/components/ShortcutTooltip'
-import { LinkForm } from '@/components/WysiwygEditor/LinkForm'
-import { useWysiwygStates } from '@/components/WysiwygEditor/wysiwyg.state'
-import {
-  toggleHeading,
-  toggleList,
-  toggleQuote,
-} from '@/components/WysiwygEditor/wysiwyg.utils'
-import { Button } from '@/components/ui/button'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Separator } from '@/components/ui/separator'
-import { Toggle, toggleVariants } from '@/components/ui/toggle'
-import { TooltipProvider } from '@/components/ui/tooltip'
-import { cn } from '@/lib/utils'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { INSERT_HORIZONTAL_RULE_COMMAND } from '@lexical/react/LexicalHorizontalRuleNode'
 import type { HeadingTagType } from '@lexical/rich-text'
@@ -59,6 +34,31 @@ import {
   UnderlineIcon,
   UndoIcon,
 } from 'lucide-react'
+import { ShortcutTooltip } from '../../components/ShortcutTooltip'
+import { LinkForm } from '../../components/WysiwygEditor/LinkForm'
+import { useWysiwygStates } from '../../components/WysiwygEditor/wysiwyg.state'
+import {
+  toggleHeading,
+  toggleList,
+  toggleQuote,
+} from '../../components/WysiwygEditor/wysiwyg.utils'
+import { Button } from '../../components/ui/button'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '../../components/ui/popover'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../../components/ui/select'
+import { Separator } from '../../components/ui/separator'
+import { Toggle, toggleVariants } from '../../components/ui/toggle'
+import { TooltipProvider } from '../../components/ui/tooltip'
+import { cn } from '../../lib/utils'
 
 type EditorToolbarProps = {
   className?: string

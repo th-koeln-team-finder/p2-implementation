@@ -1,3 +1,5 @@
+// noinspection RequiredAttributes This is only for Webstorm, since the types seem to be too advanced for it
+
 import { CanUserServer } from '@/features/auth/components/CanUser.server'
 import { Link } from '@/features/i18n/routing'
 import { AddTestButton, RemoveTestButton, TestItemList } from '@/features/test'
