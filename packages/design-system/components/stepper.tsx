@@ -9,6 +9,7 @@ const StepperComponent = ({
   currentIndex,
   onNext,
   onReset,
+  onDone,
   onPrevious,
   jumpToStep,
 }: {
@@ -17,13 +18,10 @@ const StepperComponent = ({
   onNext?: () => void
   onPrevious?: () => void
   onReset?: () => void
+  onDone?: () => void
   jumpToStep?: (index: number) => void
   children?: React.ReactNode
 }) => {
-  const done = () => {
-    //TODO Weiterleitung zu selbst erstellten Projekten?
-  }
-
   const currentStep = steps[currentIndex]
 
   // Dynamisch nur das passende ContentItem rendern
@@ -107,7 +105,7 @@ const StepperComponent = ({
           {currentIndex === steps.length - 1 && (
             <Button
               className="rounded px-4 py-2 text-white hover:bg-fuchsia-800"
-              onClick={done}
+              onClick={onDone}
             >
               Done
             </Button>
