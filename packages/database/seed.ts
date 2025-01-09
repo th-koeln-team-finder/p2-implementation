@@ -1,3 +1,4 @@
+// @ts-ignore
 import { makeProjects } from '@/factory/projects.factory'
 import { faker } from '@faker-js/faker/locale/de'
 import { config } from 'dotenv'
