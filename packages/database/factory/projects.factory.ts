@@ -1,5 +1,5 @@
-import { faker } from '@faker-js/faker/locale/de'
 import type { ProjectInsert } from '@/schema'
+import { faker } from '@faker-js/faker/locale/de'
 
 export function makeProject(): ProjectInsert {
   return {
@@ -8,10 +8,5 @@ export function makeProject(): ProjectInsert {
     status: faker.helpers.arrayElement(['open', 'closed']),
     isPublic: faker.datatype.boolean(),
     allowApplications: faker.datatype.boolean(),
-    additionalInfo: {},
   }
-}
-
-export function makeProjects(count: number): ProjectInsert[] {
-  return Array.from({ length: count }, makeProject)
 }

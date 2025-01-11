@@ -6,9 +6,9 @@ export default function ProjectTitle({
   subtitle?: string
 }) {
   return (
-    <div className="flex-col justify-start items-start inline-flex">
-      <h1 className="text-3xl font-medium">{title}</h1>
-      <h2 className="text-sm font-normal">{subtitle}</h2>
+    <div className="inline-flex flex-col items-start justify-start">
+      <h1 className="font-medium text-3xl">{title}</h1>
+      <h2 className="font-normal text-sm">{subtitle}</h2>
     </div>
   )
 }

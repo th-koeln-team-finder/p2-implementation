@@ -23,8 +23,8 @@ export const de: Language = {
     location: 'Standort/Treffpunkt',
     join: 'Team beitreten',
     links: 'Links und andere Ressourcen',
-    issuesTitle:'Offene Issues für neue Mitglieder',
-    skills:{
+    issuesTitle: 'Offene Issues für neue Mitglieder',
+    skills: {
       title: 'Deine Fähigkeiten',
       toggleLess: 'Weniger anzeigen',
       toggleMore: 'Mehr anzeigen',
@@ -67,5 +67,16 @@ export const de: Language = {
     usernameTaken: 'Dieser Benutzername ist bereits vergeben',
     minLengthX:
       'Dieses Feld muss mindestens {amount, plural, =1 {ein Zeichen} other {# Zeichen}} lang sein',
+  },
+  utils: {
+    weekdays: {
+      monday: 'Mo',
+      tuesday: 'Di',
+      wednesday: 'Mi',
+      thursday: 'Do',
+      friday: 'Fr',
+      saturday: 'Sa',
+      sunday: 'So',
+    },
   },
 }

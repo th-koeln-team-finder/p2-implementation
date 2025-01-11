@@ -20,7 +20,7 @@ export const en = {
     location: 'Location',
     join: 'Join the team',
     links: 'Links and other resources',
-    issuesTitle:'open issues for starters',
+    issuesTitle: 'open issues for starters',
 
     skills: {
       title: 'Skills needed',
@@ -65,6 +65,17 @@ export const en = {
     usernameTaken: 'This username is already taken',
     minLengthX:
       'This field must be at least {amount, plural, =1 {one character} other {# characters}} long',
+  },
+  utils: {
+    weekdays: {
+      monday: 'Mon',
+      tuesday: 'Tue',
+      wednesday: 'Wed',
+      thursday: 'Thu',
+      friday: 'Fri',
+      saturday: 'Sat',
+      sunday: 'Sun',
+    },
   },
 }
 

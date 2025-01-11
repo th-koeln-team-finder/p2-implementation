@@ -1,24 +1,28 @@
 import { db } from '@repo/database'
-import { projects,projectTimetable,ProjectIssue } from '@repo/database/schema'
+import { projects } from '@repo/database/schema'
 import { eq } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
 
 export const getProjectItems = cache(
   () => db.select().from(projects).where(eq(projects.isPublic, true)),
   ['getProjectItems'],
+  { tags: ['projects'] },
 )
 
 export const getProjectItem = cache(
-  (id: number) => db.query.projects.findFirst({ where: eq(projects.id, id) }),
+  (id: string): any =>
+    db.query.projects.findFirst({
+      where: eq(projects.id, id),
+      with: {
+        timetable: true,
+        issues: true,
+        projectSkills: {
+          with: {
+            skill: true,
+          },
+        },
+      },
+    }),
   ['getProjectItem'],
-)
-export const getProjectIssueList=cache(
-    (id:number)=> db.query.ProjectIssue.findMany({where: eq(ProjectIssue.projectId, id)})
-)
-export const getProjectTimetable=cache(
-    (id:number)=> db.query.ProjectTimetable.findMany({where: eq(projectTimetable.projectId, id)})
-)
-
-export const getProjectSkills=cache(
-    (id:number)=> db.query.SkillData.findMany({where: eq(projectTimetable.projectId, id)})
+  { tags: ['projects'] },
 )

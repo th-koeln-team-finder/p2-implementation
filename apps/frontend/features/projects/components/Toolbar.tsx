@@ -8,9 +8,9 @@ export async function Toolbar({ stars }: { stars?: number }) {
   const starsString = stars.toLocaleString('en', { notation: 'compact' })
 
   return (
-    <div className="justify-end items-center gap-4 flex">
+    <div className="flex items-center justify-end gap-4">
       <Button variant="ghost" className="p-0">
-          <div className="my-auto leading-normal">{starsString}</div>
+        <div className="my-auto leading-normal">{starsString}</div>
         <StarIcon />
       </Button>
       <Button variant="ghost" size="icon" className="h-fit w-fit">

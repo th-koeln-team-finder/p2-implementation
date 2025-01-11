@@ -1,42 +1,32 @@
-import {ProjectSkillInsert, SkillInsert, SkillSelect, UserSkillInsert} from "@/schema";
-import {faker} from "@faker-js/faker/locale/de";
+import type { ProjectSkillInsert, SkillInsert } from '@/schema'
+import { faker } from '@faker-js/faker/locale/de'
 
-export function makeSkill(amount:number): SkillSelect[]{
-    let skill:SkillSelect[]=[]
-
-    Array.from({length:amount},()=>{
-        skill.push({
-            name:faker.person.jobArea(),
-            id:faker.number.int()
-        })
-    })
-    return skill
+export function makeSkill(): SkillInsert {
+  return {
+    name: faker.person.jobArea(),
+  }
 }
 
-export function makeProjectSkills(projectID:number, amount:number):ProjectSkillInsert[]{
-    const skills = makeSkill(amount)
+export function makeProjectSkill(
+  projectId: string,
+  skillIds: string[],
+  uniqueIds: Set<string>,
+): ProjectSkillInsert | null {
+  let tries = 0
+  let skillId = faker.helpers.arrayElement(skillIds)
 
+  while (uniqueIds.has(`${projectId}-${skillId}`) && tries < 10) {
+    skillId = faker.helpers.arrayElement(skillIds)
+    tries++
+  }
+  if (tries >= 10) {
+    return null
+  }
+  uniqueIds.add(`${projectId}-${skillId}`)
 
-
-   let projectSkills:ProjectSkillInsert[]=[]
-skills.map((skill)=>{
-    projectSkills.push({
-        projectId:projectID,
-        skillId:skill.id,
-        level: faker.number.int(10)
-    })
-})
-    return projectSkills
-}
-export function makeUserSkill(amount:number, UserId:number) :UserSkillInsert[]{
-    const skills = makeSkill(amount)
-    let userSkills:UserSkillInsert[]=[]
-    skills.map((skill)=>{
-        userSkills.push({
-            UserId:UserId,
-            skillId:skill.id,
-            level:faker.number.int(10)
-        })
-    })
-    return userSkills
+  return {
+    projectId,
+    skillId,
+    level: faker.number.int(5),
+  }
 }

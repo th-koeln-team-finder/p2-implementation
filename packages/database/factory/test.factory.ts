@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker/locale/de'
-import type { TestInsert } from '../schema'
+import type { TestInsert } from '@/schema'
 
 export function makeTest(): TestInsert {
   return {
