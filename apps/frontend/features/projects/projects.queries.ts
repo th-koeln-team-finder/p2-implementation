@@ -10,7 +10,7 @@ export const getProjectItems = cache(
 )
 
 export const getProjectItem = cache(
-  (id: string): any =>
+  (id: string) =>
     db.query.projects.findFirst({
       where: eq(projects.id, id),
       with: {
