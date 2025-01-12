@@ -1,7 +1,12 @@
 export const en = {
   general: {
     save: 'Save',
+    search: 'Suchen',
     cancel: 'Cancel',
+    delete: 'Delete',
+    continue: 'Continue',
+    add: 'Add',
+    remove: 'Remove',
   },
   test: {
     dataTitle: 'Test Data',
@@ -77,6 +82,33 @@ export const en = {
     logout: {
       button: 'Logout',
     },
+  },
+  users: {
+    title: 'Page',
+    lastActivity: 'Last activity',
+    skills: 'Skills',
+    previouslyWorkedOn: 'Previously worked on',
+    loadMoreProjects: 'Mehr Projekte laden',
+    follow: 'Follow',
+    friendly: 'Friendly',
+    veryFriendly: 'Very friendly',
+    ratingText: 'people have rated the person as “very friendly”',
+    editProfile: 'Edit profile',
+    settings: {
+      title: 'User settings',
+      profile: 'Profile',
+      account: 'Account',
+      notifications: 'Notifications',
+      security: 'Security',
+      dangerZone: 'Danger Zone',
+      deleteAccount: 'Delete account',
+      addSkill: 'Add skill',
+      removeSkill: 'Remove skill',
+      deleteAreYouSure: 'Are you sure you want to delete your account?',
+      activateNotifications: 'Activate notifications',
+      selectNotificationType: 'Select notification type',
+      searchSkills: 'Search skill',
+    }
   },
   validation: {
     inProgress: 'Validating...',

@@ -1,9 +1,8 @@
-import { relations } from 'drizzle-orm'
-import { sql } from 'drizzle-orm'
 import {
   type AnyPgColumn,
   boolean,
   check,
+  date,
   integer,
   json,
   pgEnum,
@@ -20,6 +19,7 @@ import type { AdapterAccountType } from 'next-auth/adapters'
 import { Roles, type RolesType, RolesValues } from './constants'
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
+import {relations, sql} from "drizzle-orm";
 
 /**
  * Test data should only demonstrate the usage of the library
@@ -42,6 +42,7 @@ export const users = pgTable('user', {
   email: text('email').unique().notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
+  bio: text('bio'),
   roles: pgRoles()
     .array()
     .notNull()
@@ -50,6 +51,101 @@ export const users = pgTable('user', {
 })
 export type UserInsert = typeof users.$inferInsert
 export type UserSelect = typeof users.$inferSelect
+
+/**
+ * Data specific for one user
+*/
+export const skills = pgTable('skills', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  skill: varchar({ length: 255 }).notNull().unique(),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
+})
+export type SkillsInsert = typeof skills.$inferInsert
+export type SkillsSelect = typeof skills.$inferSelect
+
+export const userSkills = pgTable('userSkills', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  userId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),
+  skillId: integer('skillId').notNull().references(() => skills.id, {onDelete: 'cascade'}),
+  level: integer().notNull(),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
+})
+export type UserSkillsInsert = typeof userSkills.$inferInsert
+export type UserSkillsSelect = typeof userSkills.$inferSelect
+
+export const userSkillRelations = relations(userSkills, ({one}) => ({
+  skill: one(skills, {
+    fields: [userSkills.skillId],
+    references: [skills.id],
+  }),
+}))
+
+export const skillRelations = relations(skills, ({many}) => ({
+  userSkills: many(userSkills),
+}))
+
+export const userSkillVerification = pgTable('userSkillVerification', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  verifierId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),
+  userSkillId: integer('skillId').notNull().references(() => userSkills.id, {onDelete: 'cascade'}),
+  status: varchar({ enum: ['pending', 'approved', 'rejected'] }).notNull(),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
+})
+export type UserSkillVerificationInsert = typeof userSkillVerification.$inferInsert
+export type UserSkillVerificationSelect = typeof userSkillVerification.$inferSelect
+
+export const userRatings = pgTable('userRatings', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  raterId: uuid('userId').notNull().references(() => users.id),
+  rateeId: uuid('userId').notNull().references(() => users.id),
+  ratingType: varchar({ enum: ['friendly', 'reliable'] }).notNull(),
+  createdAt: timestamp().notNull().defaultNow(),
+})
+export type UserRatingsInsert = typeof userRatings.$inferInsert
+export type UserRatingsSelect = typeof userRatings.$inferSelect
+
+export const userFollows = pgTable('userFollows', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  followerId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),
+  followeeId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),
+  createdAt: timestamp().notNull().defaultNow(),
+})
+export type UserFollowsInsert = typeof userRatings.$inferInsert
+
+/**
+ * This table stores all the projects a user is and was part of.
+ * They may also add other projects to their timeline that they worked on
+ * but did not use this platform.
+ */
+export const userProjects = pgTable('userProjects', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  userId: uuid('userId').notNull().references(() => users.id),
+  // for projects from this platform
+  projectId: integer('projectId').notNull().references(() => projects.id),
+  // for projects not from this platform
+  projectName: varchar({ length: 255 }),
+  projectJoinedDate: date().notNull(),
+  projectLeftDate: date(),
+  projectDescription: varchar({ length: 255 }),
+  visible: boolean().notNull().default(true),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
+})
+export type UserProjectsInsert = typeof userProjects.$inferInsert
+export type UserProjectsSelect = typeof userProjects.$inferSelect
+
+export const userProjectSettings = pgTable('userProjectSettings', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  userId: uuid('userId').notNull().references(() => users.id),
+  projectId: integer('projectId').notNull().references(() => projects.id),
+  enableNotifications: boolean().notNull().default(true),
+  preferredNotificationChannel: varchar({ enum: ['email', 'push', 'both'] }).notNull().default('email'),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
+})
 
 /**
  * Data specific for one project

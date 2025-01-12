@@ -9,9 +9,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@repo/design-system/components/ui/dropdown-menu'
-import type { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'import {Link} from "@/features/i18n/routing";
 
-export async function UserProfileMenu({ children }: PropsWithChildren) {
+export async function UserProfileMenu({children}: PropsWithChildren) {
   const session = await authMiddleware()
 
   if (!session?.user) return null
@@ -26,17 +26,19 @@ export async function UserProfileMenu({ children }: PropsWithChildren) {
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="font-medium text-sm leading-none">
-                {session.user.name}
-              </p>
+              <Link href="/profile" className="hover:underline">
+                <p className="font-medium text-sm leading-none">
+                  {session.user.name}
+                </p>
+              </Link>
               <p className="text-muted-foreground text-xs leading-none">
                 {session.user.email}
               </p>
             </div>
           </DropdownMenuLabel>
-          <DropdownMenuSeparator />
+          <DropdownMenuSeparator/>
           {children}
-          {children && <DropdownMenuSeparator />}
+          {children && <DropdownMenuSeparator/>}
           <SignOutMenuItem />
         </DropdownMenuContent>
       </DropdownMenu>

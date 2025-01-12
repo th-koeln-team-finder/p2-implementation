@@ -1,9 +1,14 @@
-import type { Language } from './en'
+import type {Language} from './en'
 
 export const de: Language = {
   general: {
     save: 'Speichern',
+    search: 'Suchen',
     cancel: 'Abbrechen',
+    delete: 'Löschen',
+    continue: 'Fortfahren',
+    add: 'Hinzufügen',
+    remove: 'Entfernen',
   },
   test: {
     dataTitle: 'Testdaten',
@@ -21,7 +26,6 @@ export const de: Language = {
       removeAll: 'Alle entfernen',
     },
   },
-
   projects: {
     title: 'Projekte',
     location: 'Standort/Treffpunkt',
@@ -79,6 +83,32 @@ export const de: Language = {
     logout: {
       button: 'Abmelden',
     },
+  },
+  users: {
+    title: 'Profil',
+    lastActivity: 'Letzte Aktivität',
+    skills: 'Skills',
+    previouslyWorkedOn: 'Hat zuvor gearbeitet an',
+    loadMoreProjects: 'Mehr Projekte laden',
+    follow: 'Folgen',
+    friendly: 'Freundlich',
+    veryFriendly: 'Sehr freundlich',
+    ratingText: 'Personen haben die Person als "sehr freundlich" bewertet',
+    editProfile: 'Profil bearbeiten',
+    settings: {
+      title: 'Benutzereinstellungen',
+      profile: 'Profil',
+      account: 'Konto',
+      notifications: 'Benachrichtigungen',
+      security: 'Sicherheit',
+      dangerZone: 'Gefahrenzone',
+      deleteAccount: 'Account löschen',
+      removeSkill: 'Remove skill',
+      deleteAreYouSure: 'Are you sure you want to delete your account?',
+      activateNotifications: 'Benachrichtigungen aktivieren',
+      selectNotificationType: 'Benachrichtigungstyp auswählen',
+      searchSkills: 'Skill suchen',
+    }
   },
   validation: {
     inProgress: 'Validiere...',
