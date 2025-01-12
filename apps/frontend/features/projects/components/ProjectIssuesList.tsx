@@ -37,15 +37,15 @@ export function ProjectIssuesList(
     if (itemRef.current) {
       setItemHeight(itemRef.current.offsetHeight)
     }
-  }, [itemRef.current])
+  })
 
   const maxHeight = showAll
     ? `${listOfIssues.length * itemHeight}px`
     : `${3 * itemHeight}px`
 
   return (
-    <div className="flex-col justify-start items-start gap-4 inline-flex">
-      <div className="self-stretch text-2xl font-medium leading-loose">
+    <div className="inline-flex flex-col items-start justify-start gap-4">
+      <div className="self-stretch font-medium text-2xl leading-loose">
         {'issuesTitle'}
       </div>
       <div
@@ -56,7 +56,7 @@ export function ProjectIssuesList(
           <Card
             key={issue.id}
             ref={index === 0 ? itemRef : null}
-            className={`w-full self-stretch justify-between inline-flex mb-2 opacity-0 transition-opacity duration-300 ${showAll || index < 4 ? 'opacity-100' : ''}`}
+            className={`mb-2 inline-flex w-full justify-between self-stretch opacity-0 transition-opacity duration-300 ${showAll || index < 4 ? 'opacity-100' : ''}`}
           >
             <CardHeader className="p-2">
               <CardTitle>{issue.title}</CardTitle>
@@ -70,7 +70,7 @@ export function ProjectIssuesList(
           {/* biome-ignore lint/a11y/useButtonType: <mehr anzeigen> */}
           <button
             onClick={toggleShowAll}
-            className="self-stretch gap-4 inline-flex"
+            className="inline-flex gap-4 self-stretch"
           >
             <div className="text-fuchsia-700">
               {showAll ? 'Weniger anzeigen' : 'Mehr anzeigen'}

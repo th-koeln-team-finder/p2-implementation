@@ -163,6 +163,7 @@ const Carousel = React.forwardRef<
           ref={ref}
           onKeyDownCapture={handleKeyDown}
           className={cn('relative', className)}
+          // biome-ignore lint/a11y/useSemanticElements: <explanation>
           role="region"
           aria-roledescription="carousel"
           {...props}
@@ -277,6 +278,7 @@ const CarouselNext = React.forwardRef<
 })
 CarouselNext.displayName = 'CarouselNext'
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const CarouselPagination: React.FC<{ items: any[] }> = ({ items }) => {
   const { api } = useCarousel()
   const [selectedIndex, setSelectedIndex] = React.useState(0)
@@ -300,6 +302,7 @@ const CarouselPagination: React.FC<{ items: any[] }> = ({ items }) => {
       {items.map((_, index) => (
         <button
           type="button"
+          // biome-ignore lint/suspicious/noArrayIndexKey: Index is unique
           key={index}
           className={`h-2 w-2 rounded-full transition-all ${index === selectedIndex ? 'bg-fuchsia-700' : 'bg-fuchsia-200'}`}
           onClick={() => api?.scrollTo(index)}

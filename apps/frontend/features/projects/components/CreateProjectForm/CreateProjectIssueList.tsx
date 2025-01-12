@@ -47,7 +47,6 @@ export function CreateProjectIssueList({
           </div>
 
           <div className="flex w-4/6 flex-row justify-between">
-            {/* TODO add wysiwyg editor with error */}
             <field.SubFieldProvider
               name={`${index}.description`}
               validator={() => {
@@ -68,7 +67,8 @@ export function CreateProjectIssueList({
               <Button
                 onClick={() => field.removeValueFromArray(index)}
                 variant="outline"
-                className="mt-auto rounded-full p-2 hover:border-fuchsia-700"
+                className="mt-auto rounded-full p-2"
+                size="icon"
               >
                 <MinusIcon />
               </Button>
@@ -76,8 +76,8 @@ export function CreateProjectIssueList({
                 onClick={() =>
                   field.pushValueToArray({ title: '', description: '' })
                 }
-                variant="outline"
-                className="mt-auto rounded-full border-fuchsia-700 p-2 text-fuchsia-700"
+                className="mt-auto rounded-full"
+                size="icon"
               >
                 <PlusIcon />
               </Button>

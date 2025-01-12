@@ -150,6 +150,7 @@ export function CreateProjectForm() {
     <StepperComponent
       steps={steps}
       currentIndex={currentIndex}
+      // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
       onNext={async () => {
         if (currentIndex === 0) {
           return await basicFieldGroup.handleSubmit()

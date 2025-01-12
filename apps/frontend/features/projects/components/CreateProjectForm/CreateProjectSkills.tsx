@@ -60,14 +60,15 @@ export function CreateProjectSkills() {
               <Button
                 onClick={() => field.removeValueFromArray(index)}
                 variant="outline"
-                className="mt-auto rounded-full p-2 hover:border-fuchsia-700"
+                className="mt-auto rounded-full p-2"
+                size="icon"
               >
                 <MinusIcon />
               </Button>
               <Button
                 onClick={() => field.pushValueToArray({ skill: '', level: '' })}
-                variant="outline"
-                className="mt-auto rounded-full border-fuchsia-700 p-2 text-fuchsia-700"
+                className="mt-auto rounded-full "
+                size="icon"
               >
                 <PlusIcon />
               </Button>

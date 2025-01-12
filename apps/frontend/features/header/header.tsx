@@ -14,6 +14,7 @@ import {
   User2Icon,
   Users2Icon,
 } from 'lucide-react'
+import Image from 'next/image'
 
 export default function Header() {
   return (
@@ -130,10 +131,10 @@ export default function Header() {
           {/* //TODO Anmelden und Registrieren Buttons & weitere Account etc. verlinken */}
           <DropdownMenu>
             <DropdownMenuTrigger className="focus:outline-none focus-visible:outline-none">
-              <img
+              <Image
                 className="h-8 w-8 rounded-full"
                 src="https://via.placeholder.com/32x32"
-                alt=""
+                alt="placeholder"
               />
             </DropdownMenuTrigger>
             <DropdownMenuContent>

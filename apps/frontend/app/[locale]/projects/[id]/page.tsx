@@ -26,14 +26,17 @@ export default async function Projects({
   params: Promise<{ id: number }>
 }>) {
   const id: number = (await params).id
+  // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
   let project
-  let issues
-  let timetable
+  // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
+  let _issues
+  // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
+  let _timetable
 
   try {
     project = await getProjectItem(id)
-    issues = await getProjectIssueList(id)
-    timetable = await getProjectTimetable(id)
+    _issues = await getProjectIssueList(id)
+    _timetable = await getProjectTimetable(id)
   } catch (e) {
     console.error(e)
     project = {}
@@ -54,7 +57,7 @@ export default async function Projects({
 */
 
   return (
-    <div className="max-w-screen-xl w-full p-4 mx-auto flex-col justify-start items-center gap-12 inline-flex">
+    <div className="mx-auto inline-flex w-full max-w-screen-xl flex-col items-center justify-start gap-12 p-4">
       <div className="inline-flex flex-col items-start justify-start gap-8 self-stretch">
         <div className="inline-flex items-start justify-between self-stretch">
           <ProjectTitle title={project.name} subtitle={project.status} />

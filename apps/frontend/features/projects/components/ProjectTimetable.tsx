@@ -99,8 +99,8 @@ export async function ProjectTimetable({
 }: {
   timetable: Timetable[]
 }) {
-  const weekdays = Object.keys(Weekdays).filter((key) => {
-    return isNaN(Number(key))
+  const _weekdays = Object.keys(Weekdays).filter((key) => {
+    return Number.isNaN(Number(key))
   })
 
   const timeoutput: [Weekdays, string][] = [
@@ -128,77 +128,77 @@ export async function ProjectTimetable({
 */
 
   return (
-    <div className="self-stretch rounded border border-zinc-300 flex-col justify-start items-start flex">
-      <div className="self-stretch h-12 justify-start items-start inline-flex">
-        <div className="grow shrink basis-0 self-stretch bg-fuchsia-100 rounded-tl border border-zinc-300 justify-center items-center gap-2.5 flex">
-          <div className="text-zinc-500 text-sm font-normal leading-tight">
+    <div className="flex flex-col items-start justify-start self-stretch rounded border border-zinc-300">
+      <div className="inline-flex h-12 items-start justify-start self-stretch">
+        <div className="flex shrink grow basis-0 items-center justify-center gap-2.5 self-stretch rounded-tl border border-zinc-300 bg-fuchsia-100">
+          <div className="font-normal text-sm text-zinc-500 leading-tight">
             Mon
           </div>
         </div>
-        <div className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
-          <div className="text-zinc-500 text-sm font-normal leading-tight">
+        <div className="flex shrink grow basis-0 items-center justify-center gap-2.5 self-stretch border-zinc-300 border-t border-r border-b bg-fuchsia-100">
+          <div className="font-normal text-sm text-zinc-500 leading-tight">
             Tue
           </div>
         </div>
-        <div className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
-          <div className="text-zinc-500 text-sm font-normal leading-tight">
+        <div className="flex shrink grow basis-0 items-center justify-center gap-2.5 self-stretch border-zinc-300 border-t border-r border-b bg-fuchsia-100">
+          <div className="font-normal text-sm text-zinc-500 leading-tight">
             Wed
           </div>
         </div>
-        <div className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
-          <div className="text-zinc-500 text-sm font-normal leading-tight">
+        <div className="flex shrink grow basis-0 items-center justify-center gap-2.5 self-stretch border-zinc-300 border-t border-r border-b bg-fuchsia-100">
+          <div className="font-normal text-sm text-zinc-500 leading-tight">
             Thu
           </div>
         </div>
-        <div className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
-          <div className="text-zinc-500 text-sm font-normal leading-tight">
+        <div className="flex shrink grow basis-0 items-center justify-center gap-2.5 self-stretch border-zinc-300 border-t border-r border-b bg-fuchsia-100">
+          <div className="font-normal text-sm text-zinc-500 leading-tight">
             Fri
           </div>
         </div>
-        <div className="grow shrink basis-0 self-stretch bg-fuchsia-100 border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
-          <div className="text-zinc-500 text-sm font-normal leading-tight">
+        <div className="flex shrink grow basis-0 items-center justify-center gap-2.5 self-stretch border-zinc-300 border-t border-r border-b bg-fuchsia-100">
+          <div className="font-normal text-sm text-zinc-500 leading-tight">
             Sat
           </div>
         </div>
-        <div className="grow shrink basis-0 self-stretch bg-fuchsia-100 rounded-tr border-r border-t border-b border-zinc-300 justify-center items-center gap-2.5 flex">
-          <div className="text-zinc-500 text-sm font-normal leading-tight">
+        <div className="flex shrink grow basis-0 items-center justify-center gap-2.5 self-stretch rounded-tr border-zinc-300 border-t border-r border-b bg-fuchsia-100">
+          <div className="font-normal text-sm text-zinc-500 leading-tight">
             Son
           </div>
         </div>
       </div>
-      <div className="self-stretch h-12 justify-start items-start inline-flex">
-        <div className="grow shrink basis-0 self-stretch rounded-bl justify-center items-center flex">
-          <div className="grow shrink basis-0 text-center text-sm font-normal leading-tight">
+      <div className="inline-flex h-12 items-start justify-start self-stretch">
+        <div className="flex shrink grow basis-0 items-center justify-center self-stretch rounded-bl">
+          <div className="shrink grow basis-0 text-center font-normal text-sm leading-tight">
             {timeoutput[0][1]}
           </div>
         </div>
-        <div className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
-          <div className="grow shrink basis-0 text-center text-sm font-normal leading-tight">
+        <div className="flex shrink grow basis-0 items-center justify-center self-stretch border-zinc-300 border-l">
+          <div className="shrink grow basis-0 text-center font-normal text-sm leading-tight">
             {timeoutput[1][1]}
           </div>
         </div>
-        <div className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
-          <div className="grow shrink basis-0 text-center text-sm font-normal leading-tight">
+        <div className="flex shrink grow basis-0 items-center justify-center self-stretch border-zinc-300 border-l">
+          <div className="shrink grow basis-0 text-center font-normal text-sm leading-tight">
             {timeoutput[2][1]}
           </div>
         </div>
-        <div className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
-          <div className="grow shrink basis-0 text-center text-sm font-normal leading-tight">
+        <div className="flex shrink grow basis-0 items-center justify-center self-stretch border-zinc-300 border-l">
+          <div className="shrink grow basis-0 text-center font-normal text-sm leading-tight">
             {timeoutput[3][1]}
           </div>
         </div>
-        <div className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
-          <div className="grow shrink basis-0 text-center text-sm font-normal leading-tight">
+        <div className="flex shrink grow basis-0 items-center justify-center self-stretch border-zinc-300 border-l">
+          <div className="shrink grow basis-0 text-center font-normal text-sm leading-tight">
             {timeoutput[4][1]}
           </div>
         </div>
-        <div className="grow shrink basis-0 self-stretch border-l border-zinc-300 justify-center items-center flex">
-          <div className="grow shrink basis-0 text-center text-sm font-normal leading-tight">
+        <div className="flex shrink grow basis-0 items-center justify-center self-stretch border-zinc-300 border-l">
+          <div className="shrink grow basis-0 text-center font-normal text-sm leading-tight">
             {timeoutput[5][1]}
           </div>
         </div>
-        <div className="grow shrink basis-0 self-stretch rounded-br border-l border-zinc-300 justify-center items-center flex">
-          <div className="grow shrink basis-0 text-center text-sm font-normal leading-tight">
+        <div className="flex shrink grow basis-0 items-center justify-center self-stretch rounded-br border-zinc-300 border-l">
+          <div className="shrink grow basis-0 text-center font-normal text-sm leading-tight">
             {timeoutput[6][1]}
           </div>
         </div>

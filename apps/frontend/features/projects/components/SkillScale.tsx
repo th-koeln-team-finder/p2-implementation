@@ -27,7 +27,7 @@ export function SkillScale({
       setItemHeight(totalHeight)
       //setItemHeight(itemRef.current.offsetHeight);
     }
-  }, [itemRef.current])
+  })
 
   const maxHeight = showAll
     ? `${skills.length * itemHeight}px`
@@ -40,11 +40,10 @@ export function SkillScale({
       </div>
 
       <div className="flex flex-col" style={{ maxHeight }}>
-        <div
-          className="overflow-hidden transition-all duration-300 ease-in-out" /*style={{maxHeight}} */
-        />
+        <div className="overflow-hidden transition-all duration-300 ease-in-out" />
         {skills.map((skill, index) => (
           <div
+            // biome-ignore lint/suspicious/noArrayIndexKey: Index for the key
             key={index}
             ref={index === 0 ? itemRef : null}
             className={`mb-2 inline-flex w-full justify-between self-stretch opacity-0 transition-opacity duration-300 ${showAll || index < 6 ? 'opacity-100' : ''}`}
@@ -52,8 +51,8 @@ export function SkillScale({
             <div className="text-base">{skill.name}</div>
             <div className="flex items-center justify-center gap-2.5 py-px">
               {[...Array(5)].map((_, i) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: <Skill Level>
                 <div
+                  // biome-ignore lint/suspicious/noArrayIndexKey: Index for the key
                   key={i}
                   className={`h-2 w-2 rounded-full ${i < skill.level ? 'bg-fuchsia-800' : 'bg-fuchsia-200'}`}
                 />

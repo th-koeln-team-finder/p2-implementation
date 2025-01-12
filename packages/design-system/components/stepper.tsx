@@ -72,26 +72,28 @@ const StepperComponent = ({
         </nav>
       </div>
 
-      <div className="mb-8 w-full">
+      <div className="mb-20 w-full">
         <h1 className="mb-4 font-medium text-lg">{currentStep.title}</h1>
         {stepContent}
       </div>
 
-      <div className="mb-8 w-full">
-        <div className="flex justify-center gap-4">
+      <div className="fixed bottom-0 z-99 flex w-full justify-between bg-white py-6">
+        <div className="relative left-4 flex justify-center text-muted-foreground text-sm">
+          Step {currentIndex + 1} of {steps.length}
+        </div>
+
+        <div className="relative right-4 flex justify-center gap-4">
           {currentIndex > 0 && (
             <Button
-              className="hover: rounded border-2 border-fuchsia-700 bg-transparent px-4 py-2 text-primary hover:border-fuchsia-800 hover:bg-fuchsia-800 hover:text-white"
+              variant="outline"
+              className="rounded border-2 bg-transparent px-4 py-2"
               onClick={onPrevious}
             >
               Back
             </Button>
           )}
           {currentIndex < steps.length - 1 ? (
-            <Button
-              className="rounded px-4 py-2 text-white hover:bg-fuchsia-800"
-              onClick={onNext}
-            >
+            <Button className="rounded px-4 py-2" onClick={onNext}>
               Next
             </Button>
           ) : (
@@ -111,10 +113,6 @@ const StepperComponent = ({
             </Button>
           )}
         </div>
-      </div>
-
-      <div className="mx-auto text-muted-foreground text-sm">
-        Step {currentIndex + 1} of {steps.length}
       </div>
     </div>
   )
