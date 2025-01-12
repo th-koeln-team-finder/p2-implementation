@@ -18,8 +18,6 @@ services:
     build:
       context: .
       dockerfile: ./apps/tldraw-sync/Dockerfile
-    volumes:
-      - ./apps/tldraw-sync:/app
     ports:
       - '5858:5858'
     networks:

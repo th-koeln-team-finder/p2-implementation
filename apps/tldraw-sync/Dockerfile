@@ -14,6 +14,4 @@ RUN pnpm turbo run build --filter='tldraw-sync'
 ENV PORT=5858
 EXPOSE 5858
 
-RUN cd ./apps/tldraw-sync
-
-CMD [ "pnpm", "dev" ]
+CMD [ "pnpm", "turbo", "run", "dev", "--filter=tldraw-sync" ]
