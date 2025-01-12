@@ -67,7 +67,7 @@ export function CreateProjectIssueList({
               <Button
                 onClick={() => field.removeValueFromArray(index)}
                 variant="outline"
-                className="mt-auto rounded-full p-2"
+                className="mb-auto rounded-full p-2"
                 size="icon"
               >
                 <MinusIcon />
@@ -76,7 +76,7 @@ export function CreateProjectIssueList({
                 onClick={() =>
                   field.pushValueToArray({ title: '', description: '' })
                 }
-                className="mt-auto rounded-full"
+                className="mb-auto rounded-full"
                 size="icon"
               >
                 <PlusIcon />

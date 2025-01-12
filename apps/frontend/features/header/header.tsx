@@ -131,9 +131,10 @@ export default function Header() {
           {/* //TODO Anmelden und Registrieren Buttons & weitere Account etc. verlinken */}
           <DropdownMenu>
             <DropdownMenuTrigger className="focus:outline-none focus-visible:outline-none">
-              <Image
+              {/* biome-ignore lint/nursery/noImgElement: <explanation> */}
+              <img
                 className="h-8 w-8 rounded-full"
-                src="https://via.placeholder.com/32x32"
+                src="https://cdn.pixabay.com/photo/2018/01/03/17/05/palm-trees-3058728_1280.jpg"
                 alt="placeholder"
               />
             </DropdownMenuTrigger>
