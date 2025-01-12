@@ -57,7 +57,7 @@ export type UserSelect = typeof users.$inferSelect
 export const projects = pgTable('projects', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
-  description: varchar({ length: 255 }).notNull(),
+  description: text().notNull(),
   status: varchar({ enum: ['open', 'closed'] }).notNull(),
   createdAt: timestamp().defaultNow(),
   updatedAt: timestamp().defaultNow(),
@@ -67,18 +67,22 @@ export const projects = pgTable('projects', {
 })
 
 export const ProjectSkill = pgTable('ProjectSkill', {
-    id: integer().primaryKey().generatedAlwaysAsIdentity(),
-    projectId: integer().notNull().references(() => projects.id),
-    skill: varchar('skill', { length: 255 }).notNull(),
-    level: varchar('level', { length: 255 }).notNull(),
-});
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  projectId: integer()
+    .notNull()
+    .references(() => projects.id),
+  skill: varchar('skill', { length: 255 }).notNull(),
+  level: varchar('level', { length: 255 }).notNull(),
+})
 
 export const ProjectLink = pgTable('ProjectLink', {
-    id: integer().primaryKey().generatedAlwaysAsIdentity(),
-    projectId: integer().notNull().references(() => projects.id),
-    url: varchar('url', { length: 255 }).notNull(),
-    file: varchar('file', { length: 255 }).notNull(),
-});
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  projectId: integer()
+    .notNull()
+    .references(() => projects.id),
+  url: varchar('url', { length: 255 }).notNull(),
+  file: varchar('file', { length: 255 }).notNull(),
+})
 
 export const ProjectIssue = pgTable('ProjectIssue', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),

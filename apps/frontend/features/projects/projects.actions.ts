@@ -1,14 +1,10 @@
 'use server'
 
+import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
-import {
-    CreateProjectFormValues,
-} from "@/features/projects/projects.types";
 
-export async function createProject(
-  payload: CreateProjectFormValues,
-) {
+export async function createProject(payload: CreateProjectFormValues) {
   const [project] = await db
     .insert(Schema.projects)
     .values({
@@ -22,5 +18,7 @@ export async function createProject(
     description: issue.description,
     title: issue.title,
   }))
-  await db.insert(Schema.ProjectIssue).values(issuesToCreate)
+  if (issuesToCreate.length) {
+    await db.insert(Schema.ProjectIssue).values(issuesToCreate)
+  }
 }

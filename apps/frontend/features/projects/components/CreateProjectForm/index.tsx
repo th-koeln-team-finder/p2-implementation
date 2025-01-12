@@ -5,6 +5,7 @@ import { CreateProjectIssueList } from '@/features/projects/components/CreatePro
 import { CreateProjectLinksList } from '@/features/projects/components/CreateProjectForm/CreateProjectLinksList'
 import { CreateProjectPreview } from '@/features/projects/components/CreateProjectForm/CreateProjectPreview'
 import { CreateProjectSkills } from '@/features/projects/components/CreateProjectForm/CreateProjectSkills'
+import { createProject } from '@/features/projects/projects.actions'
 // biome-ignore lint/style/useImportType: import type {CreateProjectFormValues} from "@/features/projects/projects.types";
 import { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { useFieldGroup, useForm } from '@formsignals/form-react'
@@ -102,8 +103,7 @@ export function CreateProjectForm() {
       ressources: [],
     },
     onSubmit: async (values) => {
-      await creat
-      eProject(values)
+      await createProject(values)
       router.push('/projects')
     },
   })
