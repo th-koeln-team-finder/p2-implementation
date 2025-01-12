@@ -77,7 +77,7 @@ export const userSkills = pgTable('userSkills', {
   userId: uuid('userId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  skillId: integer('skillId')
+  skillId: uuid('skillId')
     .notNull()
     .references(() => skills.id, { onDelete: 'cascade' }),
   level: integer().notNull(),
@@ -103,7 +103,7 @@ export const userSkillVerification = pgTable('userSkillVerification', {
   verifierId: uuid('userId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  userSkillId: integer('skillId')
+  userSkillId: uuid('skillId')
     .notNull()
     .references(() => userSkills.id, { onDelete: 'cascade' }),
   status: varchar({ enum: ['pending', 'approved', 'rejected'] }).notNull(),
@@ -153,8 +153,8 @@ export const userProjects = pgTable('userProjects', {
     .references(() => users.id),
   // for projects from this platform
   projectId: uuid('projectId')
-      .notNull()
-      .references(() => projects.id, { onDelete: 'cascade' }),
+    .notNull()
+    .references(() => projects.id, { onDelete: 'cascade' }),
   // for projects not from this platform
   projectName: varchar({ length: 255 }),
   projectJoinedDate: date().notNull(),
@@ -172,7 +172,7 @@ export const userProjectSettings = pgTable('userProjectSettings', {
   userId: uuid('userId')
     .notNull()
     .references(() => users.id),
-  projectId: integer('projectId')
+  projectId: uuid('projectId')
     .notNull()
     .references(() => projects.id),
   enableNotifications: boolean().notNull().default(true),
