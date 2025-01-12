@@ -108,7 +108,7 @@ export const en = {
       activateNotifications: 'Activate notifications',
       selectNotificationType: 'Select notification type',
       searchSkills: 'Search skill',
-    }
+    },
   },
   validation: {
     inProgress: 'Validating...',

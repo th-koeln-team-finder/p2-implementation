@@ -1,36 +1,37 @@
-import {getTranslations} from "next-intl/server";
-import {authMiddleware} from "@/auth";
-import {UserSelect} from "@repo/database/schema";
-import {getUserSkills} from "@/features/users/users.query";
-import {Checkbox} from "@repo/design-system/components/ui/checkbox";
+import { authMiddleware } from '@/auth'
+import { getUserSkills } from '@/features/users/users.query'
+import type { UserSelect } from '@repo/database/schema'
+import { Checkbox } from '@repo/design-system/components/ui/checkbox'
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
   SelectTrigger,
-  SelectValue
-} from "@repo/design-system/components/ui/select";
+  SelectValue,
+} from '@repo/design-system/components/ui/select'
+import { getTranslations } from 'next-intl/server'
 
 export default async function EditProfile() {
   const translate = await getTranslations()
   const session = await authMiddleware()
-  const user = session!.user! as UserSelect
 
-  const skills = await getUserSkills(user.id)
-
-  function deleteAccount() {
-    alert('Account deleted')
+  if (!session) {
+    return <div>Not logged in</div>
   }
+
+  const user = session.user as UserSelect
+
+  const _skills = await getUserSkills(user.id)
 
   return (
     <section className="mt-8">
-      <h2 className="font-bold text-2xl mb-8">{
-        translate('users.settings.notifications')}
+      <h2 className="mb-8 font-bold text-2xl">
+        {translate('users.settings.notifications')}
       </h2>
 
-      <div className="flex items-center space-x-2 mb-4">
-        <Checkbox id="terms"/>
+      <div className="mb-4 flex items-center space-x-2">
+        <Checkbox id="terms" />
         <label
           htmlFor="terms"
           className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -41,7 +42,9 @@ export default async function EditProfile() {
 
       <Select>
         <SelectTrigger>
-          <SelectValue placeholder={translate('users.settings.selectNotificationType')}/>
+          <SelectValue
+            placeholder={translate('users.settings.selectNotificationType')}
+          />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>

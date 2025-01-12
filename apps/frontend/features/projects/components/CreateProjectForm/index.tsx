@@ -43,11 +43,11 @@ export function CreateProjectForm() {
   const router = useRouter()
   //Stepper
   const steps = [
-    { id: 'basics', title: 'Basis'},
-    { id: 'skills', title: 'Fähigkeiten'},
-    { id: 'timetable', title: 'Zeitplan'},
-    { id: 'links', title: 'Links'},
-    { id: 'review', title: 'Überblick'},
+    { id: 'basics', title: 'Basis' },
+    { id: 'skills', title: 'Fähigkeiten' },
+    { id: 'timetable', title: 'Zeitplan' },
+    { id: 'links', title: 'Links' },
+    { id: 'review', title: 'Überblick' },
   ]
 
   //Form Field Provider

@@ -1,31 +1,30 @@
-import {getTranslations} from "next-intl/server";
-import {authMiddleware} from "@/auth";
-import {UserSelect} from "@repo/database/schema";
-import SkillsEdit from "@/features/users/components/SkillsEdit";
-import {getUserSkills} from "@/features/users/users.query";
+import { authMiddleware } from '@/auth'
+import SkillsEdit from '@/features/users/components/SkillsEdit'
+import { getUserSkills } from '@/features/users/users.query'
+import type { UserSelect } from '@repo/database/schema'
+import { getTranslations } from 'next-intl/server'
 
 export default async function EditProfile() {
   const translate = await getTranslations()
   const session = await authMiddleware()
-  const user = session!.user! as UserSelect
+
+  if (!session) {
+    return <div>Not logged in</div>
+  }
+
+  const user = session.user as UserSelect
 
   const skills = await getUserSkills(user.id)
 
-  function deleteAccount() {
-    alert('Account deleted')
-  }
-
   return (
     <section>
-      <h2 className="text-2xl font-bold mb-8">
+      <h2 className="mb-8 font-bold text-2xl">
         {translate('users.settings.profile')}
       </h2>
 
-      <textarea className="mb-4">
-          {user.bio}
-      </textarea>
+      <textarea className="mb-4">{user.bio}</textarea>
 
-      <SkillsEdit userSkills={skills} userId={user.id}/>
+      <SkillsEdit userSkills={skills} userId={user.id} />
     </section>
   )
 }

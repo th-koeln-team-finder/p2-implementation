@@ -17,7 +17,6 @@ export async function createProject(payload: CreateProjectFormValues) {
     projectId: project.id,
     description: issue.description,
     title: issue.title,
-
   }))
   if (issuesToCreate.length) {
     await db.insert(Schema.ProjectIssue).values(issuesToCreate)

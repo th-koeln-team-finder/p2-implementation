@@ -1,15 +1,12 @@
-import {getTranslations} from "next-intl/server";
-import {authMiddleware} from "@/auth";
-import {UserSelect} from "@repo/database/schema";
-import {getUserSkills} from "@/features/users/users.query";
-import {SidebarNav} from "@/features/users/components/SidebarNav";
+import { SidebarNav } from '@/features/users/components/SidebarNav'
+import { getTranslations } from 'next-intl/server'
 
-export default async function EditProfileLayout({children}: Readonly<{
+export default async function EditProfileLayout({
+  children,
+}: Readonly<{
   children: React.ReactNode
 }>) {
   const translate = await getTranslations()
-  const session = await authMiddleware()
-  const user = session!.user! as UserSelect
 
   const sidebarNavItems = [
     {
@@ -18,27 +15,27 @@ export default async function EditProfileLayout({children}: Readonly<{
     },
     {
       title: translate('users.settings.account'),
-      href: "/edit-profile/account",
+      href: '/edit-profile/account',
     },
     {
       title: translate('users.settings.security'),
-      href: "/edit-profile/security",
+      href: '/edit-profile/security',
     },
     {
       title: translate('users.settings.notifications'),
-      href: "/edit-profile/notifications",
+      href: '/edit-profile/notifications',
     },
   ]
 
   return (
     <div className="container mx-auto my-4">
-      <h1 className="text-3xl font-bold mb-8">
+      <h1 className="mb-8 font-bold text-3xl">
         {translate('users.settings.title')}
       </h1>
 
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
         <aside className="-mx-4 lg:w-1/5">
-          <SidebarNav items={sidebarNavItems}/>
+          <SidebarNav items={sidebarNavItems} />
         </aside>
         <main className="flex-1 lg:max-w-2xl">{children}</main>
       </div>

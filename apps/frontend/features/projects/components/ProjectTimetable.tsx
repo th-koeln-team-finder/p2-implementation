@@ -1,3 +1,4 @@
+// biome-ignore lint/nursery/noEnum: <explanation>
 export enum Weekdays {
   Monday = 'Monday',
   Tuesday = 'Tuesday',
@@ -23,77 +24,6 @@ export type Timetable = {
   endTime: string
 }
 
-//checks, if data ist a Timetable
-export function isTimetable(data: unknown): data is Timetable[] {
-  return (
-    Array.isArray(data) &&
-    data.every(
-      (item) =>
-        item &&
-        typeof item.id === 'number' &&
-        typeof item.projectId === 'number' &&
-        typeof item.weekdays === 'string' &&
-        [
-          'Monday',
-          'Tuesday',
-          'Wednesday',
-          'Thursday',
-          'Friday',
-          'Saturday',
-          'Sunday',
-        ].includes(item.weekdays) &&
-        typeof item.startTime === 'string' &&
-        typeof item.endTime === 'string',
-    )
-  )
-}
-
-/*
-export class Timetable {
-
-    private timetable:  Record<Weekdays, WorkTime | null>;
-
-     public constructor(timetable: [Weekdays,number,number][]) {
-
-         this.timetable = {
-             [Weekdays.Monday]: null,
-             [Weekdays.Tuesday]: null,
-             [Weekdays.Wednesday]: null,
-             [Weekdays.Thursday]: null,
-             [Weekdays.Friday]: null,
-             [Weekdays.Saturday]: null,
-             [Weekdays.Sunday]: null,
-         };
-         timetable.forEach(([weekday, start, end]) => {
-             this.setWorkTime(weekday, start, end);
-         });
-     }
-     public getObject(){
-        return this.timetable
-     }
-
-    public getWorkTime(day: Weekdays): WorkTime | null {
-        return this.timetable[day];
-    }
-
-    public setWorkTime(day: Weekdays, start: number, end: number) {
-         if(start==null||end==null)
-        if (start >= end) {
-
-            //DO WE THROW ERRORS?
-            throw new Error(`Invalid time range for ${day}: start must be before end.`);
-        }
-        this.timetable[day] = { start, end };
-
-    }
-
-    public removeWorkTime(day: Weekdays) {
-        this.timetable[day] = null;
-    }
-
-}
-*/
-
 export async function ProjectTimetable({
   timetable,
 }: {
@@ -113,7 +43,7 @@ export async function ProjectTimetable({
     [Weekdays.Sunday, ' - '],
   ]
 
-  timetable.forEach((item) => {
+  timetable.map((item) => {
     const i = timeoutput.findIndex(([day]) => day === item.weekdays)
     if (i !== -1) {
       // set the meeting time for the day

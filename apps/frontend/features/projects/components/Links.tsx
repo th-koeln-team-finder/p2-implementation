@@ -7,7 +7,7 @@ export async function Links({
 }: { links: { label: string; href: string; isDocument?: boolean }[] }) {
   const t = await getTranslations('projects')
   const linkElements: JSX.Element[] = []
-  links.forEach((link) => {
+  links.map((link) => {
     linkElements.push(
       <Button
         variant="link"

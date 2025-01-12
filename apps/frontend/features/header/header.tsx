@@ -14,7 +14,6 @@ import {
   User2Icon,
   Users2Icon,
 } from 'lucide-react'
-import Image from 'next/image'
 
 export default function Header() {
   return (

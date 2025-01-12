@@ -1,4 +1,4 @@
-import type {Language} from './en'
+import type { Language } from './en'
 
 export const de: Language = {
   general: {
@@ -108,7 +108,7 @@ export const de: Language = {
       activateNotifications: 'Benachrichtigungen aktivieren',
       selectNotificationType: 'Benachrichtigungstyp auswählen',
       searchSkills: 'Skill suchen',
-    }
+    },
   },
   validation: {
     inProgress: 'Validiere...',
