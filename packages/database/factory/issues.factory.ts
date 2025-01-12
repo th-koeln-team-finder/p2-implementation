@@ -1,5 +1,6 @@
-import type { ProjectIssueInsert } from '@/schema'
+
 import { faker } from '@faker-js/faker/locale/de'
+import {ProjectIssueInsert} from "../schema";
 
 export function makeIssue(projectId: string): ProjectIssueInsert {
   return {

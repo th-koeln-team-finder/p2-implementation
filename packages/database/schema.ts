@@ -23,7 +23,7 @@ export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
  * Test data should only demonstrate the usage of the library
  */
 export const test = pgTable('test', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: uuid().primaryKey().notNull().defaultRandom(),
   name: varchar({ length: 255 }).notNull(),
   checked: boolean().notNull().default(false),
 })
@@ -64,7 +64,7 @@ export type SkillSelect = typeof skill.$inferSelect
  * Data specific for one user
  */
 export const skills = pgTable('skills', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: uuid().primaryKey().notNull().defaultRandom(),
   skill: varchar({ length: 255 }).notNull().unique(),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
@@ -73,7 +73,7 @@ export type SkillsInsert = typeof skills.$inferInsert
 export type SkillsSelect = typeof skills.$inferSelect
 
 export const userSkills = pgTable('userSkills', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: uuid().primaryKey().notNull().defaultRandom(),
   userId: uuid('userId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
@@ -99,7 +99,7 @@ export const skillRelations = relations(skills, ({ many }) => ({
 }))
 
 export const userSkillVerification = pgTable('userSkillVerification', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: uuid().primaryKey().notNull().defaultRandom(),
   verifierId: uuid('userId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
@@ -116,7 +116,7 @@ export type UserSkillVerificationSelect =
   typeof userSkillVerification.$inferSelect
 
 export const userRatings = pgTable('userRatings', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: uuid().primaryKey().notNull().defaultRandom(),
   raterId: uuid('userId')
     .notNull()
     .references(() => users.id),
@@ -130,7 +130,7 @@ export type UserRatingsInsert = typeof userRatings.$inferInsert
 export type UserRatingsSelect = typeof userRatings.$inferSelect
 
 export const userFollows = pgTable('userFollows', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: uuid().primaryKey().notNull().defaultRandom(),
   followerId: uuid('userId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
@@ -147,14 +147,14 @@ export type UserFollowsInsert = typeof userRatings.$inferInsert
  * but did not use this platform.
  */
 export const userProjects = pgTable('userProjects', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: uuid().primaryKey().notNull().defaultRandom(),
   userId: uuid('userId')
     .notNull()
     .references(() => users.id),
   // for projects from this platform
-  projectId: integer('projectId')
-    .notNull()
-    .references(() => projects.id),
+  projectId: uuid('projectId')
+      .notNull()
+      .references(() => projects.id, { onDelete: 'cascade' }),
   // for projects not from this platform
   projectName: varchar({ length: 255 }),
   projectJoinedDate: date().notNull(),
@@ -168,7 +168,7 @@ export type UserProjectsInsert = typeof userProjects.$inferInsert
 export type UserProjectsSelect = typeof userProjects.$inferSelect
 
 export const userProjectSettings = pgTable('userProjectSettings', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: uuid().primaryKey().notNull().defaultRandom(),
   userId: uuid('userId')
     .notNull()
     .references(() => users.id),
@@ -510,7 +510,7 @@ export const timetableRelations = relations(projectTimetable, ({ one }) => ({
   }),
 }))
 
-export const skillRelations = relations(skill, ({ many }) => ({
+export const skillProjectRelations = relations(skill, ({ many }) => ({
   projectSkills: many(projectSkill),
 }))
 

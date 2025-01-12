@@ -1,7 +1,3 @@
-import { makeIssue } from '@/factory/issues.factory'
-import { makeProject } from '@/factory/projects.factory'
-import { makeProjectSkill, makeSkill } from '@/factory/skill.factory'
-import { makeTimetableElement } from '@/factory/timetable.factory'
 import { faker } from '@faker-js/faker/locale/de'
 import { config } from 'dotenv'
 import { drizzle } from 'drizzle-orm/node-postgres'
@@ -12,6 +8,10 @@ import { makeTag } from './factory/tag.factory'
 import { makeTest } from './factory/test.factory'
 import { makeUser } from './factory/user.factory'
 import * as Schema from './schema'
+import {makeProject} from "./factory/projects.factory";
+import {makeProjectSkill, makeSkill} from "./factory/skill.factory";
+import {makeIssue} from "./factory/issues.factory";
+import {makeTimetableElement} from "./factory/timetable.factory";
 
 config()
 config({ path: '.env.local', override: true })
