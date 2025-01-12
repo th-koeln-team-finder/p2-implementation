@@ -1,5 +1,6 @@
 'use client'
 
+import type { ProjectIssueSelect } from '@repo/database/schema'
 //TODO import { Link } from '@/features/i18n/routing'
 //TODO import { ProjectIssuesList } from '@/features/projects/projects.queries'
 //should import "Issues" Data from additionalInfo:Json
@@ -12,13 +13,13 @@ import {
 //TODO import {getTranslations} from "next-intl/server";
 import { useEffect, useRef, useState } from 'react'
 
-export type Issue = { title: string; description: string; id: number }
+//export type Issue = { title: string; description: string; id: number }
 
 export function ProjectIssuesList(
   {
     listOfIssues,
   }: {
-    listOfIssues: Issue[]
+    listOfIssues: ProjectIssueSelect[]
   },
   //const data = await getProjectIssues()
 ) {
@@ -40,13 +41,13 @@ export function ProjectIssuesList(
   })
 
   const maxHeight = showAll
-    ? `${listOfIssues.length * itemHeight}px`
+    ? `${listOfIssues.length * itemHeight * 2}px`
     : `${3 * itemHeight}px`
 
   return (
     <div className="inline-flex flex-col items-start justify-start gap-4">
       <div className="self-stretch font-medium text-2xl leading-loose">
-        {'issuesTitle'}
+        {'issuesTitle'}({listOfIssues.length})
       </div>
       <div
         className="overflow-hidden transition-all duration-300 ease-in-out "
@@ -77,6 +78,7 @@ export function ProjectIssuesList(
             </div>
             <div
               className={`my-auto transform transition-transform ${showAll ? '-rotate-180' : 'rotate-0'} duration-300`}
+
             >
               {/* biome-ignore lint/a11y/noSvgWithoutTitle: <svg> */}
               <svg
@@ -96,7 +98,7 @@ export function ProjectIssuesList(
             </div>
           </button>
         </div>
-      )}
-    </div>
+
+)}    </div>
   )
 }

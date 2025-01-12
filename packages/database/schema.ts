@@ -1,15 +1,14 @@
+import { relations, sql } from 'drizzle-orm'
 import {
   type AnyPgColumn,
   boolean,
   check,
   date,
   integer,
-  json,
   pgEnum,
   pgTable,
   primaryKey,
   text,
-  time,
   timestamp,
   uniqueIndex,
   uuid,
@@ -19,7 +18,6 @@ import type { AdapterAccountType } from 'next-auth/adapters'
 import { Roles, type RolesType, RolesValues } from './constants'
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
-import { relations, sql } from 'drizzle-orm'
 
 /**
  * Test data should only demonstrate the usage of the library
@@ -51,7 +49,17 @@ export const users = pgTable('user', {
 })
 export type UserInsert = typeof users.$inferInsert
 export type UserSelect = typeof users.$inferSelect
+/**
+ * Skills for a User and a Project. All can have multiple skills
+ */
+export const skill = pgTable('skill', {
+  id: uuid().primaryKey().notNull().defaultRandom(),
+  name: varchar().notNull(),
+})
+export type SkillInsert = typeof skill.$inferInsert
+export type SkillSelect = typeof skill.$inferSelect
 
+//Project Tables
 /**
  * Data specific for one user
  */
@@ -179,77 +187,128 @@ export const userProjectSettings = pgTable('userProjectSettings', {
  * Data specific for one project
  */
 export const projects = pgTable('projects', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  id: uuid().primaryKey().notNull().defaultRandom(),
   name: varchar({ length: 255 }).notNull(),
   description: text().notNull(),
   status: varchar({ enum: ['open', 'closed'] }).notNull(),
-  createdAt: timestamp().defaultNow(),
-  updatedAt: timestamp().defaultNow(),
   isPublic: boolean().notNull().default(true),
   allowApplications: boolean().notNull().default(true),
-  additionalInfo: json().default({}),
+  createdAt: timestamp({ mode: 'date' }).defaultNow(),
+  updatedAt: timestamp({ mode: 'date' })
+    .defaultNow()
+    .$onUpdate(() => sql`current_timestamp`),
 })
-
-export const ProjectSkill = pgTable('ProjectSkill', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  projectId: integer()
-    .notNull()
-    .references(() => projects.id),
-  skill: varchar('skill', { length: 255 }).notNull(),
-  level: varchar('level', { length: 255 }).notNull(),
-})
-
-export const ProjectLink = pgTable('ProjectLink', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  projectId: integer()
-    .notNull()
-    .references(() => projects.id),
-  url: varchar('url', { length: 255 }).notNull(),
-  file: varchar('file', { length: 255 }).notNull(),
-})
-
-export const ProjectIssue = pgTable('ProjectIssue', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  projectId: integer()
-    .notNull()
-    .references(() => projects.id), // Fremdschlüssel auf projects.id
-  title: varchar({ length: 255 }).notNull(),
-  description: varchar({ length: 255 }).notNull(),
-  createdAt: timestamp().defaultNow(),
-  updatedAt: timestamp().defaultNow(),
-})
-export const ProjectTimetable = pgTable(
-  'ProjectTimetable',
-  {
-    id: integer().primaryKey().generatedAlwaysAsIdentity(),
-    projectId: integer()
-      .notNull()
-      .references(() => projects.id),
-    weekdays: varchar({
-      enum: [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday',
-      ],
-    }).notNull(),
-    startTime: time('startTime').notNull(),
-    endTime: time('endTime').notNull(),
-  },
-  (timeTable) => ({
-    uniqueWeekday: uniqueIndex('unique_weekday').on(timeTable.weekdays), //
-    validTimeRange: check(
-      'valid_time_range',
-      sql`${timeTable.startTime} < ${timeTable.endTime}`,
-    ), //
-  }),
-)
 
 export type ProjectInsert = typeof projects.$inferInsert
 export type ProjectSelect = typeof projects.$inferSelect
+
+/**
+ * Skills for a project, referencing Project and Skill
+ */
+export const projectSkill = pgTable(
+  'projectSkill',
+  {
+    projectId: uuid()
+      .notNull()
+      .references(() => projects.id, { onDelete: 'cascade' }),
+    skillId: uuid()
+      .notNull()
+      .references(() => skill.id, { onDelete: 'cascade' }),
+    level: integer().notNull(),
+    createdAt: timestamp({ mode: 'date' }).defaultNow(),
+    updatedAt: timestamp({ mode: 'date' })
+      .defaultNow()
+      .$onUpdate(() => sql`current_timestamp`),
+  },
+  (projectSkill) => ({
+    pk: primaryKey({ columns: [projectSkill.projectId, projectSkill.skillId] }),
+    validLevel: check(
+      'valid_projectSkill_level',
+      sql`${projectSkill.level} >= 0`,
+    ),
+  }),
+)
+export type ProjectSkillInsert = typeof projectSkill.$inferInsert
+export type ProjectSkillSelect = typeof projectSkill.$inferSelect
+
+export const userSkill = pgTable(
+  'userSkill',
+  {
+    userId: uuid()
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    skillId: uuid()
+      .notNull()
+      .references(() => skill.id, { onDelete: 'cascade' }),
+    level: integer().notNull(),
+    createdAt: timestamp({ mode: 'date' }).defaultNow(),
+    updatedAt: timestamp({ mode: 'date' })
+      .defaultNow()
+      .$onUpdate(() => sql`current_timestamp`),
+  },
+  (userSkill) => ({
+    pk: primaryKey({ columns: [userSkill.userId, userSkill.skillId] }), //
+    validLevel: check('valid_userSkill_level', sql`${userSkill.level} >= 0`),
+  }),
+)
+export type UserSkillInsert = typeof userSkill.$inferInsert
+export type UserSkillSelect = typeof userSkill.$inferSelect
+
+/**
+ * ProjectIssues for a project. A project can have multiple issues
+ */
+export const projectIssue = pgTable('projectIssue', {
+  id: uuid().primaryKey().notNull().defaultRandom(),
+  projectId: uuid()
+    .notNull()
+    .references(() => projects.id, { onDelete: 'cascade' }), // Fremdschlüssel auf projects.id
+  title: varchar({ length: 255 }).notNull(),
+  description: text().notNull(),
+  createdAt: timestamp({ mode: 'date' }).defaultNow(),
+  updatedAt: timestamp({ mode: 'date' })
+    .defaultNow()
+    .$onUpdate(() => sql`current_timestamp`),
+})
+export type ProjectIssueInsert = typeof projectIssue.$inferInsert
+export type ProjectIssueSelect = typeof projectIssue.$inferSelect
+
+/**
+ * ProjectTimetable for a project. Data for set Working Times
+ */
+export const Weekdays = {
+  monday: 'Monday',
+  tuesday: 'Tuesday',
+  wednesday: 'Wednesday',
+  thursday: 'Thursday',
+  friday: 'Friday',
+  saturday: 'Saturday',
+  sunday: 'Sunday',
+  standalone: 'standalone',
+} as const
+export const weekdayEnum = pgEnum(
+  'weekdayEnum',
+  Object.values(Weekdays) as [string, ...string[]],
+)
+
+export const projectTimetable = pgTable(
+  'projectTimetable',
+  {
+    id: uuid().primaryKey().notNull().defaultRandom(),
+    projectId: uuid()
+      .notNull()
+      .references(() => projects.id, { onDelete: 'cascade' }),
+    weekdays: weekdayEnum().notNull(),
+    description: text().notNull(),
+  },
+  (timeTable) => ({
+    uniqueWeekday: uniqueIndex('unique_weekday').on(
+      timeTable.projectId,
+      timeTable.weekdays,
+    ),
+  }),
+)
+export type ProjectTimetableInsert = typeof projectTimetable.$inferInsert
+export type ProjectTimetableSelect = typeof projectTimetable.$inferSelect
 
 //region Technical Tables
 /**
@@ -421,6 +480,47 @@ export const authenticators = pgTable(
 export type AuthenticatorInsert = typeof authenticators.$inferInsert
 export type AuthenticatorSelect = typeof authenticators.$inferSelect
 //endregion
+
+export const projectRelations = relations(projects, ({ many }) => ({
+  issues: many(projectIssue, {
+    relationName: 'projectIssues',
+  }),
+  timetable: many(projectTimetable, {
+    relationName: 'projectTimetable',
+  }),
+  projectSkills: many(projectSkill),
+}))
+
+export const projectSkillRelations = relations(projectSkill, ({ one }) => ({
+  skill: one(skill, {
+    fields: [projectSkill.skillId],
+    references: [skill.id],
+  }),
+  project: one(projects, {
+    fields: [projectSkill.projectId],
+    references: [projects.id],
+  }),
+}))
+
+export const timetableRelations = relations(projectTimetable, ({ one }) => ({
+  project: one(projects, {
+    fields: [projectTimetable.projectId],
+    references: [projects.id],
+    relationName: 'projectTimetable',
+  }),
+}))
+
+export const skillRelations = relations(skill, ({ many }) => ({
+  projectSkills: many(projectSkill),
+}))
+
+export const issueRelations = relations(projectIssue, ({ one }) => ({
+  project: one(projects, {
+    fields: [projectIssue.projectId],
+    references: [projects.id],
+    relationName: 'projectIssues',
+  }),
+}))
 
 export const brainstormRelations = relations(brainstorms, ({ one, many }) => ({
   creator: one(users, {

@@ -1,10 +1,15 @@
 'use client'
+import type { ProjectSkillSelect, SkillSelect } from '@repo/database/schema'
 import { useEffect, useRef, useState } from 'react'
+
+type PopulatedProjectSkill = ProjectSkillSelect & {
+  skill: SkillSelect
+}
 
 // @ts-ignore
 export function SkillScale({
-  skills,
-}: { title?: string; skills?: { name: string; level: number }[] }) {
+  projectSkills,
+}: { title?: string; projectSkills: PopulatedProjectSkill[] }) {
   //const t = await getTranslations('projects')
 
   const [showAll, setShowAll] = useState(false)
@@ -30,7 +35,7 @@ export function SkillScale({
   })
 
   const maxHeight = showAll
-    ? `${skills.length * itemHeight}px`
+    ? `${projectSkills.length * itemHeight}px`
     : `${6 * itemHeight}px`
 
   return (
@@ -40,28 +45,29 @@ export function SkillScale({
       </div>
 
       <div className="flex flex-col" style={{ maxHeight }}>
-        <div className="overflow-hidden transition-all duration-300 ease-in-out" />
-        {skills.map((skill, index) => (
+        <div
+          className="overflow-hidden transition-all duration-300 ease-in-out" /*style={{maxHeight}} */
+        />
+        {projectSkills.map((projectSkill, index) => (
           <div
-            // biome-ignore lint/suspicious/noArrayIndexKey: Index for the key
-            key={index}
+            key={projectSkill.skillId}
             ref={index === 0 ? itemRef : null}
             className={`mb-2 inline-flex w-full justify-between self-stretch opacity-0 transition-opacity duration-300 ${showAll || index < 6 ? 'opacity-100' : ''}`}
           >
-            <div className="text-base">{skill.name}</div>
+            <div className="text-base">{projectSkill.skill?.name}</div>
             <div className="flex items-center justify-center gap-2.5 py-px">
               {[...Array(5)].map((_, i) => (
                 <div
                   // biome-ignore lint/suspicious/noArrayIndexKey: Index for the key
                   key={i}
-                  className={`h-2 w-2 rounded-full ${i < skill.level ? 'bg-fuchsia-800' : 'bg-fuchsia-200'}`}
+                  className={`h-2 w-2 rounded-full ${i < projectSkill.level ? 'bg-fuchsia-800' : 'bg-fuchsia-200'}`}
                 />
               ))}
             </div>
           </div>
         ))}
       </div>
-      {skills.length > 6 && (
+      {projectSkills.length > 6 && (
         <div className="mx-auto inline-flex">
           {/* biome-ignore lint/a11y/useButtonType: <mehr anzeigen> */}
           <button

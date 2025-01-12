@@ -1,60 +1,26 @@
 import ImageCarousel from '@/features/projects/components/ImageCarousel'
 import { Links } from '@/features/projects/components/Links'
 import { Location } from '@/features/projects/components/Location'
-import {
-  type Issue,
-  ProjectIssuesList,
-} from '@/features/projects/components/ProjectIssuesList'
-import {
-  ProjectTimetable,
-  type Timetable,
-} from '@/features/projects/components/ProjectTimetable'
+import { ProjectIssuesList } from '@/features/projects/components/ProjectIssuesList'
+import { ProjectTimetable } from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
 import { SkillScale } from '@/features/projects/components/SkillScale'
 import TeamMembers from '@/features/projects/components/TeamMembers'
 import { Text } from '@/features/projects/components/Text'
 import { Toolbar } from '@/features/projects/components/Toolbar'
-import {
-  getProjectIssueList,
-  getProjectItem,
-  getProjectTimetable,
-} from '@/features/projects/projects.queries'
+import { getProjectItem } from '@/features/projects/projects.queries'
 
 export default async function Projects({
   params,
 }: Readonly<{
-  params: Promise<{ id: number }>
+  params: Promise<{ id: string }>
 }>) {
-  const id: number = (await params).id
-  // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
-  let project
-  // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
-  let _issues
-  // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
-  let _timetable
-
-  try {
-    project = await getProjectItem(id)
-    _issues = await getProjectIssueList(id)
-    _timetable = await getProjectTimetable(id)
-  } catch (e) {
-    console.error(e)
-    project = {}
-  }
+  const { id } = await params
+  const project = await getProjectItem(id)
 
   if (!project) {
     return <div>Project not found</div>
   }
-  const TimetableData: Timetable[] = []
-  const issuesData: Issue[] = []
-  /*
-  if (isTimetable(timetable)){
-  TimetableData=timetable
-  }
-  if (Array.isArray(issues)){
-        issuesData=issues
-  }
-*/
 
   return (
     <div className="mx-auto inline-flex w-full max-w-screen-xl flex-col items-center justify-start gap-12 p-4">
@@ -69,21 +35,7 @@ export default async function Projects({
               <ImageCarousel />
             </div>
             <div className="relative inline-flex w-1/2 flex-col items-start justify-start gap-2">
-              {
-                //TODO Skill Daten übergeben - Entität für Skills erstellen
-              }
-              <SkillScale
-                skills={[
-                  { name: 'Java (Programming Language)', level: 4 },
-                  { name: 'Python (Programming Language)', level: 3 },
-                  { name: 'Teamwork', level: 5 },
-                  { name: 'Cooking', level: 2 },
-                  { name: 'React', level: 1 },
-                  { name: 'German', level: 4 },
-                  { name: 'Dancing', level: 3 },
-                  { name: 'TypeScript (Programming Language)', level: 3 },
-                ]}
-              />
+              <SkillScale projectSkills={project.projectSkills} />
             </div>
           </div>
 
@@ -96,14 +48,14 @@ export default async function Projects({
               <TeamMembers />
             </div>
             <div className="relative inline-flex w-1/2 flex-col items-start justify-start gap-2">
-              <ProjectTimetable timetable={TimetableData} />
+              <ProjectTimetable timetable={project.timetable} />
             </div>
           </div>
         </div>
 
         <div className="relative mb-16 flex flex-row gap-8">
           <div className="relative inline-flex w-1/2 flex-col justify-start">
-            <ProjectIssuesList listOfIssues={issuesData} />
+            <ProjectIssuesList listOfIssues={project.issues} />
           </div>
           <div className="relative inline-flex w-1/2 flex-col justify-start">
             <Location

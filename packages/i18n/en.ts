@@ -131,6 +131,17 @@ export const en = {
       default: 'There was a problem when trying to authenticate',
     },
   },
+  utils: {
+    weekdays: {
+      monday: 'Mon',
+      tuesday: 'Tue',
+      wednesday: 'Wed',
+      thursday: 'Thu',
+      friday: 'Fri',
+      saturday: 'Sat',
+      sunday: 'Sun',
+    },
+  },
 }
 
 type PathOf<T> = {

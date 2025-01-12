@@ -131,4 +131,15 @@ export const de: Language = {
       default: 'Es gab ein Problem beim Authentifizieren',
     },
   },
+  utils: {
+    weekdays: {
+      monday: 'Mo',
+      tuesday: 'Di',
+      wednesday: 'Mi',
+      thursday: 'Do',
+      friday: 'Fr',
+      saturday: 'Sa',
+      sunday: 'So',
+    },
+  },
 }
