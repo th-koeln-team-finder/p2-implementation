@@ -7,7 +7,9 @@ export type CreateProjectFormBasic = {
 
 export type CreateProjectFormSkills = {
   skills: Array<{
-    skill: string
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    skillId: any;
+    name: string
     level: number
   }>
 }

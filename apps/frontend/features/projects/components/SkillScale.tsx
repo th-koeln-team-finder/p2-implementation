@@ -54,7 +54,8 @@ export function SkillScale({
             ref={index === 0 ? itemRef : null}
             className={`mb-2 inline-flex w-full justify-between self-stretch opacity-0 transition-opacity duration-300 ${showAll || index < 6 ? 'opacity-100' : ''}`}
           >
-            <div className="text-base">{projectSkill.skill?.name}</div>
+            <div className="text-base">{projectSkill.skill? projectSkill.skill.name : projectSkill.name}
+            </div>
             <div className="flex items-center justify-center gap-2.5 py-px">
               {[...Array(5)].map((_, i) => (
                 <div

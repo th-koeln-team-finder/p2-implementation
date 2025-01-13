@@ -191,6 +191,16 @@ export const projects = pgTable('projects', {
   name: varchar({ length: 255 }).notNull(),
   description: text().notNull(),
   status: varchar({ enum: ['open', 'closed'] }).notNull(),
+  phase: text().notNull(),
+  timetableMon: text().notNull(),
+  timetableTue: text().notNull(),
+  timetableWed: text().notNull(),
+  timetableThu: text().notNull(),
+  timetableFri: text().notNull(),
+  timetableSat: text().notNull(),
+  timetableSun: text().notNull(),
+  timetableCustom: text().notNull(),
+  location: text().notNull(),
   isPublic: boolean().notNull().default(true),
   allowApplications: boolean().notNull().default(true),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
@@ -208,12 +218,14 @@ export type ProjectSelect = typeof projects.$inferSelect
 export const projectSkill = pgTable(
   'projectSkill',
   {
+    id: uuid().primaryKey().notNull().defaultRandom(),
     projectId: uuid()
       .notNull()
       .references(() => projects.id, { onDelete: 'cascade' }),
     skillId: uuid()
       .notNull()
       .references(() => skill.id, { onDelete: 'cascade' }),
+    name: text().notNull(),
     level: integer().notNull(),
     createdAt: timestamp({ mode: 'date' }).defaultNow(),
     updatedAt: timestamp({ mode: 'date' })
@@ -230,6 +242,27 @@ export const projectSkill = pgTable(
 )
 export type ProjectSkillInsert = typeof projectSkill.$inferInsert
 export type ProjectSkillSelect = typeof projectSkill.$inferSelect
+
+/**
+ * Ressources for a project, referencing Project and Ressource
+ */
+export const projectResource = pgTable(
+  'projectResource',
+  {
+    id: uuid().primaryKey().notNull().defaultRandom(),
+    projectId: uuid()
+      .notNull()
+      .references(() => projects.id, { onDelete: 'cascade' }),
+    link: text().notNull(),
+    fileUpload: text().notNull(), //TODO fileUpload
+    createdAt: timestamp({ mode: 'date' }).defaultNow(),
+    updatedAt: timestamp({ mode: 'date' })
+      .defaultNow()
+      .$onUpdate(() => sql`current_timestamp`),
+  },
+)
+export type ProjectResourceInsert = typeof projectResource.$inferInsert
+export type ProjectResourceSelect = typeof projectResource.$inferSelect
 
 export const userSkill = pgTable(
   'userSkill',

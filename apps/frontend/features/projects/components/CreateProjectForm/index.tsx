@@ -400,10 +400,6 @@ export function CreateProjectForm() {
 
       <ContentItem stepId="review">
         <form.FormProvider>
-          <h2 className="font-semibold text-lg">Übersicht aller Angaben</h2>
-
-          <Label>Projektname</Label>
-
           <CreateProjectPreview />
         </form.FormProvider>
       </ContentItem>

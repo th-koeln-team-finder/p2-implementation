@@ -11,6 +11,16 @@ export async function createProject(payload: CreateProjectFormValues) {
       name: payload.name,
       description: payload.description,
       status: payload.status,
+      phase: payload.phase,
+      timetableMon: payload.ttMon,
+      timetableTue: payload.ttTue,
+      timetableWed: payload.ttWed,
+      timetableThu: payload.ttThu,
+      timetableFri: payload.ttFri,
+      timetableSat: payload.ttSat,
+      timetableSun: payload.ttSun,
+      timetableCustom: payload.timetableCustom,
+      location: payload.address,
     })
     .returning()
   const issuesToCreate = payload.issues.map((issue) => ({
@@ -19,6 +29,25 @@ export async function createProject(payload: CreateProjectFormValues) {
     title: issue.title,
   }))
   if (issuesToCreate.length) {
-    await db.insert(Schema.ProjectIssue).values(issuesToCreate)
+    await db.insert(Schema.projectIssue).values(issuesToCreate)
+  }
+
+  const skillsToCreate = payload.skills.map((skill) => ({
+    projectId: project.id,
+    skillId: skill.skillId,
+    name: skill.name,
+    level: skill.level,
+  }))
+  if (skillsToCreate.length) {
+    await db.insert(Schema.projectSkill).values(skillsToCreate)
+  }
+
+  const resourcesToCreate = payload.ressources.map((resource) => ({
+    projectId: project.id,
+    link: resource.url,
+    fileUpload: resource.file,
+  }))
+  if (resourcesToCreate.length) {
+    await db.insert(Schema.projectResource).values(resourcesToCreate)
   }
 }
