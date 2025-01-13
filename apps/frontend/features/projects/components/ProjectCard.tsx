@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@repo/design-system/components/ui/card'
-import Image from 'next/image'
+
 
 interface Project {
   id: number
@@ -22,14 +22,13 @@ export function ProjectCard({ project }: { project: Project }) {
     <Card className="overflow-hidden">
       <Link href={`/projects/${project.id}`} className="hover:underline">
         <CardHeader className="p-0">
-          if (project.image !== undefined){' '}
-          {
-            <Image
+            {project.image &&(
+            <img
               className="max-h-32"
               src={project.image}
               alt={project.name}
             />
-          }
+          )}
           <CardTitle className="px-6 py-4">{project.name}</CardTitle>
         </CardHeader>
       </Link>

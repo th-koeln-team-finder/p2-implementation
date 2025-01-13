@@ -10,6 +10,7 @@ import { Text } from '@/features/projects/components/Text'
 import { Toolbar } from '@/features/projects/components/Toolbar'
 import { getProjectItem } from '@/features/projects/projects.queries'
 
+
 export default async function Projects({
   params,
 }: Readonly<{
