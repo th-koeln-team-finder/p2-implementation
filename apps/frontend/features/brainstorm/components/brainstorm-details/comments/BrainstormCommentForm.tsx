@@ -51,10 +51,10 @@ export function BrainstormCommentForm({
     onSubmit: async (values) => {
       setOptimistic({ action: 'add', values })
       form.reset()
-      addBrainstormComment(values).catch((err) => {
+      await addBrainstormComment(values).catch((err) => {
         console.error('Error adding brainstorm comment', err)
       })
-      revalidateBrainstormComments().catch((err) => {
+      await revalidateBrainstormComments().catch((err) => {
         console.error('Error revalidating comments', err)
       })
     },
