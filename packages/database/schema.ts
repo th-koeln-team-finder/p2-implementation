@@ -38,6 +38,13 @@ export const users = pgTable('user', {
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
   bio: text('bio'),
+  url: text('url'),
+  location: text('bio'),
+  allowInvites: boolean().notNull().default(true),
+  isPublic: boolean().notNull().default(true),
+  languagePreference: varchar({ enum: ['en', 'de'] }).notNull().default('en'),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
 })
 export type UserInsert = typeof users.$inferInsert
 export type UserSelect = typeof users.$inferSelect

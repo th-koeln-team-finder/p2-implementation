@@ -88,6 +88,9 @@ export const de: Language = {
       activateNotifications: 'Benachrichtigungen aktivieren',
       selectNotificationType: 'Benachrichtigungstyp auswählen',
       searchSkills: 'Skill suchen',
+      bio: 'Bio',
+      username: 'Nutzername',
+      language: 'Sprache',
     }
   },
   validation: {

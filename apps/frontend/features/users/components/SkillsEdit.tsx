@@ -11,16 +11,7 @@ import {MutableRefObject, useCallback, useRef, useState} from "react";
 import {addSkill, revalidateSkills} from "@/features/skills/skills.actions";
 import {Combobox} from "@repo/design-system/components/ui/combobox";
 import {addUserSkill, removeUserSkill, updateUserSkillLevel} from "@/features/users/users.actions";
-
-function debounce<T extends (...args: any[]) => void>(func: T, timeout: number): (...args: Parameters<T>) => void {
-  let timer: NodeJS.Timeout;
-  return (...args: Parameters<T>) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => {
-      func(...args);
-    }, timeout);
-  };
-}
+import {debounce} from "utils";
 
 type ComboboxOption = {
   value: string
@@ -32,8 +23,6 @@ export default function SkillsEdit({userSkills, userId}: {
   userSkills: (UserSkillsSelect & { skill: SkillsSelect })[],
   userId: string
 }) {
-  const t = useTranslations()
-
   const [skillInput, setSkillInput] = useState('')
   const [skillInputOpen, setSkillInputOpen] = useState(false)
   const [suggestions, setSuggestions] = useState<ComboboxOption[]>([])

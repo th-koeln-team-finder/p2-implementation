@@ -1,0 +1,50 @@
+'use client'
+
+import {Label} from "@repo/design-system/components/ui/label";
+import {Input} from "@repo/design-system/components/ui/input";
+import {Textarea} from "@repo/design-system/components/ui/textarea";
+import {UserSelect} from "@repo/database/schema";
+import {useTranslations} from "next-intl";
+import {useCallback, useState} from "react";
+import {debounce} from "@/utils";
+import {updateUserData} from "@/features/users/users.actions";
+import {revalidateSkills} from "@/features/skills/skills.actions";
+
+export default function ProfileForm({user}: { user: UserSelect }) {
+  const t = useTranslations()
+
+  const [formData, setFormData] = useState({
+    id: user.id,
+    name: user.name,
+    bio: user.bio
+  })
+
+  const updateUserProperties = useCallback(
+    debounce(async () => {
+      await updateUserData(formData)
+      await revalidateSkills()
+    }, 200),
+    []
+  )
+
+  const updateFormData = (key: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [key]: event.target.value
+    })
+
+    updateUserProperties()
+  }
+
+  return (
+    <div>
+      <Label htmlFor="name">{t('users.settings.username')}</Label>
+      <Input name="name" className="mb-4" defaultValue={formData.name}/>
+
+      <Label htmlFor="bio">{t('users.settings.bio')}</Label>
+      <Textarea name="bio" className="mb-4" onChange={(event) => updateFormData('bio', event)}>
+        {user.bio}
+      </Textarea>
+    </div>
+  )
+}

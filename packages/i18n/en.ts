@@ -88,6 +88,9 @@ export const en = {
       activateNotifications: 'Activate notifications',
       selectNotificationType: 'Select notification type',
       searchSkills: 'Search skill',
+      bio: 'Bio',
+      username: 'Username',
+      language: 'Language',
     }
   },
   validation: {
