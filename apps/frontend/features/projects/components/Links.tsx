@@ -1,11 +1,11 @@
 import { Button } from '@repo/design-system/components/ui/button'
 import { DownloadIcon, ExternalLinkIcon } from 'lucide-react'
-import { getTranslations } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
 
-export async function Links({
+export function Links({
   links,
 }: { links: { label: string; href: string; isDocument?: boolean }[] }) {
-  const t = await getTranslations('projects')
+  const t = useTranslations('projects')
   const linkElements: JSX.Element[] = []
   links.map((link) => {
     linkElements.push(
@@ -14,7 +14,7 @@ export async function Links({
         className="h-fit justify-start p-0 font-normal text-base text-foreground"
       >
         {link.isDocument ? <DownloadIcon /> : <ExternalLinkIcon />}
-        {link.label}
+        {link.label ? link.label : link.href}
       </Button>,
     )
   })

@@ -15,28 +15,27 @@ import { useEffect, useRef, useState } from 'react'
 
 //export type Issue = { title: string; description: string; id: number }
 
-
 function extractTextFromDescription(desc: string) {
-    const parsedDescription = JSON.parse(desc); // JSON-String in Objekt umwandeln
-    let extractedText = "";
+  const parsedDescription = JSON.parse(desc) // JSON-String in Objekt umwandeln
+  let extractedText = ''
 
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    const traverseNodes = (nodes: any) => {
-        for (const node of nodes) {
-            if (node.type === "text" && node.text) {
-                extractedText += node.text;
-            }
-            if (node.children) {
-                traverseNodes(node.children);
-            }
-        }
-    };
-
-    if (parsedDescription.root?.children) {
-        traverseNodes(parsedDescription.root.children);
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  const traverseNodes = (nodes: any) => {
+    for (const node of nodes) {
+      if (node.type === 'text' && node.text) {
+        extractedText += node.text
+      }
+      if (node.children) {
+        traverseNodes(node.children)
+      }
     }
+  }
 
-    return extractedText;
+  if (parsedDescription.root?.children) {
+    traverseNodes(parsedDescription.root.children)
+  }
+
+  return extractedText
 }
 
 export function ProjectIssuesList(
@@ -85,11 +84,12 @@ export function ProjectIssuesList(
           >
             <CardHeader className="p-2">
               <CardTitle>{issue.title}</CardTitle>
-              <CardDescription>{typeof issue.description === "string" && issue.description.startsWith("{")
+              <CardDescription>
+                {typeof issue.description === 'string' &&
+                issue.description.startsWith('{')
                   ? extractTextFromDescription(issue.description)
-                  : issue.description
-              }</CardDescription>
-
+                  : issue.description}
+              </CardDescription>
             </CardHeader>
           </Card>
         ))}
@@ -106,7 +106,6 @@ export function ProjectIssuesList(
             </div>
             <div
               className={`my-auto transform transition-transform ${showAll ? '-rotate-180' : 'rotate-0'} duration-300`}
-
             >
               {/* biome-ignore lint/a11y/noSvgWithoutTitle: <svg> */}
               <svg
@@ -126,7 +125,7 @@ export function ProjectIssuesList(
             </div>
           </button>
         </div>
-
-)}    </div>
+      )}{' '}
+    </div>
   )
 }

@@ -278,7 +278,6 @@ const CarouselNext = React.forwardRef<
 })
 CarouselNext.displayName = 'CarouselNext'
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const CarouselPagination: React.FC<{ items: [] }> = ({ items }) => {
   const { api } = useCarousel()
   const [selectedIndex, setSelectedIndex] = React.useState(0)

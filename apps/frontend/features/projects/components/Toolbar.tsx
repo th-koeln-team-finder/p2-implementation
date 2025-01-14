@@ -1,9 +1,9 @@
 import { Button } from '@repo/design-system/components/ui/button'
 import { BookmarkIcon, LinkIcon, StarIcon } from 'lucide-react'
-import { getTranslations } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
 
-export async function Toolbar({ stars }: { stars?: number }) {
-  const t = await getTranslations('projects')
+export function Toolbar({ stars }: { stars?: number }) {
+  const t = useTranslations('projects')
   stars = stars || 13_000
   const starsString = stars.toLocaleString('en', { notation: 'compact' })
 

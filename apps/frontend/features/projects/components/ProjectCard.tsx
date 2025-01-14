@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from '@repo/design-system/components/ui/card'
 
-
 interface Project {
   id: number
   name: string
@@ -22,12 +21,8 @@ export function ProjectCard({ project }: { project: Project }) {
     <Card className="overflow-hidden">
       <Link href={`/projects/${project.id}`} className="hover:underline">
         <CardHeader className="p-0">
-            {project.image &&(
-            <img
-              className="max-h-32"
-              src={project.image}
-              alt={project.name}
-            />
+          {project.image && (
+            <img className="max-h-32" src={project.image} alt={project.name} />
           )}
           <CardTitle className="px-6 py-4">{project.name}</CardTitle>
         </CardHeader>

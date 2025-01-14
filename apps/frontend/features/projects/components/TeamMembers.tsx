@@ -5,7 +5,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@repo/design-system/components/customCarousel'
-import { getTranslations } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
 
 const carouselItems = Array.from({ length: 10 })
   .map((_, i) => `item-${i}`)
@@ -23,8 +23,8 @@ const carouselItems = Array.from({ length: 10 })
     </CarouselItem>
   ))
 
-export default async function TeamMembers() {
-  const t = await getTranslations('projects')
+export default function TeamMembers() {
+  const t = useTranslations('projects')
 
   return (
     <>

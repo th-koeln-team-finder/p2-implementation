@@ -1,6 +1,6 @@
 import { db } from '@repo/database'
 import { projects } from '@repo/database/schema'
-import {eq} from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
 
 export const getProjectItems = cache(
@@ -15,7 +15,6 @@ export const getProjectItem = cache(
       where: eq(projects.id, id),
 
       with: {
-
         timetable: true,
         issues: true,
         projectSkills: {
@@ -23,10 +22,7 @@ export const getProjectItem = cache(
             skill: true,
           },
         },
-
-
       },
-
     }),
   ['getProjectItem'],
   { tags: ['projects'] },

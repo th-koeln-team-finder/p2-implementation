@@ -8,7 +8,7 @@ export type CreateProjectFormBasic = {
 export type CreateProjectFormSkills = {
   skills: Array<{
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    skillId: any;
+    skillId: any
     name: string
     level: number
   }>
@@ -33,8 +33,9 @@ export type CreateProjectFormLinks = {
   }>
   address: string
   ressources: Array<{
-    linkOutput: string
-    url: string
+    label: string
+    isDocument: boolean
+    href: string
     file: string
   }>
 }

@@ -4,14 +4,14 @@ import { drizzle } from 'drizzle-orm/node-postgres'
 import { makeBrainstorm } from './factory/brainstorm.factory'
 import { makeBrainstormComment } from './factory/brainstormComment.factory'
 import { makeBrainstormCommentLike } from './factory/brainstormCommentLike.factory'
+import { makeIssue } from './factory/issues.factory'
+import { makeProject } from './factory/projects.factory'
+import { makeProjectSkill, makeSkill } from './factory/skill.factory'
 import { makeTag } from './factory/tag.factory'
 import { makeTest } from './factory/test.factory'
+import { makeTimetableElement } from './factory/timetable.factory'
 import { makeUser } from './factory/user.factory'
 import * as Schema from './schema'
-import {makeProject} from "./factory/projects.factory";
-import {makeProjectSkill, makeSkill} from "./factory/skill.factory";
-import {makeIssue} from "./factory/issues.factory";
-import {makeTimetableElement} from "./factory/timetable.factory";
 
 config()
 config({ path: '.env.local', override: true })

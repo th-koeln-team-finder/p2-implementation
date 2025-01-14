@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
 
 type LocationDef = {
   description?: string
@@ -6,11 +6,11 @@ type LocationDef = {
   longitude?: number
 }
 
-export async function Location({
+export function Location({
   location,
 }: { location: LocationDef | null | undefined }) {
   if (!location) return
-  const t = await getTranslations('projects')
+  const t = useTranslations('projects')
   const map = null
 
   if (location.latitude && location.longitude) {

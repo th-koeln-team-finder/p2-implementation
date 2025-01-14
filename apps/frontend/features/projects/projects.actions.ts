@@ -44,7 +44,8 @@ export async function createProject(payload: CreateProjectFormValues) {
 
   const resourcesToCreate = payload.ressources.map((resource) => ({
     projectId: project.id,
-    link: resource.url,
+    label: resource.label,
+    link: resource.href,
     fileUpload: resource.file,
   }))
   if (resourcesToCreate.length) {

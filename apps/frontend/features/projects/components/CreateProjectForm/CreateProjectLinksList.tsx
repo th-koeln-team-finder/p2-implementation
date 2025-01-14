@@ -26,9 +26,11 @@ export function CreateProjectLinksList() {
     'ressources',
     typeof ZodAdapter
   >()
-  const [ressourceFormats, setRessourceFormats] = useState<string[]>([])
+  const [ressourceFormats, setRessourceFormats] = useState<(boolean | null)[]>(
+    [],
+  )
 
-  const handleFormatChange = (index: number, value: string) => {
+  const handleFormatChange = (index: number, value: boolean) => {
     const updatedFormats = [...ressourceFormats]
     updatedFormats[index] = value
     setRessourceFormats(updatedFormats)
@@ -38,31 +40,48 @@ export function CreateProjectLinksList() {
     <>
       {field.data.value.map((link, index) => (
         <div key={link.key} className="flex flex-row gap-4">
-          <div className="w-2/6">
+          <div className="w-3/12">
             <field.SubFieldProvider
-              name={`${index}.linkOutput`}
-              validator={z.enum(['link', 'fileUpload'] as const)}
+              name={`${index}.isDocument`}
+              validator={z.boolean()}
             >
               <div>
                 <Label>Auswahl</Label>
                 <SelectForm
-                  value={ressourceFormats[index] || ''}
-                  onValueChange={(value) => handleFormatChange(index, value)}
+                  value={
+                    ressourceFormats[index] === undefined
+                      ? ''
+                      : // biome-ignore lint/nursery/noNestedTernary: needed for select placeholder
+                        ressourceFormats[index]
+                        ? 'true'
+                        : 'false'
+                  }
+                  onValueChange={(value) => {
+                    handleFormatChange(index, value)
+                  }}
                   valueProps={{ placeholder: 'Bitte auswählen' }}
                 >
                   <SelectContent>
-                    <SelectItem value="link">Link</SelectItem>
-                    <SelectItem value="fileUpload">File Upload</SelectItem>
+                    <SelectItem value={false}>Link</SelectItem>
+                    <SelectItem value={true}>File Upload</SelectItem>
                   </SelectContent>
                 </SelectForm>
                 <FieldError />
               </div>
             </field.SubFieldProvider>
           </div>
-          <div className="w-5/6">
-            {ressourceFormats[index] === 'link' && (
+          <div className="w-3/12">
+            <field.SubFieldProvider name={`${index}.label`}>
+              <div>
+                <Label>Label</Label>
+                <InputForm placeholder="Type label..." />
+              </div>
+            </field.SubFieldProvider>
+          </div>
+          <div className="w-6/12">
+            {!ressourceFormats[index] && (
               <field.SubFieldProvider
-                name={`${index}.url`}
+                name={`${index}.href`}
                 validator={z.string().min(1)}
                 validatorOptions={{
                   validateOnChangeIfTouched: true,
@@ -73,7 +92,7 @@ export function CreateProjectLinksList() {
                 <FieldError />
               </field.SubFieldProvider>
             )}
-            {ressourceFormats[index] === 'fileUpload' && (
+            {ressourceFormats[index] && (
               <field.SubFieldProvider name={`${index}.file`}>
                 <Label>FileUpload</Label>
                 {/*TODO: File Upload*/}
@@ -82,7 +101,7 @@ export function CreateProjectLinksList() {
               </field.SubFieldProvider>
             )}
           </div>
-          <div className="flex w-1/6 flex-row justify-between">
+          <div className="flex flex-row justify-between">
             <div className="flex gap-2">
               <Button
                 onClick={() => {
@@ -99,8 +118,13 @@ export function CreateProjectLinksList() {
               </Button>
               <Button
                 onClick={() => {
-                  field.pushValueToArray({ linkOutput: '', url: '', file: '' })
-                  setRessourceFormats((prev) => [...prev, ''])
+                  field.pushValueToArray({
+                    label: '',
+                    href: '',
+                    file: '',
+                    isDocument: undefined,
+                  })
+                  setRessourceFormats((prev) => [...prev, null])
                 }}
                 className="mt-auto rounded-full"
                 size="icon"
@@ -114,8 +138,13 @@ export function CreateProjectLinksList() {
       {field.data.value.length === 0 && (
         <Button
           onClick={() => {
-            field.pushValueToArray({ linkOutput: '', url: '', file: '' })
-            setRessourceFormats([''])
+            field.pushValueToArray({
+              label: '',
+              href: '',
+              file: '',
+              isDocument: undefined,
+            })
+            setRessourceFormats([null])
           }}
           className="my-3"
           style={{ width: 'fit-content' }}

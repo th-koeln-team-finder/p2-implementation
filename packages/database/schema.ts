@@ -246,21 +246,19 @@ export type ProjectSkillSelect = typeof projectSkill.$inferSelect
 /**
  * Ressources for a project, referencing Project and Ressource
  */
-export const projectResource = pgTable(
-  'projectResource',
-  {
-    id: uuid().primaryKey().notNull().defaultRandom(),
-    projectId: uuid()
-      .notNull()
-      .references(() => projects.id, { onDelete: 'cascade' }),
-    link: text().notNull(),
-    fileUpload: text().notNull(), //TODO fileUpload
-    createdAt: timestamp({ mode: 'date' }).defaultNow(),
-    updatedAt: timestamp({ mode: 'date' })
-      .defaultNow()
-      .$onUpdate(() => sql`current_timestamp`),
-  },
-)
+export const projectResource = pgTable('projectResource', {
+  id: uuid().primaryKey().notNull().defaultRandom(),
+  projectId: uuid()
+    .notNull()
+    .references(() => projects.id, { onDelete: 'cascade' }),
+  label: text().notNull(),
+  link: text().notNull(),
+  fileUpload: text().notNull(), //TODO fileUpload
+  createdAt: timestamp({ mode: 'date' }).defaultNow(),
+  updatedAt: timestamp({ mode: 'date' })
+    .defaultNow()
+    .$onUpdate(() => sql`current_timestamp`),
+})
 export type ProjectResourceInsert = typeof projectResource.$inferInsert
 export type ProjectResourceSelect = typeof projectResource.$inferSelect
 

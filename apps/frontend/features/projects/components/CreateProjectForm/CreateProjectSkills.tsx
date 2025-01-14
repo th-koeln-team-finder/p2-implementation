@@ -66,7 +66,13 @@ export function CreateProjectSkills() {
                 <MinusIcon />
               </Button>
               <Button
-                onClick={() => field.pushValueToArray({ skillId: index+1,  name: '', level: 0 })}
+                onClick={() =>
+                  field.pushValueToArray({
+                    skillId: index + 1,
+                    name: '',
+                    level: 0,
+                  })
+                }
                 className="mt-auto rounded-full "
                 size="icon"
               >
@@ -78,7 +84,9 @@ export function CreateProjectSkills() {
       ))}
       {field.data.value.length === 0 && (
         <Button
-          onClick={() => field.pushValueToArray({ skillId: 0, name: '', level: 0 })}
+          onClick={() =>
+            field.pushValueToArray({ skillId: 0, name: '', level: 0 })
+          }
           className="my-3"
           style={{ width: 'fit-content' }}
         >

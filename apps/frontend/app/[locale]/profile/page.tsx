@@ -15,7 +15,12 @@ import { getTranslations } from 'next-intl/server'
 export default async function Page() {
   const translate = await getTranslations()
   const session = await authMiddleware()
-  const user = session?.user! as UserSelect
+
+  if (!session) {
+    return <div>Not logged in</div>
+  }
+
+  const user = session.user as UserSelect
 
   const lastActivity = new Date()
 

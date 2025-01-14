@@ -1,6 +1,5 @@
-
 import { faker } from '@faker-js/faker/locale/de'
-import {ProjectTimetableInsert} from "../schema";
+import type { ProjectTimetableInsert } from '../schema'
 
 export const weekdays = [
   'Monday',

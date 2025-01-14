@@ -1,6 +1,6 @@
 'use client'
 
-import {type ProjectTimetableSelect, Weekdays} from '@repo/database/schema'
+import { type ProjectTimetableSelect, Weekdays } from '@repo/database/schema'
 import { useTranslations } from 'next-intl'
 import { useMemo } from 'react'
 
