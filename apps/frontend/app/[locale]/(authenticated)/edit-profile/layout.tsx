@@ -21,11 +21,7 @@ export default async function EditProfileLayout({children}: Readonly<{
       href: "/edit-profile/account",
     },
     {
-      title: translate('users.settings.security'),
-      href: "/edit-profile/security",
-    },
-    {
-      title: translate('users.settings.notifications'),
+      title: translate('users.settings.notifications.title'),
       href: "/edit-profile/notifications",
     },
   ]

@@ -22,6 +22,7 @@ export default function ProfileForm({user}: { user: UserSelect }) {
     url: user.url,
     location: user.location,
     isPublic: user.isPublic,
+    allowInvites: user.allowInvites,
     image: user.image,
   })
 
@@ -82,6 +83,9 @@ export default function ProfileForm({user}: { user: UserSelect }) {
 
         <Label htmlFor="isPublic" className="inline-block mb-2">{t('users.settings.isPublic')}</Label>
         <Switch name="isPublic" className="mb-4 block" defaultChecked={formData.isPublic}/>
+
+        <Label htmlFor="allowInvites" className="inline-block mb-2">{t('users.settings.allowInvites')}</Label>
+        <Switch name="allowInvites" className="mb-4 block" defaultChecked={formData.allowInvites}/>
       </div>
       <div className="mb-4 w-1/3">
         <Label htmlFor="image" className="inline-block mb-2">{t('users.settings.profilePicture')}</Label>
