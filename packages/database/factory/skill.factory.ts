@@ -28,5 +28,6 @@ export function makeProjectSkill(
     projectId,
     skillId,
     level: faker.number.int(5),
+    name: faker.person.jobArea(),
   }
 }

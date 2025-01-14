@@ -192,14 +192,6 @@ export const projects = pgTable('projects', {
   description: text().notNull(),
   status: varchar({ enum: ['open', 'closed'] }).notNull(),
   phase: text().notNull(),
-  timetableMon: text().notNull(),
-  timetableTue: text().notNull(),
-  timetableWed: text().notNull(),
-  timetableThu: text().notNull(),
-  timetableFri: text().notNull(),
-  timetableSat: text().notNull(),
-  timetableSun: text().notNull(),
-  timetableCustom: text().notNull(),
   location: text().notNull(),
   isPublic: boolean().notNull().default(true),
   allowApplications: boolean().notNull().default(true),
@@ -218,7 +210,6 @@ export type ProjectSelect = typeof projects.$inferSelect
 export const projectSkill = pgTable(
   'projectSkill',
   {
-    id: uuid().primaryKey().notNull().defaultRandom(),
     projectId: uuid()
       .notNull()
       .references(() => projects.id, { onDelete: 'cascade' }),

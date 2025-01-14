@@ -344,7 +344,10 @@ export function CreateProjectForm() {
                   </form.FieldProvider>
                 </div>
               </div>
-            )}
+            )
+
+
+            }
             {timetableFormat === 'custom' && (
               <div className="w-1/2">
                 <form.FieldProvider

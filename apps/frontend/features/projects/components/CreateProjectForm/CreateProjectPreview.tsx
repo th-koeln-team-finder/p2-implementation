@@ -10,6 +10,8 @@ import { Toolbar } from '@/features/projects/components/Toolbar'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { useFormContext } from '@formsignals/form-react'
 import { useSignals } from '@preact/signals-react/runtime'
+import {ProjectTimetableInsert, ProjectTimetableSelect, Weekdays} from "@repo/database/schema";
+import {ProjectTimetable} from "@/features/projects/components/ProjectTimetable";
 
 function extractTextFromDescription(desc: string) {
   const parsedDescription = JSON.parse(desc) // JSON-String in Objekt umwandeln
@@ -41,6 +43,20 @@ export function CreateProjectPreview() {
 
   console.log(formValues.ressources)
   console.log(formValues.timetableCustom)
+
+
+
+  const timetabledata : { description: string; weekdays: string}[]= [
+    {description:formValues.ttMon, weekdays: Weekdays.monday.toString() },
+    {description:formValues.ttTue, weekdays: Weekdays.tuesday.toString() },
+    {description:formValues.ttWed, weekdays: Weekdays.wednesday.toString() },
+    {description:formValues.ttThu, weekdays: Weekdays.thursday.toString() },
+    {description:formValues.ttFri, weekdays: Weekdays.friday.toString() },
+    {description:formValues.ttSat, weekdays: Weekdays.saturday.toString() },
+    {description:formValues.ttSun, weekdays: Weekdays.sunday.toString() },
+      ]
+
+const timetable =timetabledata.map((entry) => {if(entry.description !== undefined||entry.description!=="") return entry})
 
   return (
     <div className="w-full rounded-lg p-8 shadow">
@@ -75,7 +91,9 @@ export function CreateProjectPreview() {
                 <TeamMembers />
               </div>
               <div className="relative inline-flex w-1/2 flex-col items-start justify-start gap-2">
-                {/*<ProjectTimetable timetable={formValues.timetable}/>*/}
+
+
+                <ProjectTimetable timetable={timetable}/>
                 {/*<p>{extractTextFromDescription(formValues.timetableCustom)}</p>*/}
               </div>
             </div>

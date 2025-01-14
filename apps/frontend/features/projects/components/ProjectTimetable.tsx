@@ -7,7 +7,7 @@ import { useMemo } from 'react'
 export function ProjectTimetable({
   timetable,
 }: {
-  timetable: ProjectTimetableSelect[]
+  timetable: ProjectTimetableSelect[] | { description: string; weekdays: string}[]
 }) {
   const translate = useTranslations()
 
@@ -45,7 +45,7 @@ export function ProjectTimetable({
             const timetableEntry = timetable.find(
               (entry) => entry.weekdays === weekday,
             )
-            if (!timetableEntry)
+            if (!timetableEntry||timetableEntry.description === "")
               return (
                 <td
                   key={weekday}
