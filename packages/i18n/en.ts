@@ -7,6 +7,7 @@ export const en = {
     continue: 'Continue',
     add: 'Add',
     remove: 'Remove',
+    notSupported: 'Not supported',
   },
   test: {
     dataTitle: 'Test Data',
@@ -95,6 +96,8 @@ export const en = {
       url: 'URL',
       location: 'Location',
       profilePicture: 'Profile picture',
+      email: 'Email',
+      password: 'Password',
     }
   },
   validation: {

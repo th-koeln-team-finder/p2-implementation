@@ -9,6 +9,7 @@ export const de: Language = {
     continue: 'Fortfahren',
     add: 'Hinzufügen',
     remove: 'Entfernen',
+    notSupported: 'Nicht unterstützt',
   },
   test: {
     dataTitle: 'Testdaten',
@@ -95,6 +96,8 @@ export const de: Language = {
       url: 'URL',
       location: 'Standort',
       profilePicture: 'Profilbild',
+      email: 'E-Mail',
+      password: 'Passwort',
     }
   },
   validation: {

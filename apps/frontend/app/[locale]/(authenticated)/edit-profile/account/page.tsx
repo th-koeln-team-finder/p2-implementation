@@ -24,6 +24,8 @@ import {
   SelectValue
 } from "@repo/design-system/components/ui/select";
 import {Label} from "@repo/design-system/components/ui/label";
+import {Input} from "@repo/design-system/components/ui/input";
+import AccountForm from "@/features/users/components/AccountForm";
 
 export default async function Account() {
   const translate = await getTranslations()
@@ -40,28 +42,9 @@ export default async function Account() {
         {translate('users.settings.account')}
       </h2>
 
-      <Label htmlFor={'language'}>
-        {translate('users.settings.language')}
-      </Label>
-      <Select>
-        <SelectTrigger className="mb-4">
-          <SelectValue>
-            {translate('users.settings.language')}
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectItem value="en">
-              English
-            </SelectItem>
-            <SelectItem value="de">
-              Deutsch
-            </SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      <AccountForm user={user} />
 
-      <h3 className="font-bold text-xl mb-8">
+      <h3 className="font-bold text-xl my-8">
         {translate('users.settings.dangerZone')}
       </h3>
 
