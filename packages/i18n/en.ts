@@ -91,6 +91,10 @@ export const en = {
       bio: 'Bio',
       username: 'Username',
       language: 'Language',
+      isPublic: 'Publicly visible',
+      url: 'URL',
+      location: 'Location',
+      profilePicture: 'Profile picture',
     }
   },
   validation: {

@@ -91,6 +91,10 @@ export const de: Language = {
       bio: 'Bio',
       username: 'Nutzername',
       language: 'Sprache',
+      isPublic: 'Öffentlich sichbar',
+      url: 'URL',
+      location: 'Standort',
+      profilePicture: 'Profilbild',
     }
   },
   validation: {
