@@ -31,6 +31,7 @@ import {
   SelectForm,
   SelectItem,
 } from '@repo/design-system/components/ui/select'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { z } from 'zod'
 
@@ -41,6 +42,7 @@ const registerAdapter = configureZodAdapter({
 export function CreateProjectForm() {
   useSignals()
   const router = useRouter()
+  const t = useTranslations('createProjects')
   //Stepper
   const steps = [
     { id: 'basics', title: 'Basis' },
@@ -54,7 +56,7 @@ export function CreateProjectForm() {
   const form = useForm<CreateProjectFormValues, typeof ZodAdapter>({
     validatorAdapter: registerAdapter,
     defaultValues: {
-      name: 'asd',
+      name: '',
       description: JSON.stringify({
         root: {
           children: [
@@ -65,7 +67,7 @@ export function CreateProjectForm() {
                   format: 0,
                   mode: 'normal',
                   style: '',
-                  text: 'This is the default node',
+                  text: '',
                   type: 'text',
                   version: 1,
                 },
@@ -86,7 +88,7 @@ export function CreateProjectForm() {
           version: 1,
         },
       }),
-      phase: 'asd',
+      phase: '',
       status: 'open',
       skills: [],
       timetableOutput: '',
@@ -218,8 +220,8 @@ export function CreateProjectForm() {
                   validateOnChangeIfTouched: true,
                 }}
               >
-                <Label>Projektname</Label>
-                <InputForm id="name" placeholder="Type here..." />
+                <Label>{t('name')}</Label>
+                <InputForm id="name" placeholder={t('namePlaceholder')} />
                 <FieldError />
               </form.FieldProvider>
             </div>
@@ -231,8 +233,8 @@ export function CreateProjectForm() {
                   validateOnChangeIfTouched: true,
                 }}
               >
-                <Label>Projektphase</Label>
-                <InputForm id="phase" placeholder="Type here..." />
+                <Label>{t('phase')}</Label>
+                <InputForm id="phase" placeholder={t('phasePlaceholder')} />
                 <FieldError />
               </form.FieldProvider>
             </div>
@@ -240,7 +242,7 @@ export function CreateProjectForm() {
 
           <div className="flex w-full flex-col gap-4 lg:flex-row">
             <div className="w-full lg:w-1/2">
-              <Label>Images</Label>
+              <Label>{t('images')}</Label>
               <br />
               FileUpload für Images
             </div>
@@ -256,7 +258,7 @@ export function CreateProjectForm() {
                 }}
               >
                 <div>
-                  <Label>Description</Label>
+                  <Label>{t('description')}</Label>
                   <WysiwygEditorForm editorRef={editorRef} />
                   <FieldError />
                 </div>
@@ -283,15 +285,19 @@ export function CreateProjectForm() {
                 validator={z.enum(['table', 'custom'] as const)}
               >
                 <div>
-                  <Label>Ausgabe der Timetable</Label>
+                  <Label>{t('timetable.title')}</Label>
                   <SelectForm
                     onValueChange={(value) => setTimetableFormat(value)}
                     value={timetableFormat}
                     valueProps={{ placeholder: 'Bitte auswählen' }}
                   >
                     <SelectContent>
-                      <SelectItem value="table">Tabelle</SelectItem>
-                      <SelectItem value="custom">Benutzerdefiniert</SelectItem>
+                      <SelectItem value="table">
+                        {t('timetable.table')}
+                      </SelectItem>
+                      <SelectItem value="custom">
+                        {t('timetable.custom')}
+                      </SelectItem>
                     </SelectContent>
                   </SelectForm>
                   <FieldError />
@@ -303,44 +309,65 @@ export function CreateProjectForm() {
               <div className="flex w-full flex-col gap-4 lg:flex-row">
                 <div className="w-1/7">
                   <form.FieldProvider name="ttMon">
-                    <Label>Montag</Label>
-                    <InputForm id="tt-mon" placeholder="Type here..." />
+                    <Label>{t('timetable.days.monday')}</Label>
+                    <InputForm
+                      id="tt-mon"
+                      placeholder={t('timetable.days.placeholder')}
+                    />
                   </form.FieldProvider>
                 </div>
                 <div className="w-1/7">
                   <form.FieldProvider name="ttTue">
-                    <Label>Dienstag</Label>
-                    <InputForm id="tt-tue" placeholder="Type here..." />
+                    <Label>{t('timetable.days.tuesday')}</Label>
+                    <InputForm
+                      id="tt-tue"
+                      placeholder={t('timetable.days.placeholder')}
+                    />
                   </form.FieldProvider>
                 </div>
                 <div className="w-1/7">
                   <form.FieldProvider name="ttWed">
-                    <Label>Mittwoch</Label>
-                    <InputForm id="tt-wed" placeholder="Type here..." />
+                    <Label>{t('timetable.days.wednesday')}</Label>
+                    <InputForm
+                      id="tt-wed"
+                      placeholder={t('timetable.days.placeholder')}
+                    />
                   </form.FieldProvider>
                 </div>
                 <div className="w-1/7">
                   <form.FieldProvider name="ttThu">
-                    <Label>Donnerstag</Label>
-                    <InputForm id="tt-thu" placeholder="Type here..." />
+                    <Label>{t('timetable.days.thursday')}</Label>
+                    <InputForm
+                      id="tt-thu"
+                      placeholder={t('timetable.days.placeholder')}
+                    />
                   </form.FieldProvider>
                 </div>
                 <div className="w-1/7">
                   <form.FieldProvider name="ttFri">
-                    <Label>Freitag</Label>
-                    <InputForm id="tt-fri" placeholder="Type here..." />
+                    <Label>{t('timetable.days.friday')}</Label>
+                    <InputForm
+                      id="tt-fri"
+                      placeholder={t('timetable.days.placeholder')}
+                    />
                   </form.FieldProvider>
                 </div>
                 <div className="w-1/7">
                   <form.FieldProvider name="ttSat">
-                    <Label>Samstag</Label>
-                    <InputForm id="tt-sat" placeholder="Type here..." />
+                    <Label>{t('timetable.days.saturday')}</Label>
+                    <InputForm
+                      id="tt-sat"
+                      placeholder={t('timetable.days.placeholder')}
+                    />
                   </form.FieldProvider>
                 </div>
                 <div className="w-1/7">
                   <form.FieldProvider name="ttSun">
-                    <Label>Sonntag</Label>
-                    <InputForm id="tt-sun" placeholder="Type here..." />
+                    <Label>{t('timetable.days.sunday')}</Label>
+                    <InputForm
+                      id="tt-sun"
+                      placeholder={t('timetable.days.placeholder')}
+                    />
                   </form.FieldProvider>
                 </div>
               </div>
@@ -358,7 +385,7 @@ export function CreateProjectForm() {
                   }}
                 >
                   <div>
-                    <Label>Timetable</Label>
+                    <Label>{t('timetable.custom')}</Label>
                     <WysiwygEditorForm editorRef={editorRef} />
                     <FieldError />
                   </div>
@@ -379,15 +406,18 @@ export function CreateProjectForm() {
           </div>
           <div className="flex w-full flex-col gap-4 lg:flex-row">
             <div className="w-full lg:w-1/2">
-              <Label>Location</Label>
+              <Label>{t('location')}</Label>
               <form.FieldProvider name="address">
-                <InputForm id="address" placeholder="Address..." />
+                <InputForm
+                  id="address"
+                  placeholder={t('locationPlaceholder')}
+                />
               </form.FieldProvider>
             </div>
           </div>
           <div className="flex w-full flex-col gap-4 lg:flex-row">
             <div className="w-full">
-              <Label>Links & other Resources</Label>
+              <Label>{t('linksTitle')}</Label>
               <div>
                 <form.FieldProvider name="ressources">
                   <CreateProjectLinksList />

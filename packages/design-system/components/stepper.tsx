@@ -1,8 +1,8 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import * as React from 'react'
 import { Button } from '../components/ui/button'
-import { useTranslations } from 'next-intl'
 
 const StepperComponent = ({
   steps,
@@ -31,7 +31,7 @@ const StepperComponent = ({
     (child: any) => child.props?.stepId === currentStep.id,
   )
 
-  const t = useTranslations()
+  const _t = useTranslations()
 
   return (
     <div className="flex w-full flex-col items-center">
@@ -52,7 +52,7 @@ const StepperComponent = ({
                     className={`flex size-10 items-center justify-center rounded-full ${
                       index <= currentIndex
                         ? 'bg-primary text-white'
-                        : 'border-2 border-fuchsia-700 border-dotted bg-transparent text-fuchsia-700'
+                        : 'border-2 border-primary border-dotted bg-transparent text-primary hover:text-white'
                     }`}
                     onClick={() => jumpToStep?.(index)}
                   >

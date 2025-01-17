@@ -14,6 +14,7 @@ import { Button } from '@repo/design-system/components/ui/button'
 import { InputForm } from '@repo/design-system/components/ui/input'
 import { Label } from '@repo/design-system/components/ui/label'
 import { MinusIcon, PlusIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { z } from 'zod'
 
 type CreateProjectIssueListProps = {
@@ -31,6 +32,9 @@ export function CreateProjectIssueList({
     typeof ZodAdapter,
     typeof ZodAdapter
   >()
+
+  const t = useTranslations('createProjects')
+
   return (
     <>
       {field.data.value.map((issue, index) => (
@@ -40,8 +44,8 @@ export function CreateProjectIssueList({
               name={`${index}.title`}
               validator={z.string().min(1)}
             >
-              <Label>Title</Label>
-              <InputForm placeholder="Type title..." />
+              <Label>{t('issues.title')}</Label>
+              <InputForm placeholder={t('issues.titlePlaceholder')} />
               <FieldError />
             </field.SubFieldProvider>
           </div>
@@ -57,7 +61,7 @@ export function CreateProjectIssueList({
               }}
             >
               <div>
-                <Label>Description</Label>
+                <Label>{t('issues.description')}</Label>
                 <WysiwygEditorForm editorRef={editorRef} />
                 <FieldError />
               </div>
@@ -91,7 +95,7 @@ export function CreateProjectIssueList({
           className="my-3"
           style={{ width: 'fit-content' }}
         >
-          Add Issue
+          {t('issues.addIssue')}
         </Button>
       )}
     </>

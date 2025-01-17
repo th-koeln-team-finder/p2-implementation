@@ -11,6 +11,7 @@ import { Button } from '@repo/design-system/components/ui/button'
 import { InputForm } from '@repo/design-system/components/ui/input'
 import { Label } from '@repo/design-system/components/ui/label'
 import { MinusIcon, PlusIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { z } from 'zod'
 
 export function CreateProjectSkills() {
@@ -22,6 +23,9 @@ export function CreateProjectSkills() {
     typeof ZodAdapter,
     typeof ZodAdapter
   >()
+
+  const t = useTranslations('createProjects')
+
   return (
     <>
       {field.data.value.map((skill, index) => (
@@ -31,8 +35,8 @@ export function CreateProjectSkills() {
               name={`${index}.name`}
               validator={z.string().min(1)}
             >
-              <Label>Skill</Label>
-              <InputForm placeholder="Type skill..." />
+              <Label>{t('skills.skill')}</Label>
+              <InputForm placeholder={t('skills.skillPlaceholder')} />
               <FieldError />
             </field.SubFieldProvider>
           </div>
@@ -51,7 +55,7 @@ export function CreateProjectSkills() {
                 }}
                 validator={z.number().min(1).max(5)}
               >
-                <Label>Skill Level</Label>
+                <Label>{t('skills.level')}</Label>
                 <InputForm useTransformed type="number" placeholder="1-5" />
                 <FieldError />
               </field.SubFieldProvider>
@@ -90,7 +94,7 @@ export function CreateProjectSkills() {
           className="my-3"
           style={{ width: 'fit-content' }}
         >
-          Add Skill
+          {t('skills.addSkill')}
         </Button>
       )}
     </>
