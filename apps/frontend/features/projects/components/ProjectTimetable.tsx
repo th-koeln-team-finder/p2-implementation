@@ -47,7 +47,7 @@ export function ProjectTimetable({
                 {header}
               </div>
               {/* Times (Content Column) */}
-              <div className="flex w-fit items-center justify-center p-4 text-muted-foreground first:rounded-tr-lg last:rounded-br-lg">
+              <div className="flex w-9/12 items-center justify-center p-4 text-muted-foreground first:rounded-tr-lg last:rounded-br-lg">
                 {timetableEntry?.description || '-'}
               </div>
             </div>
