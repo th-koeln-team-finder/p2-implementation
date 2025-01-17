@@ -31,7 +31,7 @@ const StepperComponent = ({
     (child: any) => child.props?.stepId === currentStep.id,
   )
 
-  const t = useTranslations()
+  const translate = useTranslations()
 
   return (
     <div className="flex w-full flex-col items-center">
@@ -92,19 +92,20 @@ const StepperComponent = ({
               className="rounded border-2 bg-transparent px-4 py-2"
               onClick={onPrevious}
             >
-              Back
+              {translate('projects.createProject.stepper.back')}
             </Button>
           )}
           {currentIndex < steps.length - 1 ? (
             <Button className="rounded px-4 py-2" onClick={onNext}>
-              Next
+              {translate('projects.createProject.stepper.next')}
+
             </Button>
           ) : (
             <Button
               className="rounded bg-gray-400 px-4 py-2 text-white hover:bg-gray-500"
               onClick={onReset}
             >
-              Reset
+              {translate('projects.createProject.stepper.reset')}
             </Button>
           )}
           {currentIndex === steps.length - 1 && (
@@ -112,7 +113,8 @@ const StepperComponent = ({
               className="rounded px-4 py-2 text-white hover:bg-primary"
               onClick={onDone}
             >
-              Done
+              {translate('projects.createProject.stepper.done')}
+
             </Button>
           )}
         </div>

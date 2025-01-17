@@ -34,8 +34,9 @@ export const en = {
       showMore: 'Show more',
     showLess: 'Show less',
       issueTitle: 'Issues for starters',
-
-
+    },
+    skillScale: {
+      skillTitle:'Skills needed',
     },
 
     skills: {
@@ -48,6 +49,15 @@ export const en = {
     },
     team: {
       title: 'Team Members',
+    },
+    createProject:{
+      stepper:{
+        back:'Back',
+        next:'Next',
+        reset:'Reset',
+        done:'Done',
+      },
+
     },
   },
   brainstorm: {

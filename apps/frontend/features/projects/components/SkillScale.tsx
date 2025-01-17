@@ -1,6 +1,9 @@
 'use client'
 import type { ProjectSkillSelect, SkillSelect } from '@repo/database/schema'
 import { useEffect, useRef, useState } from 'react'
+import { useTranslations } from 'next-intl'
+
+
 
 type PopulatedProjectSkill = ProjectSkillSelect & {
   skill: SkillSelect
@@ -11,6 +14,7 @@ export function SkillScale({
   projectSkills,
 }: { title?: string; projectSkills: PopulatedProjectSkill[] }) {
   //const t = await getTranslations('projects')
+  const translate = useTranslations()
 
   const [showAll, setShowAll] = useState(false)
   // Funktion zum Umschalten der Sichtbarkeit
@@ -41,7 +45,7 @@ export function SkillScale({
   return (
     <div className="SkillScale flex w-full flex-col">
       <div className="mb-2 font-medium text-2xl">
-        Skills needed {/*t('skills.title')*/}
+        {translate('projects.issueList.issueTitle')}
       </div>
 
       <div className="flex flex-col" style={{ maxHeight }}>

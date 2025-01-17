@@ -37,6 +37,9 @@ export const de: Language = {
       showLess: 'weniger anzeigen',
       issueTitle: 'Issues für Neueinsteiger',
     },
+    skillScale: {
+      skillTitle:'benötige Fähigkeiten',
+    },
 
     skills: {
       title: 'Deine Fähigkeiten',
@@ -48,6 +51,15 @@ export const de: Language = {
     },
     team: {
       title: 'Team-Mitglieder',
+    },
+    createProject:{
+      stepper:{
+        back:'Zurück',
+        next:'Weiter',
+        reset:'Zurücksetzen',
+        done:'Fertig',
+      },
+
     },
   },
   brainstorm: {
