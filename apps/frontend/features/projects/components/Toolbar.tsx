@@ -8,18 +8,24 @@ export function Toolbar({ stars }: { stars?: number }) {
   const starsString = stars.toLocaleString('en', { notation: 'compact' })
 
   return (
-    <div className="flex items-center justify-end gap-4">
-      <Button variant="ghost" className="p-0">
-        <div className="my-auto leading-normal">{starsString}</div>
-        <StarIcon />
-      </Button>
-      <Button variant="ghost" size="icon" className="h-fit w-fit">
-        <LinkIcon />
-      </Button>
-      <Button variant="ghost" size="icon" className="h-fit w-fit">
-        <BookmarkIcon />
-      </Button>
-      <Button variant="default" size="default" className="ml-2">
+    <div className="flex flex-col items-center justify-end gap-0 lg:flex-row lg:gap-4">
+      <div className="flex w-full items-center justify-end gap-4 lg:w-auto ">
+        <Button variant="ghost" className="p-0">
+          <div className="my-auto leading-normal">{starsString}</div>
+          <StarIcon />
+        </Button>
+        <Button variant="ghost" size="icon" className="h-fit w-fit">
+          <LinkIcon />
+        </Button>
+        <Button variant="ghost" size="icon" className="h-fit w-fit">
+          <BookmarkIcon />
+        </Button>
+      </div>
+      <Button
+        variant="default"
+        size="default"
+        className="ml-2 w-full lg:w-auto"
+      >
         {t('join')}
       </Button>
     </div>

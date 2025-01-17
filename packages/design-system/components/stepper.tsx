@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { Button } from '../components/ui/button'
+import { useTranslations } from 'next-intl'
 
 const StepperComponent = ({
   steps,
@@ -30,12 +31,14 @@ const StepperComponent = ({
     (child: any) => child.props?.stepId === currentStep.id,
   )
 
+  const t = useTranslations()
+
   return (
     <div className="flex w-full flex-col items-center">
       <div className="mx-auto mb-16 w-fit">
         <nav aria-label="Steps Navigation" className="group my-4">
           <ol
-            className="flex items-center justify-between gap-2"
+            className="flex flex-wrap items-center justify-between gap-2"
             aria-orientation="horizontal"
           >
             {steps.map((step, index) => (

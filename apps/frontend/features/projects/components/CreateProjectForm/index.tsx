@@ -209,8 +209,8 @@ export function CreateProjectForm() {
     >
       <ContentItem stepId="basics">
         <form.FormProvider>
-          <div className="flex w-full flex-row gap-4">
-            <div className="w-1/2">
+          <div className="flex w-full flex-col gap-4 lg:flex-row">
+            <div className="w-full lg:w-1/2">
               <form.FieldProvider
                 name="name"
                 validator={z.string().min(1)}
@@ -223,7 +223,7 @@ export function CreateProjectForm() {
                 <FieldError />
               </form.FieldProvider>
             </div>
-            <div className="w-1/2">
+            <div className="w-full lg:w-1/2">
               <form.FieldProvider
                 name="phase"
                 validator={z.string().min(1)}
@@ -238,13 +238,13 @@ export function CreateProjectForm() {
             </div>
           </div>
 
-          <div className="flex w-full flex-row gap-4">
-            <div className="w-1/2">
+          <div className="flex w-full flex-col gap-4 lg:flex-row">
+            <div className="w-full lg:w-1/2">
               <Label>Images</Label>
               <br />
               FileUpload für Images
             </div>
-            <div className="w-1/2">
+            <div className="w-full lg:w-1/2">
               <form.FieldProvider
                 name="description"
                 validator={() => {
@@ -277,7 +277,7 @@ export function CreateProjectForm() {
       <ContentItem stepId="timetable">
         <form.FormProvider>
           <div className="flex w-full flex-col gap-4">
-            <div className="w-1/2">
+            <div className="w-full lg:w-1/2">
               <form.FieldProvider
                 name="timetableOutput"
                 validator={z.enum(['table', 'custom'] as const)}
@@ -300,7 +300,7 @@ export function CreateProjectForm() {
             </div>
 
             {timetableFormat === 'table' && (
-              <div className="flex w-full flex-row gap-4">
+              <div className="flex w-full flex-col gap-4 lg:flex-row">
                 <div className="w-1/7">
                   <form.FieldProvider name="ttMon">
                     <Label>Montag</Label>
@@ -344,12 +344,9 @@ export function CreateProjectForm() {
                   </form.FieldProvider>
                 </div>
               </div>
-            )
-
-
-            }
+            )}
             {timetableFormat === 'custom' && (
-              <div className="w-1/2">
+              <div className="w-full lg:w-1/2">
                 <form.FieldProvider
                   name="timetableCustom"
                   validator={() => {
@@ -380,15 +377,15 @@ export function CreateProjectForm() {
               <CreateProjectIssueList editorRef={editorRef} />
             </form.FieldProvider>
           </div>
-          <div className="flex w-full flex-row gap-4">
-            <div className="w-1/2">
+          <div className="flex w-full flex-col gap-4 lg:flex-row">
+            <div className="w-full lg:w-1/2">
               <Label>Location</Label>
               <form.FieldProvider name="address">
                 <InputForm id="address" placeholder="Address..." />
               </form.FieldProvider>
             </div>
           </div>
-          <div className="flex w-full flex-row gap-4">
+          <div className="flex w-full flex-col gap-4 lg:flex-row">
             <div className="w-full">
               <Label>Links & other Resources</Label>
               <div>

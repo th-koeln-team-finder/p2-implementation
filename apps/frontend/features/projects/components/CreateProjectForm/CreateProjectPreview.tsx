@@ -2,6 +2,7 @@ import ImageCarousel from '@/features/projects/components/ImageCarousel'
 import { Links } from '@/features/projects/components/Links'
 import { Location } from '@/features/projects/components/Location'
 import { ProjectIssuesList } from '@/features/projects/components/ProjectIssuesList'
+import { ProjectTimetable } from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
 import { SkillScale } from '@/features/projects/components/SkillScale'
 import TeamMembers from '@/features/projects/components/TeamMembers'
@@ -10,8 +11,7 @@ import { Toolbar } from '@/features/projects/components/Toolbar'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { useFormContext } from '@formsignals/form-react'
 import { useSignals } from '@preact/signals-react/runtime'
-import {ProjectTimetableInsert, ProjectTimetableSelect, Weekdays} from "@repo/database/schema";
-import {ProjectTimetable} from "@/features/projects/components/ProjectTimetable";
+import { Weekdays } from '@repo/database/schema'
 
 function extractTextFromDescription(desc: string) {
   const parsedDescription = JSON.parse(desc) // JSON-String in Objekt umwandeln
@@ -44,23 +44,24 @@ export function CreateProjectPreview() {
   console.log(formValues.ressources)
   console.log(formValues.timetableCustom)
 
+  const timetabledata: { description: string; weekdays: string }[] = [
+    { description: formValues.ttMon, weekdays: Weekdays.monday.toString() },
+    { description: formValues.ttTue, weekdays: Weekdays.tuesday.toString() },
+    { description: formValues.ttWed, weekdays: Weekdays.wednesday.toString() },
+    { description: formValues.ttThu, weekdays: Weekdays.thursday.toString() },
+    { description: formValues.ttFri, weekdays: Weekdays.friday.toString() },
+    { description: formValues.ttSat, weekdays: Weekdays.saturday.toString() },
+    { description: formValues.ttSun, weekdays: Weekdays.sunday.toString() },
+  ]
 
-
-  const timetabledata : { description: string; weekdays: string}[]= [
-    {description:formValues.ttMon, weekdays: Weekdays.monday.toString() },
-    {description:formValues.ttTue, weekdays: Weekdays.tuesday.toString() },
-    {description:formValues.ttWed, weekdays: Weekdays.wednesday.toString() },
-    {description:formValues.ttThu, weekdays: Weekdays.thursday.toString() },
-    {description:formValues.ttFri, weekdays: Weekdays.friday.toString() },
-    {description:formValues.ttSat, weekdays: Weekdays.saturday.toString() },
-    {description:formValues.ttSun, weekdays: Weekdays.sunday.toString() },
-      ]
-
-const timetable =timetabledata.map((entry) => {if(entry.description !== undefined||entry.description!=="") return entry})
+  const timetable = timetabledata.map((entry) => {
+    if (entry.description !== undefined || entry.description !== '')
+      return entry
+  })
 
   return (
-    <div className="w-full rounded-lg p-8 shadow">
-      <div className="mx-auto inline-flex w-full max-w-screen-xl flex-col items-center justify-start gap-12 p-4">
+    <div className="w-full rounded-lg p-4 shadow lg:p-8">
+      <div className="mx-auto inline-flex w-full max-w-screen-xl flex-col items-center justify-start gap-12 lg:p-4">
         <div className="inline-flex flex-col items-start justify-start gap-8 self-stretch">
           <div className="inline-flex items-start justify-between self-stretch">
             <ProjectTitle
@@ -71,38 +72,36 @@ const timetable =timetabledata.map((entry) => {if(entry.description !== undefine
             <Toolbar />
           </div>
           <div className="relative w-full">
-            <div className="relative mb-16 flex flex-row gap-8">
-              <div className="relative inline-flex w-1/2 flex-col items-center justify-start gap-2">
+            <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
+              <div className="relative inline-flex w-full flex-col items-center justify-start gap-2 lg:w-1/2">
                 <ImageCarousel />
               </div>
-              <div className="relative inline-flex w-1/2 flex-col items-start justify-start gap-2">
+              <div className='relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2'>
                 <SkillScale projectSkills={formValues.skills} />
               </div>
             </div>
 
-            <div className="relative mb-16 flex flex-row gap-8">
+            <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
               <Text
                 description={extractTextFromDescription(formValues.description)}
               />
             </div>
 
-            <div className="relative mb-16 flex flex-row gap-8">
-              <div className="relative inline-flex w-1/2 flex-col justify-start gap-2">
+            <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
+              <div className="relative inline-flex w-full flex-col justify-start gap-2 lg:w-1/2">
                 <TeamMembers />
               </div>
-              <div className="relative inline-flex w-1/2 flex-col items-start justify-start gap-2">
-
-
-                <ProjectTimetable timetable={timetable}/>
+              <div className="relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2">
+                <ProjectTimetable timetable={timetable} />
                 {/*<p>{extractTextFromDescription(formValues.timetableCustom)}</p>*/}
               </div>
             </div>
 
-            <div className="relative mb-16 flex flex-row gap-8">
-              <div className="relative inline-flex w-1/2 flex-col justify-start">
+            <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
+              <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
                 <ProjectIssuesList listOfIssues={formValues.issues} />
               </div>
-              <div className="relative inline-flex w-1/2 flex-col justify-start">
+              <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
                 {/*<Location
                                   location={formValues.address}
                               />*/}
@@ -115,8 +114,8 @@ const timetable =timetabledata.map((entry) => {if(entry.description !== undefine
               </div>
             </div>
 
-            <div className="relative mb-16 flex flex-row gap-8">
-              <div className="relative inline-flex w-1/2 flex-col justify-start">
+            <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
+              <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
                 <Links links={formValues.ressources} />
               </div>
             </div>
@@ -124,13 +123,6 @@ const timetable =timetabledata.map((entry) => {if(entry.description !== undefine
         </div>
       </div>
 
-      <p>Monday: {formValues.ttMon}</p>
-      <p>Tuesday: {formValues.ttTue}</p>
-      <p>Wednesday: {formValues.ttWed}</p>
-      <p>Tuesday: {formValues.ttThu}</p>
-      <p>Friday: {formValues.ttFri}</p>
-      <p>Saturday: {formValues.ttSat}</p>
-      <p>Sunday: {formValues.ttSun}</p>
       <p>{formValues.address}</p>
     </div>
   )

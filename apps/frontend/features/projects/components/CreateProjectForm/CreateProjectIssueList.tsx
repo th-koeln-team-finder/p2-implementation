@@ -34,8 +34,8 @@ export function CreateProjectIssueList({
   return (
     <>
       {field.data.value.map((issue, index) => (
-        <div key={issue.key} className="flex flex-row gap-4">
-          <div className="w-2/6">
+        <div key={issue.key} className="flex flex-col gap-4 lg:flex-row">
+          <div className="w-full lg:w-2/6">
             <field.SubFieldProvider
               name={`${index}.title`}
               validator={z.string().min(1)}
@@ -46,7 +46,7 @@ export function CreateProjectIssueList({
             </field.SubFieldProvider>
           </div>
 
-          <div className="flex w-4/6 flex-row justify-between">
+          <div className="flex w-full flex-col justify-between lg:w-4/6 lg:flex-row">
             <field.SubFieldProvider
               name={`${index}.description`}
               validator={() => {
@@ -63,7 +63,7 @@ export function CreateProjectIssueList({
               </div>
             </field.SubFieldProvider>
 
-            <div className="flex w-1/6 gap-2">
+            <div className="mt-4 flex w-full gap-2 lg:mt-0 lg:w-1/6">
               <Button
                 onClick={() => field.removeValueFromArray(index)}
                 variant="outline"

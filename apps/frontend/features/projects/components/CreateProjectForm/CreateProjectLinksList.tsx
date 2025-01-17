@@ -39,8 +39,8 @@ export function CreateProjectLinksList() {
   return (
     <>
       {field.data.value.map((link, index) => (
-        <div key={link.key} className="flex flex-row gap-4">
-          <div className="w-3/12">
+        <div key={link.key} className="flex flex-col gap-4 lg:flex-row">
+          <div className="w-full lg:w-3/12">
             <field.SubFieldProvider
               name={`${index}.isDocument`}
               validator={z.boolean()}
@@ -70,7 +70,7 @@ export function CreateProjectLinksList() {
               </div>
             </field.SubFieldProvider>
           </div>
-          <div className="w-3/12">
+          <div className="w-full lg:w-3/12">
             <field.SubFieldProvider name={`${index}.label`}>
               <div>
                 <Label>Label</Label>
@@ -78,7 +78,7 @@ export function CreateProjectLinksList() {
               </div>
             </field.SubFieldProvider>
           </div>
-          <div className="w-6/12">
+          <div className="w-full lg:w-6/12">
             {!ressourceFormats[index] && (
               <field.SubFieldProvider
                 name={`${index}.href`}
@@ -101,7 +101,7 @@ export function CreateProjectLinksList() {
               </field.SubFieldProvider>
             )}
           </div>
-          <div className="flex flex-row justify-between">
+          <div className="flex flex-col justify-between lg:flex-row">
             <div className="flex gap-2">
               <Button
                 onClick={() => {
