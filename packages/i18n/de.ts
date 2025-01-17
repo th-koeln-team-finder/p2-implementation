@@ -31,7 +31,13 @@ export const de: Language = {
     location: 'Standort/Treffpunkt',
     join: 'Team beitreten',
     links: 'Links und andere Ressourcen',
-    issuesTitle: 'Offene Issues für neue Mitglieder',
+
+    issueList:{
+      showMore: 'mehr anzeigen',
+      showLess: 'weniger anzeigen',
+      issueTitle: 'Issues für Neueinsteiger',
+    },
+
     skills: {
       title: 'Deine Fähigkeiten',
       toggleLess: 'Weniger anzeigen',

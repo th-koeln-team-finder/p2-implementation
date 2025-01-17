@@ -12,6 +12,7 @@ import {
 } from '@repo/design-system/components/ui/card'
 //TODO import {getTranslations} from "next-intl/server";
 import { useEffect, useRef, useState } from 'react'
+import { useTranslations } from 'next-intl'
 
 //export type Issue = { title: string; description: string; id: number }
 
@@ -46,8 +47,8 @@ export function ProjectIssuesList(
   },
   //const data = await getProjectIssues()
 ) {
+  const translate = useTranslations()
   const [showAll, setShowAll] = useState(false)
-
   const toggleShowAll = () => setShowAll(!showAll)
 
   if (!Array.isArray(listOfIssues) || listOfIssues.length === 0)
@@ -70,7 +71,7 @@ export function ProjectIssuesList(
   return (
     <div className="inline-flex flex-col items-start justify-start gap-4">
       <div className="self-stretch font-medium text-2xl leading-loose">
-        {'issuesTitle'}({listOfIssues.length})
+        {translate('projects.issueList.issueTitle')}({listOfIssues.length})
       </div>
       <div
         className="overflow-hidden transition-all duration-300 ease-in-out "
@@ -102,7 +103,7 @@ export function ProjectIssuesList(
             className="inline-flex gap-4 self-stretch"
           >
             <div className="text-primary">
-              {showAll ? 'Weniger anzeigen' : 'Mehr anzeigen'}
+              {showAll ? translate('projects.issueList.showLess') : translate('projects.issueList.showLess')}
             </div>
             <div
               className={`my-auto transform transition-transform ${showAll ? '-rotate-180' : 'rotate-0'} duration-300`}

@@ -29,7 +29,14 @@ export const en = {
     location: 'Location',
     join: 'Join the team',
     links: 'Links and other resources',
-    issuesTitle: 'open issues for starters',
+
+    issueList:{
+      showMore: 'Show more',
+    showLess: 'Show less',
+      issueTitle: 'Issues for starters',
+
+
+    },
 
     skills: {
       title: 'Skills needed',
