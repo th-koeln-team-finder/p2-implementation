@@ -1,5 +1,6 @@
+import { ExternalLink } from '@/features/brainstorm/components/brainstorm-details/ExternalLink'
 import { Button } from '@repo/design-system/components/ui/button'
-import { DownloadIcon, ExternalLinkIcon } from 'lucide-react'
+import { DownloadIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 export function Links({
@@ -8,15 +9,24 @@ export function Links({
   const t = useTranslations('projects')
   const linkElements: JSX.Element[] = []
   links.map((link) => {
-    linkElements.push(
-      <Button
-        variant="link"
-        className="h-fit justify-start p-0 font-normal text-base text-foreground"
-      >
-        {link.isDocument ? <DownloadIcon /> : <ExternalLinkIcon />}
-        {link.label ? link.label : link.href}
-      </Button>,
-    )
+    if (link.isDocument) {
+      linkElements.push(
+        <Button
+          variant="link"
+          className="h-fit justify-start p-0 font-normal text-base text-foreground"
+        >
+          <DownloadIcon />
+        </Button>,
+      )
+    } else {
+      linkElements.push(
+        <ExternalLink
+          href={link.href}
+          label={link.label ? link.label : link.href}
+          className="!text-muted-foreground hover:!text-primary"
+        />,
+      )
+    }
   })
   return (
     <>
