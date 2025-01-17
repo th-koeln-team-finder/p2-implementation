@@ -78,7 +78,7 @@ export default async function Projects({
                 },
                 {
                   label: 'Download Project Brief',
-                  href: 'https://via.placeholder.com/32x32',
+                  href: 'https://google.de',
                   isDocument: false,
                 },
               ]}

@@ -101,7 +101,7 @@ export function ProjectIssuesList(
             onClick={toggleShowAll}
             className="inline-flex gap-4 self-stretch"
           >
-            <div className="text-fuchsia-700">
+            <div className="text-primary">
               {showAll ? 'Weniger anzeigen' : 'Mehr anzeigen'}
             </div>
             <div

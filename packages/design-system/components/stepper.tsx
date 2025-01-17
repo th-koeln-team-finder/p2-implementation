@@ -50,9 +50,9 @@ const StepperComponent = ({
                     aria-posinset={index + 1}
                     aria-setsize={steps.length}
                     className={`flex size-10 items-center justify-center rounded-full ${
-                      index <= currentIndex
-                        ? 'bg-primary text-white'
-                        : 'border-2 border-fuchsia-700 border-dotted bg-transparent text-fuchsia-700'
+                        index <= currentIndex
+                            ? 'bg-primary text-white'
+                            : 'border-2 border-primary border-dotted bg-transparent text-primary'
                     }`}
                     onClick={() => jumpToStep?.(index)}
                   >
@@ -66,7 +66,7 @@ const StepperComponent = ({
                 </li>
                 {index < steps.length - 1 && (
                   <div
-                    className={`-translate-y-1/2 h-2 min-w-20 flex-1 border-b-2 ${index < currentIndex ? 'border-fuchsia-700 border-solid' : 'border-gray-400 border-dotted'}`}
+                    className={`-translate-y-1/2 h-2 min-w-20 flex-1 border-b-2 ${index < currentIndex ? 'border-primary border-solid' : 'border-gray-400 border-dotted'}`}
                   />
                 )}
               </React.Fragment>
@@ -109,7 +109,7 @@ const StepperComponent = ({
           )}
           {currentIndex === steps.length - 1 && (
             <Button
-              className="rounded px-4 py-2 text-white hover:bg-fuchsia-800"
+              className="rounded px-4 py-2 text-white hover:bg-primary"
               onClick={onDone}
             >
               Done

@@ -31,8 +31,8 @@ export default function TeamMembers() {
       <div className="mb-2 font-medium text-2xl">{t('team.title')}</div>
       <Carousel className="mr-4 ml-4" style={{ width: 'calc(100% - 2rem)' }}>
         <CarouselContent className="-ml-4">{carouselItems}</CarouselContent>
-        <CarouselPrevious className="-left-6 muted-foreground-500 border-none bg-transparent hover:bg-transparent hover:text-fuchsia-700 [&_svg]:size-8 [&_svg]:stroke-1" />
-        <CarouselNext className="-right-6 muted-foreground-500 border-none bg-transparent hover:bg-transparent hover:text-fuchsia-700 [&_svg]:size-8 [&_svg]:stroke-1" />
+        <CarouselPrevious className="-left-6 muted-foreground-500 border-none bg-transparent hover:bg-transparent hover:text-primary [&_svg]:size-8 [&_svg]:stroke-1" />
+        <CarouselNext className="-right-6 muted-foreground-500 border-none bg-transparent hover:bg-transparent hover:text-primary [&_svg]:size-8 [&_svg]:stroke-1" />
       </Carousel>
     </>
   )

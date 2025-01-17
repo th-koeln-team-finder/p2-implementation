@@ -62,7 +62,7 @@ export function SkillScale({
                 <div
                   // biome-ignore lint/suspicious/noArrayIndexKey: Index for the key
                   key={i}
-                  className={`h-2 w-2 rounded-full ${i < projectSkill.level ? 'bg-fuchsia-800' : 'bg-fuchsia-200'}`}
+                  className={`h-2 w-2 rounded-full ${i < projectSkill.level ? 'bg-primary' : 'bg-primary/20'}`}
                 />
               ))}
             </div>
@@ -76,7 +76,7 @@ export function SkillScale({
             onClick={toggleShowAll}
             className="inline-flex gap-4 self-stretch"
           >
-            <div className="text-fuchsia-700">
+            <div className="text-primary">
               {
                 showAll
                   ? 'Weniger anzeigen'

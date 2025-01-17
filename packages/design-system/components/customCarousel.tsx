@@ -303,7 +303,7 @@ const CarouselPagination: React.FC<{ items: [] }> = ({ items }) => {
           type="button"
           // biome-ignore lint/suspicious/noArrayIndexKey: Index is unique
           key={index}
-          className={`h-2 w-2 rounded-full transition-all ${index === selectedIndex ? 'bg-fuchsia-700' : 'bg-fuchsia-200'}`}
+          className={`h-2 w-2 rounded-full transition-all ${index === selectedIndex ? 'bg-primary' : 'bg-primary/20'}`}
           onClick={() => api?.scrollTo(index)}
         />
       ))}
