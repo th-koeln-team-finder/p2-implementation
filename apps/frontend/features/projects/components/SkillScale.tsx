@@ -1,9 +1,7 @@
 'use client'
 import type { ProjectSkillSelect, SkillSelect } from '@repo/database/schema'
-import { useEffect, useRef, useState } from 'react'
 import { useTranslations } from 'next-intl'
-
-
+import { useEffect, useRef, useState } from 'react'
 
 type PopulatedProjectSkill = ProjectSkillSelect & {
   skill: SkillSelect
@@ -45,7 +43,7 @@ export function SkillScale({
   return (
     <div className="SkillScale flex w-full flex-col">
       <div className="mb-2 font-medium text-2xl">
-        {translate('projects.issueList.issueTitle')}
+        {translate('projects.skillScale.skillTitle')}
       </div>
 
       <div className="flex flex-col" style={{ maxHeight }}>

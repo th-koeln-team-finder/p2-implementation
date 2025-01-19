@@ -10,9 +10,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@repo/design-system/components/ui/card'
+import { useTranslations } from 'next-intl'
 //TODO import {getTranslations} from "next-intl/server";
 import { useEffect, useRef, useState } from 'react'
-import { useTranslations } from 'next-intl'
 
 //export type Issue = { title: string; description: string; id: number }
 
@@ -103,7 +103,9 @@ export function ProjectIssuesList(
             className="inline-flex gap-4 self-stretch"
           >
             <div className="text-primary">
-              {showAll ? translate('projects.issueList.showLess') : translate('projects.issueList.showLess')}
+              {showAll
+                ? translate('projects.issueList.showLess')
+                : translate('projects.issueList.showLess')}
             </div>
             <div
               className={`my-auto transform transition-transform ${showAll ? '-rotate-180' : 'rotate-0'} duration-300`}

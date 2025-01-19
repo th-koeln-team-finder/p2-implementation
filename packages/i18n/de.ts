@@ -32,13 +32,13 @@ export const de: Language = {
     join: 'Team beitreten',
     links: 'Links und andere Ressourcen',
 
-    issueList:{
+    issueList: {
       showMore: 'mehr anzeigen',
       showLess: 'weniger anzeigen',
       issueTitle: 'Issues für Neueinsteiger',
     },
     skillScale: {
-      skillTitle:'benötige Fähigkeiten',
+      skillTitle: 'benötige Fähigkeiten',
     },
 
     skills: {
@@ -52,14 +52,15 @@ export const de: Language = {
     team: {
       title: 'Team-Mitglieder',
     },
-    createProject:{
-      stepper:{
-        back:'Zurück',
-        next:'Weiter',
-        reset:'Zurücksetzen',
-        done:'Fertig',
+    createProject: {
+      stepper: {
+        back: 'Zurück',
+        next: 'Weiter',
+        reset: 'Zurücksetzen',
+        done: 'Fertig',
+        step: 'Schritt',
+        of: 'von',
       },
-
     },
   },
   createProjects: {

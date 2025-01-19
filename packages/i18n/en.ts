@@ -30,13 +30,13 @@ export const en = {
     join: 'Join the team',
     links: 'Links and other resources',
 
-    issueList:{
+    issueList: {
       showMore: 'Show more',
-    showLess: 'Show less',
+      showLess: 'Show less',
       issueTitle: 'Issues for starters',
     },
     skillScale: {
-      skillTitle:'Skills needed',
+      skillTitle: 'Skills needed',
     },
 
     skills: {
@@ -50,14 +50,15 @@ export const en = {
     team: {
       title: 'Team Members',
     },
-    createProject:{
-      stepper:{
-        back:'Back',
-        next:'Next',
-        reset:'Reset',
-        done:'Done',
+    createProject: {
+      stepper: {
+        back: 'Back',
+        next: 'Next',
+        reset: 'Reset',
+        done: 'Done',
+        step: 'Step',
+        of: 'of',
       },
-
     },
   },
   createProjects: {

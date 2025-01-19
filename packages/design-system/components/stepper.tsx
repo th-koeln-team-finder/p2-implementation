@@ -1,8 +1,8 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import * as React from 'react'
 import { Button } from '../components/ui/button'
-import { useTranslations } from 'next-intl'
 
 const StepperComponent = ({
   steps,
@@ -82,7 +82,8 @@ const StepperComponent = ({
 
       <div className="fixed bottom-0 z-99 flex w-full justify-between bg-white py-6">
         <div className="relative left-4 flex justify-center text-muted-foreground text-sm">
-          Step {currentIndex + 1} of {steps.length}
+          {translate('projects.createProject.stepper.step')} {currentIndex + 1}{' '}
+          {translate('projects.createProject.stepper.of')} {steps.length}
         </div>
 
         <div className="relative right-4 flex justify-center gap-4">
@@ -98,7 +99,6 @@ const StepperComponent = ({
           {currentIndex < steps.length - 1 ? (
             <Button className="rounded px-4 py-2" onClick={onNext}>
               {translate('projects.createProject.stepper.next')}
-
             </Button>
           ) : (
             <Button
@@ -114,7 +114,6 @@ const StepperComponent = ({
               onClick={onDone}
             >
               {translate('projects.createProject.stepper.done')}
-
             </Button>
           )}
         </div>
