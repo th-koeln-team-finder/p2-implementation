@@ -16,6 +16,7 @@ import {
   SelectItem,
 } from '@repo/design-system/components/ui/select'
 import { MinusIcon, PlusIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { z } from 'zod'
 
@@ -36,6 +37,8 @@ export function CreateProjectLinksList() {
     setRessourceFormats(updatedFormats)
   }
 
+  const t = useTranslations('createProjects')
+
   return (
     <>
       {field.data.value.map((link, index) => (
@@ -46,7 +49,7 @@ export function CreateProjectLinksList() {
               validator={z.boolean()}
             >
               <div>
-                <Label>Auswahl</Label>
+                <Label>{t('resources.selection')}</Label>
                 <SelectForm
                   value={
                     ressourceFormats[index] === undefined
@@ -62,8 +65,12 @@ export function CreateProjectLinksList() {
                   valueProps={{ placeholder: 'Bitte auswählen' }}
                 >
                   <SelectContent>
-                    <SelectItem value={false}>Link</SelectItem>
-                    <SelectItem value={true}>File Upload</SelectItem>
+                    <SelectItem value={false}>
+                      {t('resources.select.link')}
+                    </SelectItem>
+                    <SelectItem value={true}>
+                      {t('resources.select.fileUpload')}
+                    </SelectItem>
                   </SelectContent>
                 </SelectForm>
                 <FieldError />
@@ -73,8 +80,8 @@ export function CreateProjectLinksList() {
           <div className="w-full lg:w-3/12">
             <field.SubFieldProvider name={`${index}.label`}>
               <div>
-                <Label>Label</Label>
-                <InputForm placeholder="Type label..." />
+                <Label>{t('resources.label')}</Label>
+                <InputForm placeholder={t('resources.labelPlaceholder')} />
               </div>
             </field.SubFieldProvider>
           </div>
@@ -87,14 +94,14 @@ export function CreateProjectLinksList() {
                   validateOnChangeIfTouched: true,
                 }}
               >
-                <Label>Link</Label>
-                <InputForm placeholder="Type url..." />
+                <Label>{t('resources.url')}</Label>
+                <InputForm placeholder={t('resources.urlPlaceholder')} />
                 <FieldError />
               </field.SubFieldProvider>
             )}
             {ressourceFormats[index] && (
               <field.SubFieldProvider name={`${index}.file`}>
-                <Label>FileUpload</Label>
+                <Label>{t('resources.fileUpload')}</Label>
                 {/*TODO: File Upload*/}
 
                 {/* <FieldError/> */}
@@ -149,7 +156,7 @@ export function CreateProjectLinksList() {
           className="my-3"
           style={{ width: 'fit-content' }}
         >
-          Add Link
+          {t('resources.addLink')}
         </Button>
       )}
     </>

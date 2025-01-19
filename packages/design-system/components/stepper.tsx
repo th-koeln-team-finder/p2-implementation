@@ -50,9 +50,9 @@ const StepperComponent = ({
                     aria-posinset={index + 1}
                     aria-setsize={steps.length}
                     className={`flex size-10 items-center justify-center rounded-full ${
-                        index <= currentIndex
-                            ? 'bg-primary text-white'
-                            : 'border-2 border-primary border-dotted bg-transparent text-primary'
+                      index <= currentIndex
+                        ? 'bg-primary text-white'
+                        : 'border-2 border-primary border-dotted bg-transparent text-primary hover:text-white'
                     }`}
                     onClick={() => jumpToStep?.(index)}
                   >

@@ -4,15 +4,16 @@ import { ExternalLinkIcon } from 'lucide-react'
 type ExternalLinkProps = {
   href: string
   label?: string
+  className?: string
 }
 
-export function ExternalLink({ href, label }: ExternalLinkProps) {
+export function ExternalLink({ href, label, className }: ExternalLinkProps) {
   return (
     <Link
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="inline-flex flex-row items-center gap-1 text-primary underline underline-offset-2"
+      className={`inline-flex flex-row items-center gap-1 text-primary underline underline-offset-2 ${className}`}
     >
       <ExternalLinkIcon className="size-4" />
       {label ?? href}

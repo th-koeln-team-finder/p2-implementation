@@ -13,7 +13,7 @@ const carouselItems = Array.from({ length: 5 })
       <Card>
         <CardContent className="flex aspect-auto h-64 items-center justify-center overflow-hidden rounded-lg p-0">
           <img
-              className="w-full h-full object-cover"
+            className="h-full w-full object-cover"
             key={v}
             src="https://cdn.pixabay.com/photo/2018/01/03/17/05/palm-trees-3058728_1280.jpg"
             alt="palm-trees"

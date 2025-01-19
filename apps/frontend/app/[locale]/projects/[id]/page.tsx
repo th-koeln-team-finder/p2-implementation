@@ -30,34 +30,34 @@ export default async function Projects({
           <Toolbar />
         </div>
         <div className="relative w-full">
-          <div className="relative mb-16 flex flex-row gap-8">
-            <div className="relative inline-flex w-1/2 flex-col items-center justify-start gap-2">
+          <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
+            <div className="relative inline-flex w-full flex-col items-center justify-start gap-2 lg:w-1/2">
               <ImageCarousel />
             </div>
-            <div className="relative inline-flex w-1/2 flex-col items-start justify-start gap-2">
+            <div className="relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2">
               <SkillScale projectSkills={project.projectSkills} />
             </div>
           </div>
 
-          <div className="relative mb-16 flex flex-row gap-8">
+          <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
             <Text description={project.description} />
           </div>
 
-          <div className="relative mb-16 flex flex-row gap-8">
-            <div className="relative inline-flex w-1/2 flex-col justify-start gap-2">
+          <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
+            <div className="relative inline-flex w-full flex-col justify-start gap-2 lg:w-1/2">
               <TeamMembers />
             </div>
-            <div className="relative inline-flex w-1/2 flex-col items-start justify-start gap-2">
+            <div className="relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2">
               <ProjectTimetable timetable={project.timetable} />
             </div>
           </div>
         </div>
 
-        <div className="relative mb-16 flex flex-row gap-8">
-          <div className="relative inline-flex w-1/2 flex-col justify-start">
+        <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
+          <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
             <ProjectIssuesList listOfIssues={project.issues} />
           </div>
-          <div className="relative inline-flex w-1/2 flex-col justify-start">
+          <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
             <Location
               location={{
                 latitude: 51.023197847815915,
@@ -67,8 +67,8 @@ export default async function Projects({
           </div>
         </div>
 
-        <div className="relative mb-16 flex flex-row gap-8">
-          <div className="relative inline-flex w-1/2 flex-col justify-start">
+        <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
+          <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
             <Links
               links={[
                 {

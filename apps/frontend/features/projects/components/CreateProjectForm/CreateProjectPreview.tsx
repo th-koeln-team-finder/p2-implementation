@@ -76,7 +76,7 @@ export function CreateProjectPreview() {
               <div className="relative inline-flex w-full flex-col items-center justify-start gap-2 lg:w-1/2">
                 <ImageCarousel />
               </div>
-              <div className='relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2'>
+              <div className="relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2">
                 <SkillScale projectSkills={formValues.skills} />
               </div>
             </div>
