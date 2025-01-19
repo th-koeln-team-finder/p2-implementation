@@ -17,6 +17,7 @@ import {
   DialogTitle,
 } from '@repo/design-system/components/ui/dialog'
 import { Label } from '@repo/design-system/components/ui/label'
+import { SyncedWhiteboard } from '@repo/design-system/components/whiteboard'
 import { cn } from '@repo/design-system/lib/utils'
 import { ChevronLeftIcon, FolderPlusIcon } from 'lucide-react'
 import { getLocale, getTranslations } from 'next-intl/server'
@@ -131,7 +132,13 @@ export async function BrainstormDetails({
       {brainstorm.description && (
         <WysiwygRenderer value={brainstorm.description} />
       )}
-      <div className="grid min-h-96 place-items-center rounded border border-border" />
+      <div className="grid h-[36rem] min-h-[36rem] place-items-center rounded border border-border">
+        <SyncedWhiteboard
+          className="rounded"
+          roomId={brainstorm.id}
+          user={session?.user}
+        />
+      </div>
       <div>
         <Label>{translate('headingResources')}</Label>
         <BrainstormLinksResources
