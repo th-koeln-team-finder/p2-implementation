@@ -41,5 +41,5 @@ export async function updateUserData(user: Partial<UserInsert>) {
 }
 
 export async function revalidateUser() {
-  return revalidateTag('users')
+  return revalidateTag('user')
 }

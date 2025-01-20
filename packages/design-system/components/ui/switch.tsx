@@ -2,7 +2,10 @@
 
 import * as React from "react"
 import * as SwitchPrimitives from "@radix-ui/react-switch"
-import {cn} from "@repo/design-system/lib/utils";
+import {cn} from "@/lib/utils";
+import {useSignals} from "@preact/signals-react/runtime";
+import {useFieldContext} from "@formsignals/form-react";
+import {useComputed} from "@preact/signals-react";
 
 
 const Switch = React.forwardRef<
@@ -26,4 +29,30 @@ const Switch = React.forwardRef<
 ))
 Switch.displayName = SwitchPrimitives.Root.displayName
 
-export { Switch }
+type SwitchFormProps = Omit<React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>, 'checked' | 'onChange'> & {
+  useTransformed?: boolean
+}
+const SwitchForm = ({ className, useTransformed, ...props }: SwitchFormProps) => {
+  useSignals()
+  const field = useFieldContext()
+  const errorClassName = useComputed(
+    () => !field.isValid.value && 'border-destructive',
+  )
+  const classNames = cn(className, errorClassName.value)
+
+  const data = useTransformed ? field.transformedData : field.data
+  const onChange = useTransformed ? field.handleChangeBound : field.handleChange
+
+  return (
+    <Switch
+      className={classNames}
+      checked={data?.value}
+      onCheckedChange={(e) => onChange(e)}
+      {...props}
+    />
+  )
+}
+SwitchForm.displayName = 'SwitchForm'
+
+
+export { Switch, SwitchForm }

@@ -105,7 +105,6 @@ export const en = {
       addSkill: 'Add skill',
       removeSkill: 'Remove skill',
       deleteAreYouSure: 'Are you sure you want to delete your account?',
-
       searchSkills: 'Search skill',
       bio: 'Bio',
       username: 'Username',

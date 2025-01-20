@@ -1,5 +1,4 @@
 import {getTranslations} from "next-intl/server";
-import {Avatar, AvatarFallback, AvatarImage} from "@repo/design-system/components/ui/avatar";
 import {authMiddleware} from "@/auth";
 import {UserSelect} from "@repo/database/schema";
 import PreviouslyWorkedOn from "@/features/users/components/PreviouslyWorkedOn";
@@ -7,6 +6,7 @@ import {Button} from "@repo/design-system/components/ui/button";
 import {UserPen} from "lucide-react";
 import Ratings from "@/features/users/components/Ratings";
 import {Link} from "@/features/i18n/routing";
+import {UserAvatar} from "@/features/auth/components/UserAvatar";
 
 export default async function Page() {
   const translate = await getTranslations()
@@ -19,19 +19,7 @@ export default async function Page() {
     <main className="container mx-auto my-4">
       <div className="flex flex-col items-center gap-4 md:flex-row md:items-start">
         <div className="md:w-1/4">
-          <Avatar className="w-40 h-40">
-            {user.image && (
-              <AvatarImage
-                src={user.image}
-                alt={user.name ?? user.email ?? ''}
-              />
-            )}
-            <AvatarFallback>
-              {user.name
-                ? user.name.slice(0, 2).toUpperCase()
-                : 'AN'}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar user={user} className="w-40 h-40" />
         </div>
 
         <div className="flex flex-1 flex-col space-y-1">

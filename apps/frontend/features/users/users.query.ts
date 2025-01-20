@@ -15,6 +15,7 @@ export async function checkUsernameTaken(username: string) {
 export const getUser = cache(
   async (id: string) => db.query.users.findFirst({where: eq(users.id, id)}),
   ['getUser'],
+  {tags: ['user']},
 )
 
 export async function getUserProjects(userId: number, limit: number, offset: number) {

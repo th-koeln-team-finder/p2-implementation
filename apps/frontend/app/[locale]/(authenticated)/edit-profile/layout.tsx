@@ -1,15 +1,10 @@
 import {getTranslations} from "next-intl/server";
-import {authMiddleware} from "@/auth";
-import {UserSelect} from "@repo/database/schema";
-import {getUserSkills} from "@/features/users/users.query";
 import {SidebarNav} from "@/features/users/components/SidebarNav";
 
 export default async function EditProfileLayout({children}: Readonly<{
   children: React.ReactNode
 }>) {
   const translate = await getTranslations()
-  const session = await authMiddleware()
-  const user = session!.user! as UserSelect
 
   const sidebarNavItems = [
     {

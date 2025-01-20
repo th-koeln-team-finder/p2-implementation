@@ -1,7 +1,7 @@
-import { authMiddleware } from '@/auth'
-import { SignOutMenuItem } from '@/features/auth/components/SignOutMenuItem'
-import { UserAvatar } from '@/features/auth/components/UserAvatar'
-import { Button } from '@repo/design-system/components/ui/button'
+import {authMiddleware} from '@/auth'
+import {SignOutMenuItem} from '@/features/auth/components/SignOutMenuItem'
+import {UserAvatar} from '@/features/auth/components/UserAvatar'
+import {Button} from '@repo/design-system/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@repo/design-system/components/ui/dropdown-menu'
-import type { PropsWithChildren } from 'react'
+import type {PropsWithChildren} from 'react'
 import {Link} from "@/features/i18n/routing";
 
 export async function UserProfileMenu({ children }: PropsWithChildren) {

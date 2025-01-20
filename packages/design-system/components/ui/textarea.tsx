@@ -1,5 +1,8 @@
 import * as React from "react"
-import {cn} from "@repo/design-system/lib/utils";
+import {cn} from "@/lib/utils";
+import {useSignals} from "@preact/signals-react/runtime";
+import {useFieldContext} from "@formsignals/form-react";
+import {useComputed} from "@preact/signals-react";
 
 const Textarea = React.forwardRef<
   HTMLTextAreaElement,
@@ -18,4 +21,30 @@ const Textarea = React.forwardRef<
 })
 Textarea.displayName = "Textarea"
 
-export { Textarea }
+type TextareaFormProps = Omit<React.ComponentProps<"textarea">, 'value' | 'onChange' | 'onBlur'> & {
+  useTransformed?: boolean
+}
+const TextareaForm = ({ className, useTransformed, ...props }: TextareaFormProps) => {
+  useSignals()
+  const field = useFieldContext()
+  const errorClassName = useComputed(
+    () => !field.isValid.value && 'border-destructive',
+  )
+  const classNames = cn(className, errorClassName.value)
+
+  const data = useTransformed ? field.transformedData : field.data
+  const onChange = useTransformed ? field.handleChangeBound : field.handleChange
+
+  return (
+    <Textarea
+      className={classNames}
+      value={data?.value}
+      onChange={(e) => onChange(e.target.value)}
+      onBlur={field.handleBlur}
+      {...props}
+    />
+  )
+}
+TextareaForm.displayName = 'TextareaForm'
+
+export { Textarea, TextareaForm }

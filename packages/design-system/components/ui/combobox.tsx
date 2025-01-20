@@ -3,7 +3,6 @@
 import * as React from "react"
 import {Check, ChevronsUpDown} from "lucide-react"
 
-import {cn} from "@repo/design-system/lib/utils"
 import {Button} from "./button"
 import {
   Command,
@@ -18,7 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "./popover"
-import {Badge} from "@repo/design-system/components/ui/badge";
+import {Badge} from "./badge";
 
 type Option = {
   value: string

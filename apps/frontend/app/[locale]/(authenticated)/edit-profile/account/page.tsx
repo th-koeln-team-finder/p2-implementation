@@ -1,8 +1,7 @@
-import {getTranslations} from "next-intl/server";
+import {getLocale, getTranslations} from "next-intl/server";
 import {authMiddleware} from "@/auth";
 import {UserSelect} from "@repo/database/schema";
 import {Button, buttonVariants} from "@repo/design-system/components/ui/button";
-import SkillsEdit from "@/features/users/components/SkillsEdit";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,28 +12,18 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger
 } from "@repo/design-system/components/ui/alert-dialog";
-import {getUserSkills} from "@/features/users/users.query";
-import {Checkbox} from "@repo/design-system/components/ui/checkbox";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@repo/design-system/components/ui/select";
-import {Label} from "@repo/design-system/components/ui/label";
-import {Input} from "@repo/design-system/components/ui/input";
+import {getUser} from "@/features/users/users.query";
 import AccountForm from "@/features/users/components/AccountForm";
+import {redirect} from "@/features/i18n/routing";
 
 export default async function Account() {
   const translate = await getTranslations()
   const session = await authMiddleware()
-  const user = session!.user! as UserSelect
-
-  function deleteAccount() {
-    alert('Account deleted')
+  if (!session?.user?.id) {
+    return redirect({href: '/', locale: await getLocale()})
   }
+
+  const user = await getUser(session.user.id) as UserSelect
 
   return (
     <section>

@@ -49,7 +49,7 @@ export const users = pgTable('user', {
     .$defaultFn(() => [Roles.defaultUser]),
   bio: text('bio'),
   url: text('url'),
-  location: text('bio'),
+  location: text('location'),
   allowInvites: boolean().notNull().default(true),
   isPublic: boolean().notNull().default(true),
   languagePreference: varchar({ enum: ['en', 'de'] }).notNull().default('en'),

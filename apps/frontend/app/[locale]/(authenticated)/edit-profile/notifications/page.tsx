@@ -1,4 +1,4 @@
-import {getTranslations} from "next-intl/server";
+import {getLocale, getTranslations} from "next-intl/server";
 import {authMiddleware} from "@/auth";
 import {UserSelect} from "@repo/database/schema";
 import {Checkbox} from "@repo/design-system/components/ui/checkbox";
@@ -12,11 +12,17 @@ import {
 } from "@repo/design-system/components/ui/select";
 import {Label} from "@repo/design-system/components/ui/label";
 import {Card, CardContent, CardHeader, CardTitle} from "@repo/design-system/components/ui/card";
+import {redirect} from "@/features/i18n/routing";
+import {getUser} from "@/features/users/users.query";
 
 export default async function EditProfile() {
   const t = await getTranslations()
   const session = await authMiddleware()
-  const user = session!.user! as UserSelect
+  if (!session?.user?.id) {
+    return redirect({href: '/', locale: await getLocale()})
+  }
+
+  const user = await getUser(session.user.id) as UserSelect
 
   return (
     <div>
