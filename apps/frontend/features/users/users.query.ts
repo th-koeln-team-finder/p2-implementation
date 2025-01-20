@@ -32,15 +32,3 @@ export async function getUserProjects(userId: number, limit: number, offset: num
   return previouslyWorkedOn
 }
 
-export const getUserSkills = cache(
-  async (userId: string) => {
-    return db.query.userSkills.findMany({
-      where: eq(Schema.userSkills.userId, userId),
-      with: {
-        skill: true,
-      }
-    });
-  },
-  ['getUserSkills'],
-  {tags: ['user-skills']}
-)

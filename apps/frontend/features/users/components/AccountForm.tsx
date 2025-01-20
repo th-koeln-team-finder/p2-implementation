@@ -8,7 +8,6 @@ import {useTranslations} from "next-intl";
 import {useCallback, useState} from "react";
 import {debounce} from "@/utils";
 import {updateUserData} from "@/features/users/users.actions";
-import {revalidateSkills} from "@/features/skills/skills.actions";
 import {Switch} from "@repo/design-system/components/ui/switch";
 import {Avatar, AvatarFallback, AvatarImage} from "@repo/design-system/components/ui/avatar";
 import {
@@ -19,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@repo/design-system/components/ui/select";
+import {revalidateSkills} from "@/features/userSkills/userSkills.actions";
 
 export default function AccountForm({user}: { user: UserSelect }) {
   const t = useTranslations()

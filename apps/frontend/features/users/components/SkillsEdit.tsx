@@ -5,11 +5,18 @@ import {Trash} from "lucide-react";
 import {Label} from "@repo/design-system/components/ui/label";
 import {searchSkills} from "@/features/skills/skills.queries";
 import {MutableRefObject, useCallback, useRef, useState} from "react";
-import {addSkill, revalidateSkills} from "@/features/skills/skills.actions";
+import {addSkill} from "@/features/skills/skills.actions";
 import {Combobox} from "@repo/design-system/components/ui/combobox";
-import {addUserSkill, removeUserSkill, updateUserSkillLevel} from "@/features/users/users.actions";
 import {debounce} from "utils";
 import {useTranslations} from "next-intl";
+import {
+  addUserSkill,
+  removeUserSkill,
+  revalidateSkills,
+  updateUserSkillLevel
+} from "@/features/userSkills/userSkills.actions";
+import {useOptimisticComments} from "@/features/brainstorm/brainstormComment.hooks";
+import {useOptimisticUserSkills} from "@/features/userSkills/userSkills.hooks";
 
 type ComboboxOption = {
   value: string
@@ -23,6 +30,7 @@ export default function SkillsEdit({userSkills, userId}: {
 }) {
   const translate = useTranslations('users.settings.skills')
 
+  const [optimisticUserSkills, setOptimisticUserSkills] = useOptimisticUserSkills(userSkills)
   const [skillInput, setSkillInput] = useState('')
   const [suggestions, setSuggestions] = useState<ComboboxOption[]>([])
   const [suggestionsLoading, setSuggestionsLoading] = useState(false)
@@ -62,35 +70,52 @@ export default function SkillsEdit({userSkills, userId}: {
     if (!value) {
       return
     }
-    addUserSkill({
+    const selectedSkillLabel =
+      suggestions.find(skill => skill.value === value)?.label
+      || skillInput
+    setOptimisticUserSkills({
+      action: 'add', values: {
+        userId,
+        skillId: parseInt(value),
+        level: 1,
+        skill: {
+          id: parseInt(value),
+          skill: selectedSkillLabel
+        }
+      }
+    })
+    popoverTrigger.current?.click()
+    await addUserSkill({
       userId,
       skillId: parseInt(value),
       level: 1
-    }).then(() => {
-      popoverTrigger.current?.click()
     })
     await revalidateSkills()
   }
 
   const handleRemoveSkill = async (skillId: number) => {
+    setOptimisticUserSkills({action: 'delete', values: {id: skillId}})
     await removeUserSkill(skillId)
     await revalidateSkills()
   }
 
   const handleUpdateSkillLevel = async (skillId: number, level: number) => {
+    setOptimisticUserSkills({action: 'update', values: {id: skillId, level}})
     await updateUserSkillLevel(skillId, level)
     await revalidateSkills()
   }
 
-  if (!userSkills) {
+  if (!optimisticUserSkills) {
     return null
   }
 
   return (
     <div>
-      {userSkills.map((userSkill, index) => (
-        <div key={index} className="max-w-sm grid grid-cols-3 items-center justify-around py-1">
-          <div className="text-sm">{userSkill.skill.skill}</div>
+      {optimisticUserSkills.map((userSkill, index) => (
+        <div key={index}
+             className={`max-w-sm grid grid-cols-3 items-center justify-around py-1 ${index % 2 === 0 ? 'bg-accent/30' : ''}`}
+        >
+          <div className="text-sm px-2">{userSkill.skill?.skill}</div>
           <div className="flex items-center gap-2.5">
             {[...Array(5)].map((_, i) => (
               <div key={i}
@@ -99,8 +124,10 @@ export default function SkillsEdit({userSkills, userId}: {
               />
             ))}
           </div>
-          <Trash className="cursor-pointer place-self-end w-4 h-4 text-destructive"
-                 onClick={() => handleRemoveSkill(userSkill.id)}/>
+          <div className="flex items-center px-2 place-self-end h-full">
+            <Trash className="cursor-pointer w-4 h-4 text-destructive"
+                   onClick={() => handleRemoveSkill(userSkill.id)}/>
+          </div>
         </div>
       ))}
       <div className="flex my-4">

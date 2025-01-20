@@ -2,7 +2,6 @@
 
 import {db, Schema} from "@repo/database";
 import {SkillsInsert} from "@repo/database/schema";
-import {revalidateTag} from "next/cache";
 
 export async function addSkill(skill: SkillsInsert) {
   return (await db
@@ -11,6 +10,3 @@ export async function addSkill(skill: SkillsInsert) {
     .returning())[0].id
 }
 
-export async function revalidateSkills() {
-  return revalidateTag('user-skills')
-}
