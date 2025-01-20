@@ -6,7 +6,7 @@ import {getUser, getUserSkills} from "@/features/users/users.query";
 import ProfileForm from "@/features/users/components/ProfileForm";
 import {redirect} from "@/features/i18n/routing";
 
-export default async function EditProfile() {
+export default async function EditSkills() {
   const translate = await getTranslations()
   const session = await authMiddleware()
   if (!session?.user?.id) {
@@ -14,13 +14,15 @@ export default async function EditProfile() {
   }
   const user = await getUser(session.user.id) as UserSelect
 
+  const skills = await getUserSkills(user.id)
+
   return (
     <section>
       <h2 className="text-2xl font-bold mb-8">
-        {translate('users.settings.profile')}
+        {translate('users.settings.skills.title')}
       </h2>
 
-      <ProfileForm user={user}/>
+      <SkillsEdit userSkills={skills} userId={user.id}/>
     </section>
   )
 }

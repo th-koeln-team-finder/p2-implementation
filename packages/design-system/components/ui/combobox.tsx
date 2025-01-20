@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import {Check, ChevronsUpDown} from "lucide-react"
+import {Check, ChevronsUpDown, LoaderCircle, PlusCircle} from "lucide-react"
 
 import {Button} from "./button"
 import {
@@ -17,11 +17,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "./popover"
-import {Badge} from "./badge";
+import {Badge} from "./badge"
 
 type Option = {
   value: string
-  label: string,
+  label: string
   count?: number
 }
 
@@ -30,9 +30,11 @@ type ComboboxProps = {
   placeholder?: string
   noResultsMessage?: string
   onSelect: (value: string | null) => void
-  selectedValue?: string | null
+  selectedValues?: string[] // Multiple selected values
   onOpen?: () => void
   onInput?: (input: string) => void
+  onAddNew?: (newOption: string) => void
+  addNewOptionText?: string | ((input: string) => string)
   isLoading?: boolean
   ariaLabel?: string
 }
@@ -42,9 +44,11 @@ export function Combobox({
                            placeholder = "Select an option...",
                            noResultsMessage = "No results found.",
                            onSelect,
-                           selectedValue,
+                           selectedValues = [],
                            onOpen,
                            onInput,
+                           onAddNew,
+                           addNewOptionText = (input: string) => `Add "${input}" as a new option`,
                            isLoading = false,
                            ariaLabel = "combobox",
                          }: ComboboxProps) {
@@ -65,14 +69,19 @@ export function Combobox({
     }
   }
 
-  const handleSelect = (value: string) => {
-    onSelect(value === selectedValue ? null : value)
-    setOpen(false)
+  const handleAddNew = () => {
+    if (onAddNew) {
+      onAddNew(inputValue)
+    }
+    setInputValue("") // Clear the input after adding
+    setOpen(false) // Close the combobox after adding
   }
 
-  const selectedOption = options.find((option) => option.value === selectedValue)
+  const isSelected = (option: Option) => selectedValues.includes(option.value)
 
-  const formatter = new Intl.NumberFormat(undefined, { notation:'compact' })
+  const formatter = new Intl.NumberFormat(undefined, {notation: "compact"})
+
+  const showAddNewOption = inputValue && !options.some((option) => option.label === inputValue)
 
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
@@ -82,13 +91,13 @@ export function Combobox({
           role="combobox"
           aria-expanded={open}
           aria-label={ariaLabel}
-          className="w-[200px] justify-between"
+          className="w-60 justify-between"
         >
-          {selectedOption?.label || placeholder}
+          {placeholder}
           <ChevronsUpDown className="opacity-50"/>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-60 p-0">
         <Command shouldFilter={false}>
           <CommandInput
             placeholder="Search..."
@@ -98,32 +107,51 @@ export function Combobox({
           />
           <CommandList>
             {isLoading ? (
-              <CommandEmpty>Loading...</CommandEmpty>
-            ) : options.length === 0 ? (
-              <CommandEmpty>{noResultsMessage}</CommandEmpty>
+              <CommandEmpty>
+                <LoaderCircle className="animate-spin mx-auto"/>
+              </CommandEmpty>
             ) : (
-              <CommandGroup>
-                {options.map((option) => (
-                  <CommandItem
-                    key={option.value}
-                    value={option.value}
-                    onSelect={() => handleSelect(option.value)}
-                  >
-                    {option.label}
-
-                    {option.count ? (<Badge
-                      variant="secondary"
-                      className="ml-auto"
-                    >{formatter.format(option.count)}</Badge>) : null}
-                    {selectedValue === option.value ? (
-                      <Check
-                        className="ml-auto"
-                      />
-                    ) : null}
-
-                  </CommandItem>
-                ))}
-              </CommandGroup>
+              <>
+                {options.length === 0 && !showAddNewOption && (
+                  <CommandEmpty>{noResultsMessage}</CommandEmpty>
+                )}
+                {options.length > 0 && (
+                  <CommandGroup>
+                    {options.map((option) => (
+                      <CommandItem
+                        key={option.value}
+                        value={option.value}
+                        disabled={isSelected(option)}
+                        onSelect={() => {
+                          onSelect(option.value)
+                        }}
+                      >
+                        {option.label}
+                        <div className="flex gap-2 items-center ml-auto">
+                          {option.count ? (
+                            <Badge variant="secondary">
+                              {formatter.format(option.count)}
+                            </Badge>
+                          ) : null}
+                          {isSelected(option) ? (
+                            <Check/>
+                          ) : null}
+                        </div>
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                )}
+                {showAddNewOption && (
+                  <CommandGroup>
+                    <CommandItem onSelect={handleAddNew}>
+                      <PlusCircle className="mr-2"/>
+                      {typeof addNewOptionText === "function"
+                        ? addNewOptionText(inputValue)
+                        : addNewOptionText}
+                    </CommandItem>
+                  </CommandGroup>
+                )}
+              </>
             )}
           </CommandList>
         </Command>

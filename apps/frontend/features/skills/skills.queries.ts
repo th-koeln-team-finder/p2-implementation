@@ -1,7 +1,7 @@
 'use server'
 
 import {db} from '@repo/database'
-import {desc, eq, getTableColumns, like, sql} from "drizzle-orm";
+import {desc, eq, getTableColumns, ilike, sql} from "drizzle-orm";
 import {skills, userSkills} from "@repo/database/schema";
 
 export async function searchSkills(input: string) {
@@ -11,7 +11,7 @@ export async function searchSkills(input: string) {
   })
     .from(skills)
     .leftJoin(userSkills, eq(userSkills.skillId, skills.id))
-    .where(like(skills.skill, `%${input}%`))
+    .where(ilike(skills.skill, `%${input}%`))
     .limit(8)
     .groupBy(skills.id)
     .orderBy(desc(sql`usedCount`))

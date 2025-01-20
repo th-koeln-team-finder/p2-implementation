@@ -4,19 +4,23 @@ import {SidebarNav} from "@/features/users/components/SidebarNav";
 export default async function EditProfileLayout({children}: Readonly<{
   children: React.ReactNode
 }>) {
-  const translate = await getTranslations()
+  const translate = await getTranslations('users.settings')
 
   const sidebarNavItems = [
     {
-      title: translate('users.settings.profile'),
+      title: translate('profile'),
       href: '/edit-profile/profile',
     },
     {
-      title: translate('users.settings.account'),
+      title: translate('skills.title'),
+      href: "/edit-profile/skills",
+    },
+    {
+      title: translate('account'),
       href: "/edit-profile/account",
     },
     {
-      title: translate('users.settings.notifications.title'),
+      title: translate('notifications.title'),
       href: "/edit-profile/notifications",
     },
   ]
@@ -24,7 +28,7 @@ export default async function EditProfileLayout({children}: Readonly<{
   return (
     <div className="container mx-auto my-4">
       <h1 className="text-3xl font-bold mb-8">
-        {translate('users.settings.title')}
+        {translate('title')}
       </h1>
 
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">

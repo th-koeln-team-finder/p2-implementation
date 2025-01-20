@@ -31,7 +31,6 @@ export const en = {
     join: 'Join the team',
     links: 'Links and other resources',
     issuesTitle:'open issues for starters',
-
     skills: {
       title: 'Skills needed',
       toggleLess: 'Show less',
@@ -102,10 +101,15 @@ export const en = {
       security: 'Security',
       dangerZone: 'Danger Zone',
       deleteAccount: 'Delete account',
-      addSkill: 'Add skill',
-      removeSkill: 'Remove skill',
+      skills: {
+        title: 'Skills',
+        add: 'Add skill',
+        addEntered: 'Add entered term as skill',
+        remove: 'Remove skill',
+        search: 'Search skill',
+        noResults: 'No results',
+      },
       deleteAreYouSure: 'Are you sure you want to delete your account?',
-      searchSkills: 'Search skill',
       bio: 'Bio',
       username: 'Username',
       language: 'Language',
