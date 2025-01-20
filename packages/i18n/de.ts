@@ -18,6 +18,10 @@ export const de: Language = {
     otherHeading: 'Andere Titel',
     otherFont: 'Andere Schriftart',
     toProjectPage: 'Zur Projektseite',
+    validation: {
+      nice: 'Alle Menschen sind nett',
+      age: 'Das Alter muss auf dem Geburtsdatum basieren',
+    },
     actions: {
       addItem: 'Eintrag hinzufügen',
       removeAll: 'Alle entfernen',
@@ -39,6 +43,22 @@ export const de: Language = {
     },
     team: {
       title: 'Team-Mitglieder',
+    },
+  },
+  brainstorm: {
+    makeActionButton: 'Erstelle das Projekt',
+    headingResources: 'Links & andere Ressourcen',
+    comments: {
+      loginCommentWarning: 'Sie müssen sich anmelden, um zu kommentieren',
+      empty: 'Es gibt noch keine Kommentare',
+      heading: 'Kommentare',
+      inputPlaceholder: 'Kommentar hinterlassen...',
+      inputSubmitButton: 'Kommentieren',
+      sortButtonLabel: 'Sortieren nach',
+      sortOptionPinned: 'Angepinnt',
+      sortOptionMostRecent: 'Neueste',
+      sortOptionMostPopular: 'Beliebteste',
+      reply: 'Antworten',
     },
   },
   help: {
@@ -120,5 +140,18 @@ export const de: Language = {
     usernameTaken: 'Dieser Benutzername ist bereits vergeben',
     minLengthX:
       'Dieses Feld muss mindestens {amount, plural, =1 {ein Zeichen} other {# Zeichen}} lang sein',
+    number: 'Dieses Feld muss eine Zahl sein',
+    positive: 'Dieses Feld muss eine positive Zahl sein',
+    date: 'Dieses Feld muss ein gültiges Datum sein',
+  },
+  errors: {
+    genericPageError: 'Oops, da ist etwas schiefgelaufen',
+    auth: {
+      configuration: 'Es gibt ein Problem mit der Konfiguration',
+      accessDenied:
+        'Es gab ein Problem beim Authentifizieren: Zugriff verweigert',
+      verification: 'Es gab ein Problem beim Überprüfen der Authentifizierung',
+      default: 'Es gab ein Problem beim Authentifizieren',
+    },
   },
 }

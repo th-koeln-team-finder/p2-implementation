@@ -1,5 +1,5 @@
 'use client'
-import { useRouter } from '@/features/i18n/routing'
+import { revalidateAll } from '@/features/auth/auth.actions'
 import { checkUsernameTaken } from '@/features/users/users.query'
 import { useForm } from '@formsignals/form-react'
 import { configureZodAdapter } from '@formsignals/validation-adapter-zod'
@@ -26,7 +26,6 @@ const registerAdapter = configureZodAdapter({
 
 export function RegisterForm() {
   useSignals()
-  const router = useRouter()
   const translate = useTranslations()
 
   const form = useForm({
@@ -37,7 +36,7 @@ export function RegisterForm() {
     },
     onSubmit: async (values) => {
       await signIn('passkey', values)
-      router.push('/')
+      await revalidateAll()
     },
   })
 
@@ -64,7 +63,6 @@ export function RegisterForm() {
               <form.FieldProvider
                 name="name"
                 validator={z
-                  // biome-ignore lint/style/useNamingConvention: zod uses camelCase
                   .string({ required_error: translate('validation.required') })
                   .min(3, translate('validation.minLengthX', { amount: 3 }))}
                 validatorAsync={async (name) => {
@@ -121,7 +119,10 @@ export function RegisterForm() {
               <Button
                 type="button"
                 variant="link"
-                onClick={() => signIn('passkey')}
+                onClick={async () => {
+                  await signIn('passkey')
+                  await revalidateAll()
+                }}
               >
                 {translate('auth.login.button')}
               </Button>

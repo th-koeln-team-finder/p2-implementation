@@ -1,19 +1,28 @@
 import { DrizzleHttpAdapter } from '@/features/auth/DrizzleHttpAdapter'
+import type { UserSelect } from '@repo/database/schema'
 import { serverEnv } from '@repo/env/server'
 import NextAuth from 'next-auth'
 import Passkey from 'next-auth/providers/passkey'
 
 const FRONTEND_HOST = serverEnv.FRONTEND_URL.replace(/^https?:\/\//, '')
 
+declare module 'next-auth' {
+  interface Session {
+    user: UserSelect
+  }
+}
+
 export const {
   handlers,
-  signIn,
   signOut,
   auth: authMiddleware,
 } = NextAuth({
   adapter: DrizzleHttpAdapter,
   session: {
     strategy: 'database',
+  },
+  pages: {
+    error: '/error',
   },
   providers: [
     Passkey({
@@ -48,12 +57,15 @@ export const {
     }),
   ],
   callbacks: {
+    session: ({ session }) => {
+      return session
+    },
     redirect: ({ url, baseUrl }) => {
       let res = baseUrl
       // Allows relative callback URLs
       if (url.startsWith('/')) res = `${baseUrl}${url}`
 
-      const urlOrigin = new URL(url).origin
+      const urlOrigin = new URL(res).origin
       // Allows callback URLs on the same origin or to the frontend host
       if (urlOrigin === baseUrl || url.includes(FRONTEND_HOST)) res = url
 

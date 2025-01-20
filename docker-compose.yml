@@ -13,6 +13,16 @@ services:
     networks:
       - web
 
+  tldraw:
+    container_name: 'tldraw'
+    build:
+      context: .
+      dockerfile: ./apps/tldraw-sync/Dockerfile
+    ports:
+      - '5858:5858'
+    networks:
+      - web
+
   app:
     container_name: 'app'
     build:

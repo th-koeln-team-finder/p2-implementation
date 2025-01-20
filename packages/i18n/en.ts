@@ -16,6 +16,10 @@ export const en = {
     otherHeading: 'Other Heading',
     otherFont: 'Other Font',
     toProjectPage: 'To project page',
+    validation: {
+      nice: 'All people are nice',
+      age: 'The age must be correct based on the date of birth',
+    },
     actions: {
       addItem: 'Add Item',
       removeAll: 'Remove All',
@@ -38,6 +42,22 @@ export const en = {
     },
     team: {
       title: 'Team Members',
+    },
+  },
+  brainstorm: {
+    makeActionButton: 'Create the project',
+    headingResources: 'Links & Other Resources',
+    comments: {
+      loginCommentWarning: 'You need to login to comment',
+      empty: "There aren't any comments yet",
+      heading: 'Comments',
+      inputPlaceholder: 'Add a comment...',
+      inputSubmitButton: 'Comment',
+      sortButtonLabel: 'Sort by',
+      sortOptionPinned: 'Pinned',
+      sortOptionMostRecent: 'Most recent',
+      sortOptionMostPopular: 'Most popular',
+      reply: 'Reply',
     },
   },
   help: {
@@ -121,6 +141,19 @@ export const en = {
     usernameTaken: 'This username is already taken',
     minLengthX:
       'This field must be at least {amount, plural, =1 {one character} other {# characters}} long',
+    number: 'This field must be a number',
+    positive: 'This field must be a positive number',
+    date: 'This field must be a valid date',
+  },
+  errors: {
+    genericPageError: 'Oops something went wrong',
+    auth: {
+      configuration: 'There is an issue with the configuration',
+      accessDenied:
+        'There was a problem when trying to authenticate: Access Denied',
+      verification: 'There was a problem when trying to verify authentication',
+      default: 'There was a problem when trying to authenticate',
+    },
   },
 }
 
