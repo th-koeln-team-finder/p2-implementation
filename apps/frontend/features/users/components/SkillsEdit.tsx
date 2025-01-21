@@ -111,7 +111,8 @@ export default function SkillsEdit({userSkills, userId}: {
 
   return (
     <div>
-      {optimisticUserSkills.map((userSkill, index) => (
+      {optimisticUserSkills.sort((a, b) => b.level - a.level)
+        .map((userSkill, index) => (
         <div key={index}
              className={`max-w-sm grid grid-cols-3 items-center justify-around py-1 ${index % 2 === 0 ? 'bg-accent/30' : ''}`}
         >
