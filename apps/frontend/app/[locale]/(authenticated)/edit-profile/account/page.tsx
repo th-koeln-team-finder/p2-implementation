@@ -1,20 +1,11 @@
 import {getLocale, getTranslations} from "next-intl/server";
 import {authMiddleware} from "@/auth";
 import {UserSelect} from "@repo/database/schema";
-import {Button, buttonVariants} from "@repo/design-system/components/ui/button";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger
-} from "@repo/design-system/components/ui/alert-dialog";
 import {getUser} from "@/features/users/users.query";
 import AccountForm from "@/features/users/components/AccountForm";
 import {redirect} from "@/features/i18n/routing";
+import {deleteUser} from "@/features/users/users.actions";
+import DeleteUser from "@/features/users/components/DeleteUser";
 
 export default async function Account() {
   const translate = await getTranslations()
@@ -24,6 +15,11 @@ export default async function Account() {
   }
 
   const user = await getUser(session.user.id) as UserSelect
+
+  const handleDelete = async () => {
+    await deleteUser(user.id)
+    return redirect({href: '/', locale: await getLocale()})
+  }
 
   return (
     <section>
@@ -37,30 +33,7 @@ export default async function Account() {
         {translate('users.settings.dangerZone')}
       </h3>
 
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button variant="destructive">
-            {translate('users.settings.deleteAccount')}
-          </Button>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              {translate('users.settings.deleteAreYouSure')}
-            </AlertDialogTitle>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>
-              {translate('general.cancel')}
-            </AlertDialogCancel>
-            <AlertDialogAction
-              className={buttonVariants({variant: 'destructive'})}
-            >
-              {translate('general.delete')}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <DeleteUser user={user} />
     </section>
   )
 }

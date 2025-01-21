@@ -21,3 +21,10 @@ export async function updateUserData(user: Partial<UserInsert>) {
 export async function revalidateUser() {
   return revalidateTag('user')
 }
+
+export async function deleteUser(id: string) {
+  await db
+    .delete(Schema.users)
+    .where(eq(Schema.users.id, id))
+    .execute()
+}

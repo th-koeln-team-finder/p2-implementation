@@ -1,79 +1,104 @@
 'use client'
 
 import {Label} from "@repo/design-system/components/ui/label";
-import {Input} from "@repo/design-system/components/ui/input";
-import {Textarea} from "@repo/design-system/components/ui/textarea";
+import {InputForm} from "@repo/design-system/components/ui/input";
 import {UserSelect} from "@repo/database/schema";
 import {useTranslations} from "next-intl";
-import {useCallback, useState} from "react";
-import {debounce} from "@/utils";
-import {updateUserData} from "@/features/users/users.actions";
-import {Switch} from "@repo/design-system/components/ui/switch";
-import {Avatar, AvatarFallback, AvatarImage} from "@repo/design-system/components/ui/avatar";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@repo/design-system/components/ui/select";
-import {revalidateSkills} from "@/features/userSkills/userSkills.actions";
+import {revalidateUser, updateUserData} from "@/features/users/users.actions";
+import {SelectContent, SelectForm, SelectItem} from "@repo/design-system/components/ui/select";
+import {useSignals} from "@preact/signals-react/runtime";
+import {useForm} from "@formsignals/form-react";
+import {ZodAdapter} from "@formsignals/validation-adapter-zod";
+import {z} from "zod";
+import {FieldError, FormError} from "@repo/design-system/components/FormErrors";
+import {LoaderCircleIcon, SaveIcon} from "lucide-react";
+import {Button} from "@repo/design-system/components/ui/button";
 
 export default function AccountForm({user}: { user: UserSelect }) {
   const t = useTranslations()
 
-  const [formData, setFormData] = useState({
-    id: user.id,
-    email: user.email,
-    languagePreference: user.languagePreference,
+  useSignals()
+  const form = useForm({
+    validatorAdapter: ZodAdapter,
+    defaultValues: {
+      name: user.name,
+      email: user.email,
+      languagePreference: user.languagePreference,
+    },
+    onSubmit: async (values) => {
+      await updateUserData(values).catch((err) => {
+        console.error('Error updating user data', err)
+      })
+      await revalidateUser().catch((err) => {
+        console.error('Error revalidating user', err)
+      })
+    },
   })
 
-  const updateUserProperties = useCallback(
-    debounce(async () => {
-      await updateUserData(formData)
-      await revalidateSkills()
-    }, 200),
-    []
-  )
-
-  const updateFormData = (key: string, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [key]: event.target.value
-    })
-
-    updateUserProperties()
-  }
-
   return (
-    <div className="">
-      <Label htmlFor="email" className="inline-block mb-2">{t('users.settings.email')}</Label>
-      <Input name="email" type="email" className="mb-4" defaultValue={formData.email}/>
+    <form
+      className="space-y-4 mb-8"
+      onSubmit={async (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        await form.handleSubmit()
+      }}
+    >
+      <form.FormProvider>
+        <form.FieldProvider
+          name="email"
+          validator={z
+            .string()
+            .min(1, t('validation.required'))
+            .email(t('validation.email'))}
+          validatorOptions={{
+            validateOnChangeIfTouched: true,
+          }}
+        >
+          <div className="grid gap-2">
+            <Label htmlFor="email">
+              {t('auth.register.email')}
+            </Label>
+            <InputForm id="email" type="email" autoComplete="email"/>
+            <FieldError/>
+          </div>
+        </form.FieldProvider>
 
-      <Label htmlFor="password" className="inline-block mb-2">{t('users.settings.password')}</Label>
-      <Input disabled name="password" placeholder={t('general.notSupported')} className="mb-4"/>
+        <form.FieldProvider
+          name="languagePreference"
+          validator={z
+            .enum(['en', 'de'] as const)}
+        >
+          <div className="grid gap-2">
+            <Label htmlFor={'languagePreference'}>
+              {t('users.settings.language')}
+            </Label>
+            <SelectForm>
+              <SelectContent>
+                <SelectItem value="en">
+                  English
+                </SelectItem>
+                <SelectItem value="de">
+                  Deutsch
+                </SelectItem>
+              </SelectContent>
+            </SelectForm>
+          </div>
+        </form.FieldProvider>
 
-      <Label htmlFor={'languagePreference'}>
-        {t('users.settings.language')}
-      </Label>
-      <Select>
-        <SelectTrigger className="mb-4" name="languagePreference">
-          <SelectValue>
-            {t('users.settings.language')}
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectItem value="en">
-              English
-            </SelectItem>
-            <SelectItem value="de">
-              Deutsch
-            </SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    </div>
+        <FormError/>
+
+        <Button
+          type="submit"
+          disabled={!form.canSubmit.value}
+        >
+          {form.isSubmitting.value
+            ? <LoaderCircleIcon className="h-4 w-4 animate-spin"/>
+            : <SaveIcon className="h-4 w-4"/>
+          }
+          {t('general.save')}
+        </Button>
+      </form.FormProvider>
+    </form>
   )
 }

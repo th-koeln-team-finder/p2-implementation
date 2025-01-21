@@ -147,6 +147,7 @@ export const en = {
     number: 'This field must be a number',
     positive: 'This field must be a positive number',
     date: 'This field must be a valid date',
+    url: 'This field must be a valid URL',
   },
   errors: {
     genericPageError: 'Oops something went wrong',

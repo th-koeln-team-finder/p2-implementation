@@ -149,6 +149,7 @@ export const de: Language = {
     number: 'Dieses Feld muss eine Zahl sein',
     positive: 'Dieses Feld muss eine positive Zahl sein',
     date: 'Dieses Feld muss ein gültiges Datum sein',
+    url: 'Dieses Feld muss eine gültige URL sein',
   },
   errors: {
     genericPageError: 'Oops, da ist etwas schiefgelaufen',
