@@ -3,6 +3,15 @@ export const en = {
     save: 'Save',
     cancel: 'Cancel',
   },
+  components: {
+    fileUpload: {
+      placeholderText: 'Drag and drop a file here or click to browse',
+      selectedFileHeader: 'Selected files',
+      noFilesSelected: 'No files selected',
+      finishedText: 'Finished',
+      noPreviewAvailable: 'No preview',
+    },
+  },
   test: {
     dataTitle: 'Test Data',
     normalHeading: 'Normal Heading',

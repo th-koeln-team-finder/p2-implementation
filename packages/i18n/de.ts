@@ -5,6 +5,16 @@ export const de: Language = {
     save: 'Speichern',
     cancel: 'Abbrechen',
   },
+  components: {
+    fileUpload: {
+      placeholderText:
+        'Ziehen Sie eine Datei hierher oder klicken Sie, um zu durchsuchen',
+      selectedFileHeader: 'Ausgewählte Dateien',
+      noFilesSelected: 'Keine Dateien ausgewählt',
+      finishedText: 'Fertig',
+      noPreviewAvailable: 'Keine Vorschau',
+    },
+  },
   test: {
     dataTitle: 'Testdaten',
     normalHeading: 'Normaler Titel',
