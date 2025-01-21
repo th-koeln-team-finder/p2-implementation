@@ -1,19 +1,19 @@
 'use client'
 
-import { Progress } from '@/components/ui/progress'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
-import { cn } from '@/lib/utils'
 import type { SignalifiedData } from '@formsignals/form-core'
 import { useFieldContext } from '@formsignals/form-react'
 import { useSignalEffect, useSignals } from '@preact/signals-react/runtime'
 import { CheckIcon, FileIcon, TrashIcon, UploadIcon } from 'lucide-react'
 import { useFormatter, useTranslations } from 'next-intl'
 import { type ReactNode, useState } from 'react'
+import { Progress } from '../../components/ui/progress'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../../components/ui/tooltip'
+import { cn } from '../../lib/utils'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
