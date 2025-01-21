@@ -6,9 +6,9 @@ import { ProjectTimetable } from '@/features/projects/components/ProjectTimetabl
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
 import { SkillScale } from '@/features/projects/components/SkillScale'
 import TeamMembers from '@/features/projects/components/TeamMembers'
-import { Text } from '@/features/projects/components/Text'
 import { Toolbar } from '@/features/projects/components/Toolbar'
 import { getProjectItem } from '@/features/projects/projects.queries'
+import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 
 export default async function Projects({
   params,
@@ -39,10 +39,14 @@ export default async function Projects({
             </div>
           </div>
 
-          <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
+          {/*<div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
             <Text description={project.description} />
+          </div>*/}
+          <div className="relative mb-16 flex w-full flex-col gap-8">
+            {project.description && (
+              <WysiwygRenderer value={project.description} />
+            )}
           </div>
-
           <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
             <div className="relative inline-flex w-full flex-col justify-start gap-2 lg:w-1/2">
               <TeamMembers />
@@ -51,19 +55,18 @@ export default async function Projects({
               <ProjectTimetable timetable={project.timetable} />
             </div>
           </div>
-        </div>
-
-        <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
-          <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
-            <ProjectIssuesList listOfIssues={project.issues} />
-          </div>
-          <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
-            <Location
-              location={{
-                latitude: 51.023197847815915,
-                longitude: 7.56205608469124,
-              }}
-            />
+          <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
+            <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
+              <ProjectIssuesList listOfIssues={project.issues} />
+            </div>
+            <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
+              <Location
+                location={{
+                  latitude: 51.023197847815915,
+                  longitude: 7.56205608469124,
+                }}
+              />
+            </div>
           </div>
         </div>
 

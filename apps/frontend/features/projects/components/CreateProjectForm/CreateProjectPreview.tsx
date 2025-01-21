@@ -6,12 +6,12 @@ import { ProjectTimetable } from '@/features/projects/components/ProjectTimetabl
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
 import { SkillScale } from '@/features/projects/components/SkillScale'
 import TeamMembers from '@/features/projects/components/TeamMembers'
-import { Text } from '@/features/projects/components/Text'
 import { Toolbar } from '@/features/projects/components/Toolbar'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { useFormContext } from '@formsignals/form-react'
 import { useSignals } from '@preact/signals-react/runtime'
 import { Weekdays } from '@repo/database/schema'
+import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 
 function extractTextFromDescription(desc: string) {
   const parsedDescription = JSON.parse(desc) // JSON-String in Objekt umwandeln
@@ -45,20 +45,20 @@ export function CreateProjectPreview() {
   console.log(formValues.timetableCustom)
 
   const timetabledata: { description: string; weekdays: string }[] = [
-    { description: formValues.ttMon, weekdays: Weekdays.monday.toString() },
-    { description: formValues.ttTue, weekdays: Weekdays.tuesday.toString() },
-    { description: formValues.ttWed, weekdays: Weekdays.wednesday.toString() },
-    { description: formValues.ttThu, weekdays: Weekdays.thursday.toString() },
-    { description: formValues.ttFri, weekdays: Weekdays.friday.toString() },
-    { description: formValues.ttSat, weekdays: Weekdays.saturday.toString() },
-    { description: formValues.ttSun, weekdays: Weekdays.sunday.toString() },
+    { description: formValues.ttMon, weekdays: Weekdays.monday },
+    { description: formValues.ttTue, weekdays: Weekdays.tuesday },
+    { description: formValues.ttWed, weekdays: Weekdays.wednesday },
+    { description: formValues.ttThu, weekdays: Weekdays.thursday },
+    { description: formValues.ttFri, weekdays: Weekdays.friday },
+    { description: formValues.ttSat, weekdays: Weekdays.saturday },
+    { description: formValues.ttSun, weekdays: Weekdays.sunday },
   ]
 
-  const timetable = timetabledata.map((entry) => {
-    if (entry.description !== undefined || entry.description !== '')
-      return entry
-  })
-
+  const timetable = timetabledata
+    .map((entry) => {
+      if (entry.description !== '') return entry
+    })
+    .filter((entry) => entry !== undefined)
   return (
     <div className="w-full rounded-lg p-4 shadow lg:p-8">
       <div className="mx-auto inline-flex w-full max-w-screen-xl flex-col items-center justify-start gap-12 lg:p-4">
@@ -81,11 +81,17 @@ export function CreateProjectPreview() {
               </div>
             </div>
 
-            <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
+            {/*
+              <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
               <Text
                 description={extractTextFromDescription(formValues.description)}
               />
-            </div>
+              </div>
+              */}
+
+            {formValues.description && (
+              <WysiwygRenderer value={formValues.description} />
+            )}
 
             <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
               <div className="relative inline-flex w-full flex-col justify-start gap-2 lg:w-1/2">
@@ -111,6 +117,7 @@ export function CreateProjectPreview() {
                     longitude: 7.56205608469124,
                   }}
                 />
+                <p>{formValues.address}</p>
               </div>
             </div>
 
@@ -122,8 +129,6 @@ export function CreateProjectPreview() {
           </div>
         </div>
       </div>
-
-      <p>{formValues.address}</p>
     </div>
   )
 }

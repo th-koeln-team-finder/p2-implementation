@@ -7,14 +7,12 @@ export type CreateProjectFormBasic = {
 
 export type CreateProjectFormSkills = {
   skills: Array<{
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    skillId: any
     name: string
     level: number
   }>
 }
 
-export type CreateProjectFormTime = {
+export type CreateProjectFormTimeTable = {
   timetableOutput: string
   ttMon: string
   ttTue: string
@@ -42,5 +40,5 @@ export type CreateProjectFormLinks = {
 
 export type CreateProjectFormValues = CreateProjectFormBasic &
   CreateProjectFormSkills &
-  CreateProjectFormTime &
+  CreateProjectFormTimeTable &
   CreateProjectFormLinks

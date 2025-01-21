@@ -10,7 +10,10 @@ type PopulatedProjectSkill = ProjectSkillSelect & {
 // @ts-ignore
 export function SkillScale({
   projectSkills,
-}: { title?: string; projectSkills: PopulatedProjectSkill[] }) {
+}: {
+  title?: string
+  projectSkills: { name: string; level: number; id?: number }[]
+}) {
   //const t = await getTranslations('projects')
   const translate = useTranslations()
 
@@ -32,9 +35,15 @@ export function SkillScale({
       const totalHeight = itemRef.current.offsetHeight + marginBottom
 
       setItemHeight(totalHeight)
-      //setItemHeight(itemRef.current.offsetHeight);
     }
   })
+
+  let skillIdCounter = 0
+  projectSkills.forEach((projectSkill) => {
+    projectSkill.id = projectSkill.id ? projectSkill.id : skillIdCounter++
+  })
+
+  console.log(projectSkills)
 
   const maxHeight = showAll
     ? `${projectSkills.length * itemHeight}px`
@@ -52,17 +61,14 @@ export function SkillScale({
         />
         {projectSkills.map((projectSkill, index) => (
           <div
-            key={projectSkill.skillId}
+            key={projectSkill.id}
             ref={index === 0 ? itemRef : null}
             className={`mb-2 inline-flex w-full justify-between self-stretch opacity-0 transition-opacity duration-300 ${showAll || index < 6 ? 'opacity-100' : ''}`}
           >
-            <div className="text-base">
-              {projectSkill.skill ? projectSkill.skill.name : projectSkill.name}
-            </div>
+            <div className="text-base">{projectSkill.name}</div>
             <div className="flex items-center justify-center gap-2.5 py-px">
               {[...Array(5)].map((_, i) => (
                 <div
-                  // biome-ignore lint/suspicious/noArrayIndexKey: Index for the key
                   key={i}
                   className={`h-2 w-2 rounded-full ${i < projectSkill.level ? 'bg-primary' : 'bg-primary/20'}`}
                 />
