@@ -11,6 +11,8 @@ export const serverEnv = createEnv({
     AUTH_TRUST_HOST: z.string().nullish().transform((s) => s !== "false" && s !== "0"),
     AUTH_REDIRECT_PROXY_URL: z.string().nullish(),
     MINIO_BUCKET: z.string().min(1),
+    MINIO_PATH: z.string().min(1),
+    MINIO_PUBLIC_HOST: z.string().min(1),
     MINIO_HOST: z.string().min(1),
     MINIO_PORT: z.coerce.number().int().min(1),
     MINIO_ACCESS_KEY: z.string().min(1),
