@@ -37,6 +37,16 @@ services:
       API_URL: http://host.docker.internal/api
       AUTH_SECRET: ITU6sRToXsdrDTPW1Uiip/KkDBv1QoyZzUGmbgSSwV4=
       AUTH_REDIRECT_PROXY_URL: https://collaborize.localhost/api/auth
+      MINIO_BUCKET: collaborize
+      MINIO_HOST: minio
+      MINIO_PUBLIC_HOST: collaborize.localhost
+      MINIO_PORT: 9000
+      MINIO_ACCESS_KEY: collaborize-access
+      MINIO_SECRET_KEY: collaborize-secret
+      MINIO_PATH: /_upload*
+      MAX_FILE_SIZE: 10485760
+      ALLOWED_FILE_TYPES: image/jpeg,image/jpg,image/png,application/pdf
+
     ports:
       - '3000:3000'
     networks:
@@ -91,6 +101,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - web
 
 volumes:
   postgres_data:
