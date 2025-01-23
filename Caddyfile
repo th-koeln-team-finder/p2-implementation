@@ -5,7 +5,8 @@ collaborize.localhost {
     }
     handle_path /_upload* {
         reverse_proxy minio:9000 {
-            header_up Host {upstream_hostport}
+#            header_up Host {upstream_hostport}
+            header_up Host localhost:9000
         }
 #        reverse_proxy host.docker.internal:9000
     }
