@@ -5,7 +5,7 @@ import { Client } from 'minio'
 const minioClient = new Client({
   endPoint: serverEnv.MINIO_HOST,
   port: serverEnv.MINIO_PORT,
-  useSSL: true,
+  useSSL: false,
   accessKey: serverEnv.MINIO_ACCESS_KEY,
   secretKey: serverEnv.MINIO_SECRET_KEY,
 })
@@ -20,8 +20,8 @@ export async function generatePresignedUrl(bucketPath: string) {
     60 * 30,
   )
   return presignedUrl.replace(
-    `${serverEnv.MINIO_HOST}:${serverEnv.MINIO_PORT}`,
-    `${serverEnv.MINIO_PUBLIC_HOST}/_upload`,
+    `http://${serverEnv.MINIO_HOST}:${serverEnv.MINIO_PORT}`,
+    `https://${serverEnv.MINIO_PUBLIC_HOST}/_upload`,
   )
 }
 
@@ -30,8 +30,8 @@ export async function generatePublicUrl(bucketPath: string) {
   return [
     presignedUrl,
     presignedUrl.replace(
-      `${serverEnv.MINIO_HOST}:${serverEnv.MINIO_PORT}`,
-      `${serverEnv.MINIO_PUBLIC_HOST}/_upload`,
+      `http://${serverEnv.MINIO_HOST}:${serverEnv.MINIO_PORT}`,
+      `https://${serverEnv.MINIO_PUBLIC_HOST}/_upload`,
     ),
   ] as const
 }

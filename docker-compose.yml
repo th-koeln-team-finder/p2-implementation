@@ -28,13 +28,11 @@ services:
     build:
       context: .
       dockerfile: ./apps/frontend/Dockerfile
-      target: dev
-    command: pnpm dev
     environment:
       DATABASE_URL: postgres://dbadmin:dbadmin@database:5432/collaborize
       AUTH_TRUST_HOST: true
       FRONTEND_URL: https://collaborize.localhost
-      API_URL: http://host.docker.internal/api
+      API_URL: http://app:3000/api
       AUTH_SECRET: ITU6sRToXsdrDTPW1Uiip/KkDBv1QoyZzUGmbgSSwV4=
       AUTH_REDIRECT_PROXY_URL: https://collaborize.localhost/api/auth
       MINIO_BUCKET: collaborize
@@ -46,7 +44,6 @@ services:
       MINIO_PATH: /_upload*
       MAX_FILE_SIZE: 10485760
       ALLOWED_FILE_TYPES: image/jpeg,image/jpg,image/png,application/pdf
-
     ports:
       - '3000:3000'
     networks:

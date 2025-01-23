@@ -184,12 +184,14 @@ type FileListProps = {
   className?: string
   progressState?: Record<string, number>
 }
+// TODO Implement error display on a "per file" basis (e.g. file too large, invalid file type, etc.)
 
 export function FileListForm({
   maxPreviewWidth = 48,
   progressState,
   className,
 }: FileListProps) {
+  useSignals()
   const translate = useTranslations('components.fileUpload')
   const format = useFormatter()
   const field = useFieldContext()
