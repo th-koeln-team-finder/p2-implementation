@@ -93,6 +93,7 @@ export const en = {
       title: 'Title',
       titlePlaceholder: 'Title of the issue...',
       description: 'Description',
+      descPlaceholder: 'Description of the issue...',
     },
     resources: {
       selection: 'Select',

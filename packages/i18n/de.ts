@@ -95,6 +95,7 @@ export const de: Language = {
       title: 'Titel',
       titlePlaceholder: 'Titel des Issues...',
       description: 'Beschreibung',
+      descPlaceholder: 'Beschreibung des Issues...',
     },
     resources: {
       selection: 'Auswahl',

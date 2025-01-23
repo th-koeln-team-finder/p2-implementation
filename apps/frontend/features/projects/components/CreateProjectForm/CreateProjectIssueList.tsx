@@ -16,6 +16,7 @@ import { Label } from '@repo/design-system/components/ui/label'
 import { MinusIcon, PlusIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { z } from 'zod'
+import {TextareaForm} from "@repo/design-system/components/ui/textarea";
 
 type CreateProjectIssueListProps = {
   editorRef: LexicalEditorRef
@@ -39,7 +40,7 @@ export function CreateProjectIssueList({
     <>
       {field.data.value.map((issue, index) => (
         <div key={issue.key} className="flex flex-col gap-4 lg:flex-row">
-          <div className="w-full lg:w-2/6">
+          <div className="w-full lg:w-1/2">
             <field.SubFieldProvider
               name={`${index}.title`}
               validator={z.string().min(1)}
@@ -50,53 +51,53 @@ export function CreateProjectIssueList({
             </field.SubFieldProvider>
           </div>
 
-          <div className="flex w-full flex-col justify-between lg:w-4/6 lg:flex-row">
-            <field.SubFieldProvider
-              name={`${index}.description`}
-              validator={() => {
-                if (!editorRef.current) return null
-                return getStringContentFromEditor(editorRef.current).length <= 0
-                  ? 'This field is required'
-                  : null
-              }}
-            >
-              <div>
-                <Label>{t('issues.description')}</Label>
-                <WysiwygEditorForm editorRef={editorRef} />
-                <FieldError />
-              </div>
-            </field.SubFieldProvider>
+          <div className="w-full lg:w-1/2">
+            <Label>{t('issues.description')}</Label>
+            <div className="flex w-full flex-col justify-between gap-4 lg:flex-row">
 
-            <div className="mt-4 flex w-full gap-2 lg:mt-0 lg:w-1/6">
-              <Button
-                onClick={() => field.removeValueFromArray(index)}
-                variant="outline"
-                className="mb-auto rounded-full p-2"
-                size="icon"
-              >
-                <MinusIcon />
-              </Button>
-              <Button
-                onClick={() =>
-                  field.pushValueToArray({ title: '', description: '' })
-                }
-                className="mb-auto rounded-full"
-                size="icon"
-              >
-                <PlusIcon />
-              </Button>
+              <div className="flex w-full flex-col">
+                <field.SubFieldProvider
+                    name={`${index}.description`}
+                    validator={z.string().min(1)}
+                >
+                  <TextareaForm placeholder={t('issues.descPlaceholder')}/>
+                  <FieldError/>
+                </field.SubFieldProvider>
+              </div>
+
+
+              <div className="mt-4 flex gap-2 lg:mt-0">
+                <Button
+                    onClick={() => field.removeValueFromArray(index)}
+                    variant="outline"
+                    className="mb-auto rounded-full p-2"
+                    size="icon"
+                >
+                  <MinusIcon/>
+                </Button>
+                <Button
+                    onClick={() =>
+                        field.pushValueToArray({title: '', description: ''})
+                    }
+                    className="mb-auto rounded-full"
+                    size="icon"
+                >
+                  <PlusIcon/>
+                </Button>
+              </div>
+
             </div>
           </div>
         </div>
       ))}
       {field.data.value.length === 0 && (
-        <Button
-          onClick={() => field.pushValueToArray({ title: '', description: '' })}
-          className="my-3"
-          style={{ width: 'fit-content' }}
-        >
-          {t('issues.addIssue')}
-        </Button>
+          <Button
+              onClick={() => field.pushValueToArray({title: '', description: ''})}
+              className="my-3"
+              style={{width: 'fit-content'}}
+          >
+            {t('issues.addIssue')}
+          </Button>
       )}
     </>
   )
