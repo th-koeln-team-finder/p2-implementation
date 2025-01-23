@@ -69,7 +69,6 @@ export function CreateProjectPreview() {
               subtitle={formValues.status}
             />
             {/*<p>{formValues.phase}</p>*/}
-            <Toolbar />
           </div>
           <div className="relative w-full">
             <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
@@ -108,22 +107,8 @@ export function CreateProjectPreview() {
                 <ProjectIssuesList listOfIssues={formValues.issues} />
               </div>
               <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
-                {/*<Location
-                                  location={formValues.address}
-                              />*/}
-                <Location
-                  location={{
-                    latitude: 51.023197847815915,
-                    longitude: 7.56205608469124,
-                  }}
-                />
-                <p>{formValues.address}</p>
-              </div>
-            </div>
-
-            <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
-              <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
                 <Links links={formValues.ressources} />
+                <p>{formValues.address}</p>
               </div>
             </div>
           </div>

@@ -60,32 +60,21 @@ export default async function Projects({
               <ProjectIssuesList listOfIssues={project.issues} />
             </div>
             <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
-              <Location
-                location={{
-                  latitude: 51.023197847815915,
-                  longitude: 7.56205608469124,
-                }}
+              <Links
+                  links={[
+                    {
+                      label: 'Download Project Brief',
+                      href: 'https://via.placeholder.com/32x32',
+                      isDocument: true,
+                    },
+                    {
+                      label: 'Download Project Brief',
+                      href: 'https://google.de',
+                      isDocument: false,
+                    },
+                  ]}
               />
             </div>
-          </div>
-        </div>
-
-        <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
-          <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
-            <Links
-              links={[
-                {
-                  label: 'Download Project Brief',
-                  href: 'https://via.placeholder.com/32x32',
-                  isDocument: true,
-                },
-                {
-                  label: 'Download Project Brief',
-                  href: 'https://google.de',
-                  isDocument: false,
-                },
-              ]}
-            />
           </div>
         </div>
       </div>
