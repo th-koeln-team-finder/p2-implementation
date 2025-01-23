@@ -41,7 +41,6 @@ services:
       MINIO_PORT: 9000
       MINIO_ACCESS_KEY: collaborize-access
       MINIO_SECRET_KEY: collaborize-secret
-      MINIO_PATH: /_upload*
       MAX_FILE_SIZE: 10485760
       ALLOWED_FILE_TYPES: image/jpeg,image/jpg,image/png,application/pdf
     ports:
