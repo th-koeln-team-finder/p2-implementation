@@ -73,5 +73,5 @@ export async function confirmFileUpload(bucketPath: string) {
 }
 
 export async function revalidateFileUploads() {
-  return revalidateTag(FileUploadCacheTags.base)
+  return await revalidateTag(FileUploadCacheTags.base)
 }
