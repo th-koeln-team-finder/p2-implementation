@@ -88,6 +88,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@repo/design-system/components/ui/tooltip'
+import { serverEnv } from '@repo/env'
 import {
   ChevronDownIcon,
   SendHorizontalIcon,
@@ -146,7 +147,7 @@ export default async function Home() {
           <RemoveFileButton file={file} />
         </div>
       ))}
-      <TestFileUploadForm />
+      <TestFileUploadForm maxFileSize={serverEnv.MAX_FILE_SIZE} />
       <CanUserServer target="test" action="view">
         <div className="flex flex-row justify-between gap-2 bg-card align-center">
           <h3 className="mt-4 mb-2 font-head text-3xl">

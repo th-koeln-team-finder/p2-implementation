@@ -10,6 +10,7 @@ export const en = {
       noFilesSelected: 'No files selected',
       finishedText: 'Finished',
       noPreviewAvailable: 'No preview',
+      errorFileIsTooLarge: 'File is too large',
     },
   },
   test: {

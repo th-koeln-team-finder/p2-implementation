@@ -29,18 +29,10 @@ export async function getPresignedUploadUrl(
   }
 
   if (fileSize >= serverEnv.MAX_FILE_SIZE) {
-    const locale = await getLocale()
-    return redirect({
-      href: '/error?error=FileTooLarge',
-      locale,
-    })
+    return null
   }
   if (!serverEnv.ALLOWED_FILE_TYPES.includes(fileType)) {
-    const locale = await getLocale()
-    return redirect({
-      href: '/error?error=InvalidFileType',
-      locale,
-    })
+    return null
   }
 
   await db.insert(Schema.uploadedFiles).values({

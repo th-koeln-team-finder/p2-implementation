@@ -16,6 +16,9 @@ export function useFileUpload() {
         file.type,
         file.size,
       )
+      if (!uploadUrl) {
+        return
+      }
 
       return new Promise<void>((resolve, reject) => {
         const xhr = new XMLHttpRequest()

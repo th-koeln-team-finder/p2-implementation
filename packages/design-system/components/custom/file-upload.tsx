@@ -3,7 +3,13 @@
 import type { SignalifiedData } from '@formsignals/form-core'
 import { useFieldContext } from '@formsignals/form-react'
 import { useSignalEffect, useSignals } from '@preact/signals-react/runtime'
-import { CheckIcon, FileIcon, TrashIcon, UploadIcon } from 'lucide-react'
+import {
+  CheckIcon,
+  FileIcon,
+  FileWarningIcon,
+  TrashIcon,
+  UploadIcon,
+} from 'lucide-react'
 import { useFormatter, useTranslations } from 'next-intl'
 import { type ReactNode, useState } from 'react'
 import { Progress } from '../../components/ui/progress'
@@ -76,18 +82,20 @@ function FieldPlaceholder() {
 type FilePreviewsProps = {
   progressState?: Record<string, number>
   placeholder?: ReactNode
+  maxFileSize: number
 }
 
 export function FilePreviewsForm({
   progressState,
   placeholder = <FieldPlaceholder />,
+  maxFileSize,
 }: FilePreviewsProps) {
   const field = useFieldContext<File[]>()
   const format = useFormatter()
-  const _translate = useTranslations('components.fileUpload')
+  const translate = useTranslations('components.fileUpload')
 
   const [fieldPreviews, setFieldPreviews] = useState<
-    [string, string, string, string][]
+    [string, string, string, string, number][]
   >([])
   useSignalEffect(() => {
     const fieldPreviews = field.data.value.map(
@@ -97,6 +105,7 @@ export function FilePreviewsForm({
           URL.createObjectURL(file.data.value),
           file.data.value.name,
           file.data.value.type,
+          file.data.value.size,
         ]
       },
     )
@@ -112,7 +121,7 @@ export function FilePreviewsForm({
 
   return (
     <div className="flex max-w-xl flex-row flex-wrap justify-center gap-2">
-      {fieldPreviews.map(([key, file, filename, filetype], index) => (
+      {fieldPreviews.map(([key, file, filename, filetype, filesize], index) => (
         <div key={key} className="relative">
           <FileObjectPreview file={file} filetype={filetype} />
           <Button
@@ -129,6 +138,12 @@ export function FilePreviewsForm({
           >
             <TrashIcon />
           </Button>
+          {filesize >= maxFileSize && (
+            <div className="absolute right-0 bottom-0 left-0 flex flex-row items-center gap-1 bg-destructive p-1 text-destructive-foreground">
+              <FileWarningIcon className="h-4 w-4" />
+              <p className="text-xs">{translate('errorFileIsTooLarge')}</p>
+            </div>
+          )}
           {progressState && filename in progressState && (
             <div className="absolute right-1 bottom-1 left-1">
               <p>
@@ -183,13 +198,14 @@ type FileListProps = {
   maxPreviewWidth?: number
   className?: string
   progressState?: Record<string, number>
+  maxFileSize: number
 }
-// TODO Implement error display on a "per file" basis (e.g. file too large, invalid file type, etc.)
 
 export function FileListForm({
   maxPreviewWidth = 48,
   progressState,
   className,
+  maxFileSize,
 }: FileListProps) {
   useSignals()
   const translate = useTranslations('components.fileUpload')
@@ -247,6 +263,14 @@ export function FileListForm({
                       </p>
                     </div>
                   ))}
+                {file.data.value.size >= maxFileSize && (
+                  <div className="ml-auto flex flex-row items-center gap-1">
+                    <FileWarningIcon className="h-4 w-4 text-destructive" />
+                    <p className="text-muted-foreground text-sm">
+                      {translate('errorFileIsTooLarge')}
+                    </p>
+                  </div>
+                )}
               </div>
             ),
           )}

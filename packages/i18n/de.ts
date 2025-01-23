@@ -13,6 +13,7 @@ export const de: Language = {
       noFilesSelected: 'Keine Dateien ausgewählt',
       finishedText: 'Fertig',
       noPreviewAvailable: 'Keine Vorschau',
+      errorFileIsTooLarge: 'Datei ist zu groß',
     },
   },
   test: {
