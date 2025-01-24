@@ -1,9 +1,13 @@
 'use server'
 
+import { authMiddleware } from '@/auth'
+import { redirect } from '@/features/i18n/routing'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
 import { Weekdays } from '@repo/database/schema'
+import { and, eq } from 'drizzle-orm'
+import { getLocale } from 'next-intl/server'
 
 export async function createProject(payload: CreateProjectFormValues) {
   const [project] = await db
@@ -81,4 +85,38 @@ export async function createProject(payload: CreateProjectFormValues) {
   if (resourcesToCreate.length) {
     await db.insert(Schema.projectResource).values(resourcesToCreate)
   }
+}
+
+export async function toggleProjectBookmark(
+  id: string,
+  shouldBookmark: boolean,
+) {
+  const session = await authMiddleware()
+  if (!session?.user?.id) {
+    const locale = await getLocale()
+    return redirect({
+      href: '/error?error=AccessDenied',
+      locale,
+    })
+  }
+
+  const matchBookmark = and(
+    eq(Schema.projectBookmarks.projectId, id),
+    eq(Schema.projectBookmarks.userId, session.user.id),
+  )
+  const existingBookmark = await db.query.projectBookmarks.findFirst({
+    where: matchBookmark,
+  })
+
+  if (shouldBookmark === !!existingBookmark) {
+    return
+  }
+  if (!shouldBookmark) {
+    await db.delete(Schema.projectBookmarks).where(matchBookmark)
+    return
+  }
+  await db.insert(Schema.projectBookmarks).values({
+    projectId: id,
+    userId: session.user.id,
+  })
 }

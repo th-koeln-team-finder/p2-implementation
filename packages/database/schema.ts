@@ -333,6 +333,25 @@ export type ProjectTimetableInsert = typeof projectTimetable.$inferInsert
 export type ProjectTimetableSelect = typeof projectTimetable.$inferSelect
 
 //region Technical Tables
+
+export const projectBookmarks = pgTable(
+  'project_bookmark',
+  {
+    userId: uuid('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    projectId: uuid('projectId')
+      .notNull()
+      .references(() => projects.id, { onDelete: 'cascade' }),
+    createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.userId, table.projectId] }),
+  }),
+)
+export type projectBookmarkInsert = typeof projectBookmarks.$inferInsert
+export type projectBookmarkSelect = typeof projectBookmarks.$inferSelect
+
 /**
  * Data for a single brainstorm
  */

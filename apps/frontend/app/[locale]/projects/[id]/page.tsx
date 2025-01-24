@@ -1,6 +1,5 @@
 import ImageCarousel from '@/features/projects/components/ImageCarousel'
 import { Links } from '@/features/projects/components/Links'
-import { Location } from '@/features/projects/components/Location'
 import { ProjectIssuesList } from '@/features/projects/components/ProjectIssuesList'
 import { ProjectTimetable } from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
@@ -61,18 +60,18 @@ export default async function Projects({
             </div>
             <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
               <Links
-                  links={[
-                    {
-                      label: 'Download Project Brief',
-                      href: 'https://via.placeholder.com/32x32',
-                      isDocument: true,
-                    },
-                    {
-                      label: 'Download Project Brief',
-                      href: 'https://google.de',
-                      isDocument: false,
-                    },
-                  ]}
+                links={[
+                  {
+                    label: 'Download Project Brief',
+                    href: 'https://via.placeholder.com/32x32',
+                    isDocument: true,
+                  },
+                  {
+                    label: 'Download Project Brief',
+                    href: 'https://google.de',
+                    isDocument: false,
+                  },
+                ]}
               />
             </div>
           </div>
