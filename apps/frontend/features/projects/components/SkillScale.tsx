@@ -49,6 +49,15 @@ export function SkillScale({
     ? `${projectSkills.length * itemHeight}px`
     : `${6 * itemHeight}px`
 
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    const html = document.querySelector('html')
+    if (html?.classList.contains('dark')) {
+      setIsDarkMode(true)
+    }
+  }, [])
+
   return (
     <div className="SkillScale flex w-full flex-col">
       <div className="mb-2 font-medium text-2xl">
@@ -70,7 +79,7 @@ export function SkillScale({
               {[...Array(5)].map((_, i) => (
                 <div
                   key={i}
-                  className={`h-2 w-2 rounded-full ${i < projectSkill.level ? 'bg-primary' : 'bg-primary/20'}`}
+                  className={`h-2 w-2 rounded-full ${i < projectSkill.level ? 'bg-primary' : `${isDarkMode ? 'bg-white' : 'bg-primary/20'}`}`}
                 />
               ))}
             </div>

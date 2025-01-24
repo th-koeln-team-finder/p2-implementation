@@ -6,6 +6,7 @@ import useEmblaCarousel, {
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import * as React from 'react'
 
+import { useEffect, useState } from 'react'
 import { Button } from '../components/ui/button'
 import { cn } from '../lib/utils'
 
@@ -296,6 +297,15 @@ const CarouselPagination: React.FC<{ items: [] }> = ({ items }) => {
     }
   }, [api])
 
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    const html = document.querySelector('html')
+    if (html?.classList.contains('dark')) {
+      setIsDarkMode(true)
+    }
+  }, [])
+
   return (
     <div className="mt-4 flex justify-center space-x-2">
       {items.map((_, index) => (
@@ -303,7 +313,7 @@ const CarouselPagination: React.FC<{ items: [] }> = ({ items }) => {
           type="button"
           // biome-ignore lint/suspicious/noArrayIndexKey: Index is unique
           key={index}
-          className={`h-2 w-2 rounded-full transition-all ${index === selectedIndex ? 'bg-primary' : 'bg-primary/20'}`}
+          className={`h-2 w-2 rounded-full transition-all ${index === selectedIndex ? 'bg-primary' : `${isDarkMode ? 'bg-white' : 'bg-primary/20'}`}`}
           onClick={() => api?.scrollTo(index)}
         />
       ))}
