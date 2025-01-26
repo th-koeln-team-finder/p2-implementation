@@ -8,7 +8,7 @@
     "migrate": "drizzle-kit migrate",
     "generate": "drizzle-kit generate",
     "push": "drizzle-kit push",
-    "seed": "ts-node seed.ts"
+    "seed": "tsx seed.ts"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.4",
@@ -25,8 +25,8 @@
     "@types/pg": "^8.11.10",
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.28.1",
-    "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.19.2",
     "typescript": "^5.6.3"
   }
 }

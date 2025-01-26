@@ -2,4 +2,4 @@
 .turbo
 node_modules
 Dockerfile
-.env*
+.env.local

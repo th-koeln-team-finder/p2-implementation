@@ -11,16 +11,17 @@ export function useFileUpload() {
   const uploadFile = useCallback(
     async (bucketPrefix: string, filename: string, file: File) => {
       const bucketPath = `${bucketPrefix}/${filename}`
-      const uploadUrl = await getPresignedUploadUrl(
+      const [uploadUrl, fileId] = await getPresignedUploadUrl(
         bucketPath,
         file.type,
         file.size,
       )
+      console.log({ fileId })
       if (!uploadUrl) {
         return
       }
 
-      return new Promise<void>((resolve, reject) => {
+      return new Promise<string | null>((resolve, reject) => {
         const xhr = new XMLHttpRequest()
 
         xhr.upload.onprogress = (event) => {
@@ -48,7 +49,7 @@ export function useFileUpload() {
           await confirmFileUpload(bucketPath)
           revalidateFileUploads()
             .then(() => {
-              resolve(void 0)
+              resolve(fileId)
             })
             .catch((error) => {
               console.error('Error confirming file upload', error)

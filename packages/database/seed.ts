@@ -33,6 +33,16 @@ export async function seed() {
   const testData = makeMultiple(25, makeTest)
   await db.insert(Schema.test).values(testData).execute()
 
+  console.log("Clearing 'projects' table")
+  await db.delete(Schema.projects).execute()
+  console.log("Clearing 'skills' table")
+  await db.delete(Schema.skill).execute()
+  console.log(
+    "Clearing 'projectSkill', 'projectIssue' and 'projectTimetable' table",
+  )
+  await db.delete(Schema.projectSkill).execute()
+  await db.delete(Schema.projectIssue).execute()
+  await db.delete(Schema.projectTimetable).execute()
   console.log("Clearing 'user' table")
   await db.delete(Schema.users).execute()
 

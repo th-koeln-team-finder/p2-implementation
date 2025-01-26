@@ -3,7 +3,12 @@ import type { Language } from './en'
 export const de: Language = {
   general: {
     save: 'Speichern',
+    search: 'Suchen',
     cancel: 'Abbrechen',
+    delete: 'Löschen',
+    continue: 'Fortfahren',
+    add: 'Hinzufügen',
+    remove: 'Entfernen',
   },
   components: {
     fileUpload: {
@@ -22,6 +27,7 @@ export const de: Language = {
     normalFont: 'Normaler Schriftart',
     otherHeading: 'Andere Titel',
     otherFont: 'Andere Schriftart',
+    toProjectPage: 'Zur Projektseite',
     validation: {
       nice: 'Alle Menschen sind nett',
       age: 'Das Alter muss auf dem Geburtsdatum basieren',
@@ -29,6 +35,99 @@ export const de: Language = {
     actions: {
       addItem: 'Eintrag hinzufügen',
       removeAll: 'Alle entfernen',
+    },
+  },
+  projects: {
+    title: 'Projekte',
+    location: 'Standort/Treffpunkt',
+    join: 'Team beitreten',
+    links: 'Links und andere Ressourcen',
+    phase:'Phase',
+
+    issueList: {
+      showMore: 'mehr anzeigen',
+      showLess: 'weniger anzeigen',
+      issueTitle: 'Issues für Neueinsteiger',
+    },
+    skillScale: {
+      skillTitle: 'Benötige Fähigkeiten',
+    },
+
+    skills: {
+      title: 'Deine Fähigkeiten',
+      toggleLess: 'Weniger anzeigen',
+      toggleMore: 'Mehr anzeigen',
+    },
+    text: {
+      desc: 'DE Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna. Curabitur vel bibendum lorem. Morbi convallis convallis diam sit amet lacinia. Aliquam in elementum tellus.',
+    },
+    team: {
+      title: 'Team-Mitglieder',
+    },
+    createProject: {
+      stepper: {
+        back: 'Zurück',
+        next: 'Weiter',
+        reset: 'Zurücksetzen',
+        done: 'Fertig',
+        step: 'Schritt',
+        of: 'von',
+      },
+    },
+  },
+  createProjects: {
+    fieldRequired: 'Diese Eingabe ist erforderlich',
+    name: 'Projektname',
+    namePlaceholder: 'Name des Projekts...',
+    phase: 'Projektphase',
+    phasePlaceholder: 'Phase des Projekts...',
+    images: 'Bilder',
+    description: 'Projektbeschreibung',
+    location: 'Ort',
+    locationPlaceholder: 'Adresse...',
+    linksTitle: 'Links & Ressourcen',
+    timetable: {
+      title: 'Zeitplan',
+      table: 'Tabelle',
+      custom: 'Benutzerdefiniert',
+      days: {
+        monday: 'Montag',
+        tuesday: 'Dienstag',
+        wednesday: 'Mittwoch',
+        thursday: 'Donnerstag',
+        friday: 'Freitag',
+        saturday: 'Samstag',
+        sunday: 'Sonntag',
+        placeholder: 'z.B. 14-15Uhr...',
+      },
+      customPlaceholder: 'Custom timetable...',
+      addCustom: 'Add Custom',
+    },
+    issues: {
+      addIssue: 'Issue hinzufügen',
+      title: 'Titel',
+      titlePlaceholder: 'Titel des Issues...',
+      description: 'Beschreibung',
+      descPlaceholder: 'Beschreibung des Issues...',
+    },
+    resources: {
+      selection: 'Auswahl',
+      select: {
+        link: 'Link',
+        fileUpload: 'Datei hochladen',
+      },
+      label: 'Label',
+      labelPlaceholder: 'Name des Links...',
+      url: 'Link',
+      urlPlaceholder: 'URL des Links...',
+      fileUpload: 'Datei hochladen',
+      addLink: 'Link hinzufügen',
+    },
+    skills: {
+      skill: 'Skill',
+      skillPlaceholder: 'Name des Skills...',
+      level: 'Skill-Level',
+      addSkill: 'Skill hinzufügen',
     },
   },
   brainstorm: {
@@ -71,6 +170,32 @@ export const de: Language = {
       button: 'Abmelden',
     },
   },
+  users: {
+    title: 'Profil',
+    lastActivity: 'Letzte Aktivität',
+    skills: 'Skills',
+    previouslyWorkedOn: 'Hat zuvor gearbeitet an',
+    loadMoreProjects: 'Mehr Projekte laden',
+    follow: 'Folgen',
+    friendly: 'Freundlich',
+    veryFriendly: 'Sehr freundlich',
+    ratingText: 'Personen haben die Person als "sehr freundlich" bewertet',
+    editProfile: 'Profil bearbeiten',
+    settings: {
+      title: 'Benutzereinstellungen',
+      profile: 'Profil',
+      account: 'Konto',
+      notifications: 'Benachrichtigungen',
+      security: 'Sicherheit',
+      dangerZone: 'Gefahrenzone',
+      deleteAccount: 'Account löschen',
+      removeSkill: 'Remove skill',
+      deleteAreYouSure: 'Are you sure you want to delete your account?',
+      activateNotifications: 'Benachrichtigungen aktivieren',
+      selectNotificationType: 'Benachrichtigungstyp auswählen',
+      searchSkills: 'Skill suchen',
+    },
+  },
   validation: {
     inProgress: 'Validiere...',
     required: 'Dieses Feld ist erforderlich',
@@ -90,6 +215,17 @@ export const de: Language = {
         'Es gab ein Problem beim Authentifizieren: Zugriff verweigert',
       verification: 'Es gab ein Problem beim Überprüfen der Authentifizierung',
       default: 'Es gab ein Problem beim Authentifizieren',
+    },
+  },
+  utils: {
+    weekdays: {
+      monday: 'Mo',
+      tuesday: 'Di',
+      wednesday: 'Mi',
+      thursday: 'Do',
+      friday: 'Fr',
+      saturday: 'Sa',
+      sunday: 'So',
     },
   },
 }

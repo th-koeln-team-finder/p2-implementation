@@ -77,7 +77,12 @@ export function EditorToolbar({ className }: EditorToolbarProps) {
 
   return (
     <TooltipProvider>
-      <div className={cn('flex flex-row items-center gap-1 p-1', className)}>
+      <div
+        className={cn(
+          'flex flex-row flex-wrap items-center gap-1 p-1',
+          className,
+        )}
+      >
         <ShortcutTooltip shortcut="Ctrl + Z">
           <Button
             variant="ghost"

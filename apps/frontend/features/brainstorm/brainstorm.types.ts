@@ -6,6 +6,7 @@ import type {
 
 export type PopulatedBrainstorm = BrainstormSelect & {
   isBookmarked: boolean
+
   tags: { tag: { id: string; name: string } }[]
 }
 

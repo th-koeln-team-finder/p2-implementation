@@ -1,7 +1,12 @@
 export const en = {
   general: {
     save: 'Save',
+    search: 'Suchen',
     cancel: 'Cancel',
+    delete: 'Delete',
+    continue: 'Continue',
+    add: 'Add',
+    remove: 'Remove',
   },
   components: {
     fileUpload: {
@@ -19,6 +24,7 @@ export const en = {
     normalFont: 'Normal Font',
     otherHeading: 'Other Heading',
     otherFont: 'Other Font',
+    toProjectPage: 'To project page',
     validation: {
       nice: 'All people are nice',
       age: 'The age must be correct based on the date of birth',
@@ -26,6 +32,100 @@ export const en = {
     actions: {
       addItem: 'Add Item',
       removeAll: 'Remove All',
+    },
+  },
+  projects: {
+    title: 'Projekte',
+    location: 'Location',
+    join: 'Join the team',
+    links: 'Links and other resources',
+    phase:'phase',
+
+    issueList: {
+      showMore: 'Show more',
+      showLess: 'Show less',
+      issueTitle: 'Issues for starters',
+    },
+    skillScale: {
+      skillTitle: 'Skills needed',
+    },
+
+    skills: {
+      title: 'Skills needed',
+      toggleLess: 'Show less',
+      toggleMore: 'Show more',
+    },
+    text: {
+      desc: 'EN Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna. Curabitur vel bibendum lorem. Morbi convallis convallis diam sit amet lacinia. Aliquam in elementum tellus.',
+    },
+    team: {
+      title: 'Team Members',
+    },
+    createProject: {
+      stepper: {
+        back: 'Back',
+        next: 'Next',
+        reset: 'Reset',
+        done: 'Done',
+        step: 'Step',
+        of: 'of',
+      },
+    },
+  },
+  createProjects: {
+    fieldRequired:'This field is required',
+    name: 'Projektname',
+    namePlaceholder: 'Title of the project...',
+    phase: 'Project Phase',
+    phasePlaceholder: 'Phase of the project...',
+    images: 'Images',
+    description: 'Project description',
+    location: 'Location',
+    locationPlaceholder: 'Address...',
+    linksTitle: 'Links & Other Resources',
+    timetable: {
+      title: 'Timetable ',
+      table: 'Table',
+      custom: 'Custom',
+      days: {
+        monday: 'Monday',
+        tuesday: 'Tuesday',
+        wednesday: 'Wednesday',
+        thursday: 'Thursday',
+        friday: 'Friday',
+        saturday: 'Saturday',
+        sunday: 'Sunday',
+        placeholder: 'e.g. 2-3pm...',
+      },
+      customPlaceholder: 'Custom timetable...',
+      addCustom: 'Add Custom',
+    },
+    issues: {
+      addIssue: 'Add Issue',
+      title: 'Title',
+      titlePlaceholder: 'Title of the issue...',
+      description: 'Description',
+      descPlaceholder: 'Description of the issue...',
+    },
+    resources: {
+      selection: 'Select',
+      select: {
+        link: 'Link',
+        fileUpload: 'File Upload',
+      },
+      label: 'Label',
+      labelPlaceholder: 'Label of the link...',
+      url: 'Link',
+      urlPlaceholder: 'URL of the link...',
+      fileUpload: 'File Upload',
+      addLink: 'Add Link',
+    },
+    skills: {
+      skill: 'Skill',
+      skillPlaceholder: 'Title of the skill...',
+      level: 'Skill-Level',
+      levelPlaceholder: 'Level of the skill...',
+      addSkill: 'Add Skill',
     },
   },
   brainstorm: {
@@ -68,6 +168,33 @@ export const en = {
       button: 'Logout',
     },
   },
+  users: {
+    title: 'Page',
+    lastActivity: 'Last activity',
+    skills: 'Skills',
+    previouslyWorkedOn: 'Previously worked on',
+    loadMoreProjects: 'Mehr Projekte laden',
+    follow: 'Follow',
+    friendly: 'Friendly',
+    veryFriendly: 'Very friendly',
+    ratingText: 'people have rated the person as “very friendly”',
+    editProfile: 'Edit profile',
+    settings: {
+      title: 'User settings',
+      profile: 'Profile',
+      account: 'Account',
+      notifications: 'Notifications',
+      security: 'Security',
+      dangerZone: 'Danger Zone',
+      deleteAccount: 'Delete account',
+      addSkill: 'Add skill',
+      removeSkill: 'Remove skill',
+      deleteAreYouSure: 'Are you sure you want to delete your account?',
+      activateNotifications: 'Activate notifications',
+      selectNotificationType: 'Select notification type',
+      searchSkills: 'Search skill',
+    },
+  },
   validation: {
     inProgress: 'Validating...',
     required: 'This field is required',
@@ -87,6 +214,17 @@ export const en = {
         'There was a problem when trying to authenticate: Access Denied',
       verification: 'There was a problem when trying to verify authentication',
       default: 'There was a problem when trying to authenticate',
+    },
+  },
+  utils: {
+    weekdays: {
+      monday: 'Mon',
+      tuesday: 'Tue',
+      wednesday: 'Wed',
+      thursday: 'Thu',
+      friday: 'Fri',
+      saturday: 'Sat',
+      sunday: 'Sun',
     },
   },
 }

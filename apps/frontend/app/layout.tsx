@@ -1,4 +1,5 @@
 import '@repo/design-system/styles/globals.css'
+import Header from '@/features/header/header'
 import { DesignSystemProvider } from '@repo/design-system'
 import type { Metadata } from 'next'
 import { Rubik, Saira_Condensed } from 'next/font/google'
@@ -42,8 +43,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={`${rubik.variable} ${sairaCondensed.variable} bg-background font-sans text-foreground antialiased`}
+        className={`${rubik.variable} ${sairaCondensed.variable} flex flex-col bg-background font-sans text-foreground antialiased`}
       >
+        <Header />
         <NuqsAdapter>
           <DesignSystemProvider>{children}</DesignSystemProvider>
         </NuqsAdapter>

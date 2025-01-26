@@ -2,6 +2,7 @@
 
 import { authMiddleware } from '@/auth'
 import { CanUserServer } from '@/features/auth/components/CanUser.server'
+import { Link } from '@/features/i18n/routing'
 import { FilePreview } from '@/features/file-upload/components/FilePreview'
 import { getAllFileUploadsForUser } from '@/features/file-upload/file-upload.queries'
 import { AddTestButton, RemoveTestButton, TestItemList } from '@/features/test'
@@ -164,6 +165,7 @@ export default async function Home() {
         </div>
         <TestItemList />
       </CanUserServer>
+      <Link href="/projects">{translate('test.toProjectPage')}</Link>
       <h3 className="mt-4 mb-2 font-head text-3xl">Components</h3>
       <div className="flex flex-col gap-2 px-4 pb-4">
         <TestForm />
