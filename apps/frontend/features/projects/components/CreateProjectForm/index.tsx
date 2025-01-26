@@ -1,11 +1,15 @@
 'use client'
 
+import { useFileUpload } from '@/features/file-upload/file-upload.hooks'
 import { useRouter } from '@/features/i18n/routing'
 import { CreateProjectIssueList } from '@/features/projects/components/CreateProjectForm/CreateProjectIssueList'
 import { CreateProjectLinksList } from '@/features/projects/components/CreateProjectForm/CreateProjectLinksList'
 import { CreateProjectPreview } from '@/features/projects/components/CreateProjectForm/CreateProjectPreview'
 import { CreateProjectSkills } from '@/features/projects/components/CreateProjectForm/CreateProjectSkills'
-import { createProject } from '@/features/projects/projects.actions'
+import {
+  createProject,
+  createProjectResources,
+} from '@/features/projects/projects.actions'
 // biome-ignore lint/style/useImportType: import type {CreateProjectFormValues} from "@/features/projects/projects.types";
 import { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { useFieldGroup, useForm } from '@formsignals/form-react'
@@ -39,8 +43,9 @@ const registerAdapter = configureZodAdapter({
   takeFirstError: true,
 })
 
-export function CreateProjectForm() {
+export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
   useSignals()
+  const [progressState, uploadFile, resetFileProgress] = useFileUpload()
   const router = useRouter()
   const t = useTranslations('createProjects')
   const translateError = useTranslations('validation')
@@ -107,7 +112,34 @@ export function CreateProjectForm() {
       ressources: [],
     },
     onSubmit: async (values) => {
-      await createProject(values)
+      const serverActionData = {
+        ...values,
+        ressources: values.ressources.map((r) => ({
+          ...r,
+          file: [],
+        })),
+      }
+      const projectId = await createProject(serverActionData)
+      const uploadedFileResources = await Promise.all(
+        values.ressources
+          .filter((r) => !!r.file)
+          .map(async ({ file, label, href, isDocument }) => {
+            const fileId = await uploadFile(
+              `${projectId}/resources`,
+              label,
+              file[0],
+            )
+            resetFileProgress(file[0].name)
+            return {
+              label,
+              link: href,
+              isDocument,
+              fileUpload: fileId,
+              projectId,
+            }
+          }),
+      )
+      await createProjectResources(projectId, uploadedFileResources)
       router.push('/projects')
     },
   })
@@ -422,7 +454,10 @@ export function CreateProjectForm() {
               <Label>{t('linksTitle')}</Label>
               <div>
                 <form.FieldProvider name="ressources">
-                  <CreateProjectLinksList />
+                  <CreateProjectLinksList
+                    maxFileSize={maxFileSize}
+                    progressState={progressState}
+                  />
                 </form.FieldProvider>
               </div>
             </div>

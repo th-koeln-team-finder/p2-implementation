@@ -16,7 +16,6 @@ import {
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
 import { Roles, type RolesType, RolesValues } from './constants'
-import exp from "node:constants";
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
 
@@ -207,16 +206,15 @@ export type ProjectInsert = typeof projects.$inferInsert
 export type ProjectSelect = typeof projects.$inferSelect
 
 export const projectLinks = pgTable('projectLinks', {
-    id: uuid().primaryKey().notNull().defaultRandom(),
-    projectId: uuid('projectId')
-        .notNull()
-        .references(() => projects.id, { onDelete: 'cascade' }),
-    linkText: text().notNull(),
-    linkUrl: text().notNull(),
+  id: uuid().primaryKey().notNull().defaultRandom(),
+  projectId: uuid('projectId')
+    .notNull()
+    .references(() => projects.id, { onDelete: 'cascade' }),
+  linkText: text().notNull(),
+  linkUrl: text().notNull(),
 })
 export type ProjectLinksInsert = typeof projectLinks.$inferInsert
 export type ProjectLinksSelect = typeof projectLinks.$inferSelect
-
 
 /**
  * Skills for a project, referencing Project and Skill
@@ -258,7 +256,9 @@ export const projectResource = pgTable('projectResource', {
     .references(() => projects.id, { onDelete: 'cascade' }),
   label: text().notNull(),
   link: text().notNull(),
-  fileUpload: text().notNull(), //TODO fileUpload
+  fileUpload: uuid().references(() => uploadedFiles.id, {
+    onDelete: 'cascade',
+  }),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
   updatedAt: timestamp({ mode: 'date' })
     .defaultNow()
@@ -564,8 +564,8 @@ export const projectRelations = relations(projects, ({ many }) => ({
     relationName: 'projectTimetable',
   }),
   projectLinks: many(projectLinks, {
-        relationName: 'projectLinks',
-}),
+    relationName: 'projectLinks',
+  }),
   projectSkills: many(projectSkill),
 }))
 
@@ -593,11 +593,11 @@ export const skillProjectRelations = relations(skill, ({ many }) => ({
 }))
 
 export const linkProjectRelations = relations(projectLinks, ({ one }) => ({
-    project: one(projects, {
-        fields: [projectLinks.projectId],
-        references: [projects.id],
-        relationName: 'projectLinks',
-    }),
+  project: one(projects, {
+    fields: [projectLinks.projectId],
+    references: [projects.id],
+    relationName: 'projectLinks',
+  }),
 }))
 export const issueRelations = relations(projectIssue, ({ one }) => ({
   project: one(projects, {

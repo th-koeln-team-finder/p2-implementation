@@ -1,5 +1,4 @@
 'use client'
-
 // biome-ignore lint/style/useImportType: import type {CreateProjectFormLinks} from "@/features/projects/projects.types";
 import { CreateProjectFormLinks } from '@/features/projects/projects.types'
 import { useFieldContext } from '@formsignals/form-react'
@@ -7,6 +6,10 @@ import { useFieldContext } from '@formsignals/form-react'
 import { ZodAdapter } from '@formsignals/validation-adapter-zod'
 import { useSignals } from '@preact/signals-react/runtime'
 import { FieldError } from '@repo/design-system/components/FormErrors'
+import {
+  FilePreviewsForm,
+  FileUploadForm,
+} from '@repo/design-system/components/custom/file-upload'
 import { Button } from '@repo/design-system/components/ui/button'
 import { InputForm } from '@repo/design-system/components/ui/input'
 import { Label } from '@repo/design-system/components/ui/label'
@@ -20,7 +23,10 @@ import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { z } from 'zod'
 
-export function CreateProjectLinksList() {
+export function CreateProjectLinksList({
+  maxFileSize,
+  progressState,
+}: { maxFileSize: number; progressState?: Record<string, number> }) {
   useSignals()
   const field = useFieldContext<
     CreateProjectFormLinks,
@@ -102,9 +108,17 @@ export function CreateProjectLinksList() {
             {ressourceFormats[index] && (
               <field.SubFieldProvider name={`${index}.file`}>
                 <Label>{t('resources.fileUpload')}</Label>
-                {/*TODO: File Upload*/}
-
-                {/* <FieldError/> */}
+                <FileUploadForm
+                  accepts="image/jpeg,image/jpg,image/png,application/pdf"
+                  placeholder={
+                    <FilePreviewsForm
+                      progressState={progressState}
+                      maxFileSize={maxFileSize}
+                      placeholder={undefined}
+                    />
+                  }
+                />
+                <FieldError />
               </field.SubFieldProvider>
             )}
           </div>
@@ -128,8 +142,8 @@ export function CreateProjectLinksList() {
                   field.pushValueToArray({
                     label: '',
                     href: '',
-                    file: '',
-                    isDocument: undefined,
+                    file: [],
+                    isDocument: false,
                   })
                   setRessourceFormats((prev) => [...prev, null])
                 }}
@@ -148,8 +162,8 @@ export function CreateProjectLinksList() {
             field.pushValueToArray({
               label: '',
               href: '',
-              file: '',
-              isDocument: undefined,
+              file: [],
+              isDocument: false,
             })
             setRessourceFormats([null])
           }}

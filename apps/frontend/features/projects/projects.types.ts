@@ -34,7 +34,7 @@ export type CreateProjectFormLinks = {
     label: string
     isDocument: boolean
     href: string
-    file: string
+    file: File[]
   }>
 }
 

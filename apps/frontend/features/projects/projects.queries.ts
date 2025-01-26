@@ -15,9 +15,15 @@ export const getProjectItem = cache(
       where: eq(projects.id, id),
 
       with: {
-        projectLinks:true,
+        projectLinks: true,
         timetable: true,
         issues: true,
+        // TODO uncomment when file upload is implemented
+        // resources: {
+        //   with: {
+        //     uploadFile: true,
+        //   },
+        // },
         projectSkills: {
           with: {
             skill: true,

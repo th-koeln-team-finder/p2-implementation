@@ -1,12 +1,7 @@
-import { ExternalLink } from '@/features/brainstorm/components/brainstorm-details/ExternalLink'
-import { Button } from '@repo/design-system/components/ui/button'
-import { DownloadIcon } from 'lucide-react'
+import type { ProjectLinksSelect } from '@repo/database/schema'
 import { useTranslations } from 'next-intl'
-import {ProjectLinksSelect} from "@repo/database/schema";
 
-export function Links({
-  links,
-}: { links: ProjectLinksSelect[] }) {
+export function Links({ links }: { links: ProjectLinksSelect[] }) {
   const t = useTranslations('projects')
   /**
   const linkElements: JSX.Element[] = []
@@ -36,7 +31,7 @@ export function Links({
   return (
     <>
       <h3 className="mb-2 font-medium text-2xl">{t('links')}</h3>
-      <div className="flex flex-col gap-2">{links}</div>
+      {/*<div className="flex flex-col gap-2">{links}</div>*/}
     </>
   )
 }

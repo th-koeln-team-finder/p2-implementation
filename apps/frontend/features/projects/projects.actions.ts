@@ -5,7 +5,7 @@ import { redirect } from '@/features/i18n/routing'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
-import { Weekdays } from '@repo/database/schema'
+import { type ProjectResourceInsert, Weekdays } from '@repo/database/schema'
 import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
 
@@ -76,15 +76,33 @@ export async function createProject(payload: CreateProjectFormValues) {
     await db.insert(Schema.projectSkill).values(projectSkills)
   }
 
-  const resourcesToCreate = payload.ressources.map((resource) => ({
-    projectId: project.id,
+  // Insert project resources that are no files since they do not need a file upload
+  await createProjectResources(
+    project.id,
+    payload.ressources
+      .filter((r) => !r.file)
+      .map((r) => ({ label: r.label, link: r.href, projectId: project.id })),
+  )
+
+  return project.id
+}
+
+export async function createProjectResources(
+  projectId: string,
+  resources: ProjectResourceInsert[],
+) {
+  const resourcesToCreate = resources.map((resource) => ({
+    projectId,
     label: resource.label,
-    link: resource.href,
-    fileUpload: resource.file,
+    link: resource.link,
+    fileUpload: resource.fileUpload,
   }))
-  if (resourcesToCreate.length) {
-    await db.insert(Schema.projectResource).values(resourcesToCreate)
+
+  if (!resourcesToCreate.length) {
+    return
   }
+
+  await db.insert(Schema.projectResource).values(resourcesToCreate)
 }
 
 export async function toggleProjectBookmark(
