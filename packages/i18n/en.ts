@@ -8,6 +8,16 @@ export const en = {
     add: 'Add',
     remove: 'Remove',
   },
+  components: {
+    fileUpload: {
+      placeholderText: 'Drag and drop a file here or click to browse',
+      selectedFileHeader: 'Selected files',
+      noFilesSelected: 'No files selected',
+      finishedText: 'Finished',
+      noPreviewAvailable: 'No preview',
+      errorFileIsTooLarge: 'File is too large',
+    },
+  },
   test: {
     dataTitle: 'Test Data',
     normalHeading: 'Normal Heading',

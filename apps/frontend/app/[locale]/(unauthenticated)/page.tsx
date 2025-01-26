@@ -1,9 +1,14 @@
 // noinspection RequiredAttributes This is only for Webstorm, since the types seem to be too advanced for it
 
+import { authMiddleware } from '@/auth'
 import { CanUserServer } from '@/features/auth/components/CanUser.server'
 import { Link } from '@/features/i18n/routing'
+import { FilePreview } from '@/features/file-upload/components/FilePreview'
+import { getAllFileUploadsForUser } from '@/features/file-upload/file-upload.queries'
 import { AddTestButton, RemoveTestButton, TestItemList } from '@/features/test'
 import { LoggingWysiwygEditor } from '@/features/test/components/LoggingWysiwygEditor'
+import { RemoveFileButton } from '@/features/test/components/RemoveFileButton'
+import { TestFileUploadForm } from '@/features/test/components/TestFileUploadForm'
 import { TestForm } from '@/features/test/components/TestForm'
 import {
   AlertDialog,
@@ -84,6 +89,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@repo/design-system/components/ui/tooltip'
+import { serverEnv } from '@repo/env'
 import {
   ChevronDownIcon,
   SendHorizontalIcon,
@@ -116,7 +122,11 @@ const tagScrollItems = Array.from({ length: 50 })
   ))
 
 export default async function Home() {
+  const session = await authMiddleware()
   const translate = await getTranslations()
+  const files = session?.user?.id
+    ? await getAllFileUploadsForUser(session.user.id)
+    : []
   return (
     <div className="container mx-auto my-4">
       <h1 className="font-semibold text-5xl">
@@ -127,6 +137,18 @@ export default async function Home() {
         {translate('test.otherHeading')}
       </h1>
       <h2 className="mb-8 font-head text-3xl">{translate('test.otherFont')}</h2>
+      {files.map((file) => (
+        <div key={file.id}>
+          <FilePreview
+            file={file}
+            className="h-96 w-96 object-contain"
+            width={200}
+            height={200}
+          />
+          <RemoveFileButton file={file} />
+        </div>
+      ))}
+      <TestFileUploadForm maxFileSize={serverEnv.MAX_FILE_SIZE} />
       <CanUserServer target="test" action="view">
         <div className="flex flex-row justify-between gap-2 bg-card align-center">
           <h3 className="mt-4 mb-2 font-head text-3xl">
