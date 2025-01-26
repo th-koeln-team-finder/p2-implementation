@@ -80,7 +80,7 @@ const StepperComponent = ({
         {stepContent}
       </div>
 
-      <div className="fixed bottom-0 z-99 flex w-full justify-between bg-white py-6">
+      <div className="fixed bottom-0 z-99 flex w-full justify-between bg-background py-6">
         <div className="relative left-4 flex justify-center text-muted-foreground text-sm">
           {translate('projects.createProject.stepper.step')} {currentIndex + 1}{' '}
           {translate('projects.createProject.stepper.of')} {steps.length}

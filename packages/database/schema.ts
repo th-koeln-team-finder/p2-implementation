@@ -16,6 +16,7 @@ import {
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
 import { Roles, type RolesType, RolesValues } from './constants'
+import exp from "node:constants";
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
 
@@ -191,8 +192,9 @@ export const projects = pgTable('projects', {
   name: varchar({ length: 255 }).notNull(),
   description: text().notNull(),
   status: varchar({ enum: ['open', 'closed'] }).notNull(),
-  phase: text().notNull(),
-  location: text().notNull(),
+  phase: text(),
+
+  location: text(),
   isPublic: boolean().notNull().default(true),
   allowApplications: boolean().notNull().default(true),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
@@ -203,6 +205,18 @@ export const projects = pgTable('projects', {
 
 export type ProjectInsert = typeof projects.$inferInsert
 export type ProjectSelect = typeof projects.$inferSelect
+
+export const projectLinks = pgTable('projectLinks', {
+    id: uuid().primaryKey().notNull().defaultRandom(),
+    projectId: uuid('projectId')
+        .notNull()
+        .references(() => projects.id, { onDelete: 'cascade' }),
+    linkText: text().notNull(),
+    linkUrl: text().notNull(),
+})
+export type ProjectLinksInsert = typeof projectLinks.$inferInsert
+export type ProjectLinksSelect = typeof projectLinks.$inferSelect
+
 
 /**
  * Skills for a project, referencing Project and Skill
@@ -529,6 +543,9 @@ export const projectRelations = relations(projects, ({ many }) => ({
   timetable: many(projectTimetable, {
     relationName: 'projectTimetable',
   }),
+  projectLinks: many(projectLinks, {
+        relationName: 'projectLinks',
+}),
   projectSkills: many(projectSkill),
 }))
 
@@ -555,6 +572,13 @@ export const skillProjectRelations = relations(skill, ({ many }) => ({
   projectSkills: many(projectSkill),
 }))
 
+export const linkProjectRelations = relations(projectLinks, ({ one }) => ({
+    project: one(projects, {
+        fields: [projectLinks.projectId],
+        references: [projects.id],
+        relationName: 'projectLinks',
+    }),
+}))
 export const issueRelations = relations(projectIssue, ({ one }) => ({
   project: one(projects, {
     fields: [projectIssue.projectId],

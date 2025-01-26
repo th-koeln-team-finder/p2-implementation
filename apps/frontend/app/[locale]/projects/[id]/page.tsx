@@ -8,6 +8,8 @@ import TeamMembers from '@/features/projects/components/TeamMembers'
 import { Toolbar } from '@/features/projects/components/Toolbar'
 import { getProjectItem } from '@/features/projects/projects.queries'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
+import {getTranslations} from "next-intl/server";
+
 
 export default async function Projects({
   params,
@@ -16,7 +18,7 @@ export default async function Projects({
 }>) {
   const { id } = await params
   const project = await getProjectItem(id)
-
+  const translations = await getTranslations("projects")
   if (!project) {
     return <div>Project not found</div>
   }
@@ -25,7 +27,7 @@ export default async function Projects({
     <div className="mx-auto inline-flex w-full max-w-screen-xl flex-col items-center justify-start gap-12 p-4">
       <div className="inline-flex flex-col items-start justify-start gap-8 self-stretch">
         <div className="inline-flex items-start justify-between self-stretch">
-          <ProjectTitle title={project.name} subtitle={project.status} />
+          <ProjectTitle title={project.name} subtitle={project.phase? translations("phase")+project.phase : ""} />
           <Toolbar />
         </div>
         <div className="relative w-full">
@@ -60,18 +62,7 @@ export default async function Projects({
             </div>
             <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
               <Links
-                links={[
-                  {
-                    label: 'Download Project Brief',
-                    href: 'https://via.placeholder.com/32x32',
-                    isDocument: true,
-                  },
-                  {
-                    label: 'Download Project Brief',
-                    href: 'https://google.de',
-                    isDocument: false,
-                  },
-                ]}
+                links={project.projectLinks}
               />
             </div>
           </div>

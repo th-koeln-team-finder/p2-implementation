@@ -15,6 +15,7 @@ export const getProjectItem = cache(
       where: eq(projects.id, id),
 
       with: {
+        projectLinks:true,
         timetable: true,
         issues: true,
         projectSkills: {

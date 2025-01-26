@@ -1,7 +1,9 @@
-export default function Brainstorm() {
+import {FindAprojectList} from "@/features/findAProject/components/findAprojectList";
+
+export default function FindAProject() {
   return (
-    <div>
-      <h1>Find a project</h1>
-    </div>
+      <div className="container mx-auto px-4">
+          <FindAprojectList/>
+      </div>
   )
 }

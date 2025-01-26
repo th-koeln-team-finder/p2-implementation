@@ -29,6 +29,7 @@ export const en = {
     location: 'Location',
     join: 'Join the team',
     links: 'Links and other resources',
+    phase:'phase',
 
     issueList: {
       showMore: 'Show more',
@@ -62,6 +63,7 @@ export const en = {
     },
   },
   createProjects: {
+    fieldRequired:'This field is required',
     name: 'Projektname',
     namePlaceholder: 'Title of the project...',
     phase: 'Project Phase',
@@ -72,7 +74,7 @@ export const en = {
     locationPlaceholder: 'Address...',
     linksTitle: 'Links & Other Resources',
     timetable: {
-      title: 'Timetable Variant',
+      title: 'Timetable ',
       table: 'Table',
       custom: 'Custom',
       days: {

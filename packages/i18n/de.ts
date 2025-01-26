@@ -31,6 +31,7 @@ export const de: Language = {
     location: 'Standort/Treffpunkt',
     join: 'Team beitreten',
     links: 'Links und andere Ressourcen',
+    phase:'Phase',
 
     issueList: {
       showMore: 'mehr anzeigen',
@@ -38,7 +39,7 @@ export const de: Language = {
       issueTitle: 'Issues für Neueinsteiger',
     },
     skillScale: {
-      skillTitle: 'benötige Fähigkeiten',
+      skillTitle: 'Benötige Fähigkeiten',
     },
 
     skills: {
@@ -64,6 +65,7 @@ export const de: Language = {
     },
   },
   createProjects: {
+    fieldRequired: 'Diese Eingabe ist erforderlich',
     name: 'Projektname',
     namePlaceholder: 'Name des Projekts...',
     phase: 'Projektphase',
@@ -74,7 +76,7 @@ export const de: Language = {
     locationPlaceholder: 'Adresse...',
     linksTitle: 'Links & Ressourcen',
     timetable: {
-      title: 'Zeitplan Variante',
+      title: 'Zeitplan',
       table: 'Tabelle',
       custom: 'Benutzerdefiniert',
       days: {

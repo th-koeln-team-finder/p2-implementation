@@ -2,13 +2,16 @@ import { ExternalLink } from '@/features/brainstorm/components/brainstorm-detail
 import { Button } from '@repo/design-system/components/ui/button'
 import { DownloadIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import {ProjectLinksSelect} from "@repo/database/schema";
 
 export function Links({
   links,
-}: { links: { label: string; href: string; isDocument?: boolean }[] }) {
+}: { links: ProjectLinksSelect[] }) {
   const t = useTranslations('projects')
+  /**
   const linkElements: JSX.Element[] = []
   links.map((link) => {
+
     if (link.isDocument) {
       linkElements.push(
         <Button
@@ -19,6 +22,7 @@ export function Links({
         </Button>,
       )
     } else {
+
       linkElements.push(
         <ExternalLink
           href={link.href}
@@ -28,10 +32,11 @@ export function Links({
       )
     }
   })
+        **/
   return (
     <>
       <h3 className="mb-2 font-medium text-2xl">{t('links')}</h3>
-      <div className="flex flex-col gap-2">{linkElements}</div>
+      <div className="flex flex-col gap-2">{links}</div>
     </>
   )
 }

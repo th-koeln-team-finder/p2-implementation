@@ -71,7 +71,7 @@ export function ProjectIssuesList(
   return (
     <div className="inline-flex flex-col items-start justify-start gap-4">
       <div className="self-stretch font-medium text-2xl leading-loose">
-        {translate('projects.issueList.issueTitle')}({listOfIssues.length})
+        {translate('projects.issueList.issueTitle')}
       </div>
       <div
         className="overflow-hidden transition-all duration-300 ease-in-out "

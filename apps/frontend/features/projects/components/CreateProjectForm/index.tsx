@@ -43,6 +43,8 @@ export function CreateProjectForm() {
   useSignals()
   const router = useRouter()
   const t = useTranslations('createProjects')
+  const translateError = useTranslations('validation')
+
   //Stepper
   const steps = [
     { id: 'basics', title: 'Basis' },
@@ -253,7 +255,7 @@ export function CreateProjectForm() {
                   if (!editorRef.current) return null
                   return getStringContentFromEditor(editorRef.current).length <=
                     0
-                    ? 'This field is required'
+                    ? translateError('required')
                     : null
                 }}
               >
@@ -380,7 +382,7 @@ export function CreateProjectForm() {
                     if (!editorRef.current) return null
                     return getStringContentFromEditor(editorRef.current)
                       .length <= 0
-                      ? 'This field is required'
+                      ? translateError('required')
                       : null
                   }}
                 >
