@@ -11,6 +11,17 @@ export const de: Language = {
     remove: 'Entfernen',
     notSupported: 'Nicht unterstützt',
   },
+  components: {
+    fileUpload: {
+      placeholderText:
+        'Ziehen Sie eine Datei hierher oder klicken Sie, um zu durchsuchen',
+      selectedFileHeader: 'Ausgewählte Dateien',
+      noFilesSelected: 'Keine Dateien ausgewählt',
+      finishedText: 'Fertig',
+      noPreviewAvailable: 'Keine Vorschau',
+      errorFileIsTooLarge: 'Datei ist zu groß',
+    },
+  },
   test: {
     dataTitle: 'Testdaten',
     normalHeading: 'Normaler Titel',

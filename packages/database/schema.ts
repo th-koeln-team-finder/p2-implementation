@@ -160,6 +160,26 @@ export const brainstormTags = pgTable(
 export type BrainstormTagInsert = typeof brainstormTags.$inferInsert
 export type BrainstormTagSelect = typeof brainstormTags.$inferSelect
 
+export const uploadStatusEnum = pgEnum('upload_status', [
+  'pending', // Someone requested a presigned URL (if there are pending uploads older than 30 minutes, then the presigend url is expired and we have to check if the file was uploaded)
+  'uploaded', // Callback after upload was successful
+  'failed', // Callback after upload failed
+])
+
+export const uploadedFiles = pgTable('uploaded_file', {
+  id: uuid().primaryKey().notNull().defaultRandom(),
+  bucketPath: text('bucketPath').notNull(),
+  fileType: text('fileType').notNull(),
+  fileSize: integer('fileSize').notNull(),
+  status: uploadStatusEnum().notNull().default('pending'),
+  uploadedById: uuid('userId')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  uploadedAt: timestamp('uploadedAt', { mode: 'date' }).notNull().defaultNow(),
+})
+export type UploadedFileInsert = typeof uploadedFiles.$inferInsert
+export type UploadedFileSelect = typeof uploadedFiles.$inferSelect
+
 /**
  * Data specific for one user
 */
@@ -434,4 +454,10 @@ export const userSkillRelations = relations(userSkills, ({one}) => ({
 
 export const skillRelations = relations(skills, ({many}) => ({
   userSkills: many(userSkills),
+}))
+export const uploadedFileRelations = relations(uploadedFiles, ({ one }) => ({
+  uploadedBy: one(users, {
+    fields: [uploadedFiles.uploadedById],
+    references: [users.id],
+  }),
 }))
