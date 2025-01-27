@@ -8,6 +8,7 @@ import { cn } from '../../lib/utils'
 import { useFieldContext } from '@formsignals/form-react'
 import { useComputed } from '@preact/signals-react'
 import type { SelectProps, SelectValueProps } from '@radix-ui/react-select'
+import {useSignals} from "@preact/signals-react/runtime";
 
 const Select = SelectPrimitive.Root
 
@@ -21,6 +22,7 @@ const SelectForm = ({
   valueProps,
   ...props
 }: SelectFormProps) => {
+  useSignals()
   const field = useFieldContext()
   const errorClassName = useComputed(
     () => !field.isValid.value && 'border-destructive',

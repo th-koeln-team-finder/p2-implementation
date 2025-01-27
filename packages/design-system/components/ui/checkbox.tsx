@@ -8,6 +8,7 @@ import { cn } from '../../lib/utils'
 import { useFieldContext } from '@formsignals/form-react'
 import { useComputed } from '@preact/signals-react'
 import type { CheckboxProps, CheckedState } from '@radix-ui/react-checkbox'
+import {useSignals} from "@preact/signals-react/runtime";
 
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
@@ -35,6 +36,7 @@ function CheckboxForm({
   className,
   ...props
 }: Omit<CheckboxProps, 'checked' | 'onCheckedChange'>) {
+  useSignals()
   const field = useFieldContext<CheckedState, ''>()
   const errorClassName = useComputed(
     () => !field.isValid.value && 'border-destructive',
