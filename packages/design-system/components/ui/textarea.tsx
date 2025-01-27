@@ -1,5 +1,5 @@
 import * as React from "react"
-import {cn} from "@/lib/utils";
+import {cn} from '@repo/design-system/lib/utils'
 import {useSignals} from "@preact/signals-react/runtime";
 import {useFieldContext} from "@formsignals/form-react";
 import {useComputed} from "@preact/signals-react";
@@ -7,7 +7,7 @@ import {useComputed} from "@preact/signals-react";
 const Textarea = React.forwardRef<
   HTMLTextAreaElement,
   React.ComponentProps<"textarea">
->(({ className, ...props }, ref) => {
+>(({className, ...props}, ref) => {
   return (
     <textarea
       className={cn(
@@ -24,7 +24,7 @@ Textarea.displayName = "Textarea"
 type TextareaFormProps = Omit<React.ComponentProps<"textarea">, 'value' | 'onChange' | 'onBlur'> & {
   useTransformed?: boolean
 }
-const TextareaForm = ({ className, useTransformed, ...props }: TextareaFormProps) => {
+const TextareaForm = ({className, useTransformed, ...props}: TextareaFormProps) => {
   useSignals()
   const field = useFieldContext()
   const errorClassName = useComputed(
@@ -47,4 +47,4 @@ const TextareaForm = ({ className, useTransformed, ...props }: TextareaFormProps
 }
 TextareaForm.displayName = 'TextareaForm'
 
-export { Textarea, TextareaForm }
+export {Textarea, TextareaForm}

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import * as SwitchPrimitives from "@radix-ui/react-switch"
-import {cn} from "@/lib/utils";
+import { cn } from '@repo/design-system/lib/utils'
 import {useSignals} from "@preact/signals-react/runtime";
 import {useFieldContext} from "@formsignals/form-react";
 import {useComputed} from "@preact/signals-react";
