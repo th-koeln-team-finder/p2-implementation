@@ -1,5 +1,5 @@
 import ImageCarousel from '@/features/projects/components/ImageCarousel'
-import { Links } from '@/features/projects/components/Links'
+import { Resources } from '@/features/projects/components/Resources'
 import { ProjectIssuesList } from '@/features/projects/components/ProjectIssuesList'
 import { ProjectTimetable } from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
@@ -9,6 +9,7 @@ import { Toolbar } from '@/features/projects/components/Toolbar'
 import { getProjectItem } from '@/features/projects/projects.queries'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import {getTranslations} from "next-intl/server";
+import {printTreeView} from "next/dist/build/utils";
 
 
 export default async function Projects({
@@ -16,12 +17,14 @@ export default async function Projects({
 }: Readonly<{
   params: Promise<{ id: string }>
 }>) {
+
   const { id } = await params
   const project = await getProjectItem(id)
   const translations = await getTranslations("projects")
   if (!project) {
     return <div>Project not found</div>
   }
+
 
   return (
     <div className="mx-auto inline-flex w-full max-w-screen-xl flex-col items-center justify-start gap-12 p-4">
@@ -40,9 +43,7 @@ export default async function Projects({
             </div>
           </div>
 
-          {/*<div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
-            <Text description={project.description} />
-          </div>*/}
+
           <div className="relative mb-16 flex w-full flex-col gap-8">
             {project.description && (
               <WysiwygRenderer value={project.description} />
@@ -61,8 +62,8 @@ export default async function Projects({
               <ProjectIssuesList listOfIssues={project.issues} />
             </div>
             <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
-              <Links
-                links={project.projectLinks}
+              <Resources
+                resources={project.resources}
               />
             </div>
           </div>

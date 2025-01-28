@@ -30,17 +30,17 @@ export function CreateProjectLinksList({
   useSignals()
   const field = useFieldContext<
     CreateProjectFormLinks,
-    'ressources',
+    'resources',
     typeof ZodAdapter
   >()
-  const [ressourceFormats, setRessourceFormats] = useState<(boolean | null)[]>(
+  const [resourceFormats, setResourceFormats] = useState<(boolean | null)[]>(
     [],
   )
 
   const handleFormatChange = (index: number, value: boolean) => {
-    const updatedFormats = [...ressourceFormats]
+    const updatedFormats = [...resourceFormats]
     updatedFormats[index] = value
-    setRessourceFormats(updatedFormats)
+    setResourceFormats(updatedFormats)
   }
 
   const t = useTranslations('createProjects')
@@ -58,17 +58,17 @@ export function CreateProjectLinksList({
                 <Label>{t('resources.selection')}</Label>
                 <SelectForm
                   value={
-                    ressourceFormats[index] === undefined
+                    resourceFormats[index] === undefined
                       ? ''
                       : // biome-ignore lint/nursery/noNestedTernary: needed for select placeholder
-                        ressourceFormats[index]
+                        resourceFormats[index]
                         ? 'true'
                         : 'false'
                   }
                   onValueChange={(value) => {
                     handleFormatChange(index, value)
                   }}
-                  valueProps={{ placeholder: 'Bitte auswählen' }}
+                  valueProps={{ placeholder: t('details.pleaseSelect') }}
                 >
                   <SelectContent>
                     <SelectItem value={false}>
@@ -92,7 +92,7 @@ export function CreateProjectLinksList({
             </field.SubFieldProvider>
           </div>
           <div className="w-full lg:w-6/12">
-            {!ressourceFormats[index] && (
+            {!resourceFormats[index] && (
               <field.SubFieldProvider
                 name={`${index}.href`}
                 validator={z.string().min(1)}
@@ -105,7 +105,7 @@ export function CreateProjectLinksList({
                 <FieldError />
               </field.SubFieldProvider>
             )}
-            {ressourceFormats[index] && (
+            {resourceFormats[index] && (
               <field.SubFieldProvider name={`${index}.file`}>
                 <Label>{t('resources.fileUpload')}</Label>
                 <FileUploadForm
@@ -127,7 +127,7 @@ export function CreateProjectLinksList({
               <Button
                 onClick={() => {
                   field.removeValueFromArray(index)
-                  setRessourceFormats((prev) =>
+                  setResourceFormats((prev) =>
                     prev.filter((_, i) => i !== index),
                   )
                 }}
@@ -143,9 +143,8 @@ export function CreateProjectLinksList({
                     label: '',
                     href: '',
                     file: [],
-                    isDocument: false,
                   })
-                  setRessourceFormats((prev) => [...prev, null])
+                  setResourceFormats((prev) => [...prev, null])
                 }}
                 className="mt-auto rounded-full"
                 size="icon"
@@ -163,9 +162,8 @@ export function CreateProjectLinksList({
               label: '',
               href: '',
               file: [],
-              isDocument: false,
             })
-            setRessourceFormats([null])
+            setResourceFormats([null])
           }}
           className="my-3"
           style={{ width: 'fit-content' }}

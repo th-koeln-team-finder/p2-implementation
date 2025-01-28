@@ -52,11 +52,11 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
 
   //Stepper
   const steps = [
-    { id: 'basics', title: 'Basis' },
-    { id: 'skills', title: 'Fähigkeiten' },
-    { id: 'timetable', title: 'Zeitplan' },
-    { id: 'links', title: 'Links' },
-    { id: 'review', title: 'Überblick' },
+    { id: 'basics', title: t('stepper.main') },
+    { id: 'skills', title: t('stepper.skills') },
+    { id: 'timetable', title: t('stepper.timeManagement') },
+    { id: 'links', title: t('stepper.details') },
+    { id: 'review', title: t('stepper.preview') },
   ]
 
   //Form Field Provider
@@ -109,21 +109,21 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
       timetableCustom: '',
       issues: [],
       address: '',
-      ressources: [],
+      resources: [],
     },
     onSubmit: async (values) => {
       const serverActionData = {
         ...values,
-        ressources: values.ressources.map((r) => ({
+        resources: values.resources.map((r) => ({
           ...r,
           file: [],
         })),
       }
       const projectId = await createProject(serverActionData)
       const uploadedFileResources = await Promise.all(
-        values.ressources
-          .filter((r) => !!r.file)
-          .map(async ({ file, label, href, isDocument }) => {
+        values.resources
+          .filter((r) => !!r.file?.[0])
+          .map(async ({ file, label, href }) => {
             const fileId = await uploadFile(
               `${projectId}/resources`,
               label,
@@ -133,12 +133,13 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
             return {
               label,
               link: href,
-              isDocument,
               fileUpload: fileId,
               projectId,
             }
           }),
       )
+
+      console.log(uploadedFileResources)
       await createProjectResources(projectId, uploadedFileResources)
       router.push('/projects')
     },
@@ -173,7 +174,7 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
       onSubmit: () => setCurrentIndex(3),
     },
   )
-  const linksGroup = useFieldGroup(form, ['issues', 'address', 'ressources'], {
+  const linksGroup = useFieldGroup(form, ['issues', 'address', 'resources'], {
     onSubmit: () => setCurrentIndex(4),
   })
 
@@ -219,16 +220,16 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
           )
           if (isIssueFieldInvalid) return
 
-          const ressourceFields = form.fields
+          const resourceFields = form.fields
             .peek()
-            .filter((field) => field.name.startsWith('ressources'))
+            .filter((field) => field.name.startsWith('resources'))
           await Promise.all(
-            ressourceFields.map((field) => field.validateForEvent('onSubmit')),
+            resourceFields.map((field) => field.validateForEvent('onSubmit')),
           )
-          const isRessourceFieldInvalid = ressourceFields.some(
+          const isResourceFieldInvalid = resourceFields.some(
             (field) => !field.isValid.peek(),
           )
-          if (isRessourceFieldInvalid) return
+          if (isResourceFieldInvalid) return
 
           return await linksGroup.handleSubmit()
         }
@@ -323,7 +324,7 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
                   <SelectForm
                     onValueChange={(value) => setTimetableFormat(value)}
                     value={timetableFormat}
-                    valueProps={{ placeholder: 'Bitte auswählen' }}
+                    valueProps={{ placeholder: t('details.pleaseSelect') }}
                   >
                     <SelectContent>
                       <SelectItem value="table">
@@ -453,7 +454,7 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
             <div className="w-full">
               <Label>{t('linksTitle')}</Label>
               <div>
-                <form.FieldProvider name="ressources">
+                <form.FieldProvider name="resources">
                   <CreateProjectLinksList
                     maxFileSize={maxFileSize}
                     progressState={progressState}

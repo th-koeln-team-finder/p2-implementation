@@ -61,16 +61,6 @@ export const en = {
     team: {
       title: 'Team Members',
     },
-    createProject: {
-      stepper: {
-        back: 'Back',
-        next: 'Next',
-        reset: 'Reset',
-        done: 'Done',
-        step: 'Step',
-        of: 'of',
-      },
-    },
   },
   createProjects: {
     fieldRequired:'This field is required',
@@ -120,12 +110,28 @@ export const en = {
       fileUpload: 'File Upload',
       addLink: 'Add Link',
     },
+    details: {
+      pleaseSelect: 'Please select',
+    },
     skills: {
       skill: 'Skill',
       skillPlaceholder: 'Title of the skill...',
       level: 'Skill-Level',
       levelPlaceholder: 'Level of the skill...',
       addSkill: 'Add Skill',
+    },
+    stepper: {
+      main:'Main',
+      skills: 'Skills',
+      timeManagement: 'Time Management',
+      details: 'Details',
+      preview: 'Preview',
+      back: 'Back',
+      next: 'Next',
+      reset: 'Reset',
+      done: 'Done',
+      step: 'Step',
+      of: 'of',
     },
   },
   brainstorm: {

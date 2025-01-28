@@ -82,8 +82,8 @@ const StepperComponent = ({
 
       <div className="fixed bottom-0 z-99 flex w-full justify-between bg-background py-6">
         <div className="relative left-4 flex justify-center text-muted-foreground text-sm">
-          {translate('projects.createProject.stepper.step')} {currentIndex + 1}{' '}
-          {translate('projects.createProject.stepper.of')} {steps.length}
+          {translate('createProjects.stepper.step')} {currentIndex + 1}{' '}
+          {translate('createProjects.stepper.of')} {steps.length}
         </div>
 
         <div className="relative right-4 flex justify-center gap-4">
@@ -93,19 +93,19 @@ const StepperComponent = ({
               className="rounded border-2 bg-transparent px-4 py-2"
               onClick={onPrevious}
             >
-              {translate('projects.createProject.stepper.back')}
+              {translate('createProjects.stepper.back')}
             </Button>
           )}
           {currentIndex < steps.length - 1 ? (
             <Button className="rounded px-4 py-2" onClick={onNext}>
-              {translate('projects.createProject.stepper.next')}
+              {translate('createProjects.stepper.next')}
             </Button>
           ) : (
             <Button
               className="rounded bg-gray-400 px-4 py-2 text-white hover:bg-gray-500"
               onClick={onReset}
             >
-              {translate('projects.createProject.stepper.reset')}
+              {translate('createProjects.stepper.reset')}
             </Button>
           )}
           {currentIndex === steps.length - 1 && (
@@ -113,7 +113,7 @@ const StepperComponent = ({
               className="rounded px-4 py-2 text-white hover:bg-primary"
               onClick={onDone}
             >
-              {translate('projects.createProject.stepper.done')}
+              {translate('createProjects.stepper.done')}
             </Button>
           )}
         </div>

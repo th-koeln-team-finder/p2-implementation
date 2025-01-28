@@ -205,16 +205,7 @@ export const projects = pgTable('projects', {
 export type ProjectInsert = typeof projects.$inferInsert
 export type ProjectSelect = typeof projects.$inferSelect
 
-export const projectLinks = pgTable('projectLinks', {
-  id: uuid().primaryKey().notNull().defaultRandom(),
-  projectId: uuid('projectId')
-    .notNull()
-    .references(() => projects.id, { onDelete: 'cascade' }),
-  linkText: text().notNull(),
-  linkUrl: text().notNull(),
-})
-export type ProjectLinksInsert = typeof projectLinks.$inferInsert
-export type ProjectLinksSelect = typeof projectLinks.$inferSelect
+
 
 /**
  * Skills for a project, referencing Project and Skill
@@ -247,7 +238,7 @@ export type ProjectSkillInsert = typeof projectSkill.$inferInsert
 export type ProjectSkillSelect = typeof projectSkill.$inferSelect
 
 /**
- * Ressources for a project, referencing Project and Ressource
+ * Resources for a project, referencing Project and Resource
  */
 export const projectResource = pgTable('projectResource', {
   id: uuid().primaryKey().notNull().defaultRandom(),
@@ -256,9 +247,8 @@ export const projectResource = pgTable('projectResource', {
     .references(() => projects.id, { onDelete: 'cascade' }),
   label: text().notNull(),
   link: text().notNull(),
-  fileUpload: uuid().references(() => uploadedFiles.id, {
-    onDelete: 'cascade',
-  }),
+  fileUpload: uuid()
+      .references(() => uploadedFiles.id, { onDelete: 'cascade',}),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
   updatedAt: timestamp({ mode: 'date' })
     .defaultNow()
@@ -563,9 +553,10 @@ export const projectRelations = relations(projects, ({ many }) => ({
   timetable: many(projectTimetable, {
     relationName: 'projectTimetable',
   }),
-  projectLinks: many(projectLinks, {
-    relationName: 'projectLinks',
+  resources: many(projectResource, {
+    relationName: 'projectResources',
   }),
+
   projectSkills: many(projectSkill),
 }))
 
@@ -588,17 +579,32 @@ export const timetableRelations = relations(projectTimetable, ({ one }) => ({
   }),
 }))
 
+export const projectResourceRelations = relations(projectResource, ({ one }) => ({
+    project: one(projects, {
+        fields: [projectResource.projectId],
+        references: [projects.id],
+        relationName: 'projectResources',
+    }),
+    uploadedFiles: one(uploadedFiles, {
+        fields: [projectResource.fileUpload],
+        references: [uploadedFiles.id],
+        relationName: 'projectResourceFileUpload',
+    })
+}))
+
+export const FileUploadRelations = relations(uploadedFiles, ({ one }) => ({
+    projectResource: one(projectResource, {
+        fields: [uploadedFiles.id],
+        references: [projectResource.fileUpload],
+        relationName: 'projectResourceFileUpload',
+    }),
+}))
+
 export const skillProjectRelations = relations(skill, ({ many }) => ({
   projectSkills: many(projectSkill),
 }))
 
-export const linkProjectRelations = relations(projectLinks, ({ one }) => ({
-  project: one(projects, {
-    fields: [projectLinks.projectId],
-    references: [projects.id],
-    relationName: 'projectLinks',
-  }),
-}))
+
 export const issueRelations = relations(projectIssue, ({ one }) => ({
   project: one(projects, {
     fields: [projectIssue.projectId],
@@ -606,6 +612,7 @@ export const issueRelations = relations(projectIssue, ({ one }) => ({
     relationName: 'projectIssues',
   }),
 }))
+
 
 export const brainstormRelations = relations(brainstorms, ({ one, many }) => ({
   creator: one(users, {

@@ -41,7 +41,7 @@ export const de: Language = {
     title: 'Projekte',
     location: 'Standort/Treffpunkt',
     join: 'Team beitreten',
-    links: 'Links und andere Ressourcen',
+    links: 'Links und andere Resourcen',
     phase:'Phase',
 
     issueList: {
@@ -64,16 +64,7 @@ export const de: Language = {
     team: {
       title: 'Team-Mitglieder',
     },
-    createProject: {
-      stepper: {
-        back: 'Zurück',
-        next: 'Weiter',
-        reset: 'Zurücksetzen',
-        done: 'Fertig',
-        step: 'Schritt',
-        of: 'von',
-      },
-    },
+
   },
   createProjects: {
     fieldRequired: 'Diese Eingabe ist erforderlich',
@@ -123,11 +114,27 @@ export const de: Language = {
       fileUpload: 'Datei hochladen',
       addLink: 'Link hinzufügen',
     },
+    details: {
+      pleaseSelect: 'Bitte auswählen',
+    },
     skills: {
       skill: 'Skill',
       skillPlaceholder: 'Name des Skills...',
       level: 'Skill-Level',
       addSkill: 'Skill hinzufügen',
+    },
+    stepper: {
+      main:'Basis',
+      skills: 'Fähigkeiten',
+      timeManagement: 'Zeitplan',
+      details: 'Details',
+      preview: 'Übersicht',
+      back: 'Zurück',
+      next: 'Weiter',
+      reset: 'Zurücksetzen',
+      done: 'Fertig',
+      step: 'Schritt',
+      of: 'von',
     },
   },
   brainstorm: {

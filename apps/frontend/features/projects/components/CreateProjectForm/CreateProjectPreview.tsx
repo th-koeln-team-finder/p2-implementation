@@ -1,5 +1,5 @@
 import ImageCarousel from '@/features/projects/components/ImageCarousel'
-import { Links } from '@/features/projects/components/Links'
+import { Resources } from '@/features/projects/components/Resources'
 import { ProjectIssuesList } from '@/features/projects/components/ProjectIssuesList'
 import { ProjectTimetable } from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
@@ -11,36 +11,14 @@ import { useSignals } from '@preact/signals-react/runtime'
 import { Weekdays } from '@repo/database/schema'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 
-function extractTextFromDescription(desc: string) {
-  const parsedDescription = JSON.parse(desc) // JSON-String in Objekt umwandeln
-  let extractedText = ''
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const traverseNodes = (nodes: any) => {
-    for (const node of nodes) {
-      if (node.type === 'text' && node.text) {
-        extractedText += node.text
-      }
-      if (node.children) {
-        traverseNodes(node.children)
-      }
-    }
-  }
-
-  if (parsedDescription.root?.children) {
-    traverseNodes(parsedDescription.root.children)
-  }
-
-  return extractedText
-}
 
 export function CreateProjectPreview() {
   useSignals()
   const form = useFormContext<CreateProjectFormValues>()
   const formValues = form.json.value
 
-  console.log(formValues.ressources)
-  console.log(formValues.timetableCustom)
+
 
   const timetabledata: { description: string; weekdays: string }[] = [
     { description: formValues.ttMon, weekdays: Weekdays.monday },
@@ -78,14 +56,6 @@ export function CreateProjectPreview() {
               </div>
             </div>
 
-            {/*
-              <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
-              <Text
-                description={extractTextFromDescription(formValues.description)}
-              />
-              </div>
-              */}
-
             {formValues.description && (
               <WysiwygRenderer value={formValues.description} />
             )}
@@ -105,7 +75,8 @@ export function CreateProjectPreview() {
                 <ProjectIssuesList listOfIssues={formValues.issues} />
               </div>
               <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
-                <Links links={formValues.ressources} />
+                <Resources resources={formValues.resources} />
+
                 <p>{formValues.address}</p>
               </div>
             </div>

@@ -43,7 +43,6 @@ export function SkillScale({
     projectSkill.id = projectSkill.id ? projectSkill.id : skillIdCounter++
   })
 
-  console.log(projectSkills)
 
   const maxHeight = showAll
     ? `${projectSkills.length * itemHeight}px`

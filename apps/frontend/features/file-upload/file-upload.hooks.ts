@@ -16,7 +16,7 @@ export function useFileUpload() {
         file.type,
         file.size,
       )
-      console.log({ fileId })
+
       if (!uploadUrl) {
         return
       }

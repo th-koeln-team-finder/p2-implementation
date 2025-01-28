@@ -10,6 +10,7 @@ import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
 
 export async function createProject(payload: CreateProjectFormValues) {
+
   const [project] = await db
     .insert(Schema.projects)
     .values({
@@ -60,7 +61,8 @@ export async function createProject(payload: CreateProjectFormValues) {
     name: skill.name,
     level: skill.level,
   }))
-  if (skillsToCreate) {
+
+  if (skillsToCreate!==undefined && skillsToCreate.length) {
     const skills: { name: string; id: string }[] = await db
       .insert(Schema.skill)
       .values(skillsToCreate.map((skill) => ({ name: skill.name })))
@@ -79,9 +81,10 @@ export async function createProject(payload: CreateProjectFormValues) {
   // Insert project resources that are no files since they do not need a file upload
   await createProjectResources(
     project.id,
-    payload.ressources
-      .filter((r) => !r.file)
+    payload.resources
+      .filter((r) => !r.file?.[0])
       .map((r) => ({ label: r.label, link: r.href, projectId: project.id })),
+
   )
 
   return project.id
@@ -91,18 +94,19 @@ export async function createProjectResources(
   projectId: string,
   resources: ProjectResourceInsert[],
 ) {
+
   const resourcesToCreate = resources.map((resource) => ({
     projectId,
     label: resource.label,
-    link: resource.link,
+    href: resource.link,
     fileUpload: resource.fileUpload,
   }))
-
   if (!resourcesToCreate.length) {
     return
   }
 
   await db.insert(Schema.projectResource).values(resourcesToCreate)
+
 }
 
 export async function toggleProjectBookmark(
@@ -137,4 +141,5 @@ export async function toggleProjectBookmark(
     projectId: id,
     userId: session.user.id,
   })
+
 }
