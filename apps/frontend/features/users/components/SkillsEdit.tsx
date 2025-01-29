@@ -15,7 +15,6 @@ import {
   revalidateSkills,
   updateUserSkillLevel
 } from "@/features/userSkills/userSkills.actions";
-import {useOptimisticComments} from "@/features/brainstorm/brainstormComment.hooks";
 import {useOptimisticUserSkills} from "@/features/userSkills/userSkills.hooks";
 
 type ComboboxOption = {

@@ -16,6 +16,10 @@ export default async function EditProfileLayout({children}: Readonly<{
       href: "/edit-profile/skills",
     },
     {
+      title: translate('projects.title'),
+      href: "/edit-profile/projects",
+    },
+    {
       title: translate('account'),
       href: "/edit-profile/account",
     },

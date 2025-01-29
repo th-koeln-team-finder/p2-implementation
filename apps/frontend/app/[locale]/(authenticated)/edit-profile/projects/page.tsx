@@ -2,10 +2,11 @@ import {getLocale, getTranslations} from "next-intl/server";
 import {authMiddleware} from "@/auth";
 import {UserSelect} from "@repo/database/schema";
 import {getUser} from "@/features/users/users.query";
-import ProfileForm from "@/features/users/components/ProfileForm";
 import {redirect} from "@/features/i18n/routing";
+import UserProjectsEdit from "@/features/userProjects/components/UserProjectsEdit";
+import {getUserProjects} from "@/features/userProjects/userProjects.query";
 
-export default async function EditProfile() {
+export default async function EditProjects() {
   const translate = await getTranslations()
   const session = await authMiddleware()
   if (!session?.user?.id) {
@@ -13,13 +14,14 @@ export default async function EditProfile() {
   }
   const user = await getUser(session.user.id) as UserSelect
 
+  const projects = await getUserProjects(user.id)
   return (
     <section>
       <h2 className="text-2xl font-bold mb-8">
-        {translate('users.settings.profile')}
+        {translate('users.settings.projects.title')}
       </h2>
 
-      <ProfileForm user={user}/>
+      <UserProjectsEdit userProjects={projects} userId={user.id} />
     </section>
   )
 }

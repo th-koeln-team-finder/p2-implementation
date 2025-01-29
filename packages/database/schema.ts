@@ -241,10 +241,10 @@ export const userProjects = pgTable('userProjects', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   userId: uuid('userId').notNull().references(() => users.id),
   // for projects from this platform
-  projectId: integer('projectId').notNull().references(() => projects.id),
+  projectId: integer('projectId').references(() => projects.id),
   // for projects not from this platform
   projectName: varchar({ length: 255 }),
-  projectJoinedDate: date().notNull(),
+  projectJoinedDate: date(),
   projectLeftDate: date(),
   projectDescription: varchar({ length: 255 }),
   visible: boolean().notNull().default(true),
@@ -459,5 +459,11 @@ export const uploadedFileRelations = relations(uploadedFiles, ({ one }) => ({
   uploadedBy: one(users, {
     fields: [uploadedFiles.uploadedById],
     references: [users.id],
+  }),
+}))
+export const userProjectRelations = relations(userProjects, ({one}) => ({
+  project: one(projects, {
+    fields: [userProjects.projectId],
+    references: [projects.id],
   }),
 }))

@@ -115,12 +115,22 @@ export default function ProfileForm({user}: { user: UserSelect }) {
 
           <form.FieldProvider
             name="url"
-            validator={z.string().url(t('validation.url'))}
-          >
+            validator={z.string().refine(
+              (value) => {
+                if (value === "") return true; // Allow empty strings
+                try {
+                  new URL(value); // Check if it's a valid URL
+                  return true;
+                } catch {
+                  return false;
+                }
+              }, {message: t('validation.url')}
+            )}>
             <div className="grid gap-2">
               <Label htmlFor="url" className="inline-block">{t('users.settings.url')}</Label>
               <InputForm name="url"/>
             </div>
+            <FieldError/>
           </form.FieldProvider>
 
           <form.FieldProvider

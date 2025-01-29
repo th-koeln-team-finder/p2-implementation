@@ -1,18 +1,18 @@
 import {useSession} from "next-auth/react";
 import {useOptimistic, useTransition} from "react";
-import {SkillsSelect, UserSkillsSelect} from "@repo/database/schema";
+import {ProjectSelect, UserProjectsSelect} from "@repo/database/schema";
 
 export type OptimisticPayload =
   | {
   action: 'add'
   values: {
     userId: string,
-    skillId: number,
-    level: number,
-    skill: {
-      id: number,
-      skill: string
-    }
+    projectId: number,
+    visible: boolean,
+    projectName: string,
+    projectJoinedDate: string,
+    projectLeftDate: string,
+    projectDescription: string,
   }
 }
   | {
@@ -23,49 +23,49 @@ export type OptimisticPayload =
   action: 'update'
   values: {
     id: number,
-    level: number
+    visible?: boolean
   }
 }
 
-export function useOptimisticUserSkills(userSkills: (UserSkillsSelect & {id: number, skill?: Partial<SkillsSelect>})[]) {
+export function useOptimisticUserProjects(userProjects: (UserProjectsSelect & {id: number, project?: ProjectSelect | null})[]) {
   const { data: session } = useSession()
   const [_, startTransition] = useTransition()
   const [optimisticUpdates, dispatchOptimistic] = useOptimistic(
-    userSkills,
+    userProjects,
     (state, payload: OptimisticPayload) => {
       switch (payload.action) {
         case 'add': {
-          const newUserSkill = {
+          const newUserProject = {
             id: Math.random(),
             userId: payload.values.userId,
-            skillId: payload.values.skillId,
-            level: payload.values.level,
-            skill: {
-              id: payload.values.skillId,
-              skill: payload.values.skill?.skill,
-            },
+            projectId: payload.values.projectId,
+            visible: payload.values.visible,
+            projectName: payload.values.projectName,
+            projectJoinedDate: payload.values.projectJoinedDate,
+            projectLeftDate: payload.values.projectLeftDate,
+            projectDescription: payload.values.projectDescription,
             createdAt: new Date(),
             updatedAt: new Date(),
           }
 
-          return [...state, newUserSkill]
+          return [...state, newUserProject]
         }
         case 'update': {
-          return state.map((userSkill) => {
-            if (userSkill.id !== payload.values.id) {
-              return userSkill
+          return state.map((userProject) => {
+            if (userProject.id !== payload.values.id) {
+              return userProject
             }
 
             return {
-              ...userSkill,
-              level: payload.values.level,
+              ...userProject,
+              visible: payload.values.visible ?? true,
               updatedAt: new Date(),
             }
           })
         }
         case 'delete':
           return state.filter(
-            (userSkill) => userSkill.id !== payload.values.id
+            (userProject) => userProject.id !== payload.values.id
           )
         default:
           return state
