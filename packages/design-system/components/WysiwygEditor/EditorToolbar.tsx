@@ -34,6 +34,7 @@ import {
   UnderlineIcon,
   UndoIcon,
 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { ShortcutTooltip } from '../../components/ShortcutTooltip'
 import { LinkForm } from '../../components/WysiwygEditor/LinkForm'
 import { useWysiwygStates } from '../../components/WysiwygEditor/wysiwyg.state'
@@ -68,6 +69,7 @@ export function EditorToolbar({ className }: EditorToolbarProps) {
   useSignals()
   const [editor] = useLexicalComposerContext()
   const editorStates = useWysiwygStates(editor)
+  const translate = useTranslations('components.wysiwyg')
 
   const blockType = editorStates.peek().blockType.value
   const blockTypeSelectValue =
@@ -149,43 +151,43 @@ export function EditorToolbar({ className }: EditorToolbarProps) {
             <SelectItem value="h1">
               <div className="flex flex-row items-center gap-1">
                 <Heading1Icon />
-                <p>Heading 1</p>
+                <p>{translate('heading1')}</p>
               </div>
             </SelectItem>
             <SelectItem value="h2">
               <div className="flex flex-row items-center gap-1">
                 <Heading2Icon />
-                <p>Heading 2</p>
+                <p>{translate('heading2')}</p>
               </div>
             </SelectItem>
             <SelectItem value="h3">
               <div className="flex flex-row items-center gap-1">
                 <Heading3Icon />
-                <p>Heading 3</p>
+                <p>{translate('heading3')}</p>
               </div>
             </SelectItem>
             <SelectItem value="h4">
               <div className="flex flex-row items-center gap-1">
                 <Heading4Icon />
-                <p>Heading 4</p>
+                <p>{translate('heading4')}</p>
               </div>
             </SelectItem>
             <SelectItem value="h5">
               <div className="flex flex-row items-center gap-1">
                 <Heading5Icon />
-                <p>Heading 5</p>
+                <p>{translate('heading5')}</p>
               </div>
             </SelectItem>
             <SelectItem value="h6">
               <div className="flex flex-row items-center gap-1">
                 <Heading6Icon />
-                <p>Heading 6</p>
+                <p>{translate('heading6')}</p>
               </div>
             </SelectItem>
             <SelectItem value="paragraph">
               <div className="flex flex-row items-center gap-1">
                 <PilcrowIcon />
-                <p>Paragraph</p>
+                <p>{translate('paragraph')}</p>
               </div>
             </SelectItem>
           </SelectContent>
