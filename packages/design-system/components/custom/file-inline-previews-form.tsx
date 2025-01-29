@@ -1,11 +1,11 @@
-import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
 import type { SignalifiedData } from '@formsignals/form-core'
 import { useFieldContext } from '@formsignals/form-react'
 import { useSignalEffect } from '@preact/signals-react/runtime'
 import { FileIcon, FileWarningIcon, TrashIcon } from 'lucide-react'
 import { useFormatter, useTranslations } from 'next-intl'
 import { type ReactNode, useState } from 'react'
+import { Button } from '../../components/ui/button'
+import { Progress } from '../../components/ui/progress'
 import { FieldPlaceholder } from './field-placeholder'
 
 type FilePreviewsProps = {

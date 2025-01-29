@@ -1,8 +1,5 @@
 // inspired by https://github.com/shadcn-ui/ui/issues/3647 and https://github.com/Balastrong/shadcn-autocomplete-demo/blob/main/src/components/autocomplete.tsx
 
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import type { InputProps } from '@/components/ui/input'
 import {
   unSignalifyValueSubscribed,
   useFieldContext,
@@ -12,6 +9,9 @@ import { useSignals } from '@preact/signals-react/runtime'
 import { Command as CommandPrimitive } from 'cmdk'
 import { Check, Loader2Icon, SearchXIcon, XIcon } from 'lucide-react'
 import { useState } from 'react'
+import { Badge } from '../../components/ui/badge'
+import { Button } from '../../components/ui/button'
+import type { InputProps } from '../../components/ui/input'
 import { cn } from '../../lib/utils'
 import {
   Command,
