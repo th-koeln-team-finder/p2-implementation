@@ -1,17 +1,17 @@
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { Progress } from '@/components/ui/progress'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
 import type { SignalifiedData } from '@formsignals/form-core'
 import { useFieldContext } from '@formsignals/form-react'
 import { useSignals } from '@preact/signals-react/runtime'
 import { CheckIcon, FileWarningIcon, TrashIcon } from 'lucide-react'
 import { useFormatter, useTranslations } from 'next-intl'
+import { Button } from '../../components/ui/button'
+import { Label } from '../../components/ui/label'
+import { Progress } from '../../components/ui/progress'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../../components/ui/tooltip'
 
 type FileListProps = {
   maxPreviewWidth?: number

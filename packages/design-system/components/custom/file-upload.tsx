@@ -1,9 +1,9 @@
 'use client'
 
-import { FieldPlaceholder } from '@/components/custom/field-placeholder'
 import { useFieldContext } from '@formsignals/form-react'
 import { useSignals } from '@preact/signals-react/runtime'
 import type { HTMLProps, ReactNode } from 'react'
+import { FieldPlaceholder } from '../../components/custom/field-placeholder'
 import { cn } from '../../lib/utils'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
