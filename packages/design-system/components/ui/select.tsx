@@ -8,19 +8,23 @@ import { cn } from '../../lib/utils'
 import { useFieldContext } from '@formsignals/form-react'
 import { useComputed } from '@preact/signals-react'
 import type { SelectProps, SelectValueProps } from '@radix-ui/react-select'
+import { useSignals } from '@preact/signals-react/runtime'
 
 const Select = SelectPrimitive.Root
 
 type SelectFormProps = Omit<SelectProps, 'value' | 'onValueChange'> & {
   className?: string
   valueProps?: Omit<SelectValueProps, 'className'>
+  triggerClassName?: string
 }
 const SelectForm = ({
   children,
   className,
   valueProps,
+  triggerClassName,
   ...props
 }: SelectFormProps) => {
+  useSignals()
   const field = useFieldContext()
   const errorClassName = useComputed(
     () => !field.isValid.value && 'border-destructive',
@@ -33,7 +37,7 @@ const SelectForm = ({
       onValueChange={(newValue) => field.handleChange(newValue)}
       {...props}
     >
-      <SelectTrigger>
+      <SelectTrigger className={triggerClassName}>
         <SelectValue className={classNames} {...valueProps} />
       </SelectTrigger>
       {children}
