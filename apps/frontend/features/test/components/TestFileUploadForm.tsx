@@ -4,16 +4,14 @@ import { useForm } from '@formsignals/form-react'
 import { ZodAdapter } from '@formsignals/validation-adapter-zod'
 import { useSignals } from '@preact/signals-react/runtime'
 import { FieldError } from '@repo/design-system/components/FormErrors'
-import {
-  FileListForm,
-  FilePreviewsForm,
-  FileUploadForm,
-} from '@repo/design-system/components/custom/file-upload'
+import { FileListForm } from '@repo/design-system/components/custom/file-list-form'
+import { FileUploadForm } from '@repo/design-system/components/custom/file-upload'
 import { Button } from '@repo/design-system/components/ui/button'
 import { InputForm } from '@repo/design-system/components/ui/input'
 import { Label } from '@repo/design-system/components/ui/label'
 import { UploadIcon } from 'lucide-react'
 import { z } from 'zod'
+import { FileInlinePreviewsForm } from '../../../../../packages/design-system/components/custom/file-inline-previews-form'
 
 export function TestFileUploadForm({ maxFileSize }: { maxFileSize: number }) {
   useSignals()
@@ -74,7 +72,7 @@ export function TestFileUploadForm({ maxFileSize }: { maxFileSize: number }) {
             accepts="image/*,application/pdf"
             multiple
             placeholder={
-              <FilePreviewsForm
+              <FileInlinePreviewsForm
                 progressState={progressState}
                 maxFileSize={maxFileSize}
               />
