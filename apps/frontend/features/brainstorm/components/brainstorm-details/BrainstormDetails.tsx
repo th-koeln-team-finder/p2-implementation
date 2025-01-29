@@ -1,10 +1,12 @@
 import { authMiddleware } from '@/auth'
+import { CanUserServer } from '@/features/auth/components/CanUser.server'
 import { UserAvatar } from '@/features/auth/components/UserAvatar'
 import { getSingleBrainstorm } from '@/features/brainstorm/brainstorm.queries'
 import { getCommentsForBrainstorm } from '@/features/brainstorm/brainstormComment.queries'
 import { BrainstormBookmarkButton } from '@/features/brainstorm/components/brainstorm-details/BrainstormBookmarkButton'
 import { BrainstormLinksResources } from '@/features/brainstorm/components/brainstorm-details/BrainstormLinksResources'
 import { BrainstormTagList } from '@/features/brainstorm/components/brainstorm-details/BrainstormTagList'
+import { DeleteBrainstormButton } from '@/features/brainstorm/components/brainstorm-details/DeleteBrainstormButton'
 import { BrainstormCommentList } from '@/features/brainstorm/components/brainstorm-details/comments/BrainstormCommentList'
 import { Link, redirect } from '@/features/i18n/routing'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
@@ -51,6 +53,9 @@ export async function BrainstormDialogHeader({
             <FolderPlusIcon />
             {translate('makeActionButton')}
           </Button>
+          <CanUserServer target="brainstorm" action="delete" data={brainstorm}>
+            <DeleteBrainstormButton brainstormId={brainstorm.id} />
+          </CanUserServer>
         </div>
       </div>
       <BrainstormTagList tags={brainstorm.tags} />
@@ -124,6 +129,13 @@ export async function BrainstormDetails({
                 <FolderPlusIcon />
                 {translate('makeActionButton')}
               </Button>
+              <CanUserServer
+                target="brainstorm"
+                action="delete"
+                data={brainstorm}
+              >
+                <DeleteBrainstormButton brainstormId={brainstorm.id} />
+              </CanUserServer>
             </div>
           </nav>
           <BrainstormTagList tags={brainstorm.tags} />
@@ -141,12 +153,7 @@ export async function BrainstormDetails({
       </div>
       <div>
         <Label>{translate('headingResources')}</Label>
-        <BrainstormLinksResources
-          links={[
-            { href: 'https://usefullinks.com' },
-            { href: 'www.scrum.org', label: 'Scrum Guide' },
-          ]}
-        />
+        <BrainstormLinksResources links={brainstorm.resources} />
       </div>
       <BrainstormCommentList
         brainstormId={brainstormId}
