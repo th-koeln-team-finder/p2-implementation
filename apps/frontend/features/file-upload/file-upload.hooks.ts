@@ -10,8 +10,9 @@ export function useFileUpload() {
 
   const uploadFile = useCallback(
     async (bucketPrefix: string, filename: string, file: File) => {
-      const bucketPath = `${bucketPrefix}/${filename}`
-      const uploadUrl = await getPresignedUploadUrl(
+      const originalFileEnding = file.name.split('.').pop()
+      const bucketPath = `${bucketPrefix}/${filename}.${originalFileEnding}`
+      const [uploadUrl, fileId] = await getPresignedUploadUrl(
         bucketPath,
         file.type,
         file.size,
@@ -20,7 +21,7 @@ export function useFileUpload() {
         return
       }
 
-      return new Promise<void>((resolve, reject) => {
+      return new Promise<string | null>((resolve, reject) => {
         const xhr = new XMLHttpRequest()
 
         xhr.upload.onprogress = (event) => {
@@ -48,7 +49,7 @@ export function useFileUpload() {
           await confirmFileUpload(bucketPath)
           revalidateFileUploads()
             .then(() => {
-              resolve(void 0)
+              resolve(fileId)
             })
             .catch((error) => {
               console.error('Error confirming file upload', error)
@@ -64,8 +65,9 @@ export function useFileUpload() {
     [],
   )
 
-  const resetFileProgress = useCallback((filename: string) => {
+  const resetFileProgress = useCallback((filename?: string) => {
     setProgressState((prevState) => {
+      if (!filename) return {}
       const newState = { ...prevState }
       delete newState[filename]
       return newState
