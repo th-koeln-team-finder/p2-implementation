@@ -83,7 +83,7 @@ export async function createProject(payload: CreateProjectFormValues) {
     project.id,
     payload.resources
       .filter((r) => !r.file?.[0])
-      .map((r) => ({ label: r.label, link: r.href, projectId: project.id })),
+      .map((r) => ({ label: r.label, href: r.href, projectId: project.id })),
 
   )
 
@@ -98,7 +98,7 @@ export async function createProjectResources(
   const resourcesToCreate = resources.map((resource) => ({
     projectId,
     label: resource.label,
-    href: resource.link,
+    href: resource.href,
     fileUpload: resource.fileUpload,
   }))
   if (!resourcesToCreate.length) {

@@ -44,7 +44,7 @@ export function CreateProjectLinksList({
   }
 
   const t = useTranslations('createProjects')
-
+  const translateError = useTranslations('validation')
   return (
     <>
       {field.data.value.map((link, index) => (
@@ -95,7 +95,9 @@ export function CreateProjectLinksList({
             {!resourceFormats[index] && (
               <field.SubFieldProvider
                 name={`${index}.href`}
-                validator={z.string().min(1)}
+                validator={z
+                  .string({ required_error: translateError('required') })
+                      .min(1, translateError('minLengthX', { amount: 1 }))}
                 validatorOptions={{
                   validateOnChangeIfTouched: true,
                 }}

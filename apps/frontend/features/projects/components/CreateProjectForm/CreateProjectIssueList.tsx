@@ -31,6 +31,7 @@ export function CreateProjectIssueList({
   >()
 
   const t = useTranslations('createProjects')
+  const translateError = useTranslations('validation')
 
   return (
     <>
@@ -39,7 +40,6 @@ export function CreateProjectIssueList({
           <div className="w-full lg:w-1/2">
             <field.SubFieldProvider
               name={`${index}.title`}
-              validator={z.string().min(1)}
             >
               <Label>{t('issues.title')}</Label>
               <InputForm placeholder={t('issues.titlePlaceholder')} />
@@ -53,7 +53,6 @@ export function CreateProjectIssueList({
               <div className="flex w-full flex-col">
                 <field.SubFieldProvider
                   name={`${index}.description`}
-                  validator={z.string().min(1)}
                 >
                   <TextareaForm placeholder={t('issues.descPlaceholder')} />
                   <FieldError />

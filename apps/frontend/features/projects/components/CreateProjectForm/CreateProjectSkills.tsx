@@ -25,6 +25,7 @@ export function CreateProjectSkills() {
   >()
 
   const t = useTranslations('createProjects')
+  const translateError = useTranslations('validation')
 
   return (
     <>
@@ -33,7 +34,9 @@ export function CreateProjectSkills() {
           <div className="w-full lg:w-1/2">
             <field.SubFieldProvider
               name={`${index}.name`}
-              validator={z.string().min(1)}
+              validator={z
+                  .string({ required_error: translateError('required') })
+                      .min(1, translateError('minLengthX', { amount: 1 }))}
             >
               <Label>{t('skills.skill')}</Label>
               <InputForm placeholder={t('skills.skillPlaceholder')} />

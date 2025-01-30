@@ -250,7 +250,9 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
             <div className="w-full lg:w-1/2">
               <form.FieldProvider
                 name="name"
-                validator={z.string().min(1)}
+                validator={z
+                  .string({ required_error: translateError('required') })
+                      .min(1, translateError('minLengthX', { amount: 1 }))}
                 validatorOptions={{
                   validateOnChangeIfTouched: true,
                 }}
@@ -263,10 +265,6 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
             <div className="w-full lg:w-1/2">
               <form.FieldProvider
                 name="phase"
-                validator={z.string().min(1)}
-                validatorOptions={{
-                  validateOnChangeIfTouched: true,
-                }}
               >
                 <Label>{t('phase')}</Label>
                 <InputForm id="phase" placeholder={t('phasePlaceholder')} />

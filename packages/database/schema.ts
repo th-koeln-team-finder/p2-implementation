@@ -246,7 +246,7 @@ export const projectResource = pgTable('projectResource', {
     .notNull()
     .references(() => projects.id, { onDelete: 'cascade' }),
   label: text().notNull(),
-  link: text().notNull(),
+  href: text().notNull(),
   fileUpload: uuid()
       .references(() => uploadedFiles.id, { onDelete: 'cascade',}),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
