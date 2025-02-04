@@ -26,7 +26,7 @@ const ImageCard = React.forwardRef<
     <div className="absolute inset-0 bg-black/40" />
 
     <div
-      className={`relative flex h-auto w-full flex-col justify-between gap-5 px-12 py-8 lg:gap-10 lg:px-24 lg:py-16 ${cardFull ? 'lg:flex-row' : 'lg:flex-col'}`}
+      className={`relative flex h-auto w-full flex-col justify-between gap-4 px-10 py-7 lg:gap-8 lg:px-20 lg:py-14 ${cardFull ? 'lg:flex-row' : 'lg:flex-col'}`}
     >
       {props.children}
     </div>

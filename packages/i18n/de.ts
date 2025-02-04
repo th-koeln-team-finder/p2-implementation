@@ -43,7 +43,7 @@ export const de: Language = {
       button: 'Projekt erstellen',
     },
     cardBrainstorm: {
-      title: 'Brauchst du Ideen oder möchtest du deine Ideen teilen?',
+      title: 'Brauchst du Ideen oder möchtest du sie teilen?',
       content: 'Teile deine Ideen und sei mit anderen kreativ',
       button: 'Brainstorme deine Ideen',
     },
