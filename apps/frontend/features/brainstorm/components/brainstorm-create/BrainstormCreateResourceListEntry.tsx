@@ -40,7 +40,7 @@ export function BrainstormCreateResourceListEntry({
     never,
     typeof ZodAdapter
   >()
-  const fieldData = field.data.value
+  const fieldData = field.data.peek()
 
   return (
     <div className="flex flex-row gap-2">
@@ -58,7 +58,7 @@ export function BrainstormCreateResourceListEntry({
         <Label>{translate('resourceLabelData')}</Label>
         <div className="flex flex-row">
           <field.SubFieldProvider name="type">
-            <SelectForm triggerClassName="z-10 m-0 w-[11ch] rounded-none rounded-l border-input bg-muted p-0 py-0 pr-2 pl-3 font-bold text-input">
+            <SelectForm triggerClassName="m-0 w-[11ch] rounded-none rounded-l border-input bg-muted p-0 py-0 pr-2 pl-3 font-bold text-input">
               <SelectContent>
                 <SelectItem value="link">
                   {translate('resourceTypeSelectLink')}
