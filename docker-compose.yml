@@ -1,7 +1,7 @@
 services:
   database:
     container_name: 'database'
-    image: postgres:17
+    image: pgvector/pgvector:pg17
     environment:
       POSTGRES_USER: dbadmin
       POSTGRES_PASSWORD: dbadmin

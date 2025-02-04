@@ -4,7 +4,7 @@ import { drizzle } from 'drizzle-orm/node-postgres'
 import { makeBrainstorm } from './factory/brainstorm.factory'
 import { makeBrainstormComment } from './factory/brainstormComment.factory'
 import { makeBrainstormCommentLike } from './factory/brainstormCommentLike.factory'
-import { makeTag } from './factory/tag.factory'
+import { makeTag, technicalTags } from './factory/tag.factory'
 import { makeTest } from './factory/test.factory'
 import { makeUser } from './factory/user.factory'
 import * as Schema from './schema'
@@ -90,9 +90,15 @@ export async function seed() {
   console.log("Clearing 'tag' table")
   await db.delete(Schema.tags).execute()
 
-  console.log('Creating 30 tag records')
+  console.log(`Creating ${technicalTags.length} tag records`)
   const uniqueTags = new Set<string>()
-  const tagData = makeMultiple(30, () => makeTag(uniqueTags)).filter((e) => !!e)
+  const tagData = []
+  for (const technicalTag of technicalTags) {
+    const tag = await makeTag([technicalTag], uniqueTags)
+    if (tag) {
+      tagData.push(tag)
+    }
+  }
   const tags = await db.insert(Schema.tags).values(tagData).returning()
   const tagIds = tags.map((e) => e.id)
 

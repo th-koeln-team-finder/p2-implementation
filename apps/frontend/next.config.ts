@@ -21,6 +21,7 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  serverExternalPackages: ['sharp', 'onnxruntime-node'],
 }
 
 export default withNextIntl(nextConfig)

@@ -2,6 +2,7 @@ import { relations } from 'drizzle-orm'
 import {
   type AnyPgColumn,
   boolean,
+  index,
   integer,
   pgEnum,
   pgTable,
@@ -10,6 +11,7 @@ import {
   timestamp,
   uuid,
   varchar,
+  vector,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
 import { Roles, type RolesType, RolesValues } from './constants'
@@ -122,10 +124,20 @@ export const brainstormBookmarks = pgTable(
 export type BrainstormBookmarkInsert = typeof brainstormBookmarks.$inferInsert
 export type BrainstormBookmarkSelect = typeof brainstormBookmarks.$inferSelect
 
-export const tags = pgTable('tag', {
-  id: uuid().primaryKey().notNull().defaultRandom(),
-  name: text('name').notNull().unique(),
-})
+export const tags = pgTable(
+  'tag',
+  {
+    id: uuid().primaryKey().notNull().defaultRandom(),
+    name: text('name').notNull().unique(),
+    embedding: vector('embedding', { dimensions: 384 }).notNull(),
+  },
+  (table) => ({
+    embeddingIndex: index('embeddingIndex').using(
+      'hnsw',
+      table.embedding.op('vector_cosine_ops'),
+    ),
+  }),
+)
 export type TagInsert = typeof tags.$inferInsert
 export type TagSelect = typeof tags.$inferSelect
 
