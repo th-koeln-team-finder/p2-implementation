@@ -106,7 +106,11 @@ export function AutoCompleteTagInput<T extends string>({
               <CommandPrimitive.Input
                 asChild
                 value={searchInput}
-                onValueChange={onSearchInputChange}
+                onValueChange={(e) =>
+                  onSearchInputChange(
+                    e.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+                  )
+                }
                 onMouseDown={() => {
                   const newOpen = !!searchInput || !open
                   setOpen(newOpen)
