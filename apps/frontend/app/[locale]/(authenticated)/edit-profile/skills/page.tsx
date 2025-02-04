@@ -3,7 +3,6 @@ import {authMiddleware} from "@/auth";
 import {UserSelect} from "@repo/database/schema";
 import SkillsEdit from "@/features/users/components/SkillsEdit";
 import {getUser} from "@/features/users/users.query";
-import ProfileForm from "@/features/users/components/ProfileForm";
 import {redirect} from "@/features/i18n/routing";
 import {getUserSkills} from "@/features/userSkills/userSkills.query";
 
