@@ -3,12 +3,9 @@ import type {
   CreateBrainstormResourceFile,
 } from '@/features/brainstorm/brainstorm.types'
 import { URL_REGEX } from '@/features/general/url.utils'
-import {
-  unSignalifyValueSubscribed,
-  useFieldContext,
-} from '@formsignals/form-react'
+import { useFieldContext } from '@formsignals/form-react'
 import type { ZodAdapter } from '@formsignals/validation-adapter-zod'
-import { useSignalEffect, useSignals } from '@preact/signals-react/runtime'
+import { useSignals } from '@preact/signals-react/runtime'
 import { FieldError } from '@repo/design-system/components/FormErrors'
 import { FileUploadForm } from '@repo/design-system/components/custom/file-upload'
 import { Button } from '@repo/design-system/components/ui/button'
@@ -59,9 +56,9 @@ export function BrainstormCreateResourceListEntry({
       </field.SubFieldProvider>
       <div className="flex-[2]">
         <Label>{translate('resourceLabelData')}</Label>
-        <div className="relative">
+        <div className="flex flex-row">
           <field.SubFieldProvider name="type">
-            <SelectForm triggerClassName="z-10 absolute top-0 left-0 m-0 w-[11ch] rounded-none rounded-l border-input bg-muted p-0 py-0 pr-2 pl-3 font-bold text-input">
+            <SelectForm triggerClassName="m-0 w-[11ch] rounded-none rounded-l border-input bg-muted p-0 py-0 pr-2 pl-3 font-bold text-input">
               <SelectContent>
                 <SelectItem value="link">
                   {translate('resourceTypeSelectLink')}
@@ -83,7 +80,7 @@ export function BrainstormCreateResourceListEntry({
             >
               <InputForm
                 placeholder={translate('resourcePlaceholderLink')}
-                style={{ paddingLeft: 'calc(11ch + 1rem)' }}
+                className="rounded-none rounded-r"
               />
               <FieldError />
             </field.SubFieldProvider>
@@ -110,8 +107,8 @@ export function BrainstormCreateResourceListEntry({
                 placeholder={
                   <FileNamePreviewForm uploadProgress={uploadProgress} />
                 }
-                className="min-h-9 justify-start"
-                style={{ paddingLeft: 'calc(11ch + 1rem)' }}
+                className="min-h-9 w-full justify-start rounded-none rounded-r px-2"
+                containerClassName="flex-1"
               />
               <FieldError />
             </field.SubFieldProvider>
@@ -142,7 +139,6 @@ function FileNamePreviewForm({ uploadProgress }: FileNamePreviewFormProps) {
   const translate = useTranslations()
   const field = useFieldContext<CreateBrainstormResourceFile['fileValue'], ''>()
   const fileName = field.data.value?.[0]?.data?.value?.name
-  useSignalEffect(() => console.log(unSignalifyValueSubscribed(field.data)))
   if (!fileName) {
     return (
       <p className="text-muted-foreground text-sm">
