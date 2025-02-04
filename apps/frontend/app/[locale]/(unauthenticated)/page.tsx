@@ -95,6 +95,8 @@ import {
   Settings2Icon,
 } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
+import {ImageCard, ImageCardTitle, ImageCardContent, ImageCardFooter} from "@repo/design-system/components/custom/image-card";
+import { Link } from '@/features/i18n/routing'
 
 // TODO remove - Only for testing
 export const dynamic = 'force-dynamic'
@@ -124,237 +126,293 @@ export default async function Home() {
   const session = await authMiddleware()
   const translate = await getTranslations()
   const files = session?.user?.id
-    ? await getAllFileUploadsForUser(session.user.id)
-    : []
+      ? await getAllFileUploadsForUser(session.user.id)
+      : []
   return (
-    <div className="container mx-auto my-4">
-      <h1 className="font-semibold text-5xl">
-        {translate('test.normalHeading')}
-      </h1>
-      <h2 className="mb-8 text-3xl">{translate('test.normalFont')}</h2>
-      <h1 className="font-head font-semibold text-5xl">
-        {translate('test.otherHeading')}
-      </h1>
-      <h2 className="mb-8 font-head text-3xl">{translate('test.otherFont')}</h2>
-      {files.map((file) => (
-        <div key={file.id}>
-          <FilePreview
-            file={file}
-            className="h-96 w-96 object-contain"
-            width={200}
-            height={200}
-          />
-          <RemoveFileButton file={file} />
-        </div>
-      ))}
-      <TestFileUploadForm maxFileSize={serverEnv.MAX_FILE_SIZE} />
-      <CanUserServer target="test" action="view">
-        <div className="flex flex-row justify-between gap-2 bg-card align-center">
-          <h3 className="mt-4 mb-2 font-head text-3xl">
-            {translate('test.dataTitle')}
-          </h3>
-          <div className="ml-auto flex flex-row gap-2">
-            <CanUserServer target="test" action="create">
-              <AddTestButton />
-            </CanUserServer>
-            <CanUserServer target="test" action="delete.all">
-              <RemoveTestButton />
-            </CanUserServer>
+      <div className='container mx-auto my-4 max-w-screen-xl px-4'>
+        <div className='mb-6 flex flex-col lg:flex-row gap-6'>
+          <div className="w-full lg:w-1/2">
+            <ImageCard imageUrl='/images/find-a-project-2.jpg'>
+
+              <ImageCardTitle>{translate('home.cardFind.title')}</ImageCardTitle>
+              <ImageCardContent>
+                <p>{translate('home.cardFind.content')}</p>
+              </ImageCardContent>
+              <ImageCardFooter>
+                <Link href="/find-project" className="mx-auto">
+                  <Button>
+                    {translate('home.cardFind.button')}
+                  </Button>
+                </Link>
+              </ImageCardFooter>
+            </ImageCard>
+          </div>
+          <div className="w-full lg:w-1/2">
+            <ImageCard imageUrl='/images/create-a-project.jpg'>
+
+                <ImageCardTitle>{translate('home.cardCreate.title')}</ImageCardTitle>
+                <ImageCardContent>
+                  <p>{translate('home.cardCreate.content')}</p>
+                </ImageCardContent>
+
+              <ImageCardFooter>
+                <Link href="/create-project" className="mx-auto">
+                  <Button>
+                    {translate('home.cardCreate.button')}
+                  </Button>
+                </Link>
+              </ImageCardFooter>
+            </ImageCard>
           </div>
         </div>
-        <TestItemList />
-      </CanUserServer>
-      <h3 className="mt-4 mb-2 font-head text-3xl">Components</h3>
-      <div className="flex flex-col gap-2 px-4 pb-4">
-        <TestForm />
-
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="outline">Open alert dialog</Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>
-                Are you really sure you want to do this?
-              </AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. (Well technically it does not do
-                anything, but still you cannot take it back)
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>
-                {translate('general.cancel')}
-              </AlertDialogCancel>
-              <AlertDialogAction>{translate('general.save')}</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-
-        <div className="flex flex-row items-center gap-2">
-          <Badge variant="default">Badge (default)</Badge>
-          <Badge variant="outline">Badge (outline)</Badge>
-          <Badge variant="destructive">Badge (destructive)</Badge>
-          <Badge variant="secondary">Badge (secondary)</Badge>
-          <Badge variant="warning">Badge (warning)</Badge>
-          <Badge variant="success">Badge (success)</Badge>
+        <div className="flex">
+          <div className="w-full">
+            <ImageCard imageUrl='/images/brainstorm-2.jpg'
+                       className="flex flex-col lg:flex-row gap-4" cardFull={true}>
+              <div className="w-full lg:w-1/2 lg:mr-48 flex flex-col justify-between gap-10">
+                <ImageCardTitle>{translate('home.cardBrainstorm.title')}</ImageCardTitle>
+                <ImageCardContent>
+                  <p>{translate('home.cardBrainstorm.content')}</p>
+                </ImageCardContent>
+              </div>
+              <div className="w-full lg:w-1/2 flex flex-col justify-center">
+                <Link href="/brainstorm" className="mx-auto">
+                  <Button>
+                    {translate('home.cardBrainstorm.button')}
+                  </Button>
+                </Link>
+              </div>
+            </ImageCard>
+          </div>
         </div>
 
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/apps/frontend/public">Home</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <div className="flex flex-row items-center gap-1">
-                    Projects <ChevronDownIcon size={16} />
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem>Projects</DropdownMenuItem>
-                  <DropdownMenuItem>Brainstorms</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <h1 className="font-semibold text-5xl">
+          {translate('test.normalHeading')}
+        </h1>
+        <h2 className="mb-8 text-3xl">{translate('test.normalFont')}</h2>
+        <h1 className="font-head font-semibold text-5xl">
+          {translate('test.otherHeading')}
+        </h1>
+        <h2 className="mb-8 font-head text-3xl">{translate('test.otherFont')}</h2>
+        {files.map((file) => (
+            <div key={file.id}>
+              <FilePreview
+                  file={file}
+                  className="h-96 w-96 object-contain"
+                  width={200}
+                  height={200}
+              />
+              <RemoveFileButton file={file}/>
+            </div>
+        ))}
+        <TestFileUploadForm maxFileSize={serverEnv.MAX_FILE_SIZE}/>
+        <CanUserServer target="test" action="view">
+          <div className="flex flex-row justify-between gap-2 bg-card align-center">
+            <h3 className="mt-4 mb-2 font-head text-3xl">
+              {translate('test.dataTitle')}
+            </h3>
+            <div className="ml-auto flex flex-row gap-2">
+              <CanUserServer target="test" action="create">
+                <AddTestButton/>
+              </CanUserServer>
+              <CanUserServer target="test" action="delete.all">
+                <RemoveTestButton/>
+              </CanUserServer>
+            </div>
+          </div>
+          <TestItemList/>
+        </CanUserServer>
+        <h3 className="mt-4 mb-2 font-head text-3xl">Components</h3>
+        <div className="flex flex-col gap-2 px-4 pb-4">
+          {/*<TestForm/>*/}
 
-        <div className="flex flex-row flex-wrap items-center gap-2">
-          <Button variant="default" size="default">
-            Button (default,default)
-          </Button>
-          <Button variant="outline" size="icon">
-            <Settings2Icon />
-          </Button>
-          <Button variant="secondary" size="lg">
-            Button (secondary,lg)
-          </Button>
-          <Button variant="destructive" size="sm">
-            Button (destructive,sm)
-          </Button>
-          <Button variant="ghost">Button (ghost,default)</Button>
-          <Button variant="link">Button (link,default)</Button>
-        </div>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="outline">Open alert dialog</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Are you really sure you want to do this?
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. (Well technically it does not do
+                  anything, but still you cannot take it back)
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>
+                  {translate('general.cancel')}
+                </AlertDialogCancel>
+                <AlertDialogAction>{translate('general.save')}</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
 
-        <Calendar mode="single" />
+          <Avatar>
+            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn"/>
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Card Title</CardTitle>
-            <CardDescription>Card description</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p>Card content</p>
-          </CardContent>
-          <CardFooter className="gap-2">
-            <Button variant="outline">Cancel</Button>
-            <Button>
-              Send <SendHorizontalIcon />
+          <div className="flex flex-row flex-wrap items-center gap-2">
+            <Badge variant="default">Badge (default)</Badge>
+            <Badge variant="outline">Badge (outline)</Badge>
+            <Badge variant="destructive">Badge (destructive)</Badge>
+            <Badge variant="secondary">Badge (secondary)</Badge>
+            <Badge variant="warning">Badge (warning)</Badge>
+            <Badge variant="success">Badge (success)</Badge>
+          </div>
+
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/apps/frontend/public">Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator/>
+              <BreadcrumbItem>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <div className="flex flex-row items-center gap-1">
+                      Projects <ChevronDownIcon size={16}/>
+                    </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem>Projects</DropdownMenuItem>
+                    <DropdownMenuItem>Brainstorms</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+
+          <div className="flex flex-row flex-wrap items-center gap-2">
+            <Button variant="default" size="default">
+              Button (default,default)
             </Button>
-          </CardFooter>
-        </Card>
-
-        <Carousel className="ml-12 w-full max-w-xs">
-          <CarouselContent>{carouselItems}</CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-
-        <div className="flex items-center space-x-2">
-          <Checkbox id="terms" />
-          <label
-            htmlFor="terms"
-            className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            Accept terms and conditions
-          </label>
-        </div>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">Open Dropdown</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>Your profile</DropdownMenuItem>
-              <DropdownMenuItem>My profile</DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        <HoverCard>
-          <p>
-            by{' '}
-            <HoverCardTrigger>
-              <span className="font-semibold underline">myself</span>
-            </HoverCardTrigger>
-          </p>
-          <HoverCardContent>
-            This is the content of a hover card
-          </HoverCardContent>
-        </HoverCard>
-
-        <div>
-          <Label>Input</Label>
-          <Input placeholder="Type here..." />
-        </div>
-
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button>Open popover</Button>
-          </PopoverTrigger>
-          <PopoverContent>This is the content of the popover</PopoverContent>
-        </Popover>
-
-        <ScrollArea className="h-72 w-48 rounded-md border">
-          <div className="p-4">
-            <h4 className="mb-4 font-medium text-sm leading-none">Tags</h4>
-            {tagScrollItems}
+            <Button variant="outline" size="icon">
+              <Settings2Icon/>
+            </Button>
+            <Button variant="secondary" size="lg">
+              Button (secondary,lg)
+            </Button>
+            <Button variant="destructive" size="sm">
+              Button (destructive,sm)
+            </Button>
+            <Button variant="ghost">Button (ghost,default)</Button>
+            <Button variant="link">Button (link,default)</Button>
           </div>
-        </ScrollArea>
 
-        <Select>
-          <SelectTrigger>
-            <SelectValue placeholder="Select a value" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Number</SelectLabel>
-              <SelectItem value="1">One</SelectItem>
-              <SelectItem value="2">Two</SelectItem>
-            </SelectGroup>
-            <SelectGroup>
-              <SelectLabel>Letter</SelectLabel>
-              <SelectItem value="a">A</SelectItem>
-              <SelectItem value="b">B</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+          <Calendar mode="single"/>
 
-        <TooltipProvider>
-          <Tooltip>
+          <Card>
+            <CardHeader>
+              <CardTitle>Card Title</CardTitle>
+              <CardDescription>Card description</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p>Card content</p>
+            </CardContent>
+            <CardFooter className="gap-2">
+              <Button variant="outline">Cancel</Button>
+              <Button>
+                Send <SendHorizontalIcon/>
+              </Button>
+            </CardFooter>
+          </Card>
+
+          <Carousel className="ml-12 w-full max-w-xs">
+            <CarouselContent>{carouselItems}</CarouselContent>
+            <CarouselPrevious/>
+            <CarouselNext/>
+          </Carousel>
+
+          <div className="flex items-center space-x-2">
+            <Checkbox id="terms"/>
+            <label
+                htmlFor="terms"
+                className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Accept terms and conditions
+            </label>
+          </div>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">Open Dropdown</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Account</DropdownMenuLabel>
+              <DropdownMenuSeparator/>
+              <DropdownMenuGroup>
+                <DropdownMenuItem>Your profile</DropdownMenuItem>
+                <DropdownMenuItem>My profile</DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <HoverCard>
             <p>
-              hover over{' '}
-              <TooltipTrigger>
-                <span className="font-semibold underline">this</span>
-              </TooltipTrigger>
+              by{' '}
+              <HoverCardTrigger>
+                <span className="font-semibold underline">myself</span>
+              </HoverCardTrigger>
             </p>
-            <TooltipContent>This is the content of a tooltip</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+            <HoverCardContent>
+              This is the content of a hover card
+            </HoverCardContent>
+          </HoverCard>
 
-        <LoggingWysiwygEditor />
+          <div>
+            <Label>Input</Label>
+            <Input placeholder="Type here..."/>
+          </div>
+
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button>Open popover</Button>
+            </PopoverTrigger>
+            <PopoverContent>This is the content of the popover</PopoverContent>
+          </Popover>
+
+          <ScrollArea className="h-72 w-48 rounded-md border">
+            <div className="p-4">
+              <h4 className="mb-4 font-medium text-sm leading-none">Tags</h4>
+              {tagScrollItems}
+            </div>
+          </ScrollArea>
+
+          <Select>
+            <SelectTrigger>
+              <SelectValue placeholder="Select a value"/>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Number</SelectLabel>
+                <SelectItem value="1">One</SelectItem>
+                <SelectItem value="2">Two</SelectItem>
+              </SelectGroup>
+              <SelectGroup>
+                <SelectLabel>Letter</SelectLabel>
+                <SelectItem value="a">A</SelectItem>
+                <SelectItem value="b">B</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+
+          <TooltipProvider>
+            <Tooltip>
+              <p>
+                hover over{' '}
+                <TooltipTrigger>
+                  <span className="font-semibold underline">this</span>
+                </TooltipTrigger>
+              </p>
+              <TooltipContent>This is the content of a tooltip</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          {/*<LoggingWysiwygEditor/>*/}
+        </div>
       </div>
-    </div>
   )
 }

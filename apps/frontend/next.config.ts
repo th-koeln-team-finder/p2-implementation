@@ -21,6 +21,15 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // biome-ignore lint/suspicious/useAwait: change the url path for assets
+  async rewrites() {
+    return [
+      {
+        source: '/:locale/images/:path*',
+        destination: '/images/:path*',
+      },
+    ]
+  },
 }
 
 export default withNextIntl(nextConfig)
