@@ -178,7 +178,7 @@ export function BrainstormCreateForm() {
           </div>
         </form.FieldProvider>
 
-        <p className="mt-2 flex flex-row items-center gap-1 border-primary border-l-2 bg-primary/20 p-2 text-primary-foreground">
+        <p className="mt-2 flex flex-row items-center gap-1 border-primary border-l-2 bg-primary/20 p-2 text-foreground">
           <BadgeInfoIcon className="mr-2" />
           {translate('createForm.whiteboardNotice')}
         </p>
