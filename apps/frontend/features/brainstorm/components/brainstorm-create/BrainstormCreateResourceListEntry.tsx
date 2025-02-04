@@ -40,7 +40,7 @@ export function BrainstormCreateResourceListEntry({
     never,
     typeof ZodAdapter
   >()
-  const fieldData = field.data.value
+  const fieldData = field.data.peek()
 
   return (
     <div className="flex flex-row gap-2">
