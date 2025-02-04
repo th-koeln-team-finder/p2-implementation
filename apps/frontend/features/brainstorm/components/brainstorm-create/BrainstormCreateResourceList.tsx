@@ -9,10 +9,14 @@ import { useTranslations } from 'next-intl'
 
 type BrainstormCreateResourceListProps = {
   uploadProgress?: Record<string, number>
+  popoverContainerId?: string
+  onPopoverOpenChange?: (isOpen: boolean) => void
 }
 
 export function BrainstormCreateResourceList({
   uploadProgress,
+  popoverContainerId,
+  onPopoverOpenChange,
 }: BrainstormCreateResourceListProps) {
   useSignals()
   const translate = useTranslations('brainstorm')
@@ -22,7 +26,11 @@ export function BrainstormCreateResourceList({
     <div className="flex flex-col gap-2">
       {field.data.value.map((resource, index) => (
         <field.SubFieldProvider name={`${index}`} key={resource.key}>
-          <BrainstormCreateResourceListEntry uploadProgress={uploadProgress} />
+          <BrainstormCreateResourceListEntry
+            uploadProgress={uploadProgress}
+            popoverContainerId={popoverContainerId}
+            onPopoverOpenChange={onPopoverOpenChange}
+          />
         </field.SubFieldProvider>
       ))}
 

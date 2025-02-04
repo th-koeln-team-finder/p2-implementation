@@ -20,15 +20,19 @@ import {
 import { clientEnv } from '@repo/env/client'
 import { CheckIcon, FileIcon, TrashIcon } from 'lucide-react'
 import { useFormatter, useTranslations } from 'next-intl'
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { z } from 'zod'
 
 type BrainstormCreateResourceListEntryProps = {
   uploadProgress?: Record<string, number> | undefined
+  popoverContainerId?: string
+  onPopoverOpenChange?: (isOpen: boolean) => void
 }
 
 export function BrainstormCreateResourceListEntry({
   uploadProgress,
+  popoverContainerId,
+  onPopoverOpenChange,
 }: BrainstormCreateResourceListEntryProps) {
   useSignals()
   const translateValidation = useTranslations('validation')
@@ -41,9 +45,10 @@ export function BrainstormCreateResourceListEntry({
     typeof ZodAdapter
   >()
   const fieldData = field.data.peek()
+  const [selectOpen, setSelectOpen] = useState(false)
 
   return (
-    <div className="flex flex-row gap-2">
+    <div className="flex flex-col gap-2 md:flex-row">
       <field.SubFieldProvider
         name="label"
         validator={z.string().min(1, translateValidation('required'))}
@@ -58,14 +63,23 @@ export function BrainstormCreateResourceListEntry({
         <Label>{translate('resourceLabelData')}</Label>
         <div className="flex flex-row">
           <field.SubFieldProvider name="type">
-            <SelectForm triggerClassName="m-0 w-[11ch] rounded-none rounded-l border-input bg-muted p-0 py-0 pr-2 pl-3 font-bold text-input">
-              <SelectContent>
+            <SelectForm
+              triggerClassName="m-0 w-[11ch] rounded-none rounded-l border-input bg-muted p-0 py-0 pr-2 pl-3 font-bold text-input"
+              open={selectOpen}
+              onOpenChange={(open) => {
+                setSelectOpen(open)
+                onPopoverOpenChange?.(open)
+              }}
+            >
+              <SelectContent containerId={popoverContainerId}>
                 <SelectItem value="link">
                   {translate('resourceTypeSelectLink')}
                 </SelectItem>
                 <SelectItem value="file">
-                  <FileIcon className="mr-1 inline-block h-5 w-5" />{' '}
-                  {translate('resourceTypeSelectFile')}
+                  <div className="flex flex-row items-center gap-1">
+                    <FileIcon className="h-5 w-5" />
+                    {translate('resourceTypeSelectFile')}
+                  </div>
                 </SelectItem>
               </SelectContent>
             </SelectForm>
@@ -78,11 +92,13 @@ export function BrainstormCreateResourceListEntry({
                 .regex(URL_REGEX, translateValidation('url'))
                 .min(1, translateValidation('required'))}
             >
-              <InputForm
-                placeholder={translate('resourcePlaceholderLink')}
-                className="rounded-none rounded-r"
-              />
-              <FieldError />
+              <div className="flex-1">
+                <InputForm
+                  placeholder={translate('resourcePlaceholderLink')}
+                  className="rounded-none rounded-r"
+                />
+                <FieldError />
+              </div>
             </field.SubFieldProvider>
           )}
           {fieldData.type.value === 'file' && (
@@ -102,22 +118,24 @@ export function BrainstormCreateResourceListEntry({
               }}
               validateOnNestedChange
             >
-              <FileUploadForm
-                accepts="image/jpeg,image/jpg,image/png,application/pdf"
-                placeholder={
-                  <FileNamePreviewForm uploadProgress={uploadProgress} />
-                }
-                className="min-h-9 w-full justify-start rounded-none rounded-r px-2"
-                containerClassName="flex-1"
-              />
-              <FieldError />
+              <div className="flex-1">
+                <FileUploadForm
+                  accepts="image/jpeg,image/jpg,image/png,application/pdf"
+                  placeholder={
+                    <FileNamePreviewForm uploadProgress={uploadProgress} />
+                  }
+                  className="max-h-9 min-h-9 w-full justify-start overflow-hidden rounded-none rounded-r px-2 py-2"
+                  containerClassName="flex-1"
+                />
+                <FieldError />
+              </div>
             </field.SubFieldProvider>
           )}
         </div>
       </div>
       <Button
         size="icon"
-        className="mt-6"
+        className="md:mt-6"
         variant="destructive"
         onClick={() => {
           field.removeSelfFromArray()
@@ -148,7 +166,7 @@ function FileNamePreviewForm({ uploadProgress }: FileNamePreviewFormProps) {
   }
   return (
     <div className="flex w-full flex-row items-center gap-2 pr-4">
-      <p className="text-sm">{fileName}</p>
+      <p className="max-w-[6ch] text-nowrap text-sm">{fileName}</p>
       {uploadProgress?.[fileName] && uploadProgress?.[fileName] < 1 && (
         <Fragment>
           <Progress

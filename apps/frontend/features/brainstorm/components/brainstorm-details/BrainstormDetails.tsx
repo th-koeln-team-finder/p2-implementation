@@ -40,11 +40,11 @@ export async function BrainstormDialogHeader({
   if (!brainstorm) return null
   return (
     <DialogHeader className="pr-4">
-      <div className="flex flex-row items-center justify-between gap-2">
-        <DialogTitle className="font-head font-medium text-3xl">
+      <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+        <DialogTitle className="text-start font-head font-medium text-3xl">
           {brainstorm.title}
         </DialogTitle>
-        <div className="flex flex-row items-center gap-2">
+        <div className="ml-auto flex flex-row items-center gap-2 sm:ml-0">
           <BrainstormBookmarkButton
             brainstormId={brainstorm.id}
             isBookmarked={brainstorm.isBookmarked}
@@ -58,7 +58,6 @@ export async function BrainstormDialogHeader({
           </CanUserServer>
         </div>
       </div>
-      <BrainstormTagList tags={brainstorm.tags} />
     </DialogHeader>
   )
 }
@@ -92,55 +91,53 @@ export async function BrainstormDetails({
       )}
     >
       {!hideHeader && (
-        <>
-          <nav className="sticky top-0 z-10 flex flex-row justify-between bg-card py-1 ring ring-card">
-            <div className="flex flex-row gap-2">
-              <Link
-                locale={locale}
-                href="/brainstorm"
-                className={buttonVariants({
-                  size: 'icon',
-                  variant: 'ghost',
-                  className: '[&_svg]:size-6',
-                })}
-              >
-                <ChevronLeftIcon />
-              </Link>
-              <div>
-                <h1 className="font-head font-medium text-3xl">
-                  {brainstorm.title}
-                </h1>
-                <p className="inline-flex flex-row items-center gap-2 text-muted-foreground text-sm">
-                  <UserAvatar
-                    user={brainstorm.creator}
-                    className="h-6 w-6"
-                    fallbackClassName="text-xs"
-                  />
-                  {brainstorm.creator.name}
-                </p>
-              </div>
+        <nav className="sticky top-0 z-10 flex flex-col justify-between bg-card py-1 ring ring-card sm:flex-row">
+          <div className="flex flex-row gap-2">
+            <Link
+              locale={locale}
+              href="/brainstorm"
+              className={buttonVariants({
+                size: 'icon',
+                variant: 'ghost',
+                className: '[&_svg]:size-6',
+              })}
+            >
+              <ChevronLeftIcon />
+            </Link>
+            <div>
+              <h1 className="font-head font-medium text-3xl">
+                {brainstorm.title}
+              </h1>
+              <p className="inline-flex flex-row items-center gap-2 text-muted-foreground text-sm">
+                <UserAvatar
+                  user={brainstorm.creator}
+                  className="h-6 w-6"
+                  fallbackClassName="text-xs"
+                />
+                {brainstorm.creator.name}
+              </p>
             </div>
-            <div className="flex flex-row items-center gap-2">
-              <BrainstormBookmarkButton
-                brainstormId={brainstorm.id}
-                isBookmarked={brainstorm.isBookmarked}
-              />
-              <Button type="button" size="sm">
-                <FolderPlusIcon />
-                {translate('makeActionButton')}
-              </Button>
-              <CanUserServer
-                target="brainstorm"
-                action="delete"
-                data={brainstorm}
-              >
-                <DeleteBrainstormButton brainstormId={brainstorm.id} />
-              </CanUserServer>
-            </div>
-          </nav>
-          <BrainstormTagList tags={brainstorm.tags} />
-        </>
+          </div>
+          <div className="ml-auto flex flex-row items-center gap-2 sm:ml-0">
+            <BrainstormBookmarkButton
+              brainstormId={brainstorm.id}
+              isBookmarked={brainstorm.isBookmarked}
+            />
+            <Button type="button" size="sm">
+              <FolderPlusIcon />
+              {translate('makeActionButton')}
+            </Button>
+            <CanUserServer
+              target="brainstorm"
+              action="delete"
+              data={brainstorm}
+            >
+              <DeleteBrainstormButton brainstormId={brainstorm.id} />
+            </CanUserServer>
+          </div>
+        </nav>
       )}
+      <BrainstormTagList tags={brainstorm.tags} />
       {brainstorm.description && (
         <WysiwygRenderer value={brainstorm.description} />
       )}

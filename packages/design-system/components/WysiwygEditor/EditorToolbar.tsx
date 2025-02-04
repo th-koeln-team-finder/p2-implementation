@@ -105,7 +105,7 @@ export function EditorToolbar({ className }: EditorToolbarProps) {
             <RedoIcon />
           </Button>
         </ShortcutTooltip>
-        <Separator orientation="vertical" className="self-stretch" />
+        <Separator orientation="vertical" className="mx-2 self-stretch" />
         <ShortcutTooltip shortcut="Ctrl + B">
           <Toggle
             pressed={editorStates.peek().isBold.value}
@@ -142,14 +142,17 @@ export function EditorToolbar({ className }: EditorToolbarProps) {
             <CodeIcon />
           </Toggle>
         </ShortcutTooltip>
-        <Separator orientation="vertical" className="self-stretch" />
+        <Separator
+          orientation="vertical"
+          className="mx-2 hidden self-stretch sm:block"
+        />
         <Select
           value={blockTypeSelectValue}
           onValueChange={(value) =>
             toggleHeading(editor, value as HeadingTagType)
           }
         >
-          <SelectTrigger className="mx-2 w-48">
+          <SelectTrigger className="w-full sm:w-48">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -197,7 +200,10 @@ export function EditorToolbar({ className }: EditorToolbarProps) {
             </SelectItem>
           </SelectContent>
         </Select>
-        <Separator orientation="vertical" className="self-stretch" />
+        <Separator
+          orientation="vertical"
+          className="mx-2 hidden self-stretch sm:block"
+        />
         <ShortcutTooltip shortcut="⇧ + Ctrl + 7">
           <Toggle
             pressed={editorStates.peek().blockType.value === 'number'}
@@ -247,8 +253,12 @@ export function EditorToolbar({ className }: EditorToolbarProps) {
         >
           <MinusIcon />
         </Button>
-        <Separator orientation="vertical" className="self-stretch" />
+        <Separator
+          orientation="vertical"
+          className="mx-2 hidden self-stretch lg:block"
+        />
         <Toggle
+          className="hidden lg:block"
           pressed={
             editorStates.peek().elementFormat.value === 'left' ||
             !editorStates.peek().elementFormat.value
@@ -258,6 +268,7 @@ export function EditorToolbar({ className }: EditorToolbarProps) {
           <AlignLeftIcon />
         </Toggle>
         <Toggle
+          className="hidden lg:block"
           pressed={editorStates.peek().elementFormat.value === 'center'}
           onClick={() =>
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'center')
@@ -266,6 +277,7 @@ export function EditorToolbar({ className }: EditorToolbarProps) {
           <AlignCenterIcon />
         </Toggle>
         <Toggle
+          className="hidden lg:block"
           pressed={editorStates.peek().elementFormat.value === 'right'}
           onClick={() =>
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'right')
@@ -274,6 +286,7 @@ export function EditorToolbar({ className }: EditorToolbarProps) {
           <AlignRightIcon />
         </Toggle>
         <Toggle
+          className="hidden lg:block"
           pressed={editorStates.peek().elementFormat.value === 'justify'}
           onClick={() =>
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, 'justify')

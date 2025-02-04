@@ -29,7 +29,7 @@ export default async function BrainstormPage() {
             {translate('createFormTitle')}
           </DialogTitle>
         </DialogHeader>
-        <BrainstormCreateForm />
+        <BrainstormCreateForm popoverContainerId="popoverref" />
       </DialogContent>
     </NavigationModal>
   )

@@ -30,7 +30,7 @@ export function DeleteBrainstormButton({
       }}
     >
       <TrashIcon />
-      {translate('deleteActionButton')}
+      <span className="hidden sm:block">{translate('deleteActionButton')}</span>
     </Button>
   )
 }

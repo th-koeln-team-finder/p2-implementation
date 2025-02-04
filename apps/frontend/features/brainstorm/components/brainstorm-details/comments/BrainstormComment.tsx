@@ -35,7 +35,7 @@ export function BrainstormComment({
   return (
     <div
       className={cn(
-        'flex w-full flex-row gap-4 rounded p-2 pr-4',
+        'flex w-full flex-col gap-2 rounded p-2 pr-4 sm:flex-row sm:gap-4',
         comment.isPinned && 'bg-muted/30',
       )}
     >
@@ -43,87 +43,93 @@ export function BrainstormComment({
       <div className="flex w-full flex-col gap-1">
         <p className="font-medium text-lg">{comment.creator?.name}</p>
         <p className="text-base">{comment.comment}</p>
-        <div className="flex flex-row items-center gap-4">
+        <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
           <p className="text-muted-foreground text-sm">
             {formatter.relativeTime(comment.createdAt, Date.now())}
           </p>
-          <CanUserClient
-            target="commentBrainstorm"
-            action="reply"
-            data={comment}
-          >
+          <div className="flex flex-row items-start items-center gap-4">
+            <CanUserClient
+              target="commentBrainstorm"
+              action="reply"
+              data={comment}
+            >
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setReplying((prev) => !prev)}
+              >
+                <ReplyIcon />
+                {translate('reply')}
+              </Button>
+            </CanUserClient>
             <Button
+              disabled={!canLike}
+              className="disabled:opacity-100"
               variant="ghost"
               size="sm"
-              onClick={() => setReplying((prev) => !prev)}
-            >
-              <ReplyIcon />
-              {translate('reply')}
-            </Button>
-          </CanUserClient>
-          <Button
-            disabled={!canLike}
-            className="disabled:opacity-100"
-            variant="ghost"
-            size="sm"
-            onClick={async () => {
-              const newLiked = !comment.isLiked
-              setOptimistic({
-                action: 'update',
-                values: {
-                  id: comment.id,
-                  isLiked: newLiked,
-                  likeCount: comment.likeCount + (newLiked ? 1 : -1),
-                },
-              })
-              await toggleCommentLike(comment.id, newLiked)
-              await revalidateBrainstormComments()
-            }}
-          >
-            <HeartIcon
-              className={cn(
-                comment.isLiked && 'fill-destructive stroke-destructive',
-              )}
-            />
-            {formatter.number(comment.likeCount, {
-              compactDisplay: 'short',
-              notation: 'compact',
-              maximumFractionDigits: 1,
-            })}
-          </Button>
-          <CanUserClient target="commentBrainstorm" action="pin" data={comment}>
-            <Button
-              variant="ghost"
-              size="icon"
               onClick={async () => {
+                const newLiked = !comment.isLiked
                 setOptimistic({
                   action: 'update',
                   values: {
                     id: comment.id,
-                    isPinned: !comment.isPinned,
+                    isLiked: newLiked,
+                    likeCount: comment.likeCount + (newLiked ? 1 : -1),
                   },
                 })
-                await toggleCommentPin(comment.id, !comment.isPinned)
+                await toggleCommentLike(comment.id, newLiked)
                 await revalidateBrainstormComments()
               }}
             >
-              <PinIcon
-                className={comment.isPinned ? 'fill-foreground' : 'rotate-12'}
+              <HeartIcon
+                className={cn(
+                  comment.isLiked && 'fill-destructive stroke-destructive',
+                )}
               />
+              {formatter.number(comment.likeCount, {
+                compactDisplay: 'short',
+                notation: 'compact',
+                maximumFractionDigits: 1,
+              })}
             </Button>
-          </CanUserClient>
-          <CanUserClient
-            target="commentBrainstorm"
-            action="delete"
-            data={comment}
-          >
-            <RemoveBrainstormCommentButton
-              commentId={comment.id}
-              onDeleteComment={(id) =>
-                setOptimistic({ action: 'delete', values: { id } })
-              }
-            />
-          </CanUserClient>
+            <CanUserClient
+              target="commentBrainstorm"
+              action="pin"
+              data={comment}
+            >
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={async () => {
+                  setOptimistic({
+                    action: 'update',
+                    values: {
+                      id: comment.id,
+                      isPinned: !comment.isPinned,
+                    },
+                  })
+                  await toggleCommentPin(comment.id, !comment.isPinned)
+                  await revalidateBrainstormComments()
+                }}
+              >
+                <PinIcon
+                  className={comment.isPinned ? 'fill-foreground' : 'rotate-12'}
+                />
+              </Button>
+            </CanUserClient>
+            <CanUserClient
+              target="commentBrainstorm"
+              action="delete"
+              data={comment}
+            >
+              <RemoveBrainstormCommentButton
+                commentId={comment.id}
+                onDeleteComment={(id) =>
+                  setOptimistic({ action: 'delete', values: { id } })
+                }
+              />
+            </CanUserClient>
+          </div>
         </div>
         {replying && (
           <BrainstormCommentForm

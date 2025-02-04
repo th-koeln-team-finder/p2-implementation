@@ -30,7 +30,13 @@ import { BadgeInfoIcon, CloudUploadIcon, Loader2Icon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { z } from 'zod'
 
-export function BrainstormCreateForm() {
+type BrainstormCreateFormProps = {
+  popoverContainerId?: string
+}
+
+export function BrainstormCreateForm({
+  popoverContainerId,
+}: BrainstormCreateFormProps) {
   useSignals()
   const translateValidation = useTranslations('validation')
   const translate = useTranslations('brainstorm')
@@ -102,7 +108,7 @@ export function BrainstormCreateForm() {
 
       await revalidateBrainstorms()
       resetFileProgress()
-      router.push(`/brainstorm/${brainstormId}`)
+      setTimeout(() => router.replace(`/brainstorm/${brainstormId}`), 0)
     },
   })
 
@@ -110,7 +116,7 @@ export function BrainstormCreateForm() {
     <form.FormProvider>
       <div id="popoverref" />
       <form
-        className="flex flex-col gap-2"
+        className="flex flex-col gap-2 pb-2"
         onSubmit={async (e) => {
           e.stopPropagation()
           e.preventDefault()
@@ -174,7 +180,14 @@ export function BrainstormCreateForm() {
             <p className="mb-1 font-semibold">
               {translate('headingResources')}
             </p>
-            <BrainstormCreateResourceList uploadProgress={progressState} />
+            <BrainstormCreateResourceList
+              uploadProgress={progressState}
+              popoverContainerId={popoverContainerId}
+              onPopoverOpenChange={(open) => {
+                if (!navigationModal) return
+                navigationModal.setBlockBackNavigation(open)
+              }}
+            />
           </div>
         </form.FieldProvider>
 
