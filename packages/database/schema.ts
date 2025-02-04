@@ -50,15 +50,25 @@ export type UserSelect = typeof users.$inferSelect
 /**
  * Data for a single brainstorm
  */
-export const brainstorms = pgTable('brainstorm', {
-  id: uuid().primaryKey().notNull().defaultRandom(),
-  title: text('name').notNull(),
-  description: text('description'),
-  createdById: uuid('userId')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
-})
+export const brainstorms = pgTable(
+  'brainstorm',
+  {
+    id: uuid().primaryKey().notNull().defaultRandom(),
+    title: text('name').notNull(),
+    description: text('description'),
+    embedding: vector('embedding', { dimensions: 384 }).notNull(),
+    createdById: uuid('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
+  },
+  (table) => ({
+    embeddingIndex: index('brainstormEmbeddingIndex').using(
+      'hnsw',
+      table.embedding.op('vector_cosine_ops'),
+    ),
+  }),
+)
 export type BrainstormInsert = typeof brainstorms.$inferInsert
 export type BrainstormSelect = typeof brainstorms.$inferSelect
 
@@ -132,7 +142,7 @@ export const tags = pgTable(
     embedding: vector('embedding', { dimensions: 384 }).notNull(),
   },
   (table) => ({
-    embeddingIndex: index('embeddingIndex').using(
+    embeddingIndex: index('tagEmbeddingIndex').using(
       'hnsw',
       table.embedding.op('vector_cosine_ops'),
     ),

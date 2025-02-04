@@ -22,6 +22,20 @@ const db = drizzle({
 export function makeMultiple<T>(count: number, maker: () => T): T[] {
   return Array.from({ length: count }, maker)
 }
+export async function makeMultipleAsync<T>(
+  count: number,
+  maker: () => Promise<T>,
+): Promise<T[]> {
+  const data = [] as T[]
+  for (let i = 0; i < count; i++) {
+    const entry = await maker()
+    if (!entry) {
+      continue
+    }
+    data.push(entry)
+  }
+  return data
+}
 
 export async function seed() {
   console.log('### Seeding test data ###')
@@ -45,7 +59,9 @@ export async function seed() {
   await db.delete(Schema.brainstorms).execute()
 
   console.log('Creating 50 brainstorm records')
-  const brainstormData = makeMultiple(50, () => makeBrainstorm(userIds))
+  const brainstormData = await makeMultipleAsync(50, () =>
+    makeBrainstorm(userIds),
+  )
   const brainstorms = await db
     .insert(Schema.brainstorms)
     .values(brainstormData)

@@ -1,19 +1,25 @@
 import { faker } from '@faker-js/faker/locale/de'
+import { generateTextEmbeddings } from '@repo/semantic-search'
 import type { BrainstormInsert } from '../schema'
 
-export function makeBrainstorm(createdByIds: string[]): BrainstormInsert {
+export async function makeBrainstorm(
+  createdByIds: string[],
+): Promise<BrainstormInsert> {
+  const [text, description] = faker.helpers.arrayElement(richTextDescriptions)
+  console.log('Generatring embeddings for text: ', text)
+  const embedding = await generateTextEmbeddings(text)
   return {
     title: faker.book.title(),
-    description: faker.helpers.arrayElement(
-      richTextDescription.map((e) => JSON.stringify(e)),
-    ),
+    description,
+    embedding,
     createdById: faker.helpers.arrayElement(createdByIds),
     createdAt: faker.date.past(),
   }
 }
 
-export const richTextDescription = [
+const richTextDescriptionsRaw = [
   {
+    text: 'Just so you know, this is an important brainstorm',
     root: {
       children: [
         {
@@ -63,6 +69,7 @@ export const richTextDescription = [
     },
   },
   {
+    text: 'Okay lets collaborate... I want to create a real good app Strike point 1. lets just make it good',
     root: {
       children: [
         {
@@ -257,6 +264,7 @@ export const richTextDescription = [
     },
   },
   {
+    text: 'I HAVE AN IDEA that one day I can create a project',
     root: {
       children: [
         {
@@ -307,6 +315,7 @@ export const richTextDescription = [
     },
   },
   {
+    text: 'I want to create a project that can be used by everyone',
     root: {
       children: [
         {
@@ -674,3 +683,6 @@ export const richTextDescription = [
     },
   },
 ]
+const richTextDescriptions = richTextDescriptionsRaw.map(
+  ({ text, ...description }) => [text, JSON.stringify(description)],
+)
