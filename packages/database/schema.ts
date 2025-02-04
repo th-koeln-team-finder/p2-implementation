@@ -41,7 +41,7 @@ export const users = pgTable('user', {
   name: text('name').unique().notNull(),
   email: text('email').unique().notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
-  image: text('image'),
+  image: uuid().references((): AnyPgColumn => uploadedFiles.id, { onDelete: 'cascade' }),
   roles: pgRoles()
     .array()
     .notNull()
@@ -466,4 +466,17 @@ export const userProjectRelations = relations(userProjects, ({one}) => ({
     fields: [userProjects.projectId],
     references: [projects.id],
   }),
+}))
+
+export const userRelations = relations(users, ({ one, many }) => ({
+  skills: many(userSkills),
+  projects: many(userProjects),
+  projectSettings: many(userProjectSettings),
+  authenticators: many(authenticators),
+  ratings: many(userRatings),
+  follows: many(userFollows),
+  image: one(uploadedFiles, {
+    fields: [users.image],
+    references: [uploadedFiles.id],
+  })
 }))

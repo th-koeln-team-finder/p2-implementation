@@ -29,21 +29,24 @@ export async function getPresignedUploadUrl(
   }
 
   if (fileSize >= serverEnv.MAX_FILE_SIZE) {
-    return null
+    return [null]
   }
   if (!serverEnv.ALLOWED_FILE_TYPES.includes(fileType)) {
-    return null
+    return [null]
   }
 
-  await db.insert(Schema.uploadedFiles).values({
-    bucketPath,
-    fileType,
-    fileSize,
-    status: 'pending',
-    uploadedById: session.user.id,
-  })
+  const [file] = await db
+    .insert(Schema.uploadedFiles)
+    .values({
+      bucketPath,
+      fileType,
+      fileSize,
+      status: 'pending',
+      uploadedById: session.user.id,
+    })
+    .returning()
 
-  return generatePresignedUrl(bucketPath)
+  return [await generatePresignedUrl(bucketPath), file?.id] as const
 }
 
 export async function removeFileUpload(bucketPath: string) {

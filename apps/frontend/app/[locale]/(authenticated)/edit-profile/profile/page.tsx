@@ -4,6 +4,7 @@ import {UserSelect} from "@repo/database/schema";
 import {getUser} from "@/features/users/users.query";
 import ProfileForm from "@/features/users/components/ProfileForm";
 import {redirect} from "@/features/i18n/routing";
+import {serverEnv} from "@repo/env";
 
 export default async function EditProfile() {
   const translate = await getTranslations()
@@ -19,7 +20,7 @@ export default async function EditProfile() {
         {translate('users.settings.profile')}
       </h2>
 
-      <ProfileForm user={user}/>
+      <ProfileForm user={user} maxFileSize={serverEnv.MAX_FILE_SIZE}/>
     </section>
   )
 }

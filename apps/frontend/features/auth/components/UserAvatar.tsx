@@ -1,13 +1,13 @@
-import type { UserSelect } from '@repo/database/schema'
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@repo/design-system/components/ui/avatar'
-import { cn } from '@repo/design-system/lib/utils'
+'use client'
+
+import {Avatar, AvatarFallback, AvatarImage,} from '@repo/design-system/components/ui/avatar'
+import {cn} from '@repo/design-system/lib/utils'
+import {UserWithImage} from "@/features/users/users.types";
+import {getPublicFileUrl} from "@/features/file-upload/file-upload.actions";
+import {useEffect, useState} from "react";
 
 type UserAvatarProps = {
-  user?: UserSelect
+  user?: UserWithImage
   className?: string
   fallbackClassName?: string
 }
@@ -18,12 +18,22 @@ export function UserAvatar({
   fallbackClassName,
 }: UserAvatarProps) {
   const fallback = user ? user.name.slice(0, 2).toUpperCase() : 'AN'
+  const [userAvatarUrl, setUserAvatarUrl] = useState<string | null>()
+
+  useEffect(() => {
+    if (user?.image?.bucketPath) {
+      getPublicFileUrl(user.image.bucketPath).then(response =>{
+        setUserAvatarUrl(response[0])
+      })
+    }
+  })
+
   return (
     <Avatar className={cn('h-8 w-8', className)}>
-      {user?.image ? (
+      {userAvatarUrl ? (
         <AvatarImage
-          src={user.image}
-          alt={user.name ?? user.email ?? fallback}
+          src={userAvatarUrl}
+          alt={user?.name ?? user?.email ?? fallback}
         />
       ) : (
         <AvatarImage

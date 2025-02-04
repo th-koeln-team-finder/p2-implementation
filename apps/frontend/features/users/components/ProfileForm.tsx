@@ -3,7 +3,7 @@
 import {Label} from "@repo/design-system/components/ui/label";
 import {InputForm} from "@repo/design-system/components/ui/input";
 import {TextareaForm} from "@repo/design-system/components/ui/textarea";
-import {UserSelect} from "@repo/database/schema";
+import {UserInsert, UserSelect} from "@repo/database/schema";
 import {useTranslations} from "next-intl";
 import {revalidateUser, updateUserData} from "@/features/users/users.actions";
 import {SwitchForm} from "@repo/design-system/components/ui/switch";
@@ -15,10 +15,17 @@ import {FieldError, FormError} from "@repo/design-system/components/FormErrors";
 import {LoaderCircleIcon, SaveIcon} from "lucide-react";
 import {Button} from "@repo/design-system/components/ui/button";
 import {checkUsernameTaken} from "@/features/users/users.query";
+import {FileListForm, FilePreviewsForm, FileUploadForm} from "@repo/design-system/components/custom/file-upload";
+import {useFileUpload} from "@/features/file-upload/file-upload.hooks";
+import {UserAvatar} from "@/features/auth/components/UserAvatar";
+import {removeFileUpload} from "@/features/file-upload/file-upload.actions";
+import {UserWithImage} from "@/features/users/users.types";
 
-export default function ProfileForm({user}: { user: UserSelect }) {
+
+export default function ProfileForm({user, maxFileSize}: { user: UserWithImage, maxFileSize: number }) {
   const t = useTranslations()
   const translateError = useTranslations('validation')
+  const [progressState, uploadFile, resetFileProgress] = useFileUpload()
 
   useSignals()
   const form = useForm({
@@ -31,10 +38,36 @@ export default function ProfileForm({user}: { user: UserSelect }) {
       location: user.location || '',
       isPublic: user.isPublic,
       allowInvites: user.allowInvites,
-      image: user.image,
+      image: [] as File[],
     },
     onSubmit: async (values) => {
-      await updateUserData(values).catch((err) => {
+      const file = values.image[0]
+      let parsedValues: Partial<UserInsert> = {
+        id: values.id,
+        name: values.name,
+        bio: values.bio,
+        url: values.url,
+        location: values.location,
+        isPublic: values.isPublic,
+        allowInvites: values.allowInvites,
+      }
+
+      if (file) {
+        if (file.size >= maxFileSize) {
+          return
+        }
+        const uploadedFile = await uploadFile(`avatar-${values.id}`, file.name, file)
+        if (uploadedFile) {
+          parsedValues = {
+            ...values,
+            image: uploadedFile,
+          }
+        }
+        if (user.image) {
+          await removeFileUpload(user.image?.bucketPath)
+        }
+      }
+      await updateUserData(parsedValues).catch((err) => {
         console.error('Error updating user data', err)
       })
       await revalidateUser().catch((err) => {
@@ -174,15 +207,39 @@ export default function ProfileForm({user}: { user: UserSelect }) {
           </Button>
         </div>
         <div className="mb-4 w-1/3">
-          {/*<form.FieldProvider
+          <form.FieldProvider
             name="image"
+            validator={
+              z
+                .any()
+                .refine(
+                  (files: File[]) => files.some((file) => file.size < 10485760),
+                  'A file is too large',
+                )
+            }
           >
             <Label htmlFor="image" className="inline-block mb-2">{t('users.settings.profilePicture')}</Label>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col items-center gap-4">
               <UserAvatar user={user} className="w-40 h-40"/>
-              <InputForm type="file" name="image" className="mb-4 w-40"/>
+              <div>
+                <FileUploadForm
+                  accepts="image/*,application/pdf"
+                  placeholder={
+                    <FilePreviewsForm
+                      progressState={progressState}
+                      maxFileSize={maxFileSize}
+                    />
+                  }
+                />
+                <FieldError/>
+                <FileListForm
+                  className="my-2"
+                  progressState={progressState}
+                  maxFileSize={maxFileSize}
+                />
+              </div>
             </div>
-          </form.FieldProvider>*/}
+          </form.FieldProvider>
         </div>
       </form.FormProvider>
     </form>
