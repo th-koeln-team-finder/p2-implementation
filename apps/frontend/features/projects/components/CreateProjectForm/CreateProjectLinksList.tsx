@@ -6,10 +6,8 @@ import { useFieldContext } from '@formsignals/form-react'
 import { ZodAdapter } from '@formsignals/validation-adapter-zod'
 import { useSignals } from '@preact/signals-react/runtime'
 import { FieldError } from '@repo/design-system/components/FormErrors'
-import {
-  FilePreviewsForm,
-  FileUploadForm,
-} from '@repo/design-system/components/custom/file-upload'
+import { FileInlinePreviewsForm } from '@repo/design-system/components/custom/file-inline-previews-form'
+import { FileUploadForm } from '@repo/design-system/components/custom/file-upload'
 import { Button } from '@repo/design-system/components/ui/button'
 import { InputForm } from '@repo/design-system/components/ui/input'
 import { Label } from '@repo/design-system/components/ui/label'
@@ -111,7 +109,7 @@ export function CreateProjectLinksList({
                 <FileUploadForm
                   accepts="image/jpeg,image/jpg,image/png,application/pdf"
                   placeholder={
-                    <FilePreviewsForm
+                    <FileInlinePreviewsForm
                       progressState={progressState}
                       maxFileSize={maxFileSize}
                       placeholder={undefined}
