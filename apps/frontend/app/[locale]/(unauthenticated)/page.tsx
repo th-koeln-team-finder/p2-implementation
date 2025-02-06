@@ -28,20 +28,6 @@ export default async function Home() {
             </ImageCardFooter>
           </ImageCard>
         </div>
-    <div className="container mx-auto my-4 max-w-screen-xl px-4">
-      <div className="mb-6 flex flex-col gap-4 lg:flex-row">
-        <div className="w-full lg:w-1/2">
-          <ImageCard imageUrl="/images/find-a-project-2.jpg">
-            <ImageCardTitle>{translate('home.cardFind.title')}</ImageCardTitle>
-            <ImageCardContent>
-              <p>{translate('home.cardFind.content')}</p>
-            </ImageCardContent>
-            <ImageCardFooter>
-              <Link href="/find-project" className="mx-auto">
-                <Button>{translate('home.cardFind.button')}</Button>
-              </Link>
-            </ImageCardFooter>
-          </ImageCard>
         <div className="w-full lg:w-1/2">
           <ImageCard imageUrl="/images/create-a-project.jpg">
             <ImageCardTitle>
