@@ -78,7 +78,7 @@ export function WysiwygEditor({
           }
           placeholder={
             placeholder ? (
-              <p className="pointer-events-none absolute top-1 left-3 text-muted-foreground">
+              <p className="pointer-events-none absolute top-2 left-3 text-muted-foreground text-sm">
                 {placeholder}
               </p>
             ) : undefined

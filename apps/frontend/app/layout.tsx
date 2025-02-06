@@ -1,4 +1,5 @@
 import '@repo/design-system/styles/globals.css'
+import { QueryClientProvider } from '@/features/general/queryClient'
 import Header from '@/features/header/header'
 import { DesignSystemProvider } from '@repo/design-system'
 import type { Metadata } from 'next'
@@ -46,9 +47,11 @@ export default function RootLayout({
         className={`${rubik.variable} ${sairaCondensed.variable} flex flex-col bg-background font-sans text-foreground antialiased`}
       >
         <Header />
-        <NuqsAdapter>
-          <DesignSystemProvider>{children}</DesignSystemProvider>
-        </NuqsAdapter>
+        <QueryClientProvider>
+          <NuqsAdapter>
+            <DesignSystemProvider>{children}</DesignSystemProvider>
+          </NuqsAdapter>
+        </QueryClientProvider>
       </body>
     </html>
   )

@@ -8,25 +8,27 @@ import { cn } from '../../lib/utils'
 import { useFieldContext } from '@formsignals/form-react'
 import { useComputed } from '@preact/signals-react'
 import type { SelectProps, SelectValueProps } from '@radix-ui/react-select'
-import {util} from "zod";
-import Omit = util.Omit;
+import { useSignals } from '@preact/signals-react/runtime'
 
 const Select = SelectPrimitive.Root
 
 type SelectFormProps = Omit<SelectProps, 'value' | 'onValueChange'> & {
-  className?: string,
-  valueProps?: Omit<SelectValueProps, 'className'>,
-  onValueChange?: (value: string) => void,
+  className?: string
+  valueProps?: Omit<SelectValueProps, 'className'>
+  onValueChange?: (value: string) => void
   value?: string
+  triggerClassName?: string
 }
 const SelectForm = ({
-                      children,
-                      className,
-                      valueProps,
-                      onValueChange,
-                      value,
-                      ...props
-                    }: SelectFormProps) => {
+  children,
+  className,
+  valueProps,
+  onValueChange,
+  value,
+  triggerClassName,
+  ...props
+}: SelectFormProps) => {
+  useSignals()
   const field = useFieldContext()
   const errorClassName = useComputed(
     () => !field.isValid.value && 'border-destructive',
@@ -44,7 +46,7 @@ const SelectForm = ({
       onValueChange={handleChange}
       {...props}
     >
-      <SelectTrigger>
+      <SelectTrigger className={triggerClassName}>
         <SelectValue className={classNames} {...valueProps} />
       </SelectTrigger>
       {children}
@@ -114,9 +116,9 @@ SelectScrollDownButton.displayName =
 
 const SelectContent = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
->(({ className, children, position = 'popper', ...props }, ref) => (
-  <SelectPrimitive.Portal>
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content> & {containerId?: string}
+>(({ className, children, containerId, position = 'popper', ...props }, ref) => (
+  <SelectPrimitive.Portal container={containerId ? document.getElementById("popoverref") : undefined}>
     <SelectPrimitive.Content
       ref={ref}
       className={cn(

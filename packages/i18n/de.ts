@@ -11,6 +11,15 @@ export const de: Language = {
     remove: 'Entfernen',
   },
   components: {
+    wysiwyg: {
+      heading1: 'Überschrift 1',
+      heading2: 'Überschrift 2',
+      heading3: 'Überschrift 3',
+      heading4: 'Überschrift 4',
+      heading5: 'Überschrift 5',
+      heading6: 'Überschrift 6',
+      paragraph: 'Absatz',
+    },
     fileUpload: {
       placeholderText:
         'Ziehen Sie eine Datei hierher oder klicken Sie, um zu durchsuchen',
@@ -138,7 +147,32 @@ export const de: Language = {
   },
   brainstorm: {
     makeActionButton: 'Erstelle das Projekt',
+    deleteActionButton: 'Löschen',
     headingResources: 'Links & andere Ressourcen',
+    emptyResources: 'Keine Links oder Ressourcen verfügbar...',
+    createButton: 'Brainstorming starten',
+    createFormTitle: 'Brainstorm erstellen',
+    createForm: {
+      labelTitle: 'Titel',
+      placeholderTitle: 'Titel hier eingeben...',
+      labelDescription: 'Beschreibung',
+      placeholderDescription: 'Beschreibung hier eingeben...',
+      labelTags: 'Tags',
+      placeholderTags: 'Tags hinzufügen...',
+      loadingTags: 'Tags werden geladen...',
+      emptyTags: 'Keine Tags gefunden',
+      addResourceButton: 'Ressource hinzufügen',
+      resourceTypeSelectLink: 'https://',
+      resourceTypeSelectFile: 'Datei',
+      resourceLabelName: 'Ressourcenname',
+      resourceLabelData: 'Ressourcendaten',
+      resourcePlaceholderName: 'Namen eingeben...',
+      resourcePlaceholderLink: 'URL eingeben...',
+      resourcePlaceholderFile: 'Datei auswählen...',
+      whiteboardNotice:
+        'Sobald Sie Ihren Brainstorm veröffentlicht haben, können Sie am Whiteboard arbeiten.',
+      publishButton: 'Brainstorm veröffentlichen',
+    },
     comments: {
       loginCommentWarning: 'Sie müssen sich anmelden, um zu kommentieren',
       empty: 'Es gibt noch keine Kommentare',
@@ -151,6 +185,9 @@ export const de: Language = {
       sortOptionMostPopular: 'Beliebteste',
       reply: 'Antworten',
     },
+  },
+  tag: {
+    createNewTag: "Neu: ''{tagName}''",
   },
   help: {
     title: 'Hilfe',
@@ -212,6 +249,9 @@ export const de: Language = {
     number: 'Dieses Feld muss eine Zahl sein',
     positive: 'Dieses Feld muss eine positive Zahl sein',
     date: 'Dieses Feld muss ein gültiges Datum sein',
+    url: 'Dieses Feld muss eine gültige URL sein',
+    fileIsTooLarge: 'Datei ist zu groß',
+    wrongFileType: 'Dieser Dateityp wird nicht unterstützt',
   },
   errors: {
     genericPageError: 'Oops, da ist etwas schiefgelaufen',

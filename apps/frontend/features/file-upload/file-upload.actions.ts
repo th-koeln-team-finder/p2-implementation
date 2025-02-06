@@ -28,14 +28,14 @@ export async function getPresignedUploadUrl(
     })
   }
 
-  if (fileSize >= serverEnv.MAX_FILE_SIZE) {
+  if (fileSize >= serverEnv.NEXT_PUBLIC_MAX_FILE_SIZE) {
     return [null, null]
   }
-  if (!serverEnv.ALLOWED_FILE_TYPES.includes(fileType)) {
+  if (!serverEnv.NEXT_PUBLIC_ALLOWED_FILE_TYPES.includes(fileType)) {
     return [null, null]
   }
 
-  const uplodadedFile = await db
+  const [file] = await db
     .insert(Schema.uploadedFiles)
     .values({
       bucketPath,
@@ -46,7 +46,7 @@ export async function getPresignedUploadUrl(
     })
     .returning()
 
-  return [await generatePresignedUrl(bucketPath), uplodadedFile[0].id] as const
+  return [await generatePresignedUrl(bucketPath), file?.id] as const
 }
 
 export async function removeFileUpload(bucketPath: string) {

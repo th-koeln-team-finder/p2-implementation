@@ -10,7 +10,8 @@ export function useFileUpload() {
 
   const uploadFile = useCallback(
     async (bucketPrefix: string, filename: string, file: File) => {
-      const bucketPath = `${bucketPrefix}/${filename}`
+      const originalFileEnding = file.name.split('.').pop()
+      const bucketPath = `${bucketPrefix}/${filename}.${originalFileEnding}`
       const [uploadUrl, fileId] = await getPresignedUploadUrl(
         bucketPath,
         file.type,
@@ -65,8 +66,9 @@ export function useFileUpload() {
     [],
   )
 
-  const resetFileProgress = useCallback((filename: string) => {
+  const resetFileProgress = useCallback((filename?: string) => {
     setProgressState((prevState) => {
+      if (!filename) return {}
       const newState = { ...prevState }
       delete newState[filename]
       return newState
