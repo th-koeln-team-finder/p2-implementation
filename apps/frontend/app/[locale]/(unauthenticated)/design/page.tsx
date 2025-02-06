@@ -145,7 +145,7 @@ export default async function Home() {
           <RemoveFileButton file={file} />
         </div>
       ))}
-      <TestFileUploadForm maxFileSize={serverEnv.MAX_FILE_SIZE} />
+      <TestFileUploadForm maxFileSize={serverEnv.NEXT_PUBLIC_MAX_FILE_SIZE} />
       <CanUserServer target="test" action="view">
         <div className="flex flex-row justify-between gap-2 bg-card align-center">
           <h3 className="mt-4 mb-2 font-head text-3xl">
