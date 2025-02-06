@@ -19,6 +19,11 @@ export const getBrainstorms = cache(
             tag: true,
           },
         },
+        resources: {
+          with: {
+            file: true,
+          },
+        },
       },
     })
   },
@@ -42,6 +47,11 @@ export const getSingleBrainstorm = cache(
         tags: {
           with: {
             tag: true,
+          },
+        },
+        resources: {
+          with: {
+            file: true,
           },
         },
       },

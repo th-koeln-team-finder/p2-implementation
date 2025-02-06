@@ -2,7 +2,6 @@
 
 import {
   AssetRecordType,
-  InstancePresenceRecordType,
   type TLAssetStore,
   type TLBookmarkAsset,
   Tldraw,
@@ -41,24 +40,6 @@ export function SyncedWhiteboard({ className, roomId, user }: WhiteboardProps) {
         // @ts-expect-error - this is a hack to make the editor available in the console
         window.editor = editor
         editor.registerExternalAssetHandler('url', unfurlBookmarkUrl)
-
-        const peerPresence = InstancePresenceRecordType.create({
-          id: InstancePresenceRecordType.createId(editor.store.id),
-          currentPageId: editor.getCurrentPageId(),
-          userId: 'user-id',
-          userName: 'Testing it',
-          cursor: {
-            x: 0,
-            y: 0,
-            type: 'default',
-            rotation: 0,
-          },
-          chatMessage: 'testing this chat message',
-        })
-
-        editor.store.mergeRemoteChanges(() => {
-          editor.store.put([peerPresence])
-        })
       }}
     />
   )
