@@ -41,7 +41,7 @@ services:
       MINIO_PORT: 9000
       MINIO_ACCESS_KEY: collaborize-access
       MINIO_SECRET_KEY: collaborize-secret
-       NEXT_PUBLIC_MAX_FILE_SIZE: 10485760
+      NEXT_PUBLIC_MAX_FILE_SIZE: 10485760
       NEXT_PUBLIC_ALLOWED_FILE_TYPES: image/jpeg,image/jpg,image/png,application/pdf
     ports:
       - '3000:3000'
