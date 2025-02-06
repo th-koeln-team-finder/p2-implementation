@@ -1,11 +1,6 @@
 'use client'
-import type { ProjectSkillSelect, SkillSelect } from '@repo/database/schema'
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
-
-type PopulatedProjectSkill = ProjectSkillSelect & {
-  skill: SkillSelect
-}
 
 // @ts-ignore
 export function SkillScale({
@@ -43,7 +38,6 @@ export function SkillScale({
     projectSkill.id = projectSkill.id ? projectSkill.id : skillIdCounter++
   })
 
-
   const maxHeight = showAll
     ? `${projectSkills.length * itemHeight}px`
     : `${6 * itemHeight}px`
@@ -77,7 +71,7 @@ export function SkillScale({
             <div className="flex items-center justify-center gap-2.5 py-px">
               {[...Array(5)].map((_, i) => (
                 <div
-                  key={i}
+                  key={projectSkill.id}
                   className={`h-2 w-2 rounded-full ${i < projectSkill.level ? 'bg-primary' : `${isDarkMode ? 'bg-white' : 'bg-primary/20'}`}`}
                 />
               ))}

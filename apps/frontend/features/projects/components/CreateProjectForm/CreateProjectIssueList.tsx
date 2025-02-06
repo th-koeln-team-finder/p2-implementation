@@ -5,22 +5,14 @@ import { useFieldContext } from '@formsignals/form-react'
 import type { ZodAdapter } from '@formsignals/validation-adapter-zod'
 import { useSignals } from '@preact/signals-react/runtime'
 import { FieldError } from '@repo/design-system/components/FormErrors'
-import type { LexicalEditorRef } from '@repo/design-system/components/WysiwygEditor'
 import { Button } from '@repo/design-system/components/ui/button'
 import { InputForm } from '@repo/design-system/components/ui/input'
 import { Label } from '@repo/design-system/components/ui/label'
 import { TextareaForm } from '@repo/design-system/components/ui/textarea'
 import { MinusIcon, PlusIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { z } from 'zod'
 
-type CreateProjectIssueListProps = {
-  editorRef: LexicalEditorRef
-}
-
-export function CreateProjectIssueList({
-  editorRef,
-}: CreateProjectIssueListProps) {
+export function CreateProjectIssueList() {
   useSignals()
   const field = useFieldContext<
     CreateProjectFormLinks,
@@ -31,16 +23,12 @@ export function CreateProjectIssueList({
   >()
 
   const t = useTranslations('createProjects')
-  const translateError = useTranslations('validation')
-
   return (
     <>
       {field.data.value.map((issue, index) => (
         <div key={issue.key} className="flex flex-col gap-4 lg:flex-row">
           <div className="w-full lg:w-1/2">
-            <field.SubFieldProvider
-              name={`${index}.title`}
-            >
+            <field.SubFieldProvider name={`${index}.title`}>
               <Label>{t('issues.title')}</Label>
               <InputForm placeholder={t('issues.titlePlaceholder')} />
               <FieldError />
@@ -51,9 +39,7 @@ export function CreateProjectIssueList({
             <Label>{t('issues.description')}</Label>
             <div className="flex w-full flex-col justify-between gap-4 lg:flex-row">
               <div className="flex w-full flex-col">
-                <field.SubFieldProvider
-                  name={`${index}.description`}
-                >
+                <field.SubFieldProvider name={`${index}.description`}>
                   <TextareaForm placeholder={t('issues.descPlaceholder')} />
                   <FieldError />
                 </field.SubFieldProvider>

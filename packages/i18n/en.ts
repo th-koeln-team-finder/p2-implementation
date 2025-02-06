@@ -39,7 +39,7 @@ export const en = {
     location: 'Location',
     join: 'Join the team',
     links: 'Links and other resources',
-    phase:'phase',
+    phase: 'phase',
 
     issueList: {
       showMore: 'Show more',
@@ -63,7 +63,7 @@ export const en = {
     },
   },
   createProjects: {
-    fieldRequired:'This field is required',
+    fieldRequired: 'This field is required',
     name: 'Projektname',
     namePlaceholder: 'Title of the project...',
     phase: 'Project Phase',
@@ -121,7 +121,7 @@ export const en = {
       addSkill: 'Add Skill',
     },
     stepper: {
-      main:'Main',
+      main: 'Main',
       skills: 'Skills',
       timeManagement: 'Time Management',
       details: 'Details',

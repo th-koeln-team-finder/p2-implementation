@@ -19,7 +19,7 @@ export function WysiwygRenderer({
   value,
   renderAsString,
 }: WysiwygRendererProps) {
-    console.log(value)
+  console.log(value)
 
   return (
     <LexicalComposer

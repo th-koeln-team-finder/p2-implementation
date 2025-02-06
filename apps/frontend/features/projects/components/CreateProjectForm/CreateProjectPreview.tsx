@@ -1,8 +1,8 @@
 import ImageCarousel from '@/features/projects/components/ImageCarousel'
-import { Resources } from '@/features/projects/components/Resources'
 import { ProjectIssuesList } from '@/features/projects/components/ProjectIssuesList'
 import { ProjectTimetable } from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
+import { Resources } from '@/features/projects/components/Resources'
 import { SkillScale } from '@/features/projects/components/SkillScale'
 import TeamMembers from '@/features/projects/components/TeamMembers'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
@@ -11,14 +11,10 @@ import { useSignals } from '@preact/signals-react/runtime'
 import { Weekdays } from '@repo/database/schema'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 
-
-
 export function CreateProjectPreview() {
   useSignals()
   const form = useFormContext<CreateProjectFormValues>()
   const formValues = form.json.value
-
-
 
   const timetabledata: { description: string; weekdays: string }[] = [
     { description: formValues.ttMon, weekdays: Weekdays.monday },

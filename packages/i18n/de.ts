@@ -42,7 +42,7 @@ export const de: Language = {
     location: 'Standort/Treffpunkt',
     join: 'Team beitreten',
     links: 'Links und andere Resourcen',
-    phase:'Phase',
+    phase: 'Phase',
 
     issueList: {
       showMore: 'mehr anzeigen',
@@ -64,7 +64,6 @@ export const de: Language = {
     team: {
       title: 'Team-Mitglieder',
     },
-
   },
   createProjects: {
     fieldRequired: 'Diese Eingabe ist erforderlich',
@@ -124,7 +123,7 @@ export const de: Language = {
       addSkill: 'Skill hinzufügen',
     },
     stepper: {
-      main:'Basis',
+      main: 'Basis',
       skills: 'Fähigkeiten',
       timeManagement: 'Zeitplan',
       details: 'Details',

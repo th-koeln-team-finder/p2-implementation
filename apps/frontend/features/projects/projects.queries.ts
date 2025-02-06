@@ -1,5 +1,5 @@
 import { db } from '@repo/database'
-import {projects, uploadedFiles} from '@repo/database/schema'
+import { projects } from '@repo/database/schema'
 import { eq } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
 
@@ -19,10 +19,9 @@ export const getProjectItem = cache(
         issues: true,
 
         resources: {
-
-            with: {
-                uploadedFiles: true,
-            },
+          with: {
+            uploadedFiles: true,
+          },
         },
         projectSkills: {
           with: {

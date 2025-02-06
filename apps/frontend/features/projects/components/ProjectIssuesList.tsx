@@ -50,18 +50,14 @@ export function ProjectIssuesList(
   const translate = useTranslations()
   const [showAll, setShowAll] = useState(false)
   const toggleShowAll = () => setShowAll(!showAll)
-  if (!Array.isArray(listOfIssues) || listOfIssues.length === 0)
+  if (!Array.isArray(listOfIssues) || listOfIssues.length === 0) return ''
 
-    return(
-  ""
-    )
+  const [itemHeight, setItemHeight] = useState(0)
+  const itemRef = useRef<HTMLDivElement>(null)
 
-    const [itemHeight, setItemHeight] = useState(0)
-    const itemRef = useRef<HTMLDivElement>(null)
-
-    // Berechne die Höhe eines Items, sobald das DOM geladen ist
-    useEffect(() => {
-      if (itemRef.current) {
+  // Berechne die Höhe eines Items, sobald das DOM geladen ist
+  useEffect(() => {
+    if (itemRef.current) {
       setItemHeight(itemRef.current.offsetHeight)
     }
   })

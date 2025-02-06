@@ -22,7 +22,7 @@ export async function getUserProjects(
   limit: number,
   offset: number,
 ) {
-  const previouslyWorkedOn: any[] = []
+  const previouslyWorkedOn = []
   for (let i = offset; i < offset + limit; i++) {
     previouslyWorkedOn.push({
       name: `Project ${i + 1}`,

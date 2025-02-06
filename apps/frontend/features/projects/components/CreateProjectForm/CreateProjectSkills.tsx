@@ -35,8 +35,8 @@ export function CreateProjectSkills() {
             <field.SubFieldProvider
               name={`${index}.name`}
               validator={z
-                  .string({ required_error: translateError('required') })
-                      .min(1, translateError('minLengthX', { amount: 1 }))}
+                .string({ required_error: translateError('required') })
+                .min(1, translateError('minLengthX', { amount: 1 }))}
             >
               <Label>{t('skills.skill')}</Label>
               <InputForm placeholder={t('skills.skillPlaceholder')} />

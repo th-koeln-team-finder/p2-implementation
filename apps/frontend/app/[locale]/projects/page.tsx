@@ -1,5 +1,4 @@
-import FindAProject from "@/app/[locale]/find-a-project/page";
-import {ProjectItemList} from "@/features/projects/components/ProjectItemList";
+import FindAProject from '@/app/[locale]/find-a-project/page'
 
 export default function Projects() {
   return (

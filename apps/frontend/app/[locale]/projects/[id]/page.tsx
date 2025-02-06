@@ -1,36 +1,37 @@
 import ImageCarousel from '@/features/projects/components/ImageCarousel'
-import { Resources } from '@/features/projects/components/Resources'
 import { ProjectIssuesList } from '@/features/projects/components/ProjectIssuesList'
 import { ProjectTimetable } from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
+import { Resources } from '@/features/projects/components/Resources'
 import { SkillScale } from '@/features/projects/components/SkillScale'
 import TeamMembers from '@/features/projects/components/TeamMembers'
 import { Toolbar } from '@/features/projects/components/Toolbar'
 import { getProjectItem } from '@/features/projects/projects.queries'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
-import {getTranslations} from "next-intl/server";
-import {printTreeView} from "next/dist/build/utils";
-
+import { getTranslations } from 'next-intl/server'
 
 export default async function Projects({
   params,
 }: Readonly<{
   params: Promise<{ id: string }>
 }>) {
-
   const { id } = await params
   const project = await getProjectItem(id)
-  const translations = await getTranslations("projects")
+  const translations = await getTranslations('projects')
   if (!project) {
     return <div>Project not found</div>
   }
-
 
   return (
     <div className="mx-auto inline-flex w-full max-w-screen-xl flex-col items-center justify-start gap-12 p-4">
       <div className="inline-flex flex-col items-start justify-start gap-8 self-stretch">
         <div className="inline-flex items-start justify-between self-stretch">
-          <ProjectTitle title={project.name} subtitle={project.phase? translations("phase")+project.phase : ""} />
+          <ProjectTitle
+            title={project.name}
+            subtitle={
+              project.phase ? translations('phase') + project.phase : ''
+            }
+          />
           <Toolbar />
         </div>
         <div className="relative w-full">
@@ -42,7 +43,6 @@ export default async function Projects({
               <SkillScale projectSkills={project.projectSkills} />
             </div>
           </div>
-
 
           <div className="relative mb-16 flex w-full flex-col gap-8">
             {project.description && (
@@ -62,9 +62,7 @@ export default async function Projects({
               <ProjectIssuesList listOfIssues={project.issues} />
             </div>
             <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
-              <Resources
-                resources={project.resources}
-              />
+              <Resources resources={project.resources} />
             </div>
           </div>
         </div>

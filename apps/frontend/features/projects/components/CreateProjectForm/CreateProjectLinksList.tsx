@@ -33,9 +33,7 @@ export function CreateProjectLinksList({
     'resources',
     typeof ZodAdapter
   >()
-  const [resourceFormats, setResourceFormats] = useState<(boolean | null)[]>(
-    [],
-  )
+  const [resourceFormats, setResourceFormats] = useState<(boolean | null)[]>([])
 
   const handleFormatChange = (index: number, value: boolean) => {
     const updatedFormats = [...resourceFormats]
@@ -97,7 +95,7 @@ export function CreateProjectLinksList({
                 name={`${index}.href`}
                 validator={z
                   .string({ required_error: translateError('required') })
-                      .min(1, translateError('minLengthX', { amount: 1 }))}
+                  .min(1, translateError('minLengthX', { amount: 1 }))}
                 validatorOptions={{
                   validateOnChangeIfTouched: true,
                 }}
