@@ -66,3 +66,7 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
+
+body[data-scroll-locked] {
+  padding-right: 0 !important;
+}

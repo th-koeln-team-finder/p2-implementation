@@ -1,0 +1,231 @@
+// inspired by https://github.com/shadcn-ui/ui/issues/3647 and https://github.com/Balastrong/shadcn-autocomplete-demo/blob/main/src/components/autocomplete.tsx
+
+import {
+  unSignalifyValueSubscribed,
+  useFieldContext,
+} from '@formsignals/form-react'
+import { useComputed } from '@preact/signals-react'
+import { useSignals } from '@preact/signals-react/runtime'
+import { Command as CommandPrimitive } from 'cmdk'
+import { Check, Loader2Icon, SearchXIcon, XIcon } from 'lucide-react'
+import { useState } from 'react'
+import { Badge } from '../../components/ui/badge'
+import { Button } from '../../components/ui/button'
+import type { InputProps } from '../../components/ui/input'
+import { cn } from '../../lib/utils'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+} from '../ui/command'
+import { Popover, PopoverAnchor, PopoverContent } from '../ui/popover'
+
+type AutoCompleteTagInputProps<T extends string> = Omit<
+  InputProps,
+  'value' | 'onChange'
+> & {
+  enableCommaSeparation?: boolean
+  values: { value: T; label: string }[]
+  onValuesChange: (values: { value: T; label: string }[]) => void
+  searchInput: string
+  onSearchInputChange: (value: string) => void
+  data: { value: T; label: string }[]
+  isLoading?: boolean
+  emptyMessage?: string
+  loadingMessage?: string
+  placeholder?: string
+  clearAfterSelect?: boolean
+  containerId?: string
+  onOpenChange?: (open: boolean) => void
+}
+
+export function AutoCompleteTagInput<T extends string>({
+  values,
+  onValuesChange,
+  searchInput,
+  onSearchInputChange,
+  data,
+  isLoading,
+  emptyMessage,
+  loadingMessage,
+  enableCommaSeparation,
+  className,
+  clearAfterSelect,
+  containerId,
+  onOpenChange,
+  ...props
+}: AutoCompleteTagInputProps<T>) {
+  const [open, setOpen] = useState(false)
+
+  const onSelectItem = (inputValue: { value: T; label: string }) => {
+    if (values.some((value) => value.value === inputValue.value)) {
+      onValuesChange(values.filter((value) => value.value !== inputValue.value))
+    } else {
+      onValuesChange([...values, inputValue])
+    }
+    if (clearAfterSelect) {
+      onSearchInputChange('')
+    }
+  }
+
+  return (
+    <div className="flex items-center">
+      <Popover
+        open={open}
+        onOpenChange={(open) => {
+          setOpen(open)
+          onOpenChange?.(open)
+        }}
+      >
+        <Command shouldFilter={false}>
+          <PopoverAnchor asChild>
+            <div
+              className={cn(
+                'relative flex min-h-10 w-full flex-wrap gap-2 rounded-md border border-input py-2 pr-8 pl-3 text-sm ring-offset-primary disabled:cursor-not-allowed disabled:opacity-50 has-[:focus-visible]:outline-none has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-neutral-950 has-[:focus-visible]:ring-offset-2',
+                className,
+              )}
+            >
+              {isLoading && (
+                <Loader2Icon className="absolute top-2 right-2 animate-spin" />
+              )}
+              {values.map((option) => (
+                <Badge key={option.value} variant="tag">
+                  {option.label}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="ml-2 h-3 w-3"
+                    onClick={() => onSelectItem(option)}
+                  >
+                    <XIcon className="w-3" />
+                  </Button>
+                </Badge>
+              ))}
+              <CommandPrimitive.Input
+                asChild
+                value={searchInput}
+                onValueChange={(e) =>
+                  onSearchInputChange(
+                    e.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+                  )
+                }
+                onMouseDown={() => {
+                  const newOpen = !!searchInput || !open
+                  setOpen(newOpen)
+                  onOpenChange?.(newOpen)
+                }}
+                onFocus={() => {
+                  setOpen(true)
+                  onOpenChange?.(true)
+                }}
+              >
+                <input
+                  className="flex-1 bg-transparent outline-none placeholder:text-muted-foreground"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Escape') {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      setOpen(false)
+                      onOpenChange?.(false)
+                      return
+                    }
+                    if (e.key === ',' && enableCommaSeparation) {
+                      e.preventDefault()
+                      if (!data.length) {
+                        return
+                      }
+                      onSelectItem(data[0])
+                    }
+                    if (e.key !== 'Backspace' || !!searchInput.length) {
+                      return
+                    }
+                    e.preventDefault()
+                    onValuesChange(values.slice(0, -1))
+                  }}
+                  {...props}
+                />
+              </CommandPrimitive.Input>
+            </div>
+          </PopoverAnchor>
+          {!open && <CommandList aria-hidden="true" className="hidden" />}
+          <PopoverContent
+            asChild
+            containerId={containerId}
+            onOpenAutoFocus={(e) => e.preventDefault()}
+            onInteractOutside={(e) => {
+              if (
+                !(e.target instanceof Element) ||
+                !e.target.hasAttribute('cmdk-input')
+              ) {
+                return
+              }
+              e.preventDefault()
+            }}
+            className="w-[--radix-popover-trigger-width] p-0"
+          >
+            <CommandList>
+              {data.length > 0 && (
+                <CommandGroup>
+                  {data.map((option) => (
+                    <CommandItem
+                      disabled={isLoading}
+                      key={option.value}
+                      value={option.value}
+                      onMouseDown={(e) => e.preventDefault()}
+                      onSelect={() => onSelectItem(option)}
+                    >
+                      {option.label}
+                      <Check
+                        className={cn(
+                          'mr-2 ml-auto h-4 w-4',
+                          values.some((o) => o.value === option.value)
+                            ? 'opacity-100'
+                            : 'opacity-0',
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              )}
+              {!isLoading && (
+                <CommandEmpty>
+                  <div className="flex flex-row items-center justify-center gap-2">
+                    <SearchXIcon />
+                    <span className="text-muted-foreground text-sm">
+                      {emptyMessage}
+                    </span>
+                  </div>
+                </CommandEmpty>
+              )}
+            </CommandList>
+          </PopoverContent>
+        </Command>
+      </Popover>
+    </div>
+  )
+}
+
+export function AutoCompleteTagInputForm<T extends string>({
+  className,
+  ...props
+}: Omit<AutoCompleteTagInputProps<T>, 'values' | 'onValuesChange'>) {
+  useSignals()
+  const field = useFieldContext<string[], ''>()
+  const values = unSignalifyValueSubscribed(field.data)
+
+  const errorClassName = useComputed(
+    () => !field.isValid.value && 'border-destructive',
+  )
+  const classNames = cn(className, errorClassName.value)
+
+  return (
+    <AutoCompleteTagInput
+      values={values}
+      onValuesChange={field.handleChange}
+      className={classNames}
+      {...props}
+    />
+  )
+}
