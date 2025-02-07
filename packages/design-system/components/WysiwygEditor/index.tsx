@@ -13,7 +13,7 @@ import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPl
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { SelectionAlwaysOnDisplay } from '@lexical/react/LexicalSelectionAlwaysOnDisplay'
-import type { EditorState, LexicalEditor } from 'lexical'
+import { $getRoot, type EditorState, type LexicalEditor } from 'lexical'
 import { useMemo } from 'react'
 import { EditorToolbar } from '../../components/WysiwygEditor/EditorToolbar'
 import { initialWysiwygConfig } from '../../components/WysiwygEditor/wysiwyg.config'
@@ -29,6 +29,12 @@ type WysiwygEditorProps = {
     editor: LexicalEditor,
     tags: Set<string>,
   ) => void
+}
+
+export function getStringContentFromEditor(editor?: LexicalEditor) {
+  return editor
+    ? editor.getEditorState().read(() => $getRoot().getTextContent())
+    : ''
 }
 
 // TODO Edit Links + Context Menu + subscript + superscript
@@ -78,14 +84,18 @@ export function WysiwygEditor({
   )
 }
 
-export function WysiwygEditorForm(
-  props: Omit<WysiwygEditorProps, 'defaultValue'>,
-) {
+export function WysiwygEditorForm({
+  onChange,
+  ...props
+}: Omit<WysiwygEditorProps, 'defaultValue'>) {
   const field = useFieldContext()
   return (
     <WysiwygEditor
       defaultValue={field.data.value}
-      onChange={(state) => field.handleChange(JSON.stringify(state.toJSON()))}
+      onChange={(state, editor, tags) => {
+        onChange?.(state, editor, tags)
+        field.handleChange(JSON.stringify(state.toJSON()))
+      }}
       {...props}
     />
   )

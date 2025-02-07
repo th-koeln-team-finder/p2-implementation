@@ -18,10 +18,13 @@ import {
   type ZodAdapter,
   configureZodAdapter,
 } from '@formsignals/validation-adapter-zod'
-import { useSignals } from '@preact/signals-react/runtime'
+import { useSignal, useSignals } from '@preact/signals-react/runtime'
 import type { BrainstormResourceInsert } from '@repo/database/schema'
 import { FieldError } from '@repo/design-system/components/FormErrors'
-import { WysiwygEditorForm } from '@repo/design-system/components/WysiwygEditor'
+import {
+  WysiwygEditorForm,
+  getStringContentFromEditor,
+} from '@repo/design-system/components/WysiwygEditor'
 import { AutoCompleteTagInputForm } from '@repo/design-system/components/custom/auto-complete-tag-input'
 import { Button } from '@repo/design-system/components/ui/button'
 import { InputForm } from '@repo/design-system/components/ui/input'
@@ -48,6 +51,8 @@ export function BrainstormCreateForm({
   const [progressState, uploadFile, resetFileProgress] = useFileUpload()
   const { data, isLoading, searchInput, setSearchInput } = useTagSearch()
 
+  const descriptionTextValue = useSignal('')
+
   const form = useForm<CreateBrainstormFormValues, typeof ZodAdapter>({
     validatorAdapter: configureZodAdapter({ takeFirstError: true }),
     defaultValues: {
@@ -57,7 +62,10 @@ export function BrainstormCreateForm({
       resources: [],
     },
     onSubmit: async ({ resources, ...values }) => {
-      const brainstormId = await createBrainstorm(values)
+      const brainstormId = await createBrainstorm(
+        values,
+        descriptionTextValue.peek(),
+      )
 
       const fileIds = await Promise.all(
         resources
@@ -171,6 +179,12 @@ export function BrainstormCreateForm({
             <WysiwygEditorForm
               className="min-h-48"
               placeholder={translate('createForm.placeholderDescription')}
+              onChange={(_, editor) => {
+                editor.read(() => {
+                  descriptionTextValue.value =
+                    getStringContentFromEditor(editor)
+                })
+              }}
             />
             <FieldError />
           </div>

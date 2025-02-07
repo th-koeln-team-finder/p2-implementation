@@ -1,11 +1,12 @@
 'use client'
 
+import { getStringContentFromEditor } from '@/components/WysiwygEditor/index'
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
-import { $getRoot, type EditorState } from 'lexical'
+import type { EditorState } from 'lexical'
 import { initialWysiwygConfig } from '../../components/WysiwygEditor/wysiwyg.config'
 
 type WysiwygRendererProps = {
@@ -40,7 +41,7 @@ export function WysiwygRenderer({
 
 function LexicalTextContent() {
   const [editor] = useLexicalComposerContext()
-  const editorStateTextString = editor.read(() => $getRoot().getTextContent())
+  const editorStateTextString = getStringContentFromEditor(editor)
   return editorStateTextString.split('\n').map((line, index) => {
     // biome-ignore lint/suspicious/noArrayIndexKey: There is no state associated here, so the index is just fine
     return <p key={index}>{line}</p>

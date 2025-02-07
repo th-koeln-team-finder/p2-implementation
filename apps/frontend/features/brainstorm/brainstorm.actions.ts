@@ -6,6 +6,7 @@ import { BrainstormCacheTags } from '@/features/brainstorm/brainstorm.constants'
 import type { CreateBrainstormFormValues } from '@/features/brainstorm/brainstorm.types'
 import { Schema, db } from '@repo/database'
 import type { BrainstormResourceInsert, TagSelect } from '@repo/database/schema'
+import { generateTextEmbeddings } from '@repo/semantic-search'
 import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
 import { revalidateTag } from 'next/cache'
@@ -47,6 +48,7 @@ export async function toggleBrainstormBookmark(
 
 export async function createBrainstorm(
   formValues: Omit<CreateBrainstormFormValues, 'resources'>,
+  descriptionTextValue: string,
 ) {
   const session = await authMiddleware()
   if (!session?.user?.id) {
@@ -65,11 +67,14 @@ export async function createBrainstorm(
     })
   }
 
+  const descriptionEmbedding =
+    await generateTextEmbeddings(descriptionTextValue)
   const [brainstorm] = await db
     .insert(Schema.brainstorms)
     .values({
       title: formValues.title,
       description: formValues.description,
+      embedding: descriptionEmbedding,
       createdById: session.user.id,
     })
     .returning()
