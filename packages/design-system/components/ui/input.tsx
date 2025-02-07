@@ -7,7 +7,7 @@ import { useComputed } from '@preact/signals-react'
 import { cn } from '../../lib/utils'
 import {useSignals} from "@preact/signals-react/runtime";
 
-type InputProps = React.ComponentProps<'input'>
+export type InputProps = React.ComponentProps<'input'>
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {

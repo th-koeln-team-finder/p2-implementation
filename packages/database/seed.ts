@@ -4,6 +4,7 @@ import { drizzle } from 'drizzle-orm/node-postgres'
 import { makeBrainstorm } from './factory/brainstorm.factory'
 import { makeBrainstormComment } from './factory/brainstormComment.factory'
 import { makeBrainstormCommentLike } from './factory/brainstormCommentLike.factory'
+import { makeBrainstormResource } from './factory/brainstormResource.factory'
 import { makeTag, technicalTags } from './factory/tag.factory'
 import { makeTest } from './factory/test.factory'
 import { makeUser } from './factory/user.factory'
@@ -67,6 +68,15 @@ export async function seed() {
     .values(brainstormData)
     .returning()
   const brainstormIds = brainstorms.map((e) => e.id)
+
+  console.log("Clearing 'brainstorm_resource' table")
+  await db.delete(Schema.brainstormResources).execute()
+
+  console.log('Creating 100 brainstorm resource records')
+  const resourceData = makeMultiple(100, () =>
+    makeBrainstormResource(brainstormIds),
+  )
+  await db.insert(Schema.brainstormResources).values(resourceData).execute()
 
   console.log("Clearing 'brainstorm_comment' table")
   await db.delete(Schema.brainstormComments).execute()

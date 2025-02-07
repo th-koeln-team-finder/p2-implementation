@@ -1,10 +1,10 @@
-import { NavigationModal } from '@/features/brainstorm/components/NavigationModal'
 import {
   BrainstormDetails,
   BrainstormDialogHeader,
 } from '@/features/brainstorm/components/brainstorm-details/BrainstormDetails'
 import { BrainstormDetailsLoading } from '@/features/brainstorm/components/loading/BrainstormDetailsLoading'
 import { DialogHeaderLoading } from '@/features/brainstorm/components/loading/DialogHeaderLoading'
+import { NavigationModal } from '@/features/general/components/NavigationModal'
 import { DialogContent } from '@repo/design-system/components/ui/dialog'
 import { Suspense } from 'react'
 

@@ -77,7 +77,7 @@ export function BrainstormCommentForm({
               .string({ required_error: translateError('required') })
               .min(1, translateError('minLengthX', { amount: 1 }))}
           >
-            <div className="mx-1 mt-2 flex flex-row items-center gap-2">
+            <div className="mx-1 mt-2 flex flex-col gap-2 sm:flex-row sm:items-center">
               <div className="relative flex-1">
                 <MessageCircleIcon className="-translate-y-1/2 absolute top-1/2 left-2 h-4 w-4 text-muted-foreground" />
                 <InputForm

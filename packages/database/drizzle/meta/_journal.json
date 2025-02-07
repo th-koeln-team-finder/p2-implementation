@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1738667571954,
-      "tag": "0000_enable-vector",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1738675123455,
-      "tag": "0001_enable-text-search",
+      "when": 1738875126451,
+      "tag": "0000_extensions",
       "breakpoints": true
     }
   ]

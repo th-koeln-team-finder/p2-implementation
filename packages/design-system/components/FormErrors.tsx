@@ -10,7 +10,7 @@ export function FieldError() {
 
   if (field.isValidating.value) {
     return (
-      <div className="flex flex-row items-center gap-1 text-muted-foreground">
+      <div className="mt-0.5 flex flex-row items-center gap-1 text-muted-foreground">
         <Loader2Icon className="h-4 min-h-4 w-4 min-w-4 animate-spin" />
         <p className="text-sm">{translate('validation.inProgress')}</p>
       </div>
@@ -18,7 +18,7 @@ export function FieldError() {
   }
   if (field.isValid.value) return null
   return (
-    <div className="flex flex-col gap-1">
+    <div className="mt-0.5 flex flex-col gap-1">
       {field.errors.value.map((error: string) => (
         <div
           key={error}
