@@ -100,6 +100,7 @@ export const en = {
     previouslyWorkedOn: 'Previously worked on',
     loadMoreProjects: 'Mehr Projekte laden',
     follow: 'Follow',
+    unfollow: 'Unfollow',
     friendly: 'Friendly',
     veryFriendly: 'Very friendly',
     ratingText: 'people have rated the person as “very friendly”',

@@ -103,6 +103,7 @@ export const de: Language = {
     previouslyWorkedOn: 'Hat zuvor gearbeitet an',
     loadMoreProjects: 'Mehr Projekte laden',
     follow: 'Folgen',
+    unfollow: 'Entfolgen',
     friendly: 'Freundlich',
     veryFriendly: 'Sehr freundlich',
     ratingText: 'Personen haben die Person als "sehr freundlich" bewertet',

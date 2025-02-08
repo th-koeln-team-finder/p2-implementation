@@ -1,10 +1,19 @@
-import {getTranslations} from "next-intl/server";
-import {Avatar, AvatarFallback, AvatarImage} from "@repo/design-system/components/ui/avatar";
-import PreviouslyWorkedOn from "@/features/users/components/PreviouslyWorkedOn";
-import {Button} from "@repo/design-system/components/ui/button";
-import {UserPlus} from "lucide-react";
-import Ratings from "@/features/users/components/Ratings";
-import {getUser} from "@/features/users/users.query";
+import { getLocale, getTranslations } from 'next-intl/server'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@repo/design-system/components/ui/avatar'
+import PreviouslyWorkedOn from '@/features/users/components/PreviouslyWorkedOn'
+import { Button } from '@repo/design-system/components/ui/button'
+import { UserPen, UserPlus } from 'lucide-react'
+import Ratings from '@/features/users/components/Ratings'
+import { getUser } from '@/features/users/users.query'
+import { authMiddleware } from '@/auth'
+import { Link, redirect } from '@/features/i18n/routing'
+import { UserSelect } from '@repo/database/schema'
+import { userFollowsUser } from '@/features/userFollows/userFollows.queries'
+import FollowButton from '@/features/users/components/FollowButton'
 
 export default async function Profile({
   params,
@@ -14,10 +23,18 @@ export default async function Profile({
   const id: string = (await params).id
   const translate = await getTranslations()
   const user = await getUser(id)
-
   if (!user) {
     return null
   }
+
+  const session = await authMiddleware()
+  if (!session?.user?.id) {
+    return redirect({ href: '/', locale: await getLocale() })
+  }
+  const isOwnProfile = id === session.user.id
+  const loggedInUser = (await getUser(session.user.id)) as UserSelect
+
+  const isFollowing = (await userFollowsUser(loggedInUser.id, user.id))
 
   const lastActivity = new Date()
 
@@ -33,31 +50,38 @@ export default async function Profile({
               />
             )}
             <AvatarFallback>
-              {user.name
-                ? user.name.slice(0, 2).toUpperCase()
-                : 'AN'}
+              {user.name ? user.name.slice(0, 2).toUpperCase() : 'AN'}
             </AvatarFallback>
           </Avatar>
         </div>
 
-        <div className="flex flex-1 flex-col space-y-1">
-          <p className="font-bold text-xs">
-            Developer/Student
-          </p>
-          <div className="flex items-center gap-4">
-            <h1 className="inline font-bold text-3xl">{user.name}</h1>
-            <Button>
-              <UserPlus/>
-              {translate('users.follow')}
-            </Button>
-            <Ratings/>
+        <div>
+          <div className="flex flex-1 flex-col space-y-1">
+            <p className="font-bold text-xs">Developer/Student</p>
+            <div className="flex items-center gap-8">
+              <h1 className="inline font-bold text-3xl">{user.name}</h1>
+              {isOwnProfile ? (
+                <Link href="/edit-profile">
+                  <Button>
+                    <UserPen />
+                    {translate('users.editProfile')}
+                  </Button>
+                </Link>
+              ) : (
+                <FollowButton
+                  isFollowing={isFollowing}
+                  userId={user.id}
+                  loggedInUserId={loggedInUser.id}
+                />
+              )}
+              <Ratings />
+            </div>
+            <p className="text-muted-foreground text-xs leading-none">
+              {translate('users.lastActivity')}:{' '}
+              {lastActivity.toLocaleDateString()}
+            </p>
           </div>
-          <p className="text-muted-foreground text-xs leading-none">
-            {translate('users.lastActivity')}: {lastActivity.toLocaleDateString()}
-          </p>
-          <p className="text-sm">
-            {user.bio}
-          </p>
+          <p className="text-sm mt-4">{user.bio}</p>
         </div>
       </div>
       <div className="mt-8">
@@ -66,37 +90,39 @@ export default async function Profile({
           <div className="flex items-center max-w-md my-2 gap-2">
             <p className="flex-1">JavaScript</p>
             <div className="flex flex-1 gap-2">
-              <div className={`w-1 h-1 rounded-full bg-primary`}/>
-              <div className={`w-1 h-1 rounded-full bg-primary`}/>
-              <div className={`w-1 h-1 rounded-full bg-primary`}/>
-              <div className={`w-1 h-1 rounded-full bg-primary`}/>
-              <div className={`w-1 h-1 rounded-full bg-primary-foreground`}/>
+              <div className={`w-1 h-1 rounded-full bg-primary`} />
+              <div className={`w-1 h-1 rounded-full bg-primary`} />
+              <div className={`w-1 h-1 rounded-full bg-primary`} />
+              <div className={`w-1 h-1 rounded-full bg-primary`} />
+              <div className={`w-1 h-1 rounded-full bg-primary-foreground`} />
             </div>
           </div>
           <div className="flex items-center max-w-md my-2 gap-2">
             <p className="flex-1">React</p>
             <div className="flex flex-1 gap-2">
-              <div className={`w-1 h-1 rounded-full bg-primary`}/>
-              <div className={`w-1 h-1 rounded-full bg-primary`}/>
-              <div className={`w-1 h-1 rounded-full bg-primary`}/>
-              <div className={`w-1 h-1 rounded-full bg-primary-foreground`}/>
-              <div className={`w-1 h-1 rounded-full bg-primary-foreground`}/>
+              <div className={`w-1 h-1 rounded-full bg-primary`} />
+              <div className={`w-1 h-1 rounded-full bg-primary`} />
+              <div className={`w-1 h-1 rounded-full bg-primary`} />
+              <div className={`w-1 h-1 rounded-full bg-primary-foreground`} />
+              <div className={`w-1 h-1 rounded-full bg-primary-foreground`} />
             </div>
           </div>
           <div className="flex items-center max-w-md my-2 gap-2">
             <p className="flex-1">TypeScript</p>
             <div className="flex flex-1 gap-2">
-              <div className={`w-1 h-1 rounded-full bg-primary`}/>
-              <div className={`w-1 h-1 rounded-full bg-primary`}/>
-              <div className={`w-1 h-1 rounded-full bg-primary`}/>
-              <div className={`w-1 h-1 rounded-full bg-primary`}/>
-              <div className={`w-1 h-1 rounded-full bg-primary`}/>
+              <div className={`w-1 h-1 rounded-full bg-primary`} />
+              <div className={`w-1 h-1 rounded-full bg-primary`} />
+              <div className={`w-1 h-1 rounded-full bg-primary`} />
+              <div className={`w-1 h-1 rounded-full bg-primary`} />
+              <div className={`w-1 h-1 rounded-full bg-primary`} />
             </div>
           </div>
         </div>
       </div>
       <div className="mt-8">
-        <h2 className="font-bold text-2xl mb-4">{translate('users.previouslyWorkedOn')}</h2>
+        <h2 className="font-bold text-2xl mb-4">
+          {translate('users.previouslyWorkedOn')}
+        </h2>
         <PreviouslyWorkedOn
           loadMoreProjectsText={translate('users.loadMoreProjects')}
         />

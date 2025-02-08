@@ -226,8 +226,8 @@ export type UserRatingsSelect = typeof userRatings.$inferSelect
 
 export const userFollows = pgTable('userFollows', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  followerId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),
-  followeeId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),
+  followerId: uuid('followerId').notNull().references(() => users.id, {onDelete: 'cascade'}),
+  followeeId: uuid('followeeId').notNull().references(() => users.id, {onDelete: 'cascade'}),
   createdAt: timestamp().notNull().defaultNow(),
 })
 export type UserFollowsInsert = typeof userRatings.$inferInsert
