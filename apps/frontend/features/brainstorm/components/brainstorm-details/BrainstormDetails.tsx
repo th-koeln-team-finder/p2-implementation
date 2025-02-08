@@ -1,10 +1,12 @@
 import { authMiddleware } from '@/auth'
+import { CanUserServer } from '@/features/auth/components/CanUser.server'
 import { UserAvatar } from '@/features/auth/components/UserAvatar'
 import { getSingleBrainstorm } from '@/features/brainstorm/brainstorm.queries'
 import { getCommentsForBrainstorm } from '@/features/brainstorm/brainstormComment.queries'
 import { BrainstormBookmarkButton } from '@/features/brainstorm/components/brainstorm-details/BrainstormBookmarkButton'
 import { BrainstormLinksResources } from '@/features/brainstorm/components/brainstorm-details/BrainstormLinksResources'
 import { BrainstormTagList } from '@/features/brainstorm/components/brainstorm-details/BrainstormTagList'
+import { DeleteBrainstormButton } from '@/features/brainstorm/components/brainstorm-details/DeleteBrainstormButton'
 import { BrainstormCommentList } from '@/features/brainstorm/components/brainstorm-details/comments/BrainstormCommentList'
 import { Link, redirect } from '@/features/i18n/routing'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
@@ -38,11 +40,11 @@ export async function BrainstormDialogHeader({
   if (!brainstorm) return null
   return (
     <DialogHeader className="pr-4">
-      <div className="flex flex-row items-center justify-between gap-2">
-        <DialogTitle className="font-head font-medium text-3xl">
+      <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+        <DialogTitle className="text-start font-head font-medium text-3xl">
           {brainstorm.title}
         </DialogTitle>
-        <div className="flex flex-row items-center gap-2">
+        <div className="ml-auto flex flex-row items-center gap-2 sm:ml-0">
           <BrainstormBookmarkButton
             brainstormId={brainstorm.id}
             isBookmarked={brainstorm.isBookmarked}
@@ -51,9 +53,11 @@ export async function BrainstormDialogHeader({
             <FolderPlusIcon />
             {translate('makeActionButton')}
           </Button>
+          <CanUserServer target="brainstorm" action="delete" data={brainstorm}>
+            <DeleteBrainstormButton brainstormId={brainstorm.id} />
+          </CanUserServer>
         </div>
       </div>
-      <BrainstormTagList tags={brainstorm.tags} />
     </DialogHeader>
   )
 }
@@ -87,48 +91,53 @@ export async function BrainstormDetails({
       )}
     >
       {!hideHeader && (
-        <>
-          <nav className="sticky top-0 z-10 flex flex-row justify-between bg-card py-1 ring ring-card">
-            <div className="flex flex-row gap-2">
-              <Link
-                locale={locale}
-                href="/brainstorm"
-                className={buttonVariants({
-                  size: 'icon',
-                  variant: 'ghost',
-                  className: '[&_svg]:size-6',
-                })}
-              >
-                <ChevronLeftIcon />
-              </Link>
-              <div>
-                <h1 className="font-head font-medium text-3xl">
-                  {brainstorm.title}
-                </h1>
-                <p className="inline-flex flex-row items-center gap-2 text-muted-foreground text-sm">
-                  <UserAvatar
-                    user={brainstorm.creator}
-                    className="h-6 w-6"
-                    fallbackClassName="text-xs"
-                  />
-                  {brainstorm.creator.name}
-                </p>
-              </div>
+        <nav className="sticky top-0 z-10 flex flex-col justify-between bg-card py-1 ring ring-card sm:flex-row">
+          <div className="flex flex-row gap-2">
+            <Link
+              locale={locale}
+              href="/brainstorm"
+              className={buttonVariants({
+                size: 'icon',
+                variant: 'ghost',
+                className: '[&_svg]:size-6',
+              })}
+            >
+              <ChevronLeftIcon />
+            </Link>
+            <div>
+              <h1 className="font-head font-medium text-3xl">
+                {brainstorm.title}
+              </h1>
+              <p className="inline-flex flex-row items-center gap-2 text-muted-foreground text-sm">
+                <UserAvatar
+                  user={brainstorm.creator}
+                  className="h-6 w-6"
+                  fallbackClassName="text-xs"
+                />
+                {brainstorm.creator.name}
+              </p>
             </div>
-            <div className="flex flex-row items-center gap-2">
-              <BrainstormBookmarkButton
-                brainstormId={brainstorm.id}
-                isBookmarked={brainstorm.isBookmarked}
-              />
-              <Button type="button" size="sm">
-                <FolderPlusIcon />
-                {translate('makeActionButton')}
-              </Button>
-            </div>
-          </nav>
-          <BrainstormTagList tags={brainstorm.tags} />
-        </>
+          </div>
+          <div className="ml-auto flex flex-row items-center gap-2 sm:ml-0">
+            <BrainstormBookmarkButton
+              brainstormId={brainstorm.id}
+              isBookmarked={brainstorm.isBookmarked}
+            />
+            <Button type="button" size="sm">
+              <FolderPlusIcon />
+              {translate('makeActionButton')}
+            </Button>
+            <CanUserServer
+              target="brainstorm"
+              action="delete"
+              data={brainstorm}
+            >
+              <DeleteBrainstormButton brainstormId={brainstorm.id} />
+            </CanUserServer>
+          </div>
+        </nav>
       )}
+      <BrainstormTagList tags={brainstorm.tags} />
       {brainstorm.description && (
         <WysiwygRenderer value={brainstorm.description} />
       )}
@@ -141,12 +150,7 @@ export async function BrainstormDetails({
       </div>
       <div>
         <Label>{translate('headingResources')}</Label>
-        <BrainstormLinksResources
-          links={[
-            { href: 'https://usefullinks.com' },
-            { href: 'www.scrum.org', label: 'Scrum Guide' },
-          ]}
-        />
+        <BrainstormLinksResources links={brainstorm.resources} />
       </div>
       <BrainstormCommentList
         brainstormId={brainstormId}

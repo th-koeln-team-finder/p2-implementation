@@ -10,6 +10,15 @@ export const en = {
     notSupported: 'Not supported',
   },
   components: {
+    wysiwyg: {
+      heading1: 'Heading 1',
+      heading2: 'Heading 2',
+      heading3: 'Heading 3',
+      heading4: 'Heading 4',
+      heading5: 'Heading 5',
+      heading6: 'Heading 6',
+      paragraph: 'Paragraph',
+    },
     fileUpload: {
       placeholderText: 'Drag and drop a file here or click to browse',
       selectedFileHeader: 'Selected files',
@@ -55,7 +64,32 @@ export const en = {
   },
   brainstorm: {
     makeActionButton: 'Create the project',
+    deleteActionButton: 'Delete',
     headingResources: 'Links & Other Resources',
+    emptyResources: 'No links or resources available...',
+    createButton: 'Start brainstorming',
+    createFormTitle: 'Create a Brainstorm',
+    createForm: {
+      labelTitle: 'Title',
+      placeholderTitle: 'Write title here...',
+      labelDescription: 'Description',
+      placeholderDescription: 'Write description here...',
+      labelTags: 'Tags',
+      placeholderTags: 'Add tags...',
+      loadingTags: 'Loading tags...',
+      emptyTags: 'No tags found',
+      addResourceButton: 'Add Resource',
+      resourceTypeSelectLink: 'https://',
+      resourceTypeSelectFile: 'File',
+      resourceLabelName: 'Resource Name',
+      resourceLabelData: 'Resource Data',
+      resourcePlaceholderName: 'Enter name here...',
+      resourcePlaceholderLink: 'Enter url...',
+      resourcePlaceholderFile: 'Select file...',
+      whiteboardNotice:
+        'Once you have published your brainstorm you will be able to work on the whiteboard.',
+      publishButton: 'Publish Brainstorm',
+    },
     comments: {
       loginCommentWarning: 'You need to login to comment',
       empty: "There aren't any comments yet",
@@ -68,6 +102,9 @@ export const en = {
       sortOptionMostPopular: 'Most popular',
       reply: 'Reply',
     },
+  },
+  tag: {
+    createNewTag: "New: ''{tagName}''",
   },
   help: {
     title: 'Help',
@@ -175,6 +212,8 @@ export const en = {
     positive: 'This field must be a positive number',
     date: 'This field must be a valid date',
     url: 'This field must be a valid URL',
+    fileIsTooLarge: 'File is too large',
+    wrongFileType: 'This file type is not supported',
   },
   errors: {
     genericPageError: 'Oops something went wrong',

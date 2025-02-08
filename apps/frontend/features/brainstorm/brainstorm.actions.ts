@@ -1,8 +1,11 @@
 'use server'
 
 import { authMiddleware } from '@/auth'
+import { hasSessionPermission } from '@/features/auth/auth.utils'
 import { BrainstormCacheTags } from '@/features/brainstorm/brainstorm.constants'
+import type { CreateBrainstormFormValues } from '@/features/brainstorm/brainstorm.types'
 import { Schema, db } from '@repo/database'
+import type { BrainstormResourceInsert, TagSelect } from '@repo/database/schema'
 import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
 import { revalidateTag } from 'next/cache'
@@ -40,6 +43,94 @@ export async function toggleBrainstormBookmark(
     brainstormId: id,
     userId: session.user.id,
   })
+}
+
+export async function createBrainstorm(
+  formValues: Omit<CreateBrainstormFormValues, 'resources'>,
+) {
+  const session = await authMiddleware()
+  if (!session?.user?.id) {
+    const locale = await getLocale()
+    return redirect({
+      href: '/error?error=AccessDenied',
+      locale,
+    })
+  }
+  const canCreate = await hasSessionPermission('brainstorm', 'create')
+  if (!canCreate) {
+    const locale = await getLocale()
+    return redirect({
+      href: '/error?error=AccessDenied',
+      locale,
+    })
+  }
+
+  const [brainstorm] = await db
+    .insert(Schema.brainstorms)
+    .values({
+      title: formValues.title,
+      description: formValues.description,
+      createdById: session.user.id,
+    })
+    .returning()
+
+  const newTags = formValues.tags
+    .filter((tag) => tag.value.startsWith('new:'))
+    .map((tag) => ({
+      name: tag.value.replace('new:', ''),
+    }))
+  let createdTags = [] as TagSelect[]
+  if (newTags.length > 0) {
+    createdTags = await db.insert(Schema.tags).values(newTags).returning()
+  }
+
+  const brainstormTags = formValues.tags
+    .map((tag) => {
+      const tagId = tag.value.startsWith('new:')
+        ? createdTags.find((t) => t.name === tag.value.replace('new:', ''))?.id
+        : tag.value
+      if (!tagId) {
+        console.error('Error creating tag', tag)
+        return null
+      }
+      return {
+        brainstormId: brainstorm.id,
+        tagId,
+      }
+    })
+    .filter((e) => !!e)
+  await db.insert(Schema.brainstormTags).values(brainstormTags).returning()
+
+  return brainstorm.id
+}
+
+export async function createBrainstormResources(
+  resources: BrainstormResourceInsert[],
+) {
+  const session = await authMiddleware()
+  if (!session?.user?.id) {
+    const locale = await getLocale()
+    return redirect({
+      href: '/error?error=AccessDenied',
+      locale,
+    })
+  }
+  const canCreate = await hasSessionPermission('brainstorm', 'create')
+  if (!canCreate) {
+    const locale = await getLocale()
+    return redirect({
+      href: '/error?error=AccessDenied',
+      locale,
+    })
+  }
+  if (!resources.length) {
+    return
+  }
+  await db.insert(Schema.brainstormResources).values(resources)
+}
+
+export async function deleteBrainstorm(id: string) {
+  await db.delete(Schema.brainstorms).where(eq(Schema.brainstorms.id, id))
 }
 
 export async function revalidateBrainstorms() {

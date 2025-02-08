@@ -28,10 +28,10 @@ export async function getPresignedUploadUrl(
     })
   }
 
-  if (fileSize >= serverEnv.MAX_FILE_SIZE) {
+  if (fileSize >= serverEnv.NEXT_PUBLIC_MAX_FILE_SIZE) {
     return [null]
   }
-  if (!serverEnv.ALLOWED_FILE_TYPES.includes(fileType)) {
+  if (!serverEnv.NEXT_PUBLIC_ALLOWED_FILE_TYPES.includes(fileType)) {
     return [null]
   }
 

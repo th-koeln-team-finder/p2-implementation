@@ -136,6 +136,23 @@ export const brainstormBookmarks = pgTable(
 export type BrainstormBookmarkInsert = typeof brainstormBookmarks.$inferInsert
 export type BrainstormBookmarkSelect = typeof brainstormBookmarks.$inferSelect
 
+export const brainstormResourceType = pgEnum('brainstorm_resource_type', [
+  'file',
+  'link',
+])
+export const brainstormResources = pgTable('brainstorm_resource', {
+  id: uuid().primaryKey().notNull().defaultRandom(),
+  brainstormId: uuid('brainstormId').references(() => brainstorms.id, {
+    onDelete: 'cascade',
+  }),
+  type: brainstormResourceType().notNull(),
+  label: text('label').notNull(),
+  value: text('value'),
+  fileValue: uuid().references(() => uploadedFiles.id, { onDelete: 'cascade' }),
+})
+export type BrainstormResourceInsert = typeof brainstormResources.$inferInsert
+export type BrainstormResourceSelect = typeof brainstormResources.$inferSelect
+
 export const tags = pgTable('tag', {
   id: uuid().primaryKey().notNull().defaultRandom(),
   name: text('name').notNull().unique(),
@@ -381,6 +398,7 @@ export const brainstormRelations = relations(brainstorms, ({ one, many }) => ({
   }),
   tags: many(brainstormTags),
   bookmarks: many(brainstormBookmarks),
+  resources: many(brainstormResources),
 }))
 
 export const brainstormCommentRelations = relations(
@@ -444,6 +462,20 @@ export const brainstormTagRelations = relations(brainstormTags, ({ one }) => ({
     references: [tags.id],
   }),
 }))
+
+export const brainstormResourceRelations = relations(
+  brainstormResources,
+  ({ one }) => ({
+    brainstorm: one(brainstorms, {
+      fields: [brainstormResources.brainstormId],
+      references: [brainstorms.id],
+    }),
+    file: one(uploadedFiles, {
+      fields: [brainstormResources.fileValue],
+      references: [uploadedFiles.id],
+    }),
+  }),
+)
 
 export const userSkillRelations = relations(userSkills, ({one}) => ({
   skill: one(skills, {
