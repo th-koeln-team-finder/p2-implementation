@@ -3,7 +3,7 @@
 import {Label} from "@repo/design-system/components/ui/label";
 import {InputForm} from "@repo/design-system/components/ui/input";
 import {TextareaForm} from "@repo/design-system/components/ui/textarea";
-import {UserInsert, UserSelect} from "@repo/database/schema";
+import {UserInsert} from "@repo/database/schema";
 import {useTranslations} from "next-intl";
 import {revalidateUser, updateUserData} from "@/features/users/users.actions";
 import {SwitchForm} from "@repo/design-system/components/ui/switch";
@@ -15,11 +15,13 @@ import {FieldError, FormError} from "@repo/design-system/components/FormErrors";
 import {LoaderCircleIcon, SaveIcon} from "lucide-react";
 import {Button} from "@repo/design-system/components/ui/button";
 import {checkUsernameTaken} from "@/features/users/users.query";
-import {FileListForm, FilePreviewsForm, FileUploadForm} from "@repo/design-system/components/custom/file-upload";
+import {FileUploadForm} from "@repo/design-system/components/custom/file-upload";
 import {useFileUpload} from "@/features/file-upload/file-upload.hooks";
 import {UserAvatar} from "@/features/auth/components/UserAvatar";
 import {removeFileUpload} from "@/features/file-upload/file-upload.actions";
 import {UserWithImage} from "@/features/users/users.types";
+import {FileListForm} from "@repo/design-system/components/custom/file-list-form";
+import {FileInlinePreviewsForm} from "@repo/design-system/components/custom/file-inline-previews-form";
 
 
 export default function ProfileForm({user, maxFileSize}: { user: UserWithImage, maxFileSize: number }) {
@@ -225,7 +227,7 @@ export default function ProfileForm({user, maxFileSize}: { user: UserWithImage, 
                 <FileUploadForm
                   accepts="image/*,application/pdf"
                   placeholder={
-                    <FilePreviewsForm
+                    <FileInlinePreviewsForm
                       progressState={progressState}
                       maxFileSize={maxFileSize}
                     />
