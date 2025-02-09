@@ -23,17 +23,3 @@ export const getUser = cache(
   {tags: ['user']},
 )
 
-export async function getUserProjects(userId: number, limit: number, offset: number) {
-  const previouslyWorkedOn: Array<any> = []
-  for (let i = offset; i < offset + limit; i++) {
-    previouslyWorkedOn.push({
-        name: 'Project ' + (i + 1),
-        description: 'This is a project',
-        image: 'https://via.placeholder.com/150',
-        tags: ['tag 1', 'category', 'project', 'title', 'tag'],
-      },
-    )
-  }
-  return previouslyWorkedOn
-}
-

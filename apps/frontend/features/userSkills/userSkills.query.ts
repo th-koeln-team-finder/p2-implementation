@@ -4,7 +4,7 @@ import {asc, desc, eq} from "drizzle-orm";
 
 export const getUserSkills = cache(
   async (userId: string) => {
-    return db.query.userSkills.findMany({
+    return await db.query.userSkills.findMany({
       where: eq(Schema.userSkills.userId, userId),
       with: {
         skill: true,

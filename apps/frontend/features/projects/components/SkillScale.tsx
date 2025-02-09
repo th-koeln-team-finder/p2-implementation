@@ -1,11 +1,15 @@
 'use client'
 
-import { getTranslations } from 'next-intl/server'
 import {useEffect, useRef, useState} from "react";
+import {useTranslations} from "next-intl";
 
-// @ts-ignore
-export function SkillScale({ skills }: { title?: string, skills?: { name: string, level: number }[] }) {
-  //const t = await getTranslations('projects')
+type Skill = {
+  name: string
+  level: number
+}
+
+export function SkillScale({ title, skills }: { title?: string, skills: Skill[] }) {
+  const t = useTranslations('projects')
 
   const [showAll, setShowAll] = useState(false)
   // Funktion zum Umschalten der Sichtbarkeit
@@ -22,7 +26,7 @@ export function SkillScale({ skills }: { title?: string, skills?: { name: string
       const computedStyle = window.getComputedStyle(itemRef.current);
 
       // Berechne die tatsächliche Höhe einschließlich des Margins
-      const marginBottom = parseFloat(computedStyle.marginBottom);
+      const marginBottom = Number.parseFloat(computedStyle.marginBottom);
       const totalHeight = itemRef.current.offsetHeight + marginBottom;
 
       setItemHeight(totalHeight);
@@ -36,12 +40,12 @@ export function SkillScale({ skills }: { title?: string, skills?: { name: string
 
   return (
     <div className='SkillScale flex w-full flex-col'>
-      <div className='mb-2 font-medium text-2xl'>Skills needed {/*t('skills.title')*/}</div>
+      <div className='mb-2 font-medium text-2xl'>{ title }</div>
 
       <div className="flex flex-col" style={{maxHeight}}>
         <div className="overflow-hidden transition-all duration-300 ease-in-out" /*style={{maxHeight}} */ />
         {skills.map((skill, index) => (
-          <div key={index} ref={index === 0 ? itemRef : null} className={`mb-2 inline-flex w-full justify-between self-stretch opacity-0 transition-opacity duration-300 ${showAll || index < 6 ? 'opacity-100' : ''}`}>
+          <div key={skill.name} ref={index === 0 ? itemRef : null} className={`mb-2 inline-flex w-full justify-between self-stretch opacity-0 transition-opacity duration-300 ${showAll || index < 6 ? 'opacity-100' : ''}`}>
             <div className="text-base">{skill.name}</div>
             <div className='flex items-center justify-center gap-2.5 py-px'>
               {[...Array(5)].map((_, i) => (

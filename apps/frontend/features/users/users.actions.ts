@@ -1,13 +1,13 @@
 'use server'
 
-import {getUserProjects} from "@/features/users/users.query";
 import {db, Schema} from "@repo/database";
 import {UserInsert} from "@repo/database/schema";
 import {eq} from "drizzle-orm";
 import {revalidateTag} from "next/cache";
+import {getUserProjects} from "@/features/userProjects/userProjects.query";
 
-export async function loadMoreProjects(count = 10, offset = 0) {
-  return await getUserProjects(1, count, offset)
+export async function loadMoreProjects(userId: string, count = 10, offset = 0) {
+  return await getUserProjects(userId, count, offset)
 }
 
 export async function updateUserData(user: Partial<UserInsert>) {

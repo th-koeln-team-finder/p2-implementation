@@ -139,6 +139,7 @@ export const de: Language = {
     skills: 'Skills',
     previouslyWorkedOn: 'Hat zuvor gearbeitet an',
     loadMoreProjects: 'Mehr Projekte laden',
+    noProjectsFound: 'Nutzer hat bisher noch an keinem Projekt gearbeitet',
     follow: 'Folgen',
     unfollow: 'Entfolgen',
     friendly: 'Freundlich',
