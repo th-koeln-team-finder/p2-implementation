@@ -1,15 +1,15 @@
-import {faker} from '@faker-js/faker/locale/de'
-import {config} from 'dotenv'
-import {drizzle} from 'drizzle-orm/node-postgres'
-import {makeBrainstorm} from './factory/brainstorm.factory'
-import {makeBrainstormComment} from './factory/brainstormComment.factory'
-import {makeBrainstormCommentLike} from './factory/brainstormCommentLike.factory'
-import {makeBrainstormResource } from './factory/brainstormResource.factory'
-import {makeTag} from './factory/tag.factory'
-import {makeTest} from './factory/test.factory'
-import {makeUser} from './factory/user.factory'
+import { faker } from '@faker-js/faker/locale/de'
+import { config } from 'dotenv'
+import { drizzle } from 'drizzle-orm/node-postgres'
+import { makeBrainstorm } from './factory/brainstorm.factory'
+import { makeBrainstormComment } from './factory/brainstormComment.factory'
+import { makeBrainstormCommentLike } from './factory/brainstormCommentLike.factory'
+import { makeBrainstormResource } from './factory/brainstormResource.factory'
+import { makeProjects } from './factory/projects.factory'
+import { makeTag } from './factory/tag.factory'
+import { makeTest } from './factory/test.factory'
+import { makeUser } from './factory/user.factory'
 import * as Schema from './schema'
-import {makeProjects} from "./factory/projects.factory";
 
 config()
 config({ path: '.env.local', override: true })

@@ -1,7 +1,7 @@
-import {authMiddleware} from '@/auth'
-import {LoginButton} from '@/features/auth/components/LoginButton'
-import {RegisterButton} from '@/features/auth/components/RegisterButton'
-import {UserProfileMenu} from '@/features/auth/components/UserProfileMenu'
+import { authMiddleware } from '@/auth'
+import { LoginButton } from '@/features/auth/components/LoginButton'
+import { RegisterButton } from '@/features/auth/components/RegisterButton'
+import { UserProfileMenu } from '@/features/auth/components/UserProfileMenu'
 
 export default async function UnauthenticatedLayout({
   children,

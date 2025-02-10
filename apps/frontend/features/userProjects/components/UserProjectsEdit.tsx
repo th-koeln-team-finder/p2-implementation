@@ -1,15 +1,19 @@
-"use client"
+'use client'
 
-import {ProjectSelect, UserProjectsSelect} from "@repo/database/schema";
-import UserProjectCreate from "@/features/userProjects/components/UserProjectCreate";
-import {useOptimisticUserProjects} from "@/features/userProjects/userProjects.hooks";
-import ProjectList from "@/features/userProjects/components/ProjectList";
+import ProjectList from '@/features/userProjects/components/ProjectList'
+import UserProjectCreate from '@/features/userProjects/components/UserProjectCreate'
+import { useOptimisticUserProjects } from '@/features/userProjects/userProjects.hooks'
+import type { ProjectSelect, UserProjectsSelect } from '@repo/database/schema'
 
-export default function UserProjectsEdit({userProjects, userId}: {
-  userProjects: (UserProjectsSelect & { project?: ProjectSelect | null })[],
+export default function UserProjectsEdit({
+  userProjects,
+  userId,
+}: {
+  userProjects: (UserProjectsSelect & { project?: ProjectSelect | null })[]
   userId: string
 }) {
-  const [projectsOptimistic, setProjectsOptimistic] = useOptimisticUserProjects(userProjects)
+  const [projectsOptimistic, setProjectsOptimistic] =
+    useOptimisticUserProjects(userProjects)
 
   return (
     <div className="space-y-4">
@@ -25,4 +29,3 @@ export default function UserProjectsEdit({userProjects, userId}: {
     </div>
   )
 }
-

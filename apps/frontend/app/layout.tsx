@@ -4,7 +4,6 @@ import { DesignSystemProvider } from '@repo/design-system'
 import type { Metadata } from 'next'
 import { Rubik, Saira_Condensed } from 'next/font/google'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
-import Header from "@/features/header/header";
 
 const rubik = Rubik({
   variable: '--font-sans',

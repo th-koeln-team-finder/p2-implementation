@@ -1,33 +1,38 @@
-import {useSession} from "next-auth/react";
-import {useOptimistic, useTransition} from "react";
-import {ProjectSelect, UserProjectsSelect} from "@repo/database/schema";
+import type { ProjectSelect, UserProjectsSelect } from '@repo/database/schema'
+import { useSession } from 'next-auth/react'
+import { useOptimistic, useTransition } from 'react'
 
 export type OptimisticPayload =
   | {
-  action: 'add'
-  values: {
-    userId: string,
-    projectId: number,
-    visible: boolean,
-    projectName: string,
-    projectJoinedDate: string,
-    projectLeftDate: string,
-    projectDescription: string,
-  }
-}
+      action: 'add'
+      values: {
+        userId: string
+        projectId: number
+        visible: boolean
+        projectName: string
+        projectJoinedDate: string
+        projectLeftDate: string
+        projectDescription: string
+      }
+    }
   | {
-  action: 'delete'
-  values: { id: number }
-}
+      action: 'delete'
+      values: { id: number }
+    }
   | {
-  action: 'update'
-  values: {
-    id: number,
-    visible?: boolean
-  }
-}
+      action: 'update'
+      values: {
+        id: number
+        visible?: boolean
+      }
+    }
 
-export function useOptimisticUserProjects(userProjects: (UserProjectsSelect & {id: number, project?: ProjectSelect | null})[]) {
+export function useOptimisticUserProjects(
+  userProjects: (UserProjectsSelect & {
+    id: number
+    project?: ProjectSelect | null
+  })[],
+) {
   const { data: session } = useSession()
   const [_, startTransition] = useTransition()
   const [optimisticUpdates, dispatchOptimistic] = useOptimistic(
@@ -65,7 +70,7 @@ export function useOptimisticUserProjects(userProjects: (UserProjectsSelect & {i
         }
         case 'delete':
           return state.filter(
-            (userProject) => userProject.id !== payload.values.id
+            (userProject) => userProject.id !== payload.values.id,
           )
         default:
           return state

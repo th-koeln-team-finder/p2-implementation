@@ -1,6 +1,6 @@
-import {unstable_cache as cache} from "next/cache";
-import {db, Schema} from "@repo/database";
-import {asc, eq} from "drizzle-orm";
+import { Schema, db } from '@repo/database'
+import { asc, eq } from 'drizzle-orm'
+import { unstable_cache as cache } from 'next/cache'
 
 export const getUserProjects = cache(
   async (userId: string, limit?: number, offset?: number) => {
@@ -12,8 +12,8 @@ export const getUserProjects = cache(
       limit,
       offset,
       orderBy: [asc(Schema.userProjects.projectJoinedDate)],
-    });
+    })
   },
   ['getUserProjects'],
-  {tags: ['user-projects']}
+  { tags: ['user-projects'] },
 )
