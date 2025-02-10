@@ -1,10 +1,14 @@
 'use client'
 
-import {Avatar, AvatarFallback, AvatarImage,} from '@repo/design-system/components/ui/avatar'
-import {cn} from '@repo/design-system/lib/utils'
-import {UserWithImage} from "@/features/users/users.types";
-import {getPublicFileUrl} from "@/features/file-upload/file-upload.actions";
-import {useEffect, useState} from "react";
+import { getPublicFileUrl } from '@/features/file-upload/file-upload.actions'
+import type { UserWithImage } from '@/features/users/users.types'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@repo/design-system/components/ui/avatar'
+import { cn } from '@repo/design-system/lib/utils'
+import { useEffect, useState } from 'react'
 
 type UserAvatarProps = {
   user?: UserWithImage
@@ -22,7 +26,7 @@ export function UserAvatar({
 
   useEffect(() => {
     if (user?.image?.bucketPath) {
-      getPublicFileUrl(user.image.bucketPath).then(response =>{
+      getPublicFileUrl(user.image.bucketPath).then((response) => {
         setUserAvatarUrl(response[0])
       })
     }

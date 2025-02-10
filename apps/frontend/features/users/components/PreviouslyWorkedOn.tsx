@@ -1,17 +1,14 @@
 'use client'
 
-import {Button} from "@repo/design-system/components/ui/button";
-import {ProjectCard} from "@/features/projects/components/ProjectCard";
-import {loadMoreProjects} from "@/features/users/users.actions";
-import {ChevronDown, LoaderCircle} from "lucide-react";
-import * as React from "react";
-import {useEffect, useState} from "react";
-import type {UserProjectsSelect} from "@repo/database/schema";
-import {useTranslations} from "next-intl";
+import { ProjectCard } from '@/features/projects/components/ProjectCard'
+import { loadMoreProjects } from '@/features/users/users.actions'
+import type { UserProjectsSelect } from '@repo/database/schema'
+import { Button } from '@repo/design-system/components/ui/button'
+import { ChevronDown, LoaderCircle } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { useEffect, useState } from 'react'
 
-export default function PreviouslyWorkedOn({
-  userId,
-}: { userId: string }) {
+export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
   const [previouslyWorkedOn, setPreviouslyWorkedOn] = useState<
     UserProjectsSelect[]
   >([])
@@ -62,7 +59,9 @@ export default function PreviouslyWorkedOn({
           </Button>
         )
       )}
-      {previouslyWorkedOn.length === 0 && !loading && <p>{translate('noProjectsFound')}</p>}
+      {previouslyWorkedOn.length === 0 && !loading && (
+        <p>{translate('noProjectsFound')}</p>
+      )}
     </div>
   )
 }

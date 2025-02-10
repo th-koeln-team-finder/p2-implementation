@@ -1,26 +1,31 @@
 'use client'
 
-import {UserSelect} from "@repo/database/schema";
+import { redirect } from '@/features/i18n/routing'
+import { deleteUser } from '@/features/users/users.actions'
+import type { UserSelect } from '@repo/database/schema'
 import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
-  AlertDialogContent, AlertDialogFooter,
-  AlertDialogHeader, AlertDialogTitle,
-  AlertDialogTrigger
-} from "@repo/design-system/components/ui/alert-dialog";
-import {Button, buttonVariants} from "@repo/design-system/components/ui/button";
-import {useTranslations} from "next-intl";
-import {deleteUser} from "@/features/users/users.actions";
-import {redirect} from "@/features/i18n/routing";
-import {getLocale} from "next-intl/server";
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@repo/design-system/components/ui/alert-dialog'
+import {
+  Button,
+  buttonVariants,
+} from '@repo/design-system/components/ui/button'
+import { useTranslations } from 'next-intl'
+import { getLocale } from 'next-intl/server'
 
-export default function DeleteUser({user}: { user: UserSelect }) {
+export default function DeleteUser({ user }: { user: UserSelect }) {
   const translate = useTranslations()
 
   const handleDelete = async () => {
     await deleteUser(user.id)
-    return redirect({href: '/', locale: await getLocale()})
+    return redirect({ href: '/', locale: await getLocale() })
   }
 
   return (
@@ -37,11 +42,9 @@ export default function DeleteUser({user}: { user: UserSelect }) {
           </AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>
-            {translate('general.cancel')}
-          </AlertDialogCancel>
+          <AlertDialogCancel>{translate('general.cancel')}</AlertDialogCancel>
           <AlertDialogAction
-            className={buttonVariants({variant: 'destructive'})}
+            className={buttonVariants({ variant: 'destructive' })}
             onClick={handleDelete}
           >
             {translate('general.delete')}

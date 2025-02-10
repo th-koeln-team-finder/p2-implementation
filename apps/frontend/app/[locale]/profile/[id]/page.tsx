@@ -1,7 +1,7 @@
-import {getUser} from '@/features/users/users.query'
-import Profile from "@/features/users/components/Profile";
-import {redirect} from "@/features/i18n/routing";
-import {getLocale} from "next-intl/server";
+import { redirect } from '@/features/i18n/routing'
+import Profile from '@/features/users/components/Profile'
+import { getUser } from '@/features/users/users.query'
+import { getLocale } from 'next-intl/server'
 
 export default async function ProfilePage({
   params,

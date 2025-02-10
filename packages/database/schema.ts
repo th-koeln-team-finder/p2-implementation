@@ -2,6 +2,8 @@ import { relations, sql } from 'drizzle-orm'
 import {
   type AnyPgColumn,
   boolean,
+  check,
+  date,
   integer,
   json,
   pgEnum,
@@ -13,8 +15,6 @@ import {
   uniqueIndex,
   uuid,
   varchar,
-  check,
-  date,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
 import { Roles, type RolesType, RolesValues } from './constants'
@@ -41,7 +41,9 @@ export const users = pgTable('user', {
   name: text('name').unique().notNull(),
   email: text('email').unique().notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
-  image: uuid().references((): AnyPgColumn => uploadedFiles.id, { onDelete: 'cascade' }),
+  image: uuid().references((): AnyPgColumn => uploadedFiles.id, {
+    onDelete: 'cascade',
+  }),
   roles: pgRoles()
     .array()
     .notNull()
@@ -52,7 +54,9 @@ export const users = pgTable('user', {
   location: text('location'),
   allowInvites: boolean().notNull().default(true),
   isPublic: boolean().notNull().default(true),
-  languagePreference: varchar({ enum: ['en', 'de'] }).notNull().default('en'),
+  languagePreference: varchar({ enum: ['en', 'de'] })
+    .notNull()
+    .default('en'),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 })
@@ -199,7 +203,7 @@ export type UploadedFileSelect = typeof uploadedFiles.$inferSelect
 
 /**
  * Data specific for one user
-*/
+ */
 export const skills = pgTable('skills', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   skill: varchar({ length: 255 }).notNull().unique(),
@@ -211,8 +215,12 @@ export type SkillsSelect = typeof skills.$inferSelect
 
 export const userSkills = pgTable('userSkills', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  userId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),
-  skillId: integer('skillId').notNull().references(() => skills.id, {onDelete: 'cascade'}),
+  userId: uuid('userId')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  skillId: integer('skillId')
+    .notNull()
+    .references(() => skills.id, { onDelete: 'cascade' }),
   level: integer().notNull(),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
@@ -222,18 +230,28 @@ export type UserSkillsSelect = typeof userSkills.$inferSelect
 
 export const userSkillVerification = pgTable('userSkillVerification', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  verifierId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),
-  userSkillId: integer('skillId').notNull().references(() => userSkills.id, {onDelete: 'cascade'}),
+  verifierId: uuid('userId')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  userSkillId: integer('skillId')
+    .notNull()
+    .references(() => userSkills.id, { onDelete: 'cascade' }),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 })
-export type UserSkillVerificationInsert = typeof userSkillVerification.$inferInsert
-export type UserSkillVerificationSelect = typeof userSkillVerification.$inferSelect
+export type UserSkillVerificationInsert =
+  typeof userSkillVerification.$inferInsert
+export type UserSkillVerificationSelect =
+  typeof userSkillVerification.$inferSelect
 
 export const userRatings = pgTable('userRatings', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  raterId: uuid('userId').notNull().references(() => users.id),
-  rateeId: uuid('userId').notNull().references(() => users.id),
+  raterId: uuid('userId')
+    .notNull()
+    .references(() => users.id),
+  rateeId: uuid('userId')
+    .notNull()
+    .references(() => users.id),
   ratingType: varchar({ enum: ['friendly', 'reliable'] }).notNull(),
   createdAt: timestamp().notNull().defaultNow(),
 })
@@ -242,8 +260,12 @@ export type UserRatingsSelect = typeof userRatings.$inferSelect
 
 export const userFollows = pgTable('userFollows', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  followerId: uuid('followerId').notNull().references(() => users.id, {onDelete: 'cascade'}),
-  followeeId: uuid('followeeId').notNull().references(() => users.id, {onDelete: 'cascade'}),
+  followerId: uuid('followerId')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  followeeId: uuid('followeeId')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
   createdAt: timestamp().notNull().defaultNow(),
 })
 export type UserFollowsInsert = typeof userRatings.$inferInsert
@@ -255,7 +277,9 @@ export type UserFollowsInsert = typeof userRatings.$inferInsert
  */
 export const userProjects = pgTable('userProjects', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  userId: uuid('userId').notNull().references(() => users.id),
+  userId: uuid('userId')
+    .notNull()
+    .references(() => users.id),
   // for projects from this platform
   projectId: integer('projectId').references(() => projects.id),
   // for projects not from this platform
@@ -272,10 +296,16 @@ export type UserProjectsSelect = typeof userProjects.$inferSelect
 
 export const userProjectSettings = pgTable('userProjectSettings', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  userId: uuid('userId').notNull().references(() => users.id),
-  projectId: integer('projectId').notNull().references(() => projects.id),
+  userId: uuid('userId')
+    .notNull()
+    .references(() => users.id),
+  projectId: integer('projectId')
+    .notNull()
+    .references(() => projects.id),
   enableNotifications: boolean().notNull().default(true),
-  preferredNotificationChannel: varchar({ enum: ['email', 'push', 'both'] }).notNull().default('email'),
+  preferredNotificationChannel: varchar({ enum: ['email', 'push', 'both'] })
+    .notNull()
+    .default('email'),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 })
@@ -295,24 +325,44 @@ export const projects = pgTable('projects', {
   additionalInfo: json().default({}),
 })
 export const ProjectIssue = pgTable('ProjectIssue', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  projectId: integer()
+    .notNull()
+    .references(() => projects.id), // Fremdschlüssel auf projects.id
+  title: varchar({ length: 255 }).notNull(),
+  description: varchar({ length: 255 }).notNull(),
+  createdAt: varchar({ length: 255 }).notNull(),
+  updatedAt: varchar({ length: 255 }).notNull(),
+})
+export const ProjectTimetable = pgTable(
+  'ProjectTimetable',
+  {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
-    projectId: integer().notNull().references(() => projects.id), // Fremdschlüssel auf projects.id
-    title: varchar({ length: 255 }).notNull(),
-    description: varchar({ length: 255 }).notNull(),
-    createdAt: varchar({ length: 255 }).notNull(),
-    updatedAt: varchar({ length: 255 }).notNull(),
-});
-export const ProjectTimetable = pgTable('ProjectTimetable', {
-    id: integer().primaryKey().generatedAlwaysAsIdentity(),
-    projectId: integer().notNull().references(() => projects.id),
-    weekdays: varchar({enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']}).notNull(),
+    projectId: integer()
+      .notNull()
+      .references(() => projects.id),
+    weekdays: varchar({
+      enum: [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday',
+      ],
+    }).notNull(),
     startTime: time('startTime').notNull(),
     endTime: time('endTime').notNull(),
-}, (timeTable) => ({
+  },
+  (timeTable) => ({
     uniqueWeekday: uniqueIndex('unique_weekday').on(timeTable.weekdays), //
-    validTimeRange: check('valid_time_range',  sql`${timeTable.startTime} < ${timeTable.endTime}`) //
-}))
-
+    validTimeRange: check(
+      'valid_time_range',
+      sql`${timeTable.startTime} < ${timeTable.endTime}`,
+    ), //
+  }),
+)
 
 export type ProjectInsert = typeof projects.$inferInsert
 export type ProjectSelect = typeof projects.$inferSelect
@@ -476,7 +526,7 @@ export const brainstormResourceRelations = relations(
   }),
 )
 
-export const userSkillRelations = relations(userSkills, ({one, many}) => ({
+export const userSkillRelations = relations(userSkills, ({ one, many }) => ({
   skill: one(skills, {
     fields: [userSkills.skillId],
     references: [skills.id],
@@ -484,7 +534,7 @@ export const userSkillRelations = relations(userSkills, ({one, many}) => ({
   userSkillVerification: many(userSkillVerification),
 }))
 
-export const skillRelations = relations(skills, ({many}) => ({
+export const skillRelations = relations(skills, ({ many }) => ({
   userSkills: many(userSkills),
 }))
 export const uploadedFileRelations = relations(uploadedFiles, ({ one }) => ({
@@ -493,23 +543,26 @@ export const uploadedFileRelations = relations(uploadedFiles, ({ one }) => ({
     references: [users.id],
   }),
 }))
-export const userProjectRelations = relations(userProjects, ({one}) => ({
+export const userProjectRelations = relations(userProjects, ({ one }) => ({
   project: one(projects, {
     fields: [userProjects.projectId],
     references: [projects.id],
   }),
 }))
 
-export const userSkillVerificationRelations = relations(userSkillVerification, ({one}) => ({
-  verifier: one(users, {
-    fields: [userSkillVerification.verifierId],
-    references: [users.id],
+export const userSkillVerificationRelations = relations(
+  userSkillVerification,
+  ({ one }) => ({
+    verifier: one(users, {
+      fields: [userSkillVerification.verifierId],
+      references: [users.id],
+    }),
+    userSkill: one(userSkills, {
+      fields: [userSkillVerification.userSkillId],
+      references: [userSkills.id],
+    }),
   }),
-  userSkill: one(userSkills, {
-    fields: [userSkillVerification.userSkillId],
-    references: [userSkills.id],
-  }),
-}))
+)
 
 export const userRelations = relations(users, ({ one, many }) => ({
   skills: many(userSkills),
@@ -522,5 +575,5 @@ export const userRelations = relations(users, ({ one, many }) => ({
     fields: [users.image],
     references: [uploadedFiles.id],
   }),
-  userSkillVerification: many(userSkillVerification)
+  userSkillVerification: many(userSkillVerification),
 }))

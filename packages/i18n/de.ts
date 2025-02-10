@@ -1,4 +1,4 @@
-import type {Language} from './en'
+import type { Language } from './en'
 
 export const de: Language = {
   general: {
@@ -165,7 +165,8 @@ export const de: Language = {
         remove: 'Skill entfernen',
         search: 'Skill suchen',
         noResults: 'Keine Ergebnisse',
-        updateWarning: 'Dieser Skill wurde bereits von anderen Nutzern bestätigt. Wenn er geändert wird werden diese entfernt. Fortfahren?',
+        updateWarning:
+          'Dieser Skill wurde bereits von anderen Nutzern bestätigt. Wenn er geändert wird werden diese entfernt. Fortfahren?',
       },
       projects: {
         title: 'Projekte',

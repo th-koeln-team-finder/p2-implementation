@@ -1,30 +1,30 @@
 'use client'
 
+import { addSkill } from '@/features/skills/skills.actions'
+import { searchSkills } from '@/features/skills/skills.queries'
+import { resetVerification } from '@/features/userSkillVerification/userSkillVerification.action'
+import {
+  addUserSkill,
+  removeUserSkill,
+  revalidateUserSkills,
+  updateUserSkillLevel,
+} from '@/features/userSkills/userSkills.actions'
+import { useOptimisticUserSkills } from '@/features/userSkills/userSkills.hooks'
+import { debounce } from '@/utils'
+import type { SkillsSelect, UserSkillsSelect } from '@repo/database/schema'
+import { Button } from '@repo/design-system/components/ui/button'
+import { Combobox } from '@repo/design-system/components/ui/combobox'
 import {
   Dialog,
   DialogClose,
   DialogContent,
   DialogDescription,
-  DialogTitle
-} from '@repo/design-system/components/ui/dialog';
-import {Button} from '@repo/design-system/components/ui/button';
-import {MutableRefObject, useCallback, useRef, useState} from 'react';
-import {Combobox} from "@repo/design-system/components/ui/combobox";
-import {Label} from "@repo/design-system/components/ui/label";
-import {BadgeCheck, Trash} from "lucide-react";
-import {
-  addUserSkill,
-  removeUserSkill,
-  revalidateUserSkills,
-  updateUserSkillLevel
-} from "@/features/userSkills/userSkills.actions";
-import {addSkill} from "@/features/skills/skills.actions";
-import {searchSkills} from "@/features/skills/skills.queries";
-import {debounce} from "@/utils";
-import {useOptimisticUserSkills} from "@/features/userSkills/userSkills.hooks";
-import {useTranslations} from "next-intl";
-import type {SkillsSelect, UserSkillsSelect} from "@repo/database/schema";
-import {resetVerification} from "@/features/userSkillVerification/userSkillVerification.action";
+  DialogTitle,
+} from '@repo/design-system/components/ui/dialog'
+import { Label } from '@repo/design-system/components/ui/label'
+import { BadgeCheck, Trash } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { type MutableRefObject, useCallback, useRef, useState } from 'react'
 
 export default function SkillsEdit({
   userSkills,

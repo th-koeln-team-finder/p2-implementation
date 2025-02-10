@@ -1,18 +1,18 @@
-import {getLocale, getTranslations} from "next-intl/server";
-import {authMiddleware} from "@/auth";
-import {UserSelect} from "@repo/database/schema";
-import SkillsEdit from "@/features/users/components/SkillsEdit";
-import {getUser} from "@/features/users/users.query";
-import {redirect} from "@/features/i18n/routing";
-import {getUserSkills} from "@/features/userSkills/userSkills.query";
+import { authMiddleware } from '@/auth'
+import { redirect } from '@/features/i18n/routing'
+import { getUserSkills } from '@/features/userSkills/userSkills.query'
+import SkillsEdit from '@/features/users/components/SkillsEdit'
+import { getUser } from '@/features/users/users.query'
+import type { UserSelect } from '@repo/database/schema'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 export default async function EditSkills() {
   const translate = await getTranslations()
   const session = await authMiddleware()
   if (!session?.user?.id) {
-    return redirect({href: '/', locale: await getLocale()})
+    return redirect({ href: '/', locale: await getLocale() })
   }
-  const user = await getUser(session.user.id) as UserSelect
+  const user = (await getUser(session.user.id)) as UserSelect
 
   const skills = await getUserSkills(user.id)
 
@@ -22,7 +22,7 @@ export default async function EditSkills() {
         {translate('users.settings.skills.title')}
       </h2>
 
-      <SkillsEdit userSkills={skills} userId={user.id}/>
+      <SkillsEdit userSkills={skills} userId={user.id} />
     </section>
   )
 }

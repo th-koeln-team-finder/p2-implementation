@@ -1,6 +1,6 @@
-import {unstable_cache as cache} from "next/cache";
-import {db, Schema} from "@repo/database";
-import {asc, desc, eq} from "drizzle-orm";
+import { Schema, db } from '@repo/database'
+import { asc, desc, eq } from 'drizzle-orm'
+import { unstable_cache as cache } from 'next/cache'
 
 export const getUserSkills = cache(
   async (userId: string) => {
@@ -10,9 +10,12 @@ export const getUserSkills = cache(
         skill: true,
         userSkillVerification: true,
       },
-      orderBy: [desc(Schema.userSkills.level), asc(Schema.userSkills.createdAt)],
-    });
+      orderBy: [
+        desc(Schema.userSkills.level),
+        asc(Schema.userSkills.createdAt),
+      ],
+    })
   },
   ['getUserSkills'],
-  {tags: ['user-skills']}
+  { tags: ['user-skills'] },
 )

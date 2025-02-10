@@ -1,25 +1,22 @@
 'use server'
 
-import {revalidateTag} from "next/cache";
-import type {UserSkillsInsert} from "@repo/database/schema";
-import {db, Schema} from "@repo/database";
-import {eq} from "drizzle-orm";
+import { Schema, db } from '@repo/database'
+import type { UserSkillsInsert } from '@repo/database/schema'
+import { eq } from 'drizzle-orm'
+import { revalidateTag } from 'next/cache'
 
 export async function revalidateUserSkills() {
   return revalidateTag('user-skills')
 }
 
 export async function addUserSkill(userSkill: UserSkillsInsert) {
-  await db
-    .insert(Schema.userSkills)
-    .values(userSkill)
-    .execute()
+  await db.insert(Schema.userSkills).values(userSkill).execute()
 }
 
 export async function updateUserSkillLevel(userSkillId: number, level: number) {
   await db
     .update(Schema.userSkills)
-    .set({level})
+    .set({ level })
     .where(eq(Schema.userSkills.id, userSkillId))
     .execute()
 }

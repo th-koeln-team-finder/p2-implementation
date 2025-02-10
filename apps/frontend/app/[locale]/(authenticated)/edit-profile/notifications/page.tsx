@@ -1,37 +1,42 @@
-import {getLocale, getTranslations} from "next-intl/server";
-import {authMiddleware} from "@/auth";
-import {UserSelect} from "@repo/database/schema";
-import {Checkbox} from "@repo/design-system/components/ui/checkbox";
+import { authMiddleware } from '@/auth'
+import { redirect } from '@/features/i18n/routing'
+import { getUser } from '@/features/users/users.query'
+import type { UserSelect } from '@repo/database/schema'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@repo/design-system/components/ui/card'
+import { Checkbox } from '@repo/design-system/components/ui/checkbox'
+import { Label } from '@repo/design-system/components/ui/label'
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
   SelectTrigger,
-  SelectValue
-} from "@repo/design-system/components/ui/select";
-import {Label} from "@repo/design-system/components/ui/label";
-import {Card, CardContent, CardHeader, CardTitle} from "@repo/design-system/components/ui/card";
-import {redirect} from "@/features/i18n/routing";
-import {getUser} from "@/features/users/users.query";
+  SelectValue,
+} from '@repo/design-system/components/ui/select'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 export default async function EditProfile() {
   const t = await getTranslations()
   const session = await authMiddleware()
   if (!session?.user?.id) {
-    return redirect({href: '/', locale: await getLocale()})
+    return redirect({ href: '/', locale: await getLocale() })
   }
 
-  const user = await getUser(session.user.id) as UserSelect
+  const user = (await getUser(session.user.id)) as UserSelect
 
   return (
     <div>
-      <h2 className="font-bold text-2xl mb-8">{
-        t('users.settings.notifications.title')}
+      <h2 className="font-bold text-2xl mb-8">
+        {t('users.settings.notifications.title')}
       </h2>
 
       <div className="flex items-center space-x-2 mb-4">
-        <Checkbox id="terms"/>
+        <Checkbox id="terms" />
         <label
           htmlFor="terms"
           className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -42,7 +47,9 @@ export default async function EditProfile() {
 
       <Card className="overflow-hidden mb-4">
         <CardHeader className="p-0">
-          <CardTitle className="py-4 px-6">{t('users.settings.notifications.project')}</CardTitle>
+          <CardTitle className="py-4 px-6">
+            {t('users.settings.notifications.project')}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="mb-4">
@@ -51,7 +58,9 @@ export default async function EditProfile() {
             </Label>
             <Select>
               <SelectTrigger name="notificationType">
-                <SelectValue placeholder={t('users.settings.notifications.selectType')}/>
+                <SelectValue
+                  placeholder={t('users.settings.notifications.selectType')}
+                />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -70,7 +79,9 @@ export default async function EditProfile() {
             </Label>
             <Select>
               <SelectTrigger name="notificationType">
-                <SelectValue placeholder={t('users.settings.notifications.selectType')}/>
+                <SelectValue
+                  placeholder={t('users.settings.notifications.selectType')}
+                />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -89,7 +100,9 @@ export default async function EditProfile() {
             </Label>
             <Select>
               <SelectTrigger name="notificationType">
-                <SelectValue placeholder={t('users.settings.notifications.selectType')}/>
+                <SelectValue
+                  placeholder={t('users.settings.notifications.selectType')}
+                />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -108,7 +121,9 @@ export default async function EditProfile() {
             </Label>
             <Select>
               <SelectTrigger name="notificationType">
-                <SelectValue placeholder={t('users.settings.notifications.selectType')}/>
+                <SelectValue
+                  placeholder={t('users.settings.notifications.selectType')}
+                />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -127,7 +142,9 @@ export default async function EditProfile() {
             </Label>
             <Select>
               <SelectTrigger name="notificationType">
-                <SelectValue placeholder={t('users.settings.notifications.selectType')}/>
+                <SelectValue
+                  placeholder={t('users.settings.notifications.selectType')}
+                />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -144,7 +161,9 @@ export default async function EditProfile() {
 
       <Card className="overflow-hidden">
         <CardHeader className="p-0">
-          <CardTitle className="py-4 px-6">{t('users.settings.notifications.profile')}</CardTitle>
+          <CardTitle className="py-4 px-6">
+            {t('users.settings.notifications.profile')}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="mb-4">
@@ -153,7 +172,9 @@ export default async function EditProfile() {
             </Label>
             <Select>
               <SelectTrigger name="notificationType">
-                <SelectValue placeholder={t('users.settings.notifications.selectType')}/>
+                <SelectValue
+                  placeholder={t('users.settings.notifications.selectType')}
+                />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -172,7 +193,9 @@ export default async function EditProfile() {
             </Label>
             <Select>
               <SelectTrigger name="notificationType">
-                <SelectValue placeholder={t('users.settings.notifications.selectType')}/>
+                <SelectValue
+                  placeholder={t('users.settings.notifications.selectType')}
+                />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -191,7 +214,9 @@ export default async function EditProfile() {
             </Label>
             <Select>
               <SelectTrigger name="notificationType">
-                <SelectValue placeholder={t('users.settings.notifications.selectType')}/>
+                <SelectValue
+                  placeholder={t('users.settings.notifications.selectType')}
+                />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>

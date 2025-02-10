@@ -50,7 +50,7 @@ export const en = {
     location: 'Location',
     join: 'Join the team',
     links: 'Links and other resources',
-    issuesTitle:'open issues for starters',
+    issuesTitle: 'open issues for starters',
     skills: {
       title: 'Skills needed',
       toggleLess: 'Show less',
@@ -146,7 +146,8 @@ export const en = {
     editProfile: 'Edit profile',
     verifySkill: 'Verify skill',
     unverifySkill: 'Unverify skill',
-    verificationTooltip: "This skill has been verified {verifications} time(s) by other users",
+    verificationTooltip:
+      'This skill has been verified {verifications} time(s) by other users',
 
     settings: {
       title: 'User settings',
@@ -162,7 +163,8 @@ export const en = {
         remove: 'Remove skill',
         search: 'Search skill',
         noResults: 'No results',
-        updateWarning: 'This skill has verifications. Changing the level will remove them. Are you sure you want to continue?',
+        updateWarning:
+          'This skill has verifications. Changing the level will remove them. Are you sure you want to continue?',
       },
       projects: {
         title: 'Projects',
@@ -170,7 +172,8 @@ export const en = {
         yourProjects: 'Your projects',
         projectName: 'Project name',
         projectDescription: 'Description',
-        projectDescriptionPlaceholder: 'Describe your role and responsibilities',
+        projectDescriptionPlaceholder:
+          'Describe your role and responsibilities',
         noProjectsDesc: 'You have no projects yet',
         addProject: 'Add project',
         joinedDate: 'Joined Date',
@@ -205,8 +208,8 @@ export const en = {
         newFollower: 'New follower',
         newInvite: 'New invite to a project',
         newSkillEvaluation: 'New skill evaluation',
-      }
-    }
+      },
+    },
   },
   validation: {
     inProgress: 'Validating...',

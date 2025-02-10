@@ -1,33 +1,43 @@
-import {useSession} from "next-auth/react";
-import {useOptimistic, useTransition} from "react";
-import type {SkillsSelect, UserSkillsSelect, UserSkillVerificationSelect} from "@repo/database/schema";
+import type {
+  SkillsSelect,
+  UserSkillVerificationSelect,
+  UserSkillsSelect,
+} from '@repo/database/schema'
+import { useSession } from 'next-auth/react'
+import { useOptimistic, useTransition } from 'react'
 
 export type OptimisticPayload =
   | {
-  action: 'add'
-  values: {
-    userId: string,
-    skillId: number,
-    level: number,
-    skill: {
-      id: number,
-      skill: string
-    },
-  }
-}
+      action: 'add'
+      values: {
+        userId: string
+        skillId: number
+        level: number
+        skill: {
+          id: number
+          skill: string
+        }
+      }
+    }
   | {
-  action: 'delete'
-  values: { id: number }
-}
+      action: 'delete'
+      values: { id: number }
+    }
   | {
-  action: 'update'
-  values: {
-    id: number,
-    level: number
-  }
-}
+      action: 'update'
+      values: {
+        id: number
+        level: number
+      }
+    }
 
-export function useOptimisticUserSkills(userSkills: (UserSkillsSelect & {id: number, skill?: Partial<SkillsSelect>, userSkillVerification?: Partial<UserSkillVerificationSelect>[]})[]) {
+export function useOptimisticUserSkills(
+  userSkills: (UserSkillsSelect & {
+    id: number
+    skill?: Partial<SkillsSelect>
+    userSkillVerification?: Partial<UserSkillVerificationSelect>[]
+  })[],
+) {
   const { data: session } = useSession()
   const [_, startTransition] = useTransition()
   const [optimisticUpdates, dispatchOptimistic] = useOptimistic(
@@ -65,9 +75,7 @@ export function useOptimisticUserSkills(userSkills: (UserSkillsSelect & {id: num
           })
         }
         case 'delete':
-          return state.filter(
-            (userSkill) => userSkill.id !== payload.values.id
-          )
+          return state.filter((userSkill) => userSkill.id !== payload.values.id)
         default:
           return state
       }

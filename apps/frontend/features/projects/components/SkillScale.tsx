@@ -1,10 +1,15 @@
 'use client'
 
-import {useEffect, useRef, useState} from 'react'
-import {useTranslations} from 'next-intl'
-import {BadgeCheck} from 'lucide-react'
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,} from '@repo/design-system/components/ui/tooltip'
 import VerificationControl from '@/features/users/components/VerificationControl'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@repo/design-system/components/ui/tooltip'
+import { BadgeCheck } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { useEffect, useRef, useState } from 'react'
 
 type Skill = {
   name: string
@@ -103,7 +108,9 @@ export function SkillScale({
                         </TooltipTrigger>
                         <TooltipContent>
                           <p>
-                            {t('users.verificationTooltip', {verifications: skill.verifications})}
+                            {t('users.verificationTooltip', {
+                              verifications: skill.verifications,
+                            })}
                           </p>
                         </TooltipContent>
                       </Tooltip>

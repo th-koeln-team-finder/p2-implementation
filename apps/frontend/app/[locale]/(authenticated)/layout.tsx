@@ -1,7 +1,7 @@
-import {authMiddleware} from '@/auth'
-import {UserProfileMenu} from '@/features/auth/components/UserProfileMenu'
-import {redirect} from '@/features/i18n/routing'
-import {getLocale} from 'next-intl/server'
+import { authMiddleware } from '@/auth'
+import { UserProfileMenu } from '@/features/auth/components/UserProfileMenu'
+import { redirect } from '@/features/i18n/routing'
+import { getLocale } from 'next-intl/server'
 
 export default async function AuthenticatedLayout({
   children,
