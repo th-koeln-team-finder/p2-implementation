@@ -1,3 +1,5 @@
+'use server'
+
 import {getLocale, getTranslations} from 'next-intl/server'
 import {Avatar, AvatarFallback, AvatarImage,} from '@repo/design-system/components/ui/avatar'
 import PreviouslyWorkedOn from '@/features/users/components/PreviouslyWorkedOn'
@@ -10,15 +12,10 @@ import {Link, redirect} from '@/features/i18n/routing'
 import type {UserSelect} from '@repo/database/schema'
 import {userFollowsUser} from '@/features/userFollows/userFollows.queries'
 import FollowButton from '@/features/users/components/FollowButton'
-import {SkillScale} from "@/features/projects/components/SkillScale";
-import {getUserSkills} from "@/features/userSkills/userSkills.query";
+import {SkillScale} from '@/features/projects/components/SkillScale'
+import {getUserSkills} from '@/features/userSkills/userSkills.query'
 
-export default async function Profile(
-  {
-    user
-  }:
-  { user: UserSelect }
-) {
+export default async function Profile({ user }: { user: UserSelect }) {
   const translate = await getTranslations()
 
   const session = await authMiddleware()
@@ -28,10 +25,16 @@ export default async function Profile(
   const isOwnProfile = user.id === session.user.id
   const loggedInUser = (await getUser(session.user.id)) as UserSelect
 
-  const isFollowing = !!await userFollowsUser(loggedInUser.id, user.id)
-  const skills = (await getUserSkills(user.id)).map(userSkill => ({
+  const isFollowing = !!(await userFollowsUser(loggedInUser.id, user.id))
+  const skills = (await getUserSkills(user.id)).map((userSkill) => ({
+    id: userSkill.id,
     name: userSkill.skill.skill,
     level: userSkill.level,
+    verifications: userSkill.userSkillVerification.length,
+    isVerified: userSkill.userSkillVerification.some(
+      (verification) => verification.verifierId === loggedInUser.id,
+    ),
+    verifierId: loggedInUser.id,
   }))
 
   const lastActivity = new Date()
@@ -83,15 +86,17 @@ export default async function Profile(
         </div>
       </div>
       <div className="mt-8">
-        <SkillScale title={translate('users.skills')} skills={skills} />
+        <SkillScale
+          title={translate('users.skills')}
+          skills={skills}
+          renderVerificationControl={!isOwnProfile}
+        />
       </div>
       <div className="mt-8">
         <h2 className="font-bold text-2xl mb-4">
           {translate('users.previouslyWorkedOn')}
         </h2>
-        <PreviouslyWorkedOn
-          userId={user.id}
-        />
+        <PreviouslyWorkedOn userId={user.id} />
       </div>
     </main>
   )

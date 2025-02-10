@@ -1,11 +1,11 @@
 'use server'
 
 import {revalidateTag} from "next/cache";
-import {UserSkillsInsert} from "@repo/database/schema";
+import type {UserSkillsInsert} from "@repo/database/schema";
 import {db, Schema} from "@repo/database";
 import {eq} from "drizzle-orm";
 
-export async function revalidateSkills() {
+export async function revalidateUserSkills() {
   return revalidateTag('user-skills')
 }
 

@@ -1,6 +1,6 @@
 import {useSession} from "next-auth/react";
 import {useOptimistic, useTransition} from "react";
-import {SkillsSelect, UserSkillsSelect} from "@repo/database/schema";
+import type {SkillsSelect, UserSkillsSelect, UserSkillVerificationSelect} from "@repo/database/schema";
 
 export type OptimisticPayload =
   | {
@@ -12,7 +12,7 @@ export type OptimisticPayload =
     skill: {
       id: number,
       skill: string
-    }
+    },
   }
 }
   | {
@@ -27,7 +27,7 @@ export type OptimisticPayload =
   }
 }
 
-export function useOptimisticUserSkills(userSkills: (UserSkillsSelect & {id: number, skill?: Partial<SkillsSelect>})[]) {
+export function useOptimisticUserSkills(userSkills: (UserSkillsSelect & {id: number, skill?: Partial<SkillsSelect>, userSkillVerification?: Partial<UserSkillVerificationSelect>[]})[]) {
   const { data: session } = useSession()
   const [_, startTransition] = useTransition()
   const [optimisticUpdates, dispatchOptimistic] = useOptimistic(
@@ -44,6 +44,7 @@ export function useOptimisticUserSkills(userSkills: (UserSkillsSelect & {id: num
               id: payload.values.skillId,
               skill: payload.values.skill?.skill,
             },
+            userSkillVerification: [],
             createdAt: new Date(),
             updatedAt: new Date(),
           }

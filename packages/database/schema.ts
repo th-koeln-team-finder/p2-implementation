@@ -224,7 +224,6 @@ export const userSkillVerification = pgTable('userSkillVerification', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   verifierId: uuid('userId').notNull().references(() => users.id, {onDelete: 'cascade'}),
   userSkillId: integer('skillId').notNull().references(() => userSkills.id, {onDelete: 'cascade'}),
-  status: varchar({ enum: ['pending', 'approved', 'rejected'] }).notNull(),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 })
@@ -477,11 +476,12 @@ export const brainstormResourceRelations = relations(
   }),
 )
 
-export const userSkillRelations = relations(userSkills, ({one}) => ({
+export const userSkillRelations = relations(userSkills, ({one, many}) => ({
   skill: one(skills, {
     fields: [userSkills.skillId],
     references: [skills.id],
   }),
+  userSkillVerification: many(userSkillVerification),
 }))
 
 export const skillRelations = relations(skills, ({many}) => ({
@@ -500,6 +500,17 @@ export const userProjectRelations = relations(userProjects, ({one}) => ({
   }),
 }))
 
+export const userSkillVerificationRelations = relations(userSkillVerification, ({one}) => ({
+  verifier: one(users, {
+    fields: [userSkillVerification.verifierId],
+    references: [users.id],
+  }),
+  userSkill: one(userSkills, {
+    fields: [userSkillVerification.userSkillId],
+    references: [userSkills.id],
+  }),
+}))
+
 export const userRelations = relations(users, ({ one, many }) => ({
   skills: many(userSkills),
   projects: many(userProjects),
@@ -510,5 +521,6 @@ export const userRelations = relations(users, ({ one, many }) => ({
   image: one(uploadedFiles, {
     fields: [users.image],
     references: [uploadedFiles.id],
-  })
+  }),
+  userSkillVerification: many(userSkillVerification)
 }))

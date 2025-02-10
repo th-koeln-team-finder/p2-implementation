@@ -10,6 +10,7 @@ export const de: Language = {
     add: 'Hinzufügen',
     remove: 'Entfernen',
     notSupported: 'Nicht unterstützt',
+    confirm: 'Bestätigen',
   },
   components: {
     wysiwyg: {
@@ -52,8 +53,8 @@ export const de: Language = {
     location: 'Standort/Treffpunkt',
     join: 'Team beitreten',
     links: 'Links und andere Ressourcen',
-    issuesTitle:'Offene Issues für neue Mitglieder',
-    skills:{
+    issuesTitle: 'Offene Issues für neue Mitglieder',
+    skills: {
       title: 'Deine Fähigkeiten',
       toggleLess: 'Weniger anzeigen',
       toggleMore: 'Mehr anzeigen',
@@ -146,6 +147,10 @@ export const de: Language = {
     veryFriendly: 'Sehr freundlich',
     ratingText: 'Personen haben die Person als "sehr freundlich" bewertet',
     editProfile: 'Profil bearbeiten',
+    verifySkill: 'Skill bestätigen',
+    unverifySkill: 'Skillbestätigung aufheben',
+    verificationTooltip:
+      'Dieser Skill wurde {verifications} Mal von anderen Benutzern bestätigt',
     settings: {
       title: 'Benutzereinstellungen',
       profile: 'Profil',
@@ -160,19 +165,23 @@ export const de: Language = {
         remove: 'Skill entfernen',
         search: 'Skill suchen',
         noResults: 'Keine Ergebnisse',
+        updateWarning: 'Dieser Skill wurde bereits von anderen Nutzern bestätigt. Wenn er geändert wird werden diese entfernt. Fortfahren?',
       },
       projects: {
         title: 'Projekte',
-        description: 'Füge Projekte hinzu, an denen du in der Vergangenheit gearbeitet hast',
+        description:
+          'Füge Projekte hinzu, an denen du in der Vergangenheit gearbeitet hast',
         yourProjects: 'Deine Projekte',
         projectName: 'Projektname',
         projectDescription: 'Beschreibung',
-        projectDescriptionPlaceholder: 'Beschreiben Sie Ihre Rolle und Verantwortlichkeiten',
+        projectDescriptionPlaceholder:
+          'Beschreiben Sie Ihre Rolle und Verantwortlichkeiten',
         noProjectsDesc: 'Du hast noch keine Projekte',
         addProject: 'Projekt hinzufügen',
         joinedDate: 'Beitrittsdatum',
         leftDate: 'Austrittsdatum',
-        leftDateValidation: 'Austrittsdatum muss nach dem Beitrittsdatum liegen',
+        leftDateValidation:
+          'Austrittsdatum muss nach dem Beitrittsdatum liegen',
         deleteProject: 'Projekt löschen',
         hideProject: 'Projekt ausblenden',
         showProject: 'Projekt anzeigen',
@@ -194,16 +203,19 @@ export const de: Language = {
         profile: 'Profilbenachrichtigungen',
         activate: 'Aktivieren',
         selectType: 'Typ auswählen',
-        joinedProjectUpdated: 'Ein Projekt, dem ich beigetreten bin, wurde aktualisiert',
-        newMemberJoined: 'Ein neues Mitglied ist einem meiner Projekte beigetreten',
+        joinedProjectUpdated:
+          'Ein Projekt, dem ich beigetreten bin, wurde aktualisiert',
+        newMemberJoined:
+          'Ein neues Mitglied ist einem meiner Projekte beigetreten',
         memberLeft: 'Ein Mitglied hat ein Projekt verlassen',
         newProjectApplication: 'Eine neue Bewerbung für eines meiner Projekte',
-        bookmarkedProjectUpdated: 'Eines der Projekte in meinen Lesezeichen wurde aktualisiert',
+        bookmarkedProjectUpdated:
+          'Eines der Projekte in meinen Lesezeichen wurde aktualisiert',
         newFollower: 'Neuer Follower',
         newInvite: 'Neue Einladung zu einem Projekt',
         newSkillEvaluation: 'Neue Skill-Bewertung',
-      }
-    }
+      },
+    },
   },
   validation: {
     inProgress: 'Validiere...',

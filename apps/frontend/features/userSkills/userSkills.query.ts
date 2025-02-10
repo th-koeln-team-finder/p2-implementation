@@ -8,6 +8,7 @@ export const getUserSkills = cache(
       where: eq(Schema.userSkills.userId, userId),
       with: {
         skill: true,
+        userSkillVerification: true,
       },
       orderBy: [desc(Schema.userSkills.level), asc(Schema.userSkills.createdAt)],
     });

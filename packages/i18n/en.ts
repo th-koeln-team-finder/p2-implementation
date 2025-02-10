@@ -8,6 +8,7 @@ export const en = {
     add: 'Add',
     remove: 'Remove',
     notSupported: 'Not supported',
+    confirm: 'Confirm',
   },
   components: {
     wysiwyg: {
@@ -143,6 +144,10 @@ export const en = {
     veryFriendly: 'Very friendly',
     ratingText: 'people have rated the person as “very friendly”',
     editProfile: 'Edit profile',
+    verifySkill: 'Verify skill',
+    unverifySkill: 'Unverify skill',
+    verificationTooltip: "This skill has been verified {verifications} time(s) by other users",
+
     settings: {
       title: 'User settings',
       profile: 'Profile',
@@ -157,6 +162,7 @@ export const en = {
         remove: 'Remove skill',
         search: 'Search skill',
         noResults: 'No results',
+        updateWarning: 'This skill has verifications. Changing the level will remove them. Are you sure you want to continue?',
       },
       projects: {
         title: 'Projects',
