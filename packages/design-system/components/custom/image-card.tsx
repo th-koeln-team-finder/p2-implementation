@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import * as React from 'react'
 
 import { cn } from '../../lib/utils'
@@ -21,6 +22,7 @@ const ImageCard = React.forwardRef<
       className="absolute inset-0 bg-center bg-cover"
       style={{ backgroundImage: `url(${imageUrl})` }}
     />
+    <Image src={imageUrl} alt="Image" layout="fill" objectFit="cover" />
 
     {/* Overlay mit Deckkraft */}
     <div className="absolute inset-0 bg-black/40" />
@@ -52,7 +54,10 @@ const ImageCardTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('text-center font-semibold text-3xl text-white', className)}
+    className={cn(
+      'text-center font-semibold text-white text-xl lg:text-3xl',
+      className,
+    )}
     {...props}
   />
 ))

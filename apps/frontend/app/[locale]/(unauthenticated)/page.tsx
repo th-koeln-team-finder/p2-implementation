@@ -14,7 +14,7 @@ export default async function Home() {
   const translate = await getTranslations()
   return (
     <div className="container mx-auto my-4 max-w-screen-xl px-4">
-      <div className="mb-6 flex flex-col gap-4 lg:flex-row">
+      <div className="flex flex-col gap-4 lg:mb-6 lg:flex-row">
         <div className="w-full lg:w-1/2">
           <ImageCard imageUrl="/images/find-a-project-2.jpg">
             <ImageCardTitle>{translate('home.cardFind.title')}</ImageCardTitle>
@@ -22,7 +22,7 @@ export default async function Home() {
               <p>{translate('home.cardFind.content')}</p>
             </ImageCardContent>
             <ImageCardFooter>
-              <Link href="/find-project" className="mx-auto">
+              <Link href="/project" className="mx-auto">
                 <Button>{translate('home.cardFind.button')}</Button>
               </Link>
             </ImageCardFooter>
@@ -38,35 +38,33 @@ export default async function Home() {
             </ImageCardContent>
 
             <ImageCardFooter>
-              <Link href="/create-project" className="mx-auto">
+              <Link href="/project/create" className="mx-auto">
                 <Button>{translate('home.cardCreate.button')}</Button>
               </Link>
             </ImageCardFooter>
           </ImageCard>
         </div>
       </div>
-      <div className="flex">
-        <div className="w-full">
-          <ImageCard
-            imageUrl="/images/brainstorm-2.jpg"
-            className="flex flex-col gap-4 lg:flex-row"
-            cardFull={true}
-          >
-            <div className="flex w-full flex-col justify-between gap-4 lg:mr-48 lg:w-1/2 lg:gap-8">
-              <ImageCardTitle>
-                {translate('home.cardBrainstorm.title')}
-              </ImageCardTitle>
-              <ImageCardContent>
-                <p>{translate('home.cardBrainstorm.content')}</p>
-              </ImageCardContent>
-            </div>
-            <div className="flex w-full flex-col justify-center lg:w-1/2">
-              <Link href="/brainstorm" className="mx-auto">
-                <Button>{translate('home.cardBrainstorm.button')}</Button>
-              </Link>
-            </div>
-          </ImageCard>
-        </div>
+      <div className="flex w-full">
+        <ImageCard
+          imageUrl="/images/brainstorm-2.jpg"
+          className="flex flex-col gap-4 lg:flex-row"
+          cardFull={true}
+        >
+          <div className="flex w-full flex-col justify-between gap-4 lg:mr-48 lg:w-1/2 lg:gap-8">
+            <ImageCardTitle>
+              {translate('home.cardBrainstorm.title')}
+            </ImageCardTitle>
+            <ImageCardContent>
+              <p>{translate('home.cardBrainstorm.content')}</p>
+            </ImageCardContent>
+          </div>
+          <div className="flex w-full flex-col justify-center lg:w-1/2">
+            <Link href="/brainstorm" className="mx-auto">
+              <Button>{translate('home.cardBrainstorm.button')}</Button>
+            </Link>
+          </div>
+        </ImageCard>
       </div>
     </div>
   )
