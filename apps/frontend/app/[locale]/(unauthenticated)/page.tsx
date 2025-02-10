@@ -13,59 +13,49 @@ import { getTranslations } from 'next-intl/server'
 export default async function Home() {
   const translate = await getTranslations()
   return (
-    <div className="container mx-auto my-4 max-w-screen-xl px-4">
-      <div className="flex flex-col gap-4 lg:mb-6 lg:flex-row">
-        <div className="w-full lg:w-1/2">
-          <ImageCard imageUrl="/images/find-a-project-2.jpg">
-            <ImageCardTitle>{translate('home.cardFind.title')}</ImageCardTitle>
-            <ImageCardContent>
-              <p>{translate('home.cardFind.content')}</p>
-            </ImageCardContent>
-            <ImageCardFooter>
-              <Link href="/project" className="mx-auto">
-                <Button>{translate('home.cardFind.button')}</Button>
-              </Link>
-            </ImageCardFooter>
-          </ImageCard>
-        </div>
-        <div className="w-full lg:w-1/2">
-          <ImageCard imageUrl="/images/create-a-project.jpg">
-            <ImageCardTitle>
-              {translate('home.cardCreate.title')}
-            </ImageCardTitle>
-            <ImageCardContent>
-              <p>{translate('home.cardCreate.content')}</p>
-            </ImageCardContent>
+    <div className="container mx-auto grid h-[calc(100vh_-_4.5rem)] max-w-screen-xl grid-cols-1 gap-2 px-4 md:grid-cols-2">
+      <ImageCard imageUrl="/images/find-a-project-2.jpg" className="w-full">
+        <ImageCardTitle>{translate('home.cardFind.title')}</ImageCardTitle>
+        <ImageCardContent>
+          <p>{translate('home.cardFind.content')}</p>
+        </ImageCardContent>
+        <ImageCardFooter>
+          <Link href="/project" className="mx-auto">
+            <Button>{translate('home.cardFind.button')}</Button>
+          </Link>
+        </ImageCardFooter>
+      </ImageCard>
+      <ImageCard imageUrl="/images/create-a-project.jpg" className="w-full">
+        <ImageCardTitle>{translate('home.cardCreate.title')}</ImageCardTitle>
+        <ImageCardContent>
+          <p>{translate('home.cardCreate.content')}</p>
+        </ImageCardContent>
 
-            <ImageCardFooter>
-              <Link href="/project/create" className="mx-auto">
-                <Button>{translate('home.cardCreate.button')}</Button>
-              </Link>
-            </ImageCardFooter>
-          </ImageCard>
+        <ImageCardFooter>
+          <Link href="/project/create" className="mx-auto">
+            <Button>{translate('home.cardCreate.button')}</Button>
+          </Link>
+        </ImageCardFooter>
+      </ImageCard>
+      <ImageCard
+        imageUrl="/images/brainstorm-2.jpg"
+        className="w-full md:col-span-2"
+        cardFull={true}
+      >
+        <div className="flex w-full flex-col justify-between gap-4 lg:mr-48 lg:w-1/2 lg:gap-8">
+          <ImageCardTitle>
+            {translate('home.cardBrainstorm.title')}
+          </ImageCardTitle>
+          <ImageCardContent>
+            <p>{translate('home.cardBrainstorm.content')}</p>
+          </ImageCardContent>
         </div>
-      </div>
-      <div className="flex w-full">
-        <ImageCard
-          imageUrl="/images/brainstorm-2.jpg"
-          className="flex flex-col gap-4 lg:flex-row"
-          cardFull={true}
-        >
-          <div className="flex w-full flex-col justify-between gap-4 lg:mr-48 lg:w-1/2 lg:gap-8">
-            <ImageCardTitle>
-              {translate('home.cardBrainstorm.title')}
-            </ImageCardTitle>
-            <ImageCardContent>
-              <p>{translate('home.cardBrainstorm.content')}</p>
-            </ImageCardContent>
-          </div>
-          <div className="flex w-full flex-col justify-center lg:w-1/2">
-            <Link href="/brainstorm" className="mx-auto">
-              <Button>{translate('home.cardBrainstorm.button')}</Button>
-            </Link>
-          </div>
-        </ImageCard>
-      </div>
+        <div className="flex w-full flex-col justify-center lg:w-1/2">
+          <Link href="/brainstorm" className="mx-auto">
+            <Button>{translate('home.cardBrainstorm.button')}</Button>
+          </Link>
+        </div>
+      </ImageCard>
     </div>
   )
 }
