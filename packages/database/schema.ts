@@ -33,6 +33,7 @@ export const test = pgTable('test', {
 export type TestInsert = typeof test.$inferInsert
 export type TestSelect = typeof test.$inferSelect
 
+const notificationTypes =  ['email', 'push', 'both'] as const
 /**
  * Data specific for one user
  */
@@ -57,6 +58,15 @@ export const users = pgTable('user', {
   languagePreference: varchar({ enum: ['en', 'de'] })
     .notNull()
     .default('en'),
+  activateNotifications: boolean().notNull().default(true),
+  projectUpdated: varchar({ enum: notificationTypes }),
+  memberJoinedProject: varchar({ enum: notificationTypes }),
+  memberLeftProject: varchar({ enum: notificationTypes }),
+  newApplication: varchar({ enum: notificationTypes }),
+  bookmarkedProjectUpdated: varchar({ enum: notificationTypes }),
+  newFollower: varchar({ enum: notificationTypes }),
+  newInvite: varchar({ enum: notificationTypes }),
+  newSkillEvaluation: varchar({ enum: notificationTypes }),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 })
