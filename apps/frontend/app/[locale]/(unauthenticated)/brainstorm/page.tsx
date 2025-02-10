@@ -7,13 +7,18 @@ import { BrainIcon } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 import { Suspense } from 'react'
 
-export default async function BrainstormPage() {
+export default async function BrainstormPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ search: string }>
+}) {
   const translate = await getTranslations('brainstorm')
+  const { search } = await searchParams
   return (
     <div className="h-screen">
       <div className="container mx-auto px-4">
-        <Suspense fallback={<BrainstormListLoading />}>
-          <BrainstormList />
+        <Suspense key={search} fallback={<BrainstormListLoading />}>
+          <BrainstormList search={search} />
         </Suspense>
       </div>
       <CanUserServer target="brainstorm" action="create">

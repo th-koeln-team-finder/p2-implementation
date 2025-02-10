@@ -1,12 +1,16 @@
 import { BrainstormCacheTags } from '@/features/brainstorm/brainstorm.constants'
 import { Schema, db } from '@repo/database'
-import { eq, sql } from 'drizzle-orm'
+import { generateTextEmbeddings } from '@repo/semantic-search'
+import { cosineDistance, desc, eq, gt, sql } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
 
 export const getBrainstorms = cache(
-  (userId?: string) => {
+  async (userId?: string, search = '') => {
+    const searchEmbeddings = await generateTextEmbeddings(search)
+    const similarity = sql<number>`1 - (${cosineDistance(Schema.brainstorms.embedding, searchEmbeddings)})`
     return db.query.brainstorms.findMany({
       extras: {
+        similarity: similarity.as('similarity'),
         isBookmarked: !userId
           ? sql<boolean>`false`.as('isBookmarked')
           : sql<boolean>`EXISTS (SELECT id FROM "brainstorm_bookmark" bookmark WHERE bookmark."brainstormId" = "brainstorms"."id" AND bookmark."userId" = ${userId})`.as(
@@ -16,7 +20,11 @@ export const getBrainstorms = cache(
       with: {
         tags: {
           with: {
-            tag: true,
+            tag: {
+              columns: {
+                embedding: false,
+              },
+            },
           },
         },
         resources: {
@@ -25,6 +33,8 @@ export const getBrainstorms = cache(
           },
         },
       },
+      where: gt(similarity, 0.5),
+      orderBy: [desc(similarity), desc(Schema.brainstorms.createdAt)],
     })
   },
   ['getBrainstorms'],

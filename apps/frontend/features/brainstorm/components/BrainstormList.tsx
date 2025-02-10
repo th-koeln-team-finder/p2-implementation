@@ -1,19 +1,23 @@
 import { authMiddleware } from '@/auth'
 import { getBrainstorms } from '@/features/brainstorm/brainstorm.queries'
+import { BrainstormFilterBar } from '@/features/brainstorm/components/BrainstormFilterBar'
 import { BrainstormListEntry } from '@/features/brainstorm/components/BrainstormListEntry'
 import { Masonry } from '@repo/design-system/components/ui/Masonry'
 
-export async function BrainstormList() {
+export async function BrainstormList({ search }: { search: string }) {
   const session = await authMiddleware()
-  const brainstorms = await getBrainstorms(session?.user?.id)
+  const brainstorms = await getBrainstorms(session?.user?.id, search)
   return (
-    <Masonry
-      masonryGutter="16px"
-      columnsCountBreakPoints={{ 350: 1, 640: 2, 768: 3, 1200: 4 }}
-    >
-      {brainstorms.map((brainstorm) => (
-        <BrainstormListEntry key={brainstorm.id} brainstorm={brainstorm} />
-      ))}
-    </Masonry>
+    <section>
+      <BrainstormFilterBar />
+      <Masonry
+        masonryGutter="16px"
+        columnsCountBreakPoints={{ 350: 1, 640: 2, 768: 3, 1200: 4 }}
+      >
+        {brainstorms.map((brainstorm) => (
+          <BrainstormListEntry key={brainstorm.id} brainstorm={brainstorm} />
+        ))}
+      </Masonry>
+    </section>
   )
 }
