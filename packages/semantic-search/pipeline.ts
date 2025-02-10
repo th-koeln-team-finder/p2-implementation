@@ -1,25 +1,51 @@
 import {
+  AutoTokenizer,
   type FeatureExtractionPipeline,
-  type ProgressCallback,
+  type PreTrainedTokenizer,
   pipeline,
 } from '@huggingface/transformers'
+
+const modelTypes = {
+  small: 'Xenova/multilingual-e5-small',
+  large: 'mixedbread-ai/mxbai-embed-large-v1',
+} as const
 
 // Use the Singleton pattern to enable lazy construction of the pipeline.
 // NOTE: We wrap the class in a function to prevent code duplication (see below).
 const P = () =>
   // biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
   class PipelineSingleton {
-    static instance = null as FeatureExtractionPipeline | null
+    static pipelineInstances = {} as Record<
+      keyof typeof modelTypes,
+      FeatureExtractionPipeline
+    >
+    static tokenizerInstances = {} as Record<
+      keyof typeof modelTypes,
+      PreTrainedTokenizer
+    >
 
-    static async getInstance(progress_callback?: ProgressCallback) {
-      if (PipelineSingleton.instance === null) {
-        PipelineSingleton.instance = await pipeline(
+    static async getPipelineInstance(type: keyof typeof modelTypes = 'small') {
+      if (!PipelineSingleton.pipelineInstances[type]) {
+        PipelineSingleton.pipelineInstances[type] = await pipeline(
           'feature-extraction',
-          'Xenova/multilingual-e5-small',
-          { progress_callback, dtype: 'fp16' },
+          modelTypes[type],
+          {
+            progress_callback: (info) => {
+              console.log('Downloading model', type, info)
+            },
+            dtype: 'fp16',
+          },
         )
       }
-      return PipelineSingleton.instance
+      return PipelineSingleton.pipelineInstances[type]
+    }
+
+    static async getTokenizerInstance(type: keyof typeof modelTypes = 'small') {
+      if (!PipelineSingleton.tokenizerInstances[type]) {
+        PipelineSingleton.tokenizerInstances[type] =
+          await AutoTokenizer.from_pretrained(modelTypes[type])
+      }
+      return PipelineSingleton.tokenizerInstances[type]
     }
   }
 
