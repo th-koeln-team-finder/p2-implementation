@@ -60,9 +60,11 @@ export async function seed() {
   await db.delete(Schema.brainstorms).execute()
 
   console.log('Creating 50 brainstorm records')
-  const brainstormData = await makeMultipleAsync(50, () =>
-    makeBrainstorm(userIds),
-  )
+  const brainstormData = []
+  for (let i = 0; i < 50; i++) {
+    const brainstorm = await makeBrainstorm(userIds)
+    brainstormData.push(brainstorm)
+  }
   const brainstorms = await db
     .insert(Schema.brainstorms)
     .values(brainstormData)
