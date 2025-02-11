@@ -37,6 +37,28 @@ export const en = {
       removeAll: 'Remove All',
     },
   },
+  projects: {
+    apply: {
+      title: 'Join the Team',
+      infoTitle: 'About you',
+      applyTitle: 'Your application documents',
+      messageTitle: 'Your message',
+      form: {
+        firstName: 'First Name',
+        placeholderFirstName: 'Enter your first name...',
+        lastName: 'Last Name',
+        placeholderLastName: 'Enter your last name...',
+        mail: 'Email',
+        placeholderMail: 'Enter your email...',
+        phone: 'Phone Number',
+        placeholderPhone: 'Enter your phone number...',
+        fileUpload: 'Upload your portfolio, CV, etc.',
+        message: 'Is there anything else you would like to tell us?',
+        placeholderMessage: 'Enter your message...',
+        submit: 'Send Request',
+      },
+    },
+  },
   brainstorm: {
     makeActionButton: 'Create the project',
     deleteActionButton: 'Delete',

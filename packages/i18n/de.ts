@@ -40,6 +40,28 @@ export const de: Language = {
       removeAll: 'Alle entfernen',
     },
   },
+  projects: {
+    apply: {
+      title: 'Werde Teil des Teams',
+      infoTitle: 'Infos über dich',
+      applyTitle: 'Deine Bewerbungsunterlagen',
+      messageTitle: 'Deine Nachricht',
+      form: {
+        firstName: 'Vorname',
+        placeholderFirstName: 'Gib deinen Vornamen ein...',
+        lastName: 'Nachname',
+        placeholderLastName: 'Gib deinen Nachnamen ein...',
+        mail: 'Email-Adresse',
+        placeholderMail: 'Gib deine Email-Adresse ein...',
+        phone: 'Telefonnummer',
+        placeholderPhone: 'Gib deine Telefonnummer ein...',
+        fileUpload: 'Lade dein Portfolio, Lebenslauf etc. hoch',
+        message: 'Du möchtest uns noch etwas mitteilen?',
+        placeholderMessage: 'Gib deine Nachricht ein...',
+        submit: 'Anfrage senden',
+      },
+    },
+  },
   brainstorm: {
     makeActionButton: 'Erstelle das Projekt',
     deleteActionButton: 'Löschen',
