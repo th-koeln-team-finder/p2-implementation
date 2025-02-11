@@ -9,5 +9,5 @@ export async function addSkill(skill: SkillsInsert) {
 }
 
 export async function revalidateSkills() {
-  return await revalidateTag('user-skills')
+  return revalidateTag('user-skills');
 }
