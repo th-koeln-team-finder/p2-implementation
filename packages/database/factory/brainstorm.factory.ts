@@ -5,7 +5,7 @@ import type { BrainstormInsert } from '../schema'
 export async function makeBrainstorm(
   createdByIds: string[],
 ): Promise<BrainstormInsert> {
-  const [text, description] = faker.helpers.arrayElement(richTextDescriptions)
+  const [text, description] = faker.helpers.arrayElement(BrainstormExampleData)
   console.log('Generating embeddings for text: ', text)
   const embedding = await generateTextEmbeddings(text)
   return {
@@ -20,6 +20,18 @@ export async function makeBrainstorm(
 const richTextDescriptionsRaw = [
   {
     text: '# AI-Powered Personal Finance Assistant ## Overview An AI-driven budgeting and finance assistant that helps users manage their expenses, track subscriptions, and optimize savings. ## Features - Automated categorization of expenses - Smart savings suggestions based on spending patterns - Bill reminders and subscription tracking - Integration with bank APIs for real-time updates ## Challenges - Ensuring secure data handling and privacy compliance - Developing an intuitive and user-friendly interface',
+    comments: [
+      'What if the assistant could analyze spending habits over time and predict upcoming expenses based on past trends?',
+      'Could it integrate with investment platforms to provide insights on potential savings growth?',
+      'How about a feature that automatically detects and suggests canceling unused subscriptions?',
+      'Could it gamify saving habits by setting challenges and milestones for users?',
+      'What if the AI could generate a monthly financial health report with recommendations for improvement?',
+      'Could users set financial goals, and the assistant would provide step-by-step plans to reach them?',
+      'What if it included a real-time fraud detection system that alerts users to unusual transactions?',
+      'How about a voice assistant feature that allows users to check their balance and get insights hands-free?',
+      'Could it support multiple currencies and automatically track exchange rates for international users?',
+      'What if the system provided personalized tax-saving strategies based on spending and income?',
+    ],
     root: {
       children: [
         {
@@ -285,6 +297,20 @@ const richTextDescriptionsRaw = [
   },
   {
     text: '# Collaborative Storytelling Platform ## Overview A platform where users collaboratively write stories, with branching narratives and community voting to decide story progress. ## Features - Multiple branching storylines - Voting mechanism to choose the next chapter - AI assistance for idea generation - Community forums for discussion ## Challenges - Managing story consistency across branches - Encouraging long-term community engagement',
+    comments: [
+      'What if users could collaborate in real-time, like a multiplayer writing experience?',
+      'Could AI suggest plot twists or character developments based on previous story events?',
+      'How about a reward system where top contributors get featured or earn special privileges?',
+      'What if users could add multimedia elements like images, music, or voice narration to enhance storytelling?',
+      'Could the platform integrate with text-to-speech for immersive audiobook-style playback?',
+      'What if it had a feature where AI generates alternative endings based on user preferences?',
+      'How about a ‘writer’s block’ mode where AI helps users overcome creative roadblocks with prompts?',
+      'Could different stories be interconnected, allowing for crossovers between user-created worlds?',
+      'What if there was a voting and rating system where the community decides the most interesting stories to be highlighted?',
+      'Could we introduce time-limited storytelling challenges where users must complete a chapter in a given timeframe?',
+      'Should we focus on structured storytelling (e.g., predefined templates and branching paths) or allow complete creative freedom? Structured approaches might help keep stories coherent, but open-ended writing could encourage more creativity.',
+      'How do we handle ownership and attribution of collaboratively written stories? Would contributors get co-author credits, or should there be a lead writer who has final say? What happens if someone wants to monetize their work?',
+    ],
     root: {
       children: [
         {
@@ -551,6 +577,20 @@ const richTextDescriptionsRaw = [
   },
   {
     text: '# Smart Gardening Assistant ## Overview An IoT-based system that helps home gardeners monitor soil moisture, sunlight exposure, and plant health. ## Features - Sensor-based real-time monitoring - Mobile app for tracking plant conditions - AI-based watering and care recommendations - Integration with smart irrigation systems ## Challenges - Making sensors affordable and easy to install - Ensuring reliable wireless connectivity',
+    comments: [
+      'What if the assistant could identify plant diseases using image recognition and suggest treatments?',
+      'Could it integrate with local weather forecasts to adjust watering schedules based on expected rainfall?',
+      'How about a companion app that provides gardening tips based on the current season and plant type?',
+      'What if it could recommend ideal plant pairings for companion planting to improve growth and pest resistance?',
+      'Could it work with a voice assistant so users can ask about plant care hands-free?',
+      'What if it provided a plant diary feature where users log growth progress and get AI-generated insights?',
+      'How about community features where users can share their plant data and exchange tips?',
+      'Could it integrate with smart home systems like Alexa or Google Home for automation?',
+      'What if users could scan seed packets or plant labels to get automatic setup recommendations?',
+      'Could the system provide alerts when it’s time to fertilize or repot a plant based on its growth stage?',
+      'Should the assistant focus on beginners who need step-by-step guidance, or should it cater to advanced gardeners who want more precise, customizable controls? A beginner-friendly system might be simpler, but advanced users could benefit from deeper insights and automation.',
+      'How do we ensure compatibility with different plant types and climates? Should the system rely on a prebuilt plant database, or should it allow users to input custom plant data? A predefined database ensures accuracy, but a flexible system might support a wider range of use cases.',
+    ],
     root: {
       children: [
         {
@@ -817,6 +857,20 @@ const richTextDescriptionsRaw = [
   },
   {
     text: '# Virtual Team Building Hub ## Overview A virtual space for remote teams to participate in team-building exercises, casual chats, and fun activities. ## Features - Gamified challenges and icebreakers - AI-generated discussion topics - Integrated video chat and virtual rooms - Performance tracking for engagement insights ## Challenges - Keeping content fresh and engaging - Encouraging participation in remote work settings',
+    comments: [
+      'What if the platform included AI-generated icebreaker questions tailored to team dynamics?',
+      'Could it have a virtual escape room feature where teams solve puzzles together?',
+      'How about integrating personality assessments to suggest activities that suit different team members?',
+      'What if it had a ‘random coffee chat’ feature that pairs employees for casual catch-ups?',
+      'Could it include a recognition system where employees can give shoutouts to colleagues?',
+      'What if it tracked participation and suggested activities to engage less active team members?',
+      'How about seasonal or holiday-themed challenges to keep things fresh and engaging?',
+      'Could it integrate with existing work tools like Slack, Teams, or Notion for seamless engagement?',
+      'What if teams could create custom challenges and invite others to participate?',
+      'Could there be an asynchronous mode for teams across different time zones to participate in activities at their convenience?',
+      'Should the focus be on structured activities (like planned challenges and games) or more organic interactions (like AI-suggested conversations and casual meetups)? Some teams might prefer scheduled activities, while others might want something less formal.',
+      'How do we ensure long-term engagement rather than just a short-term novelty? Many team-building tools start strong but lose traction over time. Should we introduce a progression system, new activity rotations, or periodic reminders to keep participation high?',
+    ],
     root: {
       children: [
         {
@@ -1082,6 +1136,7 @@ const richTextDescriptionsRaw = [
     },
   },
 ]
-const richTextDescriptions = richTextDescriptionsRaw.map(
-  ({ text, ...description }) => [text, JSON.stringify(description)],
+export const BrainstormExampleData = richTextDescriptionsRaw.map(
+  ({ text, comments, ...description }) =>
+    [text, JSON.stringify(description), comments] as const,
 )

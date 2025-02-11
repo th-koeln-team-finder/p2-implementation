@@ -84,9 +84,11 @@ export async function seed() {
   await db.delete(Schema.brainstormComments).execute()
 
   console.log('Creating 100 brainstorm comment records')
-  const commentData = makeMultiple(100, () =>
-    makeBrainstormComment(brainstormIds, userIds),
-  )
+  const commentData = []
+  for (let i = 0; i < 100; i++) {
+    const comment = await makeBrainstormComment(brainstormIds, userIds)
+    commentData.push(comment)
+  }
   const parentComments = await db
     .insert(Schema.brainstormComments)
     .values(commentData)
@@ -94,9 +96,15 @@ export async function seed() {
   const parentCommentIds = parentComments.map((e) => e.id)
 
   console.log('Creating 50 child brainstorm comment records')
-  const childCommentData = makeMultiple(50, () =>
-    makeBrainstormComment(brainstormIds, userIds, parentCommentIds),
-  )
+  const childCommentData = []
+  for (let i = 0; i < 50; i++) {
+    const childComment = await makeBrainstormComment(
+      brainstormIds,
+      userIds,
+      parentCommentIds,
+    )
+    childCommentData.push(childComment)
+  }
   const childComments = await db
     .insert(Schema.brainstormComments)
     .values(childCommentData)

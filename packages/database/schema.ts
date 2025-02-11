@@ -75,24 +75,34 @@ export type BrainstormSelect = typeof brainstorms.$inferSelect
 /**
  * General comments for brainstorms
  */
-export const brainstormComments = pgTable('brainstorm_comment', {
-  id: uuid().primaryKey().notNull().defaultRandom(),
-  comment: text('comment').notNull(),
-  isPinned: boolean('isPinned').notNull().default(false),
-  brainstormId: uuid('brainstormId')
-    .notNull()
-    .references(() => brainstorms.id, { onDelete: 'cascade' }),
-  parentCommentId: uuid('parentCommentId').references(
-    (): AnyPgColumn => brainstormComments.id,
-    {
-      onDelete: 'cascade',
-    },
-  ),
-  createdById: uuid('userId')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
-})
+export const brainstormComments = pgTable(
+  'brainstorm_comment',
+  {
+    id: uuid().primaryKey().notNull().defaultRandom(),
+    comment: text('comment').notNull(),
+    embedding: vector('embedding', { dimensions: 384 }).notNull(),
+    isPinned: boolean('isPinned').notNull().default(false),
+    brainstormId: uuid('brainstormId')
+      .notNull()
+      .references(() => brainstorms.id, { onDelete: 'cascade' }),
+    parentCommentId: uuid('parentCommentId').references(
+      (): AnyPgColumn => brainstormComments.id,
+      {
+        onDelete: 'cascade',
+      },
+    ),
+    createdById: uuid('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
+  },
+  (table) => ({
+    embeddingIndex: index('commentEmbeddingIndex').using(
+      'hnsw',
+      table.embedding.op('vector_cosine_ops'),
+    ),
+  }),
+)
 export type BrainstormCommentInsert = typeof brainstormComments.$inferInsert
 export type BrainstormCommentSelect = typeof brainstormComments.$inferSelect
 

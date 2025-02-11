@@ -21,6 +21,11 @@ export function BrainstormListEntry({ brainstorm }: BrainstormListEntryProps) {
     <Link href={`/brainstorm/${brainstorm.id}`}>
       <Card>
         <CardHeader>
+          <span className="-mb-3 text-muted-foreground text-xs">
+            ({brainstorm.totalSimilarity?.toFixed(2)}|
+            {brainstorm.similarity?.toFixed(2)}|
+            {brainstorm.commentSimilarity?.toFixed(2)})
+          </span>
           <div className="flex flex-row items-center justify-between gap-2">
             <CardTitle className="text-xl">{brainstorm.title}</CardTitle>
             <BrainstormBookmarkButton

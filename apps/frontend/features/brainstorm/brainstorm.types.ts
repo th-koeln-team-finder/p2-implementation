@@ -14,6 +14,9 @@ export type PopulatedBrainstorm = Omit<BrainstormSelect, 'embedding'> & {
   isBookmarked: boolean
   tags: { tag: { id: string; name: string } }[]
   resources: PopulatedBrainstormResource[]
+  totalSimilarity: number
+  similarity: number
+  commentSimilarity: number
 }
 
 export type PopulatedBrainstormComment = BrainstormCommentSelect & {
