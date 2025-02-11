@@ -12,7 +12,6 @@ const StepperComponent = ({
   onReset,
   onDone,
   onPrevious,
-  jumpToStep,
 }: {
   steps: { id: string; title: string; description?: string }[]
   currentIndex: number
@@ -44,20 +43,18 @@ const StepperComponent = ({
             {steps.map((step, index) => (
               <React.Fragment key={step.id}>
                 <li className="flex items-center gap-4">
-                  <Button
-                    role="tab"
+                  <div
                     aria-current={index === currentIndex ? 'step' : undefined}
                     aria-posinset={index + 1}
                     aria-setsize={steps.length}
                     className={`flex size-10 items-center justify-center rounded-full ${
                       index <= currentIndex
                         ? 'bg-primary text-white'
-                        : 'border-2 border-primary border-dotted bg-transparent text-primary hover:text-white'
+                        : 'border-2 border-primary border-dotted bg-transparent text-primary '
                     }`}
-                    onClick={() => jumpToStep?.(index)}
                   >
                     {index + 1}
-                  </Button>
+                  </div>
                   <span
                     className={`font-medium text-sm ${index < currentIndex ? 'text-primary' : 'text-muted-foreground'}`}
                   >

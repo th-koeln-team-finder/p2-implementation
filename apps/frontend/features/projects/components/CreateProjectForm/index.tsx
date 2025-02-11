@@ -311,10 +311,7 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
         <form.FormProvider>
           <div className="flex w-full flex-col gap-4">
             <div className="w-full lg:w-1/2">
-              <form.FieldProvider
-                name="timetableOutput"
-                validator={z.enum(['table', 'custom'] as const)}
-              >
+              <form.FieldProvider name="timetableOutput">
                 <div>
                   <Label>{t('timetable.title')}</Label>
                   <SelectForm
@@ -328,6 +325,9 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
                       </SelectItem>
                       <SelectItem value="custom">
                         {t('timetable.custom')}
+                      </SelectItem>
+                      <SelectItem value="noTable">
+                        {t('timetable.noTable')}
                       </SelectItem>
                     </SelectContent>
                   </SelectForm>
@@ -416,12 +416,14 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
                   }}
                 >
                   <div>
-                    <Label>{t('timetable.custom')}</Label>
                     <WysiwygEditorForm editorRef={editorRef} />
                     <FieldError />
                   </div>
                 </form.FieldProvider>
               </div>
+            )}
+            {timetableFormat === 'noTable' && (
+              <div className="w-full lg:w-1/2" />
             )}
           </div>
         </form.FormProvider>
@@ -453,6 +455,7 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
                 <form.FieldProvider name="resources">
                   <CreateProjectLinksList
                     maxFileSize={maxFileSize}
+                    uploadFile={uploadFile}
                     progressState={progressState}
                   />
                 </form.FieldProvider>

@@ -89,6 +89,7 @@ export const de: Language = {
       title: 'Zeitplan',
       table: 'Tabelle',
       custom: 'Benutzerdefiniert',
+      noTable: 'kein Zeitplan wählen',
       days: {
         monday: 'Montag',
         tuesday: 'Dienstag',

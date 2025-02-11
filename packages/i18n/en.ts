@@ -86,6 +86,7 @@ export const en = {
       title: 'Timetable ',
       table: 'Table',
       custom: 'Custom',
+      noTable: 'select No timetable',
       days: {
         monday: 'Monday',
         tuesday: 'Tuesday',

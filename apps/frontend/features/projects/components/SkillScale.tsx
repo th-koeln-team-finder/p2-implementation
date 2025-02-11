@@ -34,9 +34,10 @@ export function SkillScale({
   })
 
   let skillIdCounter = 0
-  projectSkills.forEach((projectSkill) => {
+
+  for (const projectSkill of projectSkills) {
     projectSkill.id = projectSkill.id ? projectSkill.id : skillIdCounter++
-  })
+  }
 
   const maxHeight = showAll
     ? `${projectSkills.length * itemHeight}px`
