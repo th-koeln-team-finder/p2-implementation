@@ -1,25 +1,22 @@
 'use server'
 
-import { authMiddleware } from '@/auth'
-import { Link, redirect } from '@/features/i18n/routing'
-import { SkillScale } from '@/features/projects/components/SkillScale'
-import { userFollowsUser } from '@/features/userFollows/userFollows.queries'
-import { getUserSkills } from '@/features/userSkills/userSkills.query'
+import {authMiddleware} from '@/auth'
+import {Link, redirect} from '@/features/i18n/routing'
+import {SkillScale} from '@repo/design-system/components/custom/SkillScale'
+import {userFollowsUser} from '@/features/userFollows/userFollows.queries'
+import {getUserSkills} from '@/features/userSkills/userSkills.query'
 import FollowButton from '@/features/users/components/FollowButton'
 import PreviouslyWorkedOn from '@/features/users/components/PreviouslyWorkedOn'
 import Ratings from '@/features/users/components/Ratings'
-import { getUser } from '@/features/users/users.query'
-import type { UserSelect } from '@repo/database/schema'
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@repo/design-system/components/ui/avatar'
-import { Button } from '@repo/design-system/components/ui/button'
-import { UserPen } from 'lucide-react'
-import { getLocale, getTranslations } from 'next-intl/server'
+import {getUser} from '@/features/users/users.query'
+import type {UserSelect} from '@repo/database/schema'
+import {Button} from '@repo/design-system/components/ui/button'
+import {UserPen} from 'lucide-react'
+import {getLocale, getTranslations} from 'next-intl/server'
+import {UserAvatar} from "@/features/auth/components/UserAvatar";
+import {UserWithImage} from "@/features/users/users.types";
 
-export default async function Profile({ user }: { user: UserSelect }) {
+export default async function Profile({ user }: { user: UserWithImage }) {
   const translate = await getTranslations()
 
   const session = await authMiddleware()
@@ -47,17 +44,7 @@ export default async function Profile({ user }: { user: UserSelect }) {
     <main className="container mx-auto my-4">
       <div className="flex flex-col items-center gap-4 md:flex-row md:items-start">
         <div className="md:w-1/4">
-          <Avatar className="w-40 h-40">
-            {user.image && (
-              <AvatarImage
-                src={user.image}
-                alt={user.name ?? user.email ?? ''}
-              />
-            )}
-            <AvatarFallback>
-              {user.name ? user.name.slice(0, 2).toUpperCase() : 'AN'}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar user={user} className="h-32 w-32" />
         </div>
 
         <div>
