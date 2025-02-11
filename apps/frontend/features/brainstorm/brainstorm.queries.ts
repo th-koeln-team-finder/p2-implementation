@@ -1,7 +1,7 @@
 import { BrainstormCacheTags } from '@/features/brainstorm/brainstorm.constants'
 import { Schema, db } from '@repo/database'
 import { generateTextEmbeddings } from '@repo/semantic-search'
-import { cosineDistance, desc, eq, gt, sql } from 'drizzle-orm'
+import { cosineDistance, desc, eq, sql } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
 
 export const getBrainstorms = cache(
@@ -9,7 +9,7 @@ export const getBrainstorms = cache(
     const searchEmbeddings = await generateTextEmbeddings(search)
 
     const similarity = sql<number>`(1 - (${cosineDistance(Schema.brainstorms.embedding, searchEmbeddings)}))`
-    const commentSimilarity = sql<number>`(select max(1 - ("top_comments"."embedding" <=> ${JSON.stringify(searchEmbeddings)})) from (select "brainstorm_comment"."embedding" from "brainstorm_comment" left join lateral (select count(*) as like_count from "brainstorm_comment_like" where "brainstorm_comment_like"."commentId" = "brainstorm_comment"."id") "likes" on true where "brainstorm_comment"."brainstormId" = "brainstorms".id order by like_count desc limit 3) as "top_comments")`
+    const commentSimilarity = sql<number>`(select COALESCE(max(1 - ("top_comments"."embedding" <=> ${JSON.stringify(searchEmbeddings)})), 0) from (select "brainstorm_comment"."embedding" from "brainstorm_comment" left join lateral (select count(*) as like_count from "brainstorm_comment_like" where "brainstorm_comment_like"."commentId" = "brainstorm_comment"."id") "likes" on true where "brainstorm_comment"."brainstormId" = "brainstorms".id order by like_count desc limit 3) as "top_comments")`
     const totalSimilarity = sql<number>`(${similarity} * 2 + ${commentSimilarity}) / 3`
 
     return db.query.brainstorms.findMany({
@@ -42,7 +42,7 @@ export const getBrainstorms = cache(
           },
         },
       },
-      where: gt(totalSimilarity, 0.5),
+      // where: gt(totalSimilarity, 0.5),
       orderBy: [
         search && desc(totalSimilarity),
         desc(Schema.brainstorms.createdAt),

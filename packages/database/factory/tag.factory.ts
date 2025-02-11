@@ -120,7 +120,7 @@ export async function makeTag(
   }
   uniqueTags.add(name)
   console.log('Making tag:', name)
-  const embedding = await generateTextEmbeddings(name)
+  const embedding = await generateTextEmbeddings(name, 'small')
 
   return {
     name,

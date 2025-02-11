@@ -79,11 +79,18 @@ export async function createBrainstorm(
     })
     .returning()
 
-  const newTags = formValues.tags
-    .filter((tag) => tag.value.startsWith('new:'))
-    .map((tag) => ({
-      name: tag.value.replace('new:', ''),
-    }))
+  const newTags = await Promise.all(
+    formValues.tags
+      .filter((tag) => tag.value.startsWith('new:'))
+      .map(async (tag) => {
+        const name = tag.value.replace('new:', '')
+        const embedding = await generateTextEmbeddings(name, 'small')
+        return {
+          name,
+          embedding,
+        }
+      }),
+  )
   let createdTags = [] as TagSelect[]
   if (newTags.length > 0) {
     createdTags = await db.insert(Schema.tags).values(newTags).returning()

@@ -16,6 +16,12 @@ import {
 import type { AdapterAccountType } from 'next-auth/adapters'
 import { Roles, type RolesType, RolesValues } from './constants'
 
+const VectorSizes = {
+  small: 384,
+  large: 384,
+  'extra-large': 1024,
+}
+
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
 
 /**
@@ -56,7 +62,7 @@ export const brainstorms = pgTable(
     id: uuid().primaryKey().notNull().defaultRandom(),
     title: text('name').notNull(),
     description: text('description'),
-    embedding: vector('embedding', { dimensions: 384 }).notNull(),
+    embedding: vector('embedding', { dimensions: VectorSizes.large }).notNull(),
     createdById: uuid('userId')
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
@@ -80,7 +86,7 @@ export const brainstormComments = pgTable(
   {
     id: uuid().primaryKey().notNull().defaultRandom(),
     comment: text('comment').notNull(),
-    embedding: vector('embedding', { dimensions: 384 }).notNull(),
+    embedding: vector('embedding', { dimensions: VectorSizes.large }).notNull(),
     isPinned: boolean('isPinned').notNull().default(false),
     brainstormId: uuid('brainstormId')
       .notNull()
@@ -166,7 +172,7 @@ export const tags = pgTable(
   {
     id: uuid().primaryKey().notNull().defaultRandom(),
     name: text('name').notNull().unique(),
-    embedding: vector('embedding', { dimensions: 384 }).notNull(),
+    embedding: vector('embedding', { dimensions: VectorSizes.small }).notNull(),
   },
   (table) => ({
     embeddingIndex: index('tagEmbeddingIndex').using(

@@ -12,7 +12,7 @@ import { getLocale } from 'next-intl/server'
 import { revalidatePath, revalidateTag } from 'next/cache'
 
 export async function findSimilarTags(input: string) {
-  const embeddings = await generateTextEmbeddings(input)
+  const embeddings = await generateTextEmbeddings(input, 'small')
   const similarity = sql<number>`1 - (${cosineDistance(Schema.tags.embedding, embeddings)})`
   console.log(
     input,
