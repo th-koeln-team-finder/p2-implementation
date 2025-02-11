@@ -40,6 +40,23 @@ export const de: Language = {
       removeAll: 'Alle entfernen',
     },
   },
+  home: {
+    cardFind: {
+      title: 'Du willst mit anderen zusammenarbeiten?',
+      content: 'Dann schau hier nach Projekten, an denen du teilnehmen kannst',
+      button: 'Projekte finden',
+    },
+    cardCreate: {
+      title: 'Du benötigst ein Team für dein nächstes Projekt?',
+      content: 'Erstelle dein Projekt und suche nach Teammitgliedern',
+      button: 'Projekt erstellen',
+    },
+    cardBrainstorm: {
+      title: 'Brauchst du Ideen oder möchtest du sie teilen?',
+      content: 'Teile deine Ideen und sei mit anderen kreativ',
+      button: 'Brainstorme deine Ideen',
+    },
+  },
   brainstorm: {
     makeActionButton: 'Erstelle das Projekt',
     deleteActionButton: 'Löschen',

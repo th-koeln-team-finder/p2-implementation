@@ -43,7 +43,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={`${rubik.variable} ${sairaCondensed.variable} bg-background font-sans text-foreground antialiased`}
+        className={`${rubik.variable} ${sairaCondensed.variable} min-h-screen bg-background font-sans text-foreground antialiased`}
       >
         <QueryClientProvider>
           <NuqsAdapter>
