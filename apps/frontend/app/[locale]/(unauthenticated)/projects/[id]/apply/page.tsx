@@ -19,6 +19,8 @@ import { Label } from '@repo/design-system/components/ui/label'
 import { UserPlusIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { z } from 'zod'
+import {createApplication, createProject} from "@/features/projects/projects.actions";
+import {useRouter} from "@/features/i18n/routing";
 
 type ApplyFormValues = {
   firstName: string
@@ -33,6 +35,8 @@ type ApplyFormValues = {
 
 export default function Application({ maxFileSize }: { maxFileSize: number }) {
   useSignals()
+
+  const router = useRouter()
 
   const t = useTranslations('projects.apply')
   const translateError = useTranslations('validation')
@@ -52,25 +56,72 @@ export default function Application({ maxFileSize }: { maxFileSize: number }) {
       message: '',
     },
     onSubmit: async (values) => {
+      try {
+        console.log('Werte:', values)
       if (!values.file) {
         return
       }
 
-      await Promise.all(
-        values.file.map(async (file) => {
-          if (file.size >= maxFileSize) {
-            return
-          }
-          await uploadFile(values.bucketPrefix, file.name, file)
-        }),
-      )
-      setTimeout(() => {
-        values.file.map((file) => {
-          resetFileProgress(file.name)
-        })
-        form.reset()
-      }, 1000)
-    },
+        /*console.log('Lade Dateien hoch...')
+        await Promise.all(
+            values.file.map(async (file) => {
+              if (file.size >= maxFileSize) {
+                return
+              }
+              await uploadFile(values.bucketPrefix, file.name, file)
+            }),
+        )
+          console.log('Dateien erfolgreich hochgeladen.')
+        setTimeout(() => {
+          values.file.map((file) => {
+            resetFileProgress(file.name)
+          })
+          form.reset()
+        }, 1000)*/
+
+      console.log('Erstelle Projekt...')
+        /*const serverActionData = {
+          ...values,
+          resources: values.resources.map((r) => ({
+            ...r,
+            file: [],
+          })),
+        }
+        const projectId = await createProject(serverActionData)*/
+
+        const projectData = {
+          name: '',
+          description: '',
+          status: 'open',
+          phase: '',
+          location: '',
+        }
+
+        const projectId = await createProject(projectData)
+
+      console.log('Projekt erstellt mit ID:', projectId)
+
+      console.log('Erstelle Bewerbung...')
+      // Erstellen der Bewerbung
+        const applicationData = {
+          projectId: projectId,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          mail: values.mail,
+          phone: values.phone,
+          message: values.message,
+        }
+        console.log('Bewerbung:', applicationData)
+
+        await createApplication(applicationData)
+      console.log('Bewerbung erfolgreich erstellt.')
+
+      //router.push(`/projects/${projectId}`)
+      router.push('/projects')
+    } catch (error) {
+      console.error('Fehler beim Absenden des Formulars:', error.digest)
+    }
+    }
   })
 
   const editorRef = useLexicalEditorRef()
