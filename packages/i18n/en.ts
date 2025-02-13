@@ -104,7 +104,7 @@ export const en = {
       title: 'Timetable ',
       table: 'Table',
       custom: 'Custom',
-      noTable: 'select No timetable',
+      noTable: 'No timetable',
       days: {
         monday: 'Monday',
         tuesday: 'Tuesday',
@@ -116,9 +116,9 @@ export const en = {
         placeholder: 'e.g. 2-3pm...',
       },
       customPlaceholder: 'Custom timetable...',
-      addCustom: 'Add Custom',
     },
     issues: {
+      sectionTitle: '(Github) Issues',
       addIssue: 'Add Issue',
       title: 'Title',
       titlePlaceholder: 'Title of the issue...',

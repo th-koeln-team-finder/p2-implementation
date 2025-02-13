@@ -17,7 +17,6 @@ export async function createProject(payload: CreateProjectFormValues) {
       description: payload.description,
       status: payload.status,
       phase: payload.phase,
-      location: payload.address,
     })
     .returning()
 
@@ -30,15 +29,18 @@ export async function createProject(payload: CreateProjectFormValues) {
     await db.insert(Schema.projectIssue).values(issuesToCreate)
   }
 
-  const timetableData: { weekdays: string; description: string }[] = [
-    { weekdays: Weekdays.monday, description: payload.ttMon },
-    { weekdays: Weekdays.tuesday, description: payload.ttTue },
-    { weekdays: Weekdays.thursday, description: payload.ttThu },
-    { weekdays: Weekdays.wednesday, description: payload.ttWed },
-    { weekdays: Weekdays.friday, description: payload.ttFri },
-    { weekdays: Weekdays.saturday, description: payload.ttSat },
-    { weekdays: Weekdays.sunday, description: payload.ttSun },
-  ]
+  const timetableData: { weekdays: string; description: string }[] =
+    payload.timetableOutput === 'table'
+      ? [
+          { weekdays: Weekdays.monday, description: payload.ttMon },
+          { weekdays: Weekdays.tuesday, description: payload.ttTue },
+          { weekdays: Weekdays.thursday, description: payload.ttThu },
+          { weekdays: Weekdays.wednesday, description: payload.ttWed },
+          { weekdays: Weekdays.friday, description: payload.ttFri },
+          { weekdays: Weekdays.saturday, description: payload.ttSat },
+          { weekdays: Weekdays.sunday, description: payload.ttSun },
+        ]
+      : []
 
   const timetableToCreate = timetableData
     .map((entry) => {
@@ -52,6 +54,13 @@ export async function createProject(payload: CreateProjectFormValues) {
     })
     .filter((entry) => entry !== undefined)
 
+  if (!timetableToCreate.length && payload.timetableOutput === 'custom') {
+    timetableToCreate.push({
+      projectId: project.id,
+      weekdays: Weekdays.standalone,
+      description: payload.timetableCustom,
+    })
+  }
   if (timetableToCreate.length) {
     await db.insert(Schema.projectTimetable).values(timetableToCreate)
   }

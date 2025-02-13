@@ -26,56 +26,47 @@ export function CreateProjectPreview() {
     { description: formValues.ttSun, weekdays: Weekdays.sunday },
   ]
 
-  const timetable = timetabledata
-    .map((entry) => {
-      if (entry.description !== '') return entry
-    })
-    .filter((entry) => entry !== undefined)
+  const timetable =
+    formValues.timetableOutput === 'noTable'
+      ? []
+      : formValues.timetableCustom ||
+        timetabledata
+          .map((entry) => {
+            if (entry.description !== '') return entry
+          })
+          .filter((entry) => entry !== undefined)
   return (
-    <div className="w-full rounded-lg p-4 shadow lg:p-8">
-      <div className="mx-auto inline-flex w-full max-w-screen-xl flex-col items-center justify-start gap-12 lg:p-4">
-        <div className="inline-flex flex-col items-start justify-start gap-8 self-stretch">
-          <div className="inline-flex items-start justify-between self-stretch">
-            <ProjectTitle
-              title={formValues.name}
-              subtitle={formValues.status}
-            />
-            {/*<p>{formValues.phase}</p>*/}
+    <div className="inline-flex flex-col items-start justify-start gap-8 self-stretch">
+      <ProjectTitle title={formValues.name} subtitle={formValues.phase} />
+      <div>
+        <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
+          <ImageCarousel />
+          <SkillScale projectSkills={formValues.skills} />
+        </div>
+
+        <div className="relative mb-16 flex w-full flex-col gap-8">
+          {formValues.description && (
+            <WysiwygRenderer value={formValues.description} />
+          )}
+        </div>
+
+        <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
+          <div className="relative inline-flex w-full flex-col justify-start gap-2 lg:w-1/2">
+            <TeamMembers />
           </div>
-          <div className="relative w-full">
-            <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
-              <div className="relative inline-flex w-full flex-col items-center justify-start gap-2 lg:w-1/2">
-                <ImageCarousel />
-              </div>
-              <div className="relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2">
-                <SkillScale projectSkills={formValues.skills} />
-              </div>
-            </div>
+          <div className="relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2">
+            {!!timetable.length && <ProjectTimetable timetable={timetable} />}
+          </div>
+        </div>
 
-            {formValues.description && (
-              <WysiwygRenderer value={formValues.description} />
-            )}
+        <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
+          <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
+            <ProjectIssuesList listOfIssues={formValues.issues} />
+          </div>
+          <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
+            <Resources resources={formValues.resources} />
 
-            <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
-              <div className="relative inline-flex w-full flex-col justify-start gap-2 lg:w-1/2">
-                <TeamMembers />
-              </div>
-              <div className="relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2">
-                <ProjectTimetable timetable={timetable} />
-                {/*<p>{extractTextFromDescription(formValues.timetableCustom)}</p>*/}
-              </div>
-            </div>
-
-            <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
-              <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
-                <ProjectIssuesList listOfIssues={formValues.issues} />
-              </div>
-              <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
-                <Resources resources={formValues.resources} />
-
-                <p>{formValues.address}</p>
-              </div>
-            </div>
+            <p>{formValues.address}</p>
           </div>
         </div>
       </div>

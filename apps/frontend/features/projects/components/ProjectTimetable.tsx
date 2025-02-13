@@ -1,6 +1,7 @@
 'use client'
 
 import { type ProjectTimetableSelect, Weekdays } from '@repo/database/schema'
+import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { useTranslations } from 'next-intl'
 import { useMemo } from 'react'
 
@@ -10,6 +11,7 @@ export function ProjectTimetable({
   timetable:
     | ProjectTimetableSelect[]
     | { description: string; weekdays: string }[]
+    | string
 }) {
   const translate = useTranslations()
 
@@ -26,6 +28,24 @@ export function ProjectTimetable({
     [translate],
   )
 
+  if (
+    Array.isArray(timetable) &&
+    timetable.length === 1 &&
+    timetable[0].weekdays === 'standalone'
+  ) {
+    timetable = timetable[0].description
+  }
+
+  if (typeof timetable === 'string') {
+    return (
+      <div className="w-full">
+        <div className="self-stretch font-medium text-2xl leading-loose">
+          {translate('createProjects.timetable.title')}
+        </div>
+        <WysiwygRenderer value={timetable} />
+      </div>
+    )
+  }
   return (
     <div className="w-full">
       <div className="self-stretch font-medium text-2xl leading-loose">

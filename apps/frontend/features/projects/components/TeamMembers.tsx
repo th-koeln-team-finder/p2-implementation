@@ -30,14 +30,16 @@ export default function TeamMembers() {
   const t = useTranslations('projects')
 
   return (
-    <>
-      <div className="mb-2 font-medium text-2xl">{t('team.title')}</div>
-      <Carousel className="mr-4 ml-4" style={{ width: 'calc(100% - 2rem)' }}>
-        <CarouselContent className="-ml-4">{carouselItems}</CarouselContent>
-        <CarouselPrevious className="-left-6 muted-foreground-500 border-none bg-transparent hover:bg-transparent hover:text-primary [&_svg]:size-8 [&_svg]:stroke-1" />
-        <CarouselNext className="-right-6 muted-foreground-500 border-none bg-transparent hover:bg-transparent hover:text-primary [&_svg]:size-8 [&_svg]:stroke-1" />
-      </Carousel>
-    </>
+    <div>
+      <h2 className="mb-2 font-medium text-2xl">{t('team.title')}</h2>
+      <div className="px-4">
+        <Carousel>
+          <CarouselContent>{carouselItems}</CarouselContent>
+          <CarouselPrevious className="-left-8 muted-foreground-500 border-none bg-transparent hover:bg-transparent hover:text-primary [&_svg]:size-8 [&_svg]:stroke-1" />
+          <CarouselNext className="-right-8 muted-foreground-500 border-none bg-transparent hover:bg-transparent hover:text-primary [&_svg]:size-8 [&_svg]:stroke-1" />
+        </Carousel>
+      </div>
+    </div>
   )
 }
 

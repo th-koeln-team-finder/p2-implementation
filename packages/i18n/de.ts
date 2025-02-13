@@ -107,7 +107,7 @@ export const de: Language = {
       title: 'Zeitplan',
       table: 'Tabelle',
       custom: 'Benutzerdefiniert',
-      noTable: 'kein Zeitplan wählen',
+      noTable: 'Kein Zeitplan',
       days: {
         monday: 'Montag',
         tuesday: 'Dienstag',
@@ -118,10 +118,10 @@ export const de: Language = {
         sunday: 'Sonntag',
         placeholder: 'z.B. 14-15Uhr...',
       },
-      customPlaceholder: 'Custom timetable...',
-      addCustom: 'Add Custom',
+      customPlaceholder: 'Benutzerdefinierter Zeitplan...',
     },
     issues: {
+      sectionTitle: '(Github) Issues',
       addIssue: 'Issue hinzufügen',
       title: 'Titel',
       titlePlaceholder: 'Titel des Issues...',

@@ -24,48 +24,42 @@ export default async function Projects({
 
   return (
     <div className="mx-auto inline-flex w-full max-w-screen-xl flex-col items-center justify-start gap-12 p-4">
-      <div className="inline-flex flex-col items-start justify-start gap-8 self-stretch">
-        <div className="inline-flex items-start justify-between self-stretch">
-          <ProjectTitle
-            title={project.name}
-            subtitle={
-              project.phase ? translations('phase') + project.phase : ''
-            }
-          />
-          <Toolbar />
-        </div>
-        <div className="relative w-full">
-          <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
-            <div className="relative inline-flex w-full flex-col items-center justify-start gap-2 lg:w-1/2">
-              <ImageCarousel />
-            </div>
-            <div className="relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2">
-              <SkillScale projectSkills={project.projectSkills} />
-            </div>
-          </div>
+      <div className="inline-flex items-start justify-between self-stretch">
+        <ProjectTitle
+          title={project.name}
+          subtitle={project.phase ? translations('phase') + project.phase : ''}
+        />
+        <Toolbar />
+      </div>
+      <div className="grid grid-cols-2 gap-8">
+        <ImageCarousel />
+        <SkillScale projectSkills={project.projectSkills} />
 
-          <div className="relative mb-16 flex w-full flex-col gap-8">
-            {project.description && (
-              <WysiwygRenderer value={project.description} />
-            )}
-          </div>
-          <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
-            <div className="relative inline-flex w-full flex-col justify-start gap-2 lg:w-1/2">
-              <TeamMembers />
-            </div>
-            <div className="relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2">
-              <ProjectTimetable timetable={project.timetable} />
-            </div>
-          </div>
-          <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
-            <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
-              <ProjectIssuesList listOfIssues={project.issues} />
-            </div>
-            <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
-              <Resources resources={project.resources} />
-            </div>
-          </div>
+        <div className="col-span-2">
+          {project.description && (
+            <WysiwygRenderer value={project.description} />
+          )}
         </div>
+
+        <TeamMembers />
+
+        {!!project.timetable.length && (
+          <div className="relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2">
+            <ProjectTimetable timetable={project.timetable} />
+          </div>
+        )}
+
+        {!!project.issues.length && (
+          <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
+            <ProjectIssuesList listOfIssues={project.issues} />
+          </div>
+        )}
+
+        {!!project.resources.length && (
+          <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
+            <Resources resources={project.resources} />
+          </div>
+        )}
       </div>
     </div>
   )

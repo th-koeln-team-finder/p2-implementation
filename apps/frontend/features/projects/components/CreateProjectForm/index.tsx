@@ -78,7 +78,6 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
       ttSun: '',
       timetableCustom: '',
       issues: [],
-      address: '',
       resources: [],
     },
     onSubmit: async (values) => {
@@ -109,7 +108,6 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
           }),
       )
 
-      console.log(uploadedFileResources)
       await createProjectResources(projectId, uploadedFileResources)
       router.push('/projects')
     },
@@ -144,7 +142,7 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
       onSubmit: () => setCurrentIndex(3),
     },
   )
-  const linksGroup = useFieldGroup(form, ['issues', 'address', 'resources'], {
+  const linksGroup = useFieldGroup(form, ['issues', 'resources'], {
     onSubmit: () => setCurrentIndex(4),
   })
 
@@ -216,8 +214,8 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
     >
       <ContentItem stepId="basics">
         <form.FormProvider>
-          <div className="flex w-full flex-col gap-4 lg:flex-row">
-            <div className="w-full lg:w-1/2">
+          <div className="flex flex-col justify-between gap-4 md:flex-row">
+            <div className="flex w-full max-w-2xl flex-col gap-4">
               <form.FieldProvider
                 name="name"
                 validator={z
@@ -227,48 +225,46 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
                   validateOnChangeIfTouched: true,
                 }}
               >
-                <Label>{t('name')}</Label>
-                <InputForm id="name" placeholder={t('namePlaceholder')} />
-                <FieldError />
-              </form.FieldProvider>
-            </div>
-            <div className="w-full lg:w-1/2">
-              <form.FieldProvider name="phase">
-                <Label>{t('phase')}</Label>
-                <InputForm id="phase" placeholder={t('phasePlaceholder')} />
-                <FieldError />
-              </form.FieldProvider>
-            </div>
-          </div>
-
-          <div className="flex w-full flex-col gap-4 lg:flex-row">
-            <div className="w-full lg:w-1/2">
-              <Label>{t('images')}</Label>
-              <br />
-              FileUpload für Images
-            </div>
-            <div className="w-full lg:w-1/2">
-              <form.FieldProvider
-                name="description"
-                validator={() => {
-                  if (!editorRef.current) return null
-                  return getStringContentFromEditor(editorRef.current).length <=
-                    0
-                    ? translateError('required')
-                    : null
-                }}
-              >
                 <div>
-                  <Label>{t('description')}</Label>
-                  <WysiwygEditorForm
-                    editorRef={editorRef}
-                    placeholder={t('descriptionPlaceholder')}
-                  />
+                  <Label>{t('name')}</Label>
+                  <InputForm id="name" placeholder={t('namePlaceholder')} />
+                  <FieldError />
+                </div>
+              </form.FieldProvider>
+              <form.FieldProvider name="phase">
+                <div>
+                  <Label>{t('phase')}</Label>
+                  <InputForm id="phase" placeholder={t('phasePlaceholder')} />
                   <FieldError />
                 </div>
               </form.FieldProvider>
             </div>
+
+            <div className="min-w-72 rounded border border-border p-4">
+              <Label>{t('images')}</Label>
+              <p>FileUpload für Images</p>
+            </div>
           </div>
+
+          <form.FieldProvider
+            name="description"
+            validator={() => {
+              if (!editorRef.current) return null
+              return getStringContentFromEditor(editorRef.current).length <= 0
+                ? translateError('required')
+                : null
+            }}
+          >
+            <div>
+              <Label>{t('description')}</Label>
+              <WysiwygEditorForm
+                editorRef={editorRef}
+                placeholder={t('descriptionPlaceholder')}
+                className="min-h-56"
+              />
+              <FieldError />
+            </div>
+          </form.FieldProvider>
         </form.FormProvider>
       </ContentItem>
 
@@ -284,7 +280,7 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
         <form.FormProvider>
           <div className="flex w-full flex-col gap-4">
             <div className="w-full lg:w-1/2">
-              <form.FieldProvider name="timetableOutput">
+              <form.FieldProvider name="timetableOutput" defaultValue="noTable">
                 <div>
                   <Label>{t('timetable.title')}</Label>
                   <SelectForm
@@ -389,7 +385,10 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
                   }}
                 >
                   <div>
-                    <WysiwygEditorForm editorRef={editorRef} />
+                    <WysiwygEditorForm
+                      editorRef={editorRef}
+                      placeholder={t('timetable.customPlaceholder')}
+                    />
                     <FieldError />
                   </div>
                 </form.FieldProvider>
@@ -405,21 +404,10 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
       <ContentItem stepId="links">
         <form.FormProvider>
           <div className="flex w-full flex-col">
-            <Label>(Github) Issues</Label>
+            <Label>{t('issues.sectionTitle')}</Label>
             <form.FieldProvider name="issues">
               <CreateProjectIssueList editorRef={editorRef} />
             </form.FieldProvider>
-          </div>
-          <div className="flex w-full flex-col gap-4 lg:flex-row">
-            <div className="w-full lg:w-1/2">
-              <Label>{t('location')}</Label>
-              <form.FieldProvider name="address">
-                <InputForm
-                  id="address"
-                  placeholder={t('locationPlaceholder')}
-                />
-              </form.FieldProvider>
-            </div>
           </div>
           <div className="flex w-full flex-col gap-4 lg:flex-row">
             <div className="w-full">

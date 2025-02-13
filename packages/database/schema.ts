@@ -192,8 +192,6 @@ export const projects = pgTable('projects', {
   description: text().notNull(),
   status: varchar({ enum: ['open', 'closed'] }).notNull(),
   phase: text(),
-
-  location: text(),
   isPublic: boolean().notNull().default(true),
   allowApplications: boolean().notNull().default(true),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
@@ -244,7 +242,7 @@ export const projectResource = pgTable('projectResource', {
     .notNull()
     .references(() => projects.id, { onDelete: 'cascade' }),
   label: text().notNull(),
-  href: text().notNull(),
+  href: text(),
   fileUpload: uuid().references(() => uploadedFiles.id, {
     onDelete: 'cascade',
   }),

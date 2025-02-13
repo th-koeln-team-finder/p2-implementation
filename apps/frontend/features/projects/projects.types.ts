@@ -29,8 +29,8 @@ export type CreateProjectFormLinks = {
     title: string
     description: string
   }>
-  address: string
   resources: Array<{
+    isDocument: boolean
     label: string
     href: string
     file: File[]

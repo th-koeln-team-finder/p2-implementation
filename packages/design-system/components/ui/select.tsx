@@ -18,6 +18,7 @@ type SelectFormProps = Omit<SelectProps, 'value' | 'onValueChange'> & {
   onValueChange?: (value: string) => void
   value?: string
   triggerClassName?: string
+  useTransformed?: boolean
 }
 const SelectForm = ({
   children,
@@ -26,6 +27,7 @@ const SelectForm = ({
   onValueChange,
   value,
   triggerClassName,
+  useTransformed,
   ...props
 }: SelectFormProps) => {
   useSignals()
@@ -36,13 +38,18 @@ const SelectForm = ({
   const classNames = cn(className, errorClassName.value)
 
   const handleChange = (newValue: string) => {
-    field.handleChange(newValue)
+    if(useTransformed) {
+      field.handleChangeBound(newValue)
+    } else {
+      field.handleChange(newValue)
+    }
     onValueChange?.(newValue)
   }
+  const data = useTransformed ? field.transformedData : field.data
 
   return (
     <Select
-      value={field.data?.value}
+      value={data?.value}
       onValueChange={handleChange}
       {...props}
     >
