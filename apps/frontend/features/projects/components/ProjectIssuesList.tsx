@@ -2,9 +2,6 @@
 
 import type { ProjectIssueSelect } from '@repo/database/schema'
 import { Button } from '@repo/design-system/components/ui/button'
-//TODO import { Link } from '@/features/i18n/routing'
-//TODO import { ProjectIssuesList } from '@/features/projects/projects.queries'
-//should import "Issues" Data from additionalInfo:Json
 import {
   Card,
   CardDescription,
@@ -18,31 +15,6 @@ import {
 } from '@repo/design-system/components/ui/collapsible'
 import { ChevronDownIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-
-//export type Issue = { title: string; description: string; id: number }
-
-function extractTextFromDescription(desc: string) {
-  const parsedDescription = JSON.parse(desc) // JSON-String in Objekt umwandeln
-  let extractedText = ''
-
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const traverseNodes = (nodes: any) => {
-    for (const node of nodes) {
-      if (node.type === 'text' && node.text) {
-        extractedText += node.text
-      }
-      if (node.children) {
-        traverseNodes(node.children)
-      }
-    }
-  }
-
-  if (parsedDescription.root?.children) {
-    traverseNodes(parsedDescription.root.children)
-  }
-
-  return extractedText
-}
 
 export function ProjectIssuesList({
   listOfIssues,
