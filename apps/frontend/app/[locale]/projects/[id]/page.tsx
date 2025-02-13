@@ -29,7 +29,9 @@ export default async function Projects({
       <div className="inline-flex items-start justify-between self-stretch">
         <ProjectTitle
           title={project.name}
-          subtitle={project.phase ? translations('phase') + project.phase : ''}
+          subtitle={
+            project.phase ? `${translations('phase')}: ${project.phase}` : ''
+          }
         />
         <Toolbar projectId={project.id} isBookmarked={project.isBookmarked} />
       </div>

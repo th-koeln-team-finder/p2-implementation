@@ -69,6 +69,9 @@ export const de: Language = {
     join: 'Team beitreten',
     links: 'Links und andere Resourcen',
     phase: 'Phase',
+    createProjectWarning: 'Sie müssen sich anmelden',
+    createProjectWarningDescription:
+      'Sie müssen sich anmelden, um ein Projekt zu erstellen',
 
     issueList: {
       showMore: 'mehr anzeigen',

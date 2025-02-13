@@ -50,6 +50,13 @@ export type Permissions = {
     }
     like: never
   }
+  project: {
+    'view.all': never
+    'view.detail': never
+    create: never
+    delete?: { createdById: string | null }
+    update?: { createdById: string | null }
+  }
 }
 
 export const PERMISSIONS = {
@@ -80,6 +87,13 @@ export const PERMISSIONS = {
       reply: (_, data) => !data.parentCommentId,
       like: true,
     },
+    project: {
+      'view.all': true,
+      'view.detail': true,
+      create: true,
+      delete: (user, data) => data?.createdById === user?.id,
+      update: (user, data) => data?.createdById === user?.id,
+    },
   },
   guest: {
     test: {
@@ -89,10 +103,14 @@ export const PERMISSIONS = {
     },
     brainstorm: {
       'view.all': true,
-      'view.detail': false,
+      'view.detail': true,
     },
     commentBrainstorm: {
       view: false,
+    },
+    project: {
+      'view.all': true,
+      'view.detail': true,
     },
   },
   admin: {
@@ -117,6 +135,13 @@ export const PERMISSIONS = {
       pin: (_, data) => !data.parentCommentId,
       reply: (_, data) => !data.parentCommentId,
       like: true,
+    },
+    project: {
+      'view.all': true,
+      'view.detail': true,
+      create: true,
+      delete: true,
+      update: true,
     },
   },
 } as const satisfies RolesWithPermissions

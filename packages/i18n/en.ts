@@ -66,6 +66,9 @@ export const en = {
     join: 'Join the team',
     links: 'Links and other resources',
     phase: 'phase',
+    createProjectWarning: 'You need to login',
+    createProjectWarningDescription:
+      'Please login or register to create a project',
 
     issueList: {
       showMore: 'Show more',

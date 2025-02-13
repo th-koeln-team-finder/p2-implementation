@@ -27,7 +27,6 @@ export function BrainstormComment({
   setOptimistic,
 }: BrainstormCommentProps) {
   const { data: session } = useSession()
-  const _userId = session?.user?.id
   const translate = useTranslations('brainstorm.comments')
   const [replying, setReplying] = useState(false)
   const formatter = useFormatter()

@@ -1,6 +1,7 @@
 'use server'
 
 import { authMiddleware } from '@/auth'
+import { hasSessionPermission } from '@/features/auth/auth.utils'
 import { redirect } from '@/features/i18n/routing'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { db } from '@repo/database'
@@ -11,6 +12,23 @@ import { getLocale } from 'next-intl/server'
 import { revalidateTag } from 'next/cache'
 
 export async function createProject(payload: CreateProjectFormValues) {
+  const session = await authMiddleware()
+  if (!session?.user?.id) {
+    const locale = await getLocale()
+    return redirect({
+      href: '/error?error=AccessDenied',
+      locale,
+    })
+  }
+  const canCreate = await hasSessionPermission('project', 'create')
+  if (!canCreate) {
+    const locale = await getLocale()
+    return redirect({
+      href: '/error?error=AccessDenied',
+      locale,
+    })
+  }
+
   const [project] = await db
     .insert(Schema.projects)
     .values({
@@ -95,6 +113,23 @@ export async function createProjectResources(
   projectId: string,
   resources: ProjectResourceInsert[],
 ) {
+  const session = await authMiddleware()
+  if (!session?.user?.id) {
+    const locale = await getLocale()
+    return redirect({
+      href: '/error?error=AccessDenied',
+      locale,
+    })
+  }
+  const canCreate = await hasSessionPermission('project', 'create')
+  if (!canCreate) {
+    const locale = await getLocale()
+    return redirect({
+      href: '/error?error=AccessDenied',
+      locale,
+    })
+  }
+
   const resourcesToCreate = resources.map((resource) => ({
     projectId,
     label: resource.label,
