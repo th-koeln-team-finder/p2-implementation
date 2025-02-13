@@ -72,10 +72,7 @@ const StepperComponent = ({
         </nav>
       </div>
 
-      <div className="mb-20 w-full">
-        <h1 className="mb-4 font-medium text-lg">{currentStep.title}</h1>
-        {stepContent}
-      </div>
+      <div className="mb-20 w-full">{stepContent}</div>
 
       <div className="fixed bottom-0 z-99 flex w-full justify-between bg-background py-6">
         <div className="relative left-4 flex justify-center text-muted-foreground text-sm">
