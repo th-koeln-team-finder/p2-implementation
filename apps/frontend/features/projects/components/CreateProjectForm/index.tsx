@@ -9,6 +9,7 @@ import { CreateProjectSkills } from '@/features/projects/components/CreateProjec
 import {
   createProject,
   createProjectResources,
+  revalidateProjects,
 } from '@/features/projects/projects.actions'
 // biome-ignore lint/style/useImportType: import type {CreateProjectFormValues} from "@/features/projects/projects.types";
 import { CreateProjectFormValues } from '@/features/projects/projects.types'
@@ -113,7 +114,10 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
       )
 
       await createProjectResources(projectId, uploadedFileResources)
-      router.push('/projects')
+      await revalidateProjects()
+      setTimeout(() => {
+        router.replace(`/projects/${projectId}`)
+      }, 0)
     },
   })
 
@@ -158,6 +162,7 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
   return (
     <StepperComponent
       steps={steps}
+      doneDisabled={!form.canSubmit.value}
       currentIndex={currentIndex}
       // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
       onNext={async () => {

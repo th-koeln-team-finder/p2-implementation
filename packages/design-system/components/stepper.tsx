@@ -11,6 +11,7 @@ const StepperComponent = ({
   onNext,
   onReset,
   onDone,
+  doneDisabled,
   onPrevious,
 }: {
   steps: { id: string; title: string; description?: string }[]
@@ -19,6 +20,7 @@ const StepperComponent = ({
   onPrevious?: () => void
   onReset?: () => void
   onDone?: () => void
+  doneDisabled?: boolean
   jumpToStep?: (index: number) => void
   children?: React.ReactNode
 }) => {
@@ -106,6 +108,7 @@ const StepperComponent = ({
             <Button
               className="rounded px-4 py-2 text-white hover:bg-primary"
               onClick={onDone}
+              disabled={doneDisabled}
             >
               {translate('createProjects.stepper.done')}
             </Button>

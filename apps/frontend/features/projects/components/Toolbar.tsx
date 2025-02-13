@@ -1,6 +1,9 @@
 'use client'
 
-import { toggleProjectBookmark } from '@/features/projects/projects.actions'
+import {
+  revalidateProjects,
+  toggleProjectBookmark,
+} from '@/features/projects/projects.actions'
 import { Button } from '@repo/design-system/components/ui/button'
 import { cn } from '@repo/design-system/lib/utils'
 import { BookmarkIcon, LinkIcon, StarIcon } from 'lucide-react'
@@ -49,6 +52,7 @@ export function Toolbar({
             e.preventDefault()
             startTransition(() => dispatchOptimistic(!optimisticBookmarked))
             await toggleProjectBookmark(projectId, !optimisticBookmarked)
+            await revalidateProjects()
           }}
         >
           <BookmarkIcon

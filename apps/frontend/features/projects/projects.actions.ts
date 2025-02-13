@@ -8,6 +8,7 @@ import * as Schema from '@repo/database/schema'
 import { type ProjectResourceInsert, Weekdays } from '@repo/database/schema'
 import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
+import { revalidateTag } from 'next/cache'
 
 export async function createProject(payload: CreateProjectFormValues) {
   const [project] = await db
@@ -140,4 +141,8 @@ export async function toggleProjectBookmark(
     projectId: id,
     userId: session.user.id,
   })
+}
+
+export async function revalidateProjects() {
+  return await revalidateTag('projects')
 }
