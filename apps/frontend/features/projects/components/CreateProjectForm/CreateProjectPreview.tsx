@@ -1,8 +1,8 @@
 import ImageCarousel from '@/features/projects/components/ImageCarousel'
 import { ProjectIssuesList } from '@/features/projects/components/ProjectIssuesList'
+import { ProjectResourcePreview } from '@/features/projects/components/ProjectResourcePreview'
 import { ProjectTimetable } from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
-import { Resources } from '@/features/projects/components/Resources'
 import { SkillScale } from '@/features/projects/components/SkillScale'
 import TeamMembers from '@/features/projects/components/TeamMembers'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
@@ -10,9 +10,11 @@ import { useFormContext } from '@formsignals/form-react'
 import { useSignals } from '@preact/signals-react/runtime'
 import { Weekdays } from '@repo/database/schema'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
+import { useTranslations } from 'next-intl'
 
 export function CreateProjectPreview() {
   useSignals()
+  const t = useTranslations('projects')
   const form = useFormContext<CreateProjectFormValues>()
   const formValues = form.json.value
 
@@ -38,37 +40,39 @@ export function CreateProjectPreview() {
   return (
     <div className="inline-flex flex-col items-start justify-start gap-8 self-stretch">
       <ProjectTitle title={formValues.name} subtitle={formValues.phase} />
-      <div>
-        <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
-          <ImageCarousel />
-          <SkillScale projectSkills={formValues.skills} />
-        </div>
 
-        <div className="relative mb-16 flex w-full flex-col gap-8">
+      <div className="grid grid-cols-2 gap-8">
+        <ImageCarousel />
+        <SkillScale projectSkills={formValues.skills} />
+
+        <div className="col-span-2">
           {formValues.description && (
             <WysiwygRenderer value={formValues.description} />
           )}
         </div>
 
-        <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
-          <div className="relative inline-flex w-full flex-col justify-start gap-2 lg:w-1/2">
-            <TeamMembers />
-          </div>
+        <TeamMembers />
+
+        {!!timetable.length && (
           <div className="relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2">
-            {!!timetable.length && <ProjectTimetable timetable={timetable} />}
+            <ProjectTimetable timetable={timetable} />
           </div>
-        </div>
+        )}
 
-        <div className="relative mb-16 flex flex-col gap-8 lg:flex-row">
-          <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
-            <ProjectIssuesList listOfIssues={formValues.issues} />
+        {!!formValues.issues.length && (
+          <ProjectIssuesList listOfIssues={formValues.issues} />
+        )}
+        {!!formValues.resources.length && (
+          <div className="flex flex-col gap-1">
+            <h2 className="mb-2 font-medium text-2xl">{t('links')}</h2>
+            {formValues.resources.map((res, index) => (
+              <ProjectResourcePreview
+                key={`${res.label}-${index}`}
+                resource={res}
+              />
+            ))}
           </div>
-          <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
-            <Resources resources={formValues.resources} />
-
-            <p>{formValues.address}</p>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   )

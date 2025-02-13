@@ -77,6 +77,8 @@ export const de: Language = {
     },
     skillScale: {
       skillTitle: 'Benötige Fähigkeiten',
+      emptySkills:
+        'Für dieses Projekt sind keine speziellen Fähigkeiten erforderlich',
     },
 
     skills: {
@@ -145,10 +147,10 @@ export const de: Language = {
       pleaseSelect: 'Bitte auswählen',
     },
     skills: {
-      skill: 'Skill',
-      skillPlaceholder: 'Name des Skills...',
-      level: 'Skill-Level',
-      addSkill: 'Skill hinzufügen',
+      skill: 'Benötigte Fähigkeit',
+      skillPlaceholder: 'Name der Fähigkeit...',
+      level: 'Fähigkeitslevel',
+      addSkill: 'Fähigkeit hinzufügen',
     },
     stepper: {
       main: 'Basis',

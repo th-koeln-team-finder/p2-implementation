@@ -1,8 +1,9 @@
+import { authMiddleware } from '@/auth'
 import ImageCarousel from '@/features/projects/components/ImageCarousel'
 import { ProjectIssuesList } from '@/features/projects/components/ProjectIssuesList'
+import { ProjectResource } from '@/features/projects/components/ProjectResource'
 import { ProjectTimetable } from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
-import { Resources } from '@/features/projects/components/Resources'
 import { SkillScale } from '@/features/projects/components/SkillScale'
 import TeamMembers from '@/features/projects/components/TeamMembers'
 import { Toolbar } from '@/features/projects/components/Toolbar'
@@ -16,7 +17,8 @@ export default async function Projects({
   params: Promise<{ id: string }>
 }>) {
   const { id } = await params
-  const project = await getProjectItem(id)
+  const session = await authMiddleware()
+  const project = await getProjectItem(id, session?.user?.id)
   const translations = await getTranslations('projects')
   if (!project) {
     return <div>Project not found</div>
@@ -29,13 +31,13 @@ export default async function Projects({
           title={project.name}
           subtitle={project.phase ? translations('phase') + project.phase : ''}
         />
-        <Toolbar />
+        <Toolbar projectId={project.id} isBookmarked={project.isBookmarked} />
       </div>
-      <div className="grid grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         <ImageCarousel />
         <SkillScale projectSkills={project.projectSkills} />
 
-        <div className="col-span-2">
+        <div className="md:col-span-2">
           {project.description && (
             <WysiwygRenderer value={project.description} />
           )}
@@ -44,20 +46,21 @@ export default async function Projects({
         <TeamMembers />
 
         {!!project.timetable.length && (
-          <div className="relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2">
-            <ProjectTimetable timetable={project.timetable} />
-          </div>
+          <ProjectTimetable timetable={project.timetable} />
         )}
 
         {!!project.issues.length && (
-          <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
-            <ProjectIssuesList listOfIssues={project.issues} />
-          </div>
+          <ProjectIssuesList listOfIssues={project.issues} />
         )}
 
         {!!project.resources.length && (
-          <div className="relative inline-flex w-full flex-col justify-start lg:w-1/2">
-            <Resources resources={project.resources} />
+          <div className="flex flex-col gap-1">
+            <h2 className="mb-2 font-medium text-2xl">
+              {translations('links')}
+            </h2>
+            {project.resources.map((res) => (
+              <ProjectResource key={res.id} resource={res} />
+            ))}
           </div>
         )}
       </div>

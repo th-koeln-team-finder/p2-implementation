@@ -90,22 +90,26 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
       }
       const projectId = await createProject(serverActionData)
       const uploadedFileResources = await Promise.all(
-        values.resources
-          .filter((r) => !!r.file?.[0])
-          .map(async ({ file, label, href }) => {
-            const fileId = await uploadFile(
-              `${projectId}/resources`,
-              label,
-              file[0],
-            )
-            resetFileProgress(file[0].name)
+        values.resources.map(async ({ file, label, href }) => {
+          if (!file.length) {
             return {
               label,
-              link: href,
-              fileUpload: fileId,
+              href,
               projectId,
             }
-          }),
+          }
+          const fileId = await uploadFile(
+            `${projectId}/resources`,
+            label,
+            file[0],
+          )
+          resetFileProgress(file[0].name)
+          return {
+            label,
+            fileUpload: fileId,
+            projectId,
+          }
+        }),
       )
 
       await createProjectResources(projectId, uploadedFileResources)

@@ -10,13 +10,14 @@ import { useOptimistic, useTransition } from 'react'
 type ProjectBookmarkButtonProps = {
   projectId: string
   isBookmarked: boolean
+  stars?: number
 }
 
 export function Toolbar({
   stars,
   projectId,
   isBookmarked,
-}: { stars?: number } & ProjectBookmarkButtonProps) {
+}: ProjectBookmarkButtonProps) {
   const t = useTranslations('projects')
   stars = stars || 13_000
   const starsString = stars.toLocaleString('en', { notation: 'compact' })
@@ -30,23 +31,19 @@ export function Toolbar({
   )
 
   return (
-    <div className="flex flex-col items-center justify-end gap-0 lg:flex-row lg:gap-4">
-      <div className="flex w-full items-center justify-end gap-0 lg:w-auto ">
-        <Button variant="ghost" className="p-2 hover:bg-transparent">
-          <div className="my-auto leading-normal">{starsString}</div>
+    <div className="flex flex-row items-center gap-2">
+      <div className="flex flex-row items-center gap-1">
+        <Button variant="ghost" type="button">
+          {starsString}
           <StarIcon />
         </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-fit w-fit p-2 hover:bg-transparent"
-        >
+        <Button variant="ghost" type="button" size="icon">
           <LinkIcon />
         </Button>
         <Button
           variant="ghost"
+          type="button"
           size="icon"
-          className="h-fit w-fit p-2 hover:bg-transparent"
           onClick={async (e) => {
             e.stopPropagation()
             e.preventDefault()
@@ -55,7 +52,7 @@ export function Toolbar({
           }}
         >
           <BookmarkIcon
-            className={cn(optimisticBookmarked && 'fill-primary')}
+            className={cn(optimisticBookmarked && 'fill-foreground')}
           />
         </Button>
       </div>

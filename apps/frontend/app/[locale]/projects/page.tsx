@@ -1,10 +1,9 @@
-import FindAProject from '@/app/[locale]/find-a-project/page'
+import { FindAprojectList } from '@/features/findAProject/components/findAprojectList'
 
 export default function Projects() {
   return (
-    <div>
-      <h1>Projects</h1>
-      <FindAProject />
+    <div className="container mx-auto px-4">
+      <FindAprojectList />
     </div>
   )
 }

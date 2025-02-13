@@ -74,6 +74,7 @@ export const en = {
     },
     skillScale: {
       skillTitle: 'Skills needed',
+      emptySkills: 'No special skills are required for this project',
     },
 
     skills: {

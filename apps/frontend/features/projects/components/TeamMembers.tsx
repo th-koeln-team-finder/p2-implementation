@@ -11,7 +11,7 @@ import Image from 'next/image'
 const carouselItems = Array.from({ length: 10 })
   .map((_, i) => `item-${i}`)
   .map((v) => (
-    <CarouselItem key={v} className="flex basis-1/6 flex-col">
+    <CarouselItem key={v} className="flex basis-1/3 flex-col md:basis-1/6">
       <div className="flex items-center justify-center overflow-hidden rounded-full">
         <Image
           src="/images/image-placeholder-square.jpg"

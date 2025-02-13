@@ -215,6 +215,7 @@ export const projectSkill = pgTable(
     skillId: uuid()
       .notNull()
       .references(() => skill.id, { onDelete: 'cascade' }),
+    // TODO This needs to be removed since the name is stored in the skill relation
     name: text().notNull(),
     level: integer().notNull(),
     createdAt: timestamp({ mode: 'date' }).defaultNow(),
@@ -570,7 +571,7 @@ export const projectRelations = relations(projects, ({ many }) => ({
   resources: many(projectResource, {
     relationName: 'projectResources',
   }),
-
+  bookmarks: many(projectBookmarks),
   projectSkills: many(projectSkill),
 }))
 
@@ -601,7 +602,7 @@ export const projectResourceRelations = relations(
       references: [projects.id],
       relationName: 'projectResources',
     }),
-    uploadedFiles: one(uploadedFiles, {
+    uploadedFile: one(uploadedFiles, {
       fields: [projectResource.fileUpload],
       references: [uploadedFiles.id],
       relationName: 'projectResourceFileUpload',
