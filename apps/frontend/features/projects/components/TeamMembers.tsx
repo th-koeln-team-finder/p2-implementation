@@ -6,14 +6,17 @@ import {
   CarouselPrevious,
 } from '@repo/design-system/components/customCarousel'
 import { useTranslations } from 'next-intl'
+import Image from 'next/image'
 
 const carouselItems = Array.from({ length: 10 })
   .map((_, i) => `item-${i}`)
   .map((v) => (
     <CarouselItem key={v} className="flex basis-1/6 flex-col">
       <div className="flex items-center justify-center overflow-hidden rounded-full">
-        <img
-          src="https://cdn.pixabay.com/photo/2018/01/03/17/05/palm-trees-3058728_1280.jpg"
+        <Image
+          src="/images/image-placeholder-square.jpg"
+          height={800}
+          width={800}
           alt="palm-trees"
           style={{ aspectRatio: 1 }}
         />

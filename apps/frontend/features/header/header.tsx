@@ -150,7 +150,9 @@ export default function Header() {
               {/* biome-ignore lint/nursery/noImgElement: <explanation> */}
               <img
                 className="h-8 w-8 rounded-full"
-                src="https://cdn.pixabay.com/photo/2018/01/03/17/05/palm-trees-3058728_1280.jpg"
+                src="/images/image-placeholder-square.jpg"
+                height={800}
+                width={1200}
                 alt="placeholder"
               />
             </DropdownMenuTrigger>

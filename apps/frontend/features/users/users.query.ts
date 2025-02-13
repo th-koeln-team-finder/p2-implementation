@@ -17,6 +17,7 @@ export const getUser = cache(
   ['getUser'],
 )
 
+// biome-ignore lint/suspicious/useAwait: This is a server action and has to be async
 export async function getUserProjects(
   _userId: number,
   limit: number,

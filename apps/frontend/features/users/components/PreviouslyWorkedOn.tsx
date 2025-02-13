@@ -21,6 +21,7 @@ export default function PreviouslyWorkedOn({
       },
     )
   }
+  // biome-ignore lint/correctness/useExhaustiveDependencies: This is being worked on in a separate PR TODO remove this comment
   useEffect(() => {
     loadMore(3)
   }, [])

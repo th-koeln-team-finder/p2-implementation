@@ -279,7 +279,7 @@ const CarouselNext = React.forwardRef<
 })
 CarouselNext.displayName = 'CarouselNext'
 
-const CarouselPagination: React.FC<{ items: [] }> = ({ items }) => {
+const CarouselPagination: React.FC<{ items: unknown[] }> = ({ items }) => {
   const { api } = useCarousel()
   const [selectedIndex, setSelectedIndex] = React.useState(0)
 

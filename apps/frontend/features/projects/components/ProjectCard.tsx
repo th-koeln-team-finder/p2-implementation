@@ -22,6 +22,7 @@ export function ProjectCard({ project }: { project: Project }) {
       <Link href={`/projects/${project.id}`} className="hover:underline">
         <CardHeader className="p-0">
           {project.image && (
+            // biome-ignore lint/nursery/noImgElement: This is being worked on in a separate PR TODO remove this comment
             <img className="max-h-32" src={project.image} alt={project.name} />
           )}
           <CardTitle className="px-6 py-4">{project.name}</CardTitle>
