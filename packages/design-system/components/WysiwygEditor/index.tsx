@@ -15,10 +15,8 @@ import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPl
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { SelectionAlwaysOnDisplay } from '@lexical/react/LexicalSelectionAlwaysOnDisplay'
-// biome-ignore lint/style/useImportType: <explanation>
-import { $getRoot, EditorState, LexicalEditor } from 'lexical'
-// biome-ignore lint/style/useImportType: <explanation>
-import { MutableRefObject, useMemo, useRef } from 'react'
+import { $getRoot, type EditorState, type LexicalEditor } from 'lexical'
+import { type MutableRefObject, useMemo, useRef } from 'react'
 import { EditorToolbar } from '../../components/WysiwygEditor/EditorToolbar'
 import { initialWysiwygConfig } from '../../components/WysiwygEditor/wysiwyg.config'
 import { URL_MATCHERS } from '../../components/WysiwygEditor/wysiwyg.urls'

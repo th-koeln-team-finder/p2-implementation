@@ -28,7 +28,7 @@ const StepperComponent = ({
 
   // Dynamisch nur das passende ContentItem rendern
   const stepContent = React.Children.toArray(children).find(
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    // biome-ignore lint/suspicious/noExplicitAny: React does not know the correct type of the props at this point
     (child: any) => child.props?.stepId === currentStep.id,
   )
 
@@ -92,11 +92,12 @@ const StepperComponent = ({
               {translate('createProjects.stepper.back')}
             </Button>
           )}
-          {currentIndex < steps.length - 1 ? (
+          {currentIndex < steps.length - 1 && (
             <Button className="rounded px-4 py-2" onClick={onNext}>
               {translate('createProjects.stepper.next')}
             </Button>
-          ) : (
+          )}
+          {onReset && (
             <Button
               className="rounded bg-gray-400 px-4 py-2 text-white hover:bg-gray-500"
               onClick={onReset}

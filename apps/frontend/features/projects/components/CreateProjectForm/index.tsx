@@ -11,8 +11,7 @@ import {
   createProjectResources,
   revalidateProjects,
 } from '@/features/projects/projects.actions'
-// biome-ignore lint/style/useImportType: import type {CreateProjectFormValues} from "@/features/projects/projects.types";
-import { CreateProjectFormValues } from '@/features/projects/projects.types'
+import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { useFieldGroup, useForm } from '@formsignals/form-react'
 import {
   type ZodAdapter,
@@ -37,7 +36,7 @@ import {
   SelectItem,
 } from '@repo/design-system/components/ui/select'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { z } from 'zod'
 
 const registerAdapter = configureZodAdapter({
@@ -159,64 +158,68 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
 
   const editorRef = useLexicalEditorRef()
 
+  const stepperChecks = useMemo(
+    () => [
+      async () => await basicFieldGroup.handleSubmit(),
+      async () => {
+        const skillFields = form.fields
+          .peek()
+          .filter((field) => field.name.startsWith('skills'))
+        await Promise.all(
+          skillFields.map((field) => field.validateForEvent('onSubmit')),
+        )
+        const isSkillFieldInvalid = skillFields.some(
+          (field) => !field.isValid.peek(),
+        )
+        if (isSkillFieldInvalid) return
+        return await skillsGroup.handleSubmit()
+      },
+      async () => await timeGroup.handleSubmit(),
+      async () => {
+        const issueFields = form.fields
+          .peek()
+          .filter((field) => field.name.startsWith('issues'))
+        await Promise.all(
+          issueFields.map((field) => field.validateForEvent('onSubmit')),
+        )
+        const isIssueFieldInvalid = issueFields.some(
+          (field) => !field.isValid.peek(),
+        )
+        if (isIssueFieldInvalid) return
+
+        const resourceFields = form.fields
+          .peek()
+          .filter((field) => field.name.startsWith('resources'))
+        await Promise.all(
+          resourceFields.map((field) => field.validateForEvent('onSubmit')),
+        )
+        const isResourceFieldInvalid = resourceFields.some(
+          (field) => !field.isValid.peek(),
+        )
+        if (isResourceFieldInvalid) return
+
+        return await linksGroup.handleSubmit()
+      },
+    ],
+    [
+      basicFieldGroup.handleSubmit,
+      linksGroup.handleSubmit,
+      timeGroup.handleSubmit,
+      form.fields.peek,
+      skillsGroup.handleSubmit,
+    ],
+  )
+
   return (
     <StepperComponent
       steps={steps}
       doneDisabled={!form.canSubmit.value}
       currentIndex={currentIndex}
-      // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
       onNext={async () => {
-        if (currentIndex === 0) {
-          return await basicFieldGroup.handleSubmit()
-        }
-        if (currentIndex === 1) {
-          const skillFields = form.fields
-            .peek()
-            .filter((field) => field.name.startsWith('skills'))
-          await Promise.all(
-            skillFields.map((field) => field.validateForEvent('onSubmit')),
-          )
-          const isSkillFieldInvalid = skillFields.some(
-            (field) => !field.isValid.peek(),
-          )
-          if (isSkillFieldInvalid) return
-          return await skillsGroup.handleSubmit()
-        }
-        if (currentIndex === 2) {
-          return await timeGroup.handleSubmit()
-        }
-        if (currentIndex === 3) {
-          const issueFields = form.fields
-            .peek()
-            .filter((field) => field.name.startsWith('issues'))
-          await Promise.all(
-            issueFields.map((field) => field.validateForEvent('onSubmit')),
-          )
-          const isIssueFieldInvalid = issueFields.some(
-            (field) => !field.isValid.peek(),
-          )
-          if (isIssueFieldInvalid) return
-
-          const resourceFields = form.fields
-            .peek()
-            .filter((field) => field.name.startsWith('resources'))
-          await Promise.all(
-            resourceFields.map((field) => field.validateForEvent('onSubmit')),
-          )
-          const isResourceFieldInvalid = resourceFields.some(
-            (field) => !field.isValid.peek(),
-          )
-          if (isResourceFieldInvalid) return
-
-          return await linksGroup.handleSubmit()
-        }
+        await stepperChecks[currentIndex]?.()
       }}
       onPrevious={() => setCurrentIndex((prev) => prev - 1)}
       jumpToStep={setCurrentIndex}
-      onReset={() => {
-        form.reset()
-        setCurrentIndex(0)
-      }}
       onDone={async () => {
         await form.handleSubmit()
       }}

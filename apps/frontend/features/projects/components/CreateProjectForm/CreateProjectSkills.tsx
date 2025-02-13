@@ -1,10 +1,8 @@
 'use client'
 
-// biome-ignore lint/style/useImportType: import type {CreateProjectFormSkills} from "@/features/projects/projects.types";
-import { CreateProjectFormSkills } from '@/features/projects/projects.types'
+import type { CreateProjectFormSkills } from '@/features/projects/projects.types'
 import { useFieldContext } from '@formsignals/form-react'
-// biome-ignore lint/style/useImportType: zod adapter
-import { ZodAdapter } from '@formsignals/validation-adapter-zod'
+import type { ZodAdapter } from '@formsignals/validation-adapter-zod'
 import { useSignals } from '@preact/signals-react/runtime'
 import { FieldError } from '@repo/design-system/components/FormErrors'
 import { Button } from '@repo/design-system/components/ui/button'

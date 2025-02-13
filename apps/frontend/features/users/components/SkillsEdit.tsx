@@ -16,7 +16,7 @@ import { PlusIcon, Trash } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { type MutableRefObject, useCallback, useRef, useState } from 'react'
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: The props are just getting forwarded, so they can be any
 function debounce<T extends (...args: any[]) => void>(
   func: T,
   timeout: number,

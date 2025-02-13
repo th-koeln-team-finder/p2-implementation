@@ -1,9 +1,7 @@
 'use client'
-// biome-ignore lint/style/useImportType: import type {CreateProjectFormLinks} from "@/features/projects/projects.types";
-import { CreateProjectFormLinks } from '@/features/projects/projects.types'
+import type { CreateProjectFormLinks } from '@/features/projects/projects.types'
 import { useFieldContext } from '@formsignals/form-react'
-// biome-ignore lint/style/useImportType: zod adapter
-import { ZodAdapter } from '@formsignals/validation-adapter-zod'
+import type { ZodAdapter } from '@formsignals/validation-adapter-zod'
 import { useSignals } from '@preact/signals-react/runtime'
 import { FieldError } from '@repo/design-system/components/FormErrors'
 import { FileInlinePreviewsForm } from '@repo/design-system/components/custom/file-inline-previews-form'
