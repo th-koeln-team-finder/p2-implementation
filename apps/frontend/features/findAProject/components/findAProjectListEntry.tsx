@@ -3,7 +3,6 @@ import { Link } from '@/features/i18n/routing'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -28,10 +27,7 @@ export function FindAProjectListEntry({ project }: FindAProjectListEntryProps) {
             )}
           </CardDescription>
         </CardHeader>
-
-        <CardContent>
-          Krasse, aber auch nicht zu lange Beschreibung für krasse Projekte
-        </CardContent>
+        {/* TODO Add tags to projects */}
       </Card>
     </Link>
   )
