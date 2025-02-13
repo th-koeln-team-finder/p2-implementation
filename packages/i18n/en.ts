@@ -43,6 +43,23 @@ export const en = {
       removeAll: 'Remove All',
     },
   },
+  home: {
+    cardFind: {
+      title: 'Want to work with others?',
+      content: 'Check out projects you can join',
+      button: 'Find a project',
+    },
+    cardCreate: {
+      title: 'Need a team for your next project?',
+      content: 'Create your project and search for team members',
+      button: 'Create a project',
+    },
+    cardBrainstorm: {
+      title: 'Need ideas or want to share them?',
+      content: 'Share your ideas and be creative with others',
+      button: 'Brainstorm your ideas',
+    },
+  },
   projects: {
     title: 'Projekte',
     location: 'Location',
