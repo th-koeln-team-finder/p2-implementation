@@ -1,16 +1,27 @@
 import { BrainstormCacheTags } from '@/features/brainstorm/brainstorm.constants'
 import { Schema, db } from '@repo/database'
 import { generateTextEmbeddings } from '@repo/semantic-search'
-import { cosineDistance, desc, eq, sql } from 'drizzle-orm'
+import { and, cosineDistance, desc, eq, sql } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
 
 export const getBrainstorms = cache(
-  async (userId?: string, search = '') => {
+  async (userId?: string, search = '', tags = '') => {
+    const tagIds = tags
+      .split(',')
+      .map((tag: string) => tag.split(':')[0])
+      .filter(Boolean) as string[]
     const searchEmbeddings = await generateTextEmbeddings(search)
 
     const similarity = sql<number>`(1 - (${cosineDistance(Schema.brainstorms.embedding, searchEmbeddings)}))`
     const commentSimilarity = sql<number>`(select COALESCE(max(1 - ("top_comments"."embedding" <=> ${JSON.stringify(searchEmbeddings)})), 0) from (select "brainstorm_comment"."embedding" from "brainstorm_comment" left join lateral (select count(*) as like_count from "brainstorm_comment_like" where "brainstorm_comment_like"."commentId" = "brainstorm_comment"."id") "likes" on true where "brainstorm_comment"."brainstormId" = "brainstorms".id order by like_count desc limit 3) as "top_comments")`
     const totalSimilarity = sql<number>`(${similarity} * 2 + ${commentSimilarity}) / 3`
+
+    const tagFilter = and(
+      ...tagIds.map(
+        (tagId) =>
+          sql<boolean>`(EXISTS (SELECT 1 FROM "brainstorm_tag" WHERE "brainstorm_tag"."brainstormId" = "brainstorms"."id" AND "brainstorm_tag"."tagId" = ${tagId}))`,
+      ),
+    )
 
     return db.query.brainstorms.findMany({
       columns: {
@@ -42,7 +53,7 @@ export const getBrainstorms = cache(
           },
         },
       },
-      // where: gt(totalSimilarity, 0.5),
+      where: tagFilter,
       orderBy: [
         search && desc(totalSimilarity),
         desc(Schema.brainstorms.createdAt),

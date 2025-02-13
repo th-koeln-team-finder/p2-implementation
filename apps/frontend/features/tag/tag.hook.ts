@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
-export function useTagSearch() {
+export function useTagSearch(enableNewTagCreation = true) {
   const translate = useTranslations('tag')
   const [searchInput, setSearchInput] = useState<string>('')
   const [debouncedSearchInput, isDebouncing] = useDebouncedValue(searchInput)
@@ -14,6 +14,7 @@ export function useTagSearch() {
       const tags = await getTagSearchResults(debouncedSearchInput)
       const mappedTags = tags.map((tag) => ({ label: tag.name, value: tag.id }))
       if (
+        enableNewTagCreation &&
         debouncedSearchInput &&
         !tags.some(
           (tag) =>

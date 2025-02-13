@@ -4,9 +4,12 @@ import { BrainstormFilterBar } from '@/features/brainstorm/components/Brainstorm
 import { BrainstormListEntry } from '@/features/brainstorm/components/BrainstormListEntry'
 import { Masonry } from '@repo/design-system/components/ui/Masonry'
 
-export async function BrainstormList({ search }: { search: string }) {
+export async function BrainstormList({
+  search,
+  tags,
+}: { search: string; tags: string }) {
   const session = await authMiddleware()
-  const brainstorms = await getBrainstorms(session?.user?.id, search)
+  const brainstorms = await getBrainstorms(session?.user?.id, search, tags)
   return (
     <section>
       <BrainstormFilterBar />

@@ -83,7 +83,7 @@ export function AutoCompleteTagInput<T extends string>({
           <PopoverAnchor asChild>
             <div
               className={cn(
-                'relative flex min-h-10 w-full flex-wrap gap-2 rounded-md border border-input py-2 pr-8 pl-3 text-sm ring-offset-primary disabled:cursor-not-allowed disabled:opacity-50 has-[:focus-visible]:outline-none has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-neutral-950 has-[:focus-visible]:ring-offset-2',
+                'relative flex min-h-9 w-full flex-wrap gap-2 rounded-md border border-input py-1 pr-8 pl-3 text-sm ring-offset-primary disabled:cursor-not-allowed disabled:opacity-50 has-[:focus-visible]:outline-none has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-neutral-950 has-[:focus-visible]:ring-offset-2',
                 className,
               )}
             >
