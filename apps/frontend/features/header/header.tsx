@@ -117,14 +117,6 @@ export default function Header() {
             variant="link"
             className="h-fit justify-start p-0 font-medium text-foreground text-sm"
           >
-            <Link href="/find-someone">Find Someone</Link>
-          </Button>
-
-          <Button
-            asChild
-            variant="link"
-            className="h-fit justify-start p-0 font-medium text-foreground text-sm"
-          >
             <Link href="/projects">Find a Project</Link>
           </Button>
 
