@@ -43,7 +43,7 @@ const registerAdapter = configureZodAdapter({
   takeFirstError: true,
 })
 
-export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
+export function CreateProjectForm() {
   useSignals()
   const [progressState, uploadFile, resetFileProgress] = useFileUpload()
   const router = useRouter()
@@ -427,7 +427,6 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
               <div>
                 <form.FieldProvider name="resources">
                   <CreateProjectLinksList
-                    maxFileSize={maxFileSize}
                     uploadFile={uploadFile}
                     progressState={progressState}
                   />

@@ -14,14 +14,14 @@ import {
   SelectForm,
   SelectItem,
 } from '@repo/design-system/components/ui/select'
+import { clientEnv } from '@repo/env/client'
 import { MinusIcon, PlusIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { z } from 'zod'
 
 export function CreateProjectLinksList({
-  maxFileSize,
   progressState,
-}: { maxFileSize: number; progressState?: Record<string, number> }) {
+}: { progressState?: Record<string, number> }) {
   useSignals()
   const field = useFieldContext<
     CreateProjectFormLinks,
@@ -36,10 +36,7 @@ export function CreateProjectLinksList({
       {field.data.value.map((link, index) => (
         <field.SubFieldProvider key={link.key} name={`${index}`}>
           <div className="flex flex-row items-start gap-4">
-            <CreateProjectLinkListEntry
-              maxFileSize={maxFileSize}
-              progressState={progressState}
-            />
+            <CreateProjectLinkListEntry progressState={progressState} />
             <div className="mt-6 flex flex-col justify-between lg:flex-row">
               <div className="flex gap-2">
                 <Button
@@ -92,9 +89,8 @@ export function CreateProjectLinksList({
 }
 
 function CreateProjectLinkListEntry({
-  maxFileSize,
   progressState,
-}: { maxFileSize: number; progressState?: Record<string, number> }) {
+}: { progressState?: Record<string, number> }) {
   useSignals()
   const field = useFieldContext<
     CreateProjectFormLinks,
@@ -149,7 +145,7 @@ function CreateProjectLinkListEntry({
               placeholder={
                 <FileInlinePreviewsForm
                   progressState={progressState}
-                  maxFileSize={maxFileSize}
+                  maxFileSize={clientEnv.NEXT_PUBLIC_MAX_FILE_SIZE}
                   placeholder={undefined}
                 />
               }

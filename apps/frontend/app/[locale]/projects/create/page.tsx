@@ -2,7 +2,6 @@ import { hasSessionPermission } from '@/features/auth/auth.utils'
 import { LoginButton } from '@/features/auth/components/LoginButton'
 import { RegisterButton } from '@/features/auth/components/RegisterButton'
 import { CreateProjectForm } from '@/features/projects/components/CreateProjectForm'
-import { serverEnv } from '@repo/env'
 import { BanIcon } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
@@ -32,7 +31,7 @@ export default async function CreateAProject() {
   }
   return (
     <div className="mx-auto w-full max-w-screen-xl p-4">
-      <CreateProjectForm maxFileSize={serverEnv.NEXT_PUBLIC_MAX_FILE_SIZE} />
+      <CreateProjectForm />
     </div>
   )
 }
