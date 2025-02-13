@@ -125,7 +125,7 @@ export default function Header() {
             variant="link"
             className="h-fit justify-start p-0 font-medium text-foreground text-sm"
           >
-            <Link href="/find-a-project">Find a Project</Link>
+            <Link href="/projects">Find a Project</Link>
           </Button>
 
           <Button
@@ -133,7 +133,7 @@ export default function Header() {
             variant="link"
             className="h-fit justify-start p-0 font-medium text-foreground text-sm"
           >
-            <Link href="/create-a-project">Create a Project</Link>
+            <Link href="/projects/create">Create a Project</Link>
           </Button>
 
           <Button
