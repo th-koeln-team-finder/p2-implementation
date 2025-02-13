@@ -64,37 +64,7 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
     validatorAdapter: registerAdapter,
     defaultValues: {
       name: '',
-      description: JSON.stringify({
-        root: {
-          children: [
-            {
-              children: [
-                {
-                  detail: 0,
-                  format: 0,
-                  mode: 'normal',
-                  style: '',
-                  text: '',
-                  type: 'text',
-                  version: 1,
-                },
-              ],
-              direction: 'ltr',
-              format: '',
-              indent: 0,
-              type: 'paragraph',
-              version: 1,
-              textFormat: 0,
-              textStyle: '',
-            },
-          ],
-          direction: 'ltr',
-          format: '',
-          indent: 0,
-          type: 'root',
-          version: 1,
-        },
-      }),
+      description: '',
       phase: '',
       status: 'open',
       skills: [],
@@ -290,7 +260,10 @@ export function CreateProjectForm({ maxFileSize }: { maxFileSize: number }) {
               >
                 <div>
                   <Label>{t('description')}</Label>
-                  <WysiwygEditorForm editorRef={editorRef} />
+                  <WysiwygEditorForm
+                    editorRef={editorRef}
+                    placeholder={t('descriptionPlaceholder')}
+                  />
                   <FieldError />
                 </div>
               </form.FieldProvider>

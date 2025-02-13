@@ -99,6 +99,7 @@ export const de: Language = {
     phasePlaceholder: 'Phase des Projekts...',
     images: 'Bilder',
     description: 'Projektbeschreibung',
+    descriptionPlaceholder: 'Beschreibung des Projekts...',
     location: 'Ort',
     locationPlaceholder: 'Adresse...',
     linksTitle: 'Links & Ressourcen',

@@ -96,6 +96,7 @@ export const en = {
     phasePlaceholder: 'Phase of the project...',
     images: 'Images',
     description: 'Project description',
+    descriptionPlaceholder: 'Description of the project...',
     location: 'Location',
     locationPlaceholder: 'Address...',
     linksTitle: 'Links & Other Resources',
