@@ -1,12 +1,12 @@
 'use client'
 
-import VerificationControl from '@/features/users/components/VerificationControl'
+import VerificationControl from '../../../../apps/frontend/features/users/components/VerificationControl'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@repo/design-system/components/ui/tooltip'
+} from '@/components/ui/tooltip'
 import { BadgeCheck } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'

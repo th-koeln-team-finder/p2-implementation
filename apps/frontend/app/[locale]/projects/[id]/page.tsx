@@ -10,7 +10,7 @@ import {
   type Timetable,
 } from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
-import { SkillScale } from '@/features/projects/components/SkillScale'
+import { SkillScale } from '@repo/design-system/components/custom/SkillScale'
 import TeamMembers from '@/features/projects/components/TeamMembers'
 import { Text } from '@/features/projects/components/Text'
 import { Toolbar } from '@/features/projects/components/Toolbar'

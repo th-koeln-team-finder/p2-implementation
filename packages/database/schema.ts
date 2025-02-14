@@ -1,4 +1,4 @@
-import { relations, sql } from 'drizzle-orm'
+import {relations, sql} from 'drizzle-orm'
 import {
   type AnyPgColumn,
   boolean,
@@ -16,8 +16,8 @@ import {
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core'
-import type { AdapterAccountType } from 'next-auth/adapters'
-import { Roles, type RolesType, RolesValues } from './constants'
+import type {AdapterAccountType} from 'next-auth/adapters'
+import {notificationColumns, Roles, type RolesType, RolesValues} from './constants'
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
 
@@ -33,7 +33,6 @@ export const test = pgTable('test', {
 export type TestInsert = typeof test.$inferInsert
 export type TestSelect = typeof test.$inferSelect
 
-const notificationTypes =  ['email', 'push', 'both'] as const
 /**
  * Data specific for one user
  */
@@ -59,14 +58,7 @@ export const users = pgTable('user', {
     .notNull()
     .default('en'),
   activateNotifications: boolean().notNull().default(true),
-  projectUpdated: varchar({ enum: notificationTypes }),
-  memberJoinedProject: varchar({ enum: notificationTypes }),
-  memberLeftProject: varchar({ enum: notificationTypes }),
-  newApplication: varchar({ enum: notificationTypes }),
-  bookmarkedProjectUpdated: varchar({ enum: notificationTypes }),
-  newFollower: varchar({ enum: notificationTypes }),
-  newInvite: varchar({ enum: notificationTypes }),
-  newSkillEvaluation: varchar({ enum: notificationTypes }),
+  ...notificationColumns,
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 })

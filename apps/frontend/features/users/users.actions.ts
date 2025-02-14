@@ -11,6 +11,9 @@ export async function loadMoreProjects(userId: string, count = 10, offset = 0) {
 }
 
 export async function updateUserData(user: Partial<UserInsert>) {
+  if (!user.id) {
+    throw new Error('User id is required to update user data')
+  }
   await db
     .update(Schema.users)
     .set(user)

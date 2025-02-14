@@ -200,16 +200,16 @@ export const de: Language = {
       allowInvites: 'Einladungen von neuen Projekten erlauben',
       notifications: {
         title: 'Benachrichtigungen',
-        project: 'Projektbenachrichtigungen',
+        projects: 'Projektbenachrichtigungen',
         profile: 'Profilbenachrichtigungen',
         activate: 'Aktivieren',
         selectType: 'Typ auswählen',
-        joinedProjectUpdated:
+        projectUpdated:
           'Ein Projekt, dem ich beigetreten bin, wurde aktualisiert',
-        newMemberJoined:
+        memberJoinedProject:
           'Ein neues Mitglied ist einem meiner Projekte beigetreten',
-        memberLeft: 'Ein Mitglied hat ein Projekt verlassen',
-        newProjectApplication: 'Eine neue Bewerbung für eines meiner Projekte',
+        memberLeftProject: 'Ein Mitglied hat ein Projekt verlassen',
+        newApplication: 'Eine neue Bewerbung für eines meiner Projekte',
         bookmarkedProjectUpdated:
           'Eines der Projekte in meinen Lesezeichen wurde aktualisiert',
         newFollower: 'Neuer Follower',
