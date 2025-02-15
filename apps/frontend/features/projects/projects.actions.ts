@@ -1,14 +1,11 @@
 'use server'
-
-import { authMiddleware } from '@/auth'
-import { redirect } from '@/features/i18n/routing'
-import type {CreateApplicationFormValues, CreateProjectFormValues} from '@/features/projects/projects.types'
 import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
 // biome-ignore lint/style/useImportType: <explanation>
-import {type ProjectApplicationInsert, ProjectInsert} from '@repo/database/schema'
-import { and, eq } from 'drizzle-orm'
-import { getLocale } from 'next-intl/server'
+import {
+  type ProjectApplicationInsert,
+  ProjectInsert,
+} from '@repo/database/schema'
 
 /*export async function createProject(payload: CreateProjectFormValues) {
     const [project] = await db
@@ -110,13 +107,9 @@ import { getLocale } from 'next-intl/server'
 }*/
 
 export async function createProject(payload: ProjectInsert) {
+  const [project] = await db.insert(Schema.projects).values(payload).returning()
 
-    const [project] = await db
-        .insert(Schema.projects)
-        .values(payload)
-        .returning()
-
-    return project.id
+  return project.id
 }
 
 /*export async function createApplication(projectId: string, payload: ProjectApplicationInsert) {
@@ -141,26 +134,30 @@ export async function createProject(payload: ProjectInsert) {
     }
 }*/
 export async function createApplication(payload: ProjectApplicationInsert) {
-    try {
-        console.log('Starte Bewerbungserstellung für Projekt-ID:', payload.projectId)
-        console.log('Payload für Bewerbung:', payload)
+  try {
+    console.log(
+      'Starte Bewerbungserstellung für Projekt-ID:',
+      payload.projectId,
+    )
+    console.log('Payload für Bewerbung:', payload)
 
-        const [application] = await db
-            .insert(Schema.projectApplication)
-            .values({
-                projectId: payload.projectId,
-                firstName: payload.firstName,
-                lastName: payload.lastName,
-                mail: payload.mail,
-                phone: payload.phone,
-                message: payload.message,
-            })
-            .returning()
+    const [application] = await db
+      .insert(Schema.projectApplication)
+      .values({
+        userId: payload.userId,
+        projectId: payload.projectId,
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        mail: payload.mail,
+        phone: payload.phone,
+        message: payload.message,
+      })
+      .returning()
 
-        console.log('Bewerbung erfolgreich gespeichert:', application)
-        return application
-    } catch (error) {
-        console.error('Fehler bei der Bewerbungserstellung:', error)
-        throw error
-    }
+    console.log('Bewerbung erfolgreich gespeichert:', application)
+    return application
+  } catch (error) {
+    console.error('Fehler bei der Bewerbungserstellung:', error)
+    throw error
+  }
 }
