@@ -20,7 +20,7 @@ export default async function Home() {
           <p>{translate('home.cardFind.content')}</p>
         </ImageCardContent>
         <ImageCardFooter>
-          <Link href="/project" className="mx-auto">
+          <Link href="/projects" className="mx-auto">
             <Button>{translate('home.cardFind.button')}</Button>
           </Link>
         </ImageCardFooter>
@@ -32,7 +32,7 @@ export default async function Home() {
         </ImageCardContent>
 
         <ImageCardFooter>
-          <Link href="/project/create" className="mx-auto">
+          <Link href="/projects/create" className="mx-auto">
             <Button>{translate('home.cardCreate.button')}</Button>
           </Link>
         </ImageCardFooter>

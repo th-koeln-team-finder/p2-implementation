@@ -1,6 +1,7 @@
 import { authMiddleware } from '@/auth'
 import { SignOutMenuItem } from '@/features/auth/components/SignOutMenuItem'
 import { UserAvatar } from '@/features/auth/components/UserAvatar'
+import { Link } from '@/features/i18n/routing'
 import { Button } from '@repo/design-system/components/ui/button'
 import {
   DropdownMenu,
@@ -26,9 +27,11 @@ export async function UserProfileMenu({ children }: PropsWithChildren) {
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="font-medium text-sm leading-none">
-                {session.user.name}
-              </p>
+              <Link href="/profile" className="hover:underline">
+                <p className="font-medium text-sm leading-none">
+                  {session.user.name}
+                </p>
+              </Link>
               <p className="text-muted-foreground text-xs leading-none">
                 {session.user.email}
               </p>

@@ -1,9 +1,11 @@
 'use client'
 
+// @ts-ignore
 import { useFieldContext } from '@formsignals/form-react'
 import { AutoLinkPlugin } from '@lexical/react/LexicalAutoLinkPlugin'
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
+import { EditorRefPlugin } from '@lexical/react/LexicalEditorRefPlugin'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { HorizontalRulePlugin } from '@lexical/react/LexicalHorizontalRulePlugin'
@@ -14,7 +16,7 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import { SelectionAlwaysOnDisplay } from '@lexical/react/LexicalSelectionAlwaysOnDisplay'
 import { $getRoot, type EditorState, type LexicalEditor } from 'lexical'
-import { useMemo } from 'react'
+import { type MutableRefObject, useMemo, useRef } from 'react'
 import { EditorToolbar } from '../../components/WysiwygEditor/EditorToolbar'
 import { initialWysiwygConfig } from '../../components/WysiwygEditor/wysiwyg.config'
 import { URL_MATCHERS } from '../../components/WysiwygEditor/wysiwyg.urls'
@@ -29,7 +31,14 @@ type WysiwygEditorProps = {
     editor: LexicalEditor,
     tags: Set<string>,
   ) => void
+  editorRef?: MutableRefObject<LexicalEditor | undefined | null>
 }
+
+export function useLexicalEditorRef() {
+  return useRef<LexicalEditor>()
+}
+
+export type LexicalEditorRef = ReturnType<typeof useLexicalEditorRef>
 
 export function getStringContentFromEditor(editor?: LexicalEditor) {
   return editor
@@ -44,6 +53,7 @@ export function WysiwygEditor({
   placeholder,
   defaultValue,
   onChange,
+  editorRef,
 }: WysiwygEditorProps) {
   const initialConfig = useMemo(
     () => ({ ...initialWysiwygConfig, editorState: defaultValue || undefined }),
@@ -73,6 +83,13 @@ export function WysiwygEditor({
         />
       </div>
       {onChange && <OnChangePlugin onChange={onChange} />}
+      {editorRef && (
+        <EditorRefPlugin
+          editorRef={(newRef) => {
+            editorRef.current = newRef
+          }}
+        />
+      )}
       <HistoryPlugin />
       <MarkdownShortcutPlugin />
       <SelectionAlwaysOnDisplay />

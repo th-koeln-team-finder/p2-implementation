@@ -4,6 +4,7 @@
     "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "declarationMap": false,
     "declaration": false
   },
   "include": ["**/*.ts", "**/*.tsx"],
