@@ -1,27 +1,30 @@
 'use client'
 
-import {UserAvatar} from '@/features/auth/components/UserAvatar'
-import {removeFileUpload} from '@/features/file-upload/file-upload.actions'
-import {useFileUpload} from '@/features/file-upload/file-upload.hooks'
-import {revalidateUser, updateUserData} from '@/features/users/users.actions'
-import {checkUsernameTaken} from '@/features/users/users.query'
-import type {UserWithImage} from '@/features/users/users.types'
-import {useForm} from '@formsignals/form-react'
-import {ZodAdapter} from '@formsignals/validation-adapter-zod'
-import {useSignals} from '@preact/signals-react/runtime'
-import type {UserInsert} from '@repo/database/schema'
-import {FieldError, FormError,} from '@repo/design-system/components/FormErrors'
-import {FileInlinePreviewsForm} from '@repo/design-system/components/custom/file-inline-previews-form'
-import {FileListForm} from '@repo/design-system/components/custom/file-list-form'
-import {FileUploadForm} from '@repo/design-system/components/custom/file-upload'
-import {Button} from '@repo/design-system/components/ui/button'
-import {InputForm} from '@repo/design-system/components/ui/input'
-import {Label} from '@repo/design-system/components/ui/label'
-import {SwitchForm} from '@repo/design-system/components/ui/switch'
-import {TextareaForm} from '@repo/design-system/components/ui/textarea'
-import {LoaderCircleIcon, SaveIcon} from 'lucide-react'
-import {useTranslations} from 'next-intl'
-import {z} from 'zod'
+import { UserAvatar } from '@/features/auth/components/UserAvatar'
+import { removeFileUpload } from '@/features/file-upload/file-upload.actions'
+import { useFileUpload } from '@/features/file-upload/file-upload.hooks'
+import { revalidateUser, updateUserData } from '@/features/users/users.actions'
+import { checkUsernameTaken } from '@/features/users/users.query'
+import type { UserWithImage } from '@/features/users/users.types'
+import { useForm } from '@formsignals/form-react'
+import { ZodAdapter } from '@formsignals/validation-adapter-zod'
+import { useSignals } from '@preact/signals-react/runtime'
+import type { UserInsert } from '@repo/database/schema'
+import {
+  FieldError,
+  FormError,
+} from '@repo/design-system/components/FormErrors'
+import { FileInlinePreviewsForm } from '@repo/design-system/components/custom/file-inline-previews-form'
+import { FileListForm } from '@repo/design-system/components/custom/file-list-form'
+import { FileUploadForm } from '@repo/design-system/components/custom/file-upload'
+import { Button } from '@repo/design-system/components/ui/button'
+import { InputForm } from '@repo/design-system/components/ui/input'
+import { Label } from '@repo/design-system/components/ui/label'
+import { SwitchForm } from '@repo/design-system/components/ui/switch'
+import { LoaderCircleIcon, SaveIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { z } from 'zod'
+import { WysiwygEditorForm } from '@repo/design-system/components/WysiwygEditor'
 
 export default function ProfileForm({
   user,
@@ -36,6 +39,7 @@ export default function ProfileForm({
     defaultValues: {
       id: user.id,
       name: user.name,
+      occupation: user.occupation || '',
       bio: user.bio || '',
       url: user.url || '',
       location: user.location || '',
@@ -48,6 +52,7 @@ export default function ProfileForm({
       let parsedValues: Partial<UserInsert> = {
         id: values.id,
         name: values.name,
+        occupation: values.occupation,
         bio: values.bio,
         url: values.url,
         location: values.location,
@@ -93,7 +98,7 @@ export default function ProfileForm({
       }}
     >
       <form.FormProvider>
-        <div className="w-full space-y-4">
+        <div className="w-full space-y-4 order-2 md:order-1">
           <form.FieldProvider
             name="name"
             validator={z
@@ -116,12 +121,31 @@ export default function ProfileForm({
             </div>
           </form.FieldProvider>
 
+          <form.FieldProvider name="occupation">
+            <div className="grid gap-2">
+              <Label htmlFor="occupation" className="inline-block">
+                {t('users.settings.occupation')}
+              </Label>
+              <InputForm
+                name="occupation"
+                placeholder={t('users.settings.occupationPlaceholder')}
+              />
+            </div>
+            <FieldError />
+          </form.FieldProvider>
+
           <form.FieldProvider name="bio">
             <div className="grid gap-2">
               <Label htmlFor="bio" className="inline-block">
                 {t('users.settings.bio')}
               </Label>
-              <TextareaForm>{user.bio}</TextareaForm>
+              <div>
+                <WysiwygEditorForm
+                  placeholder={t('users.settings.bioPlaceholder')}
+                >
+                  {user.bio}
+                </WysiwygEditorForm>
+              </div>
             </div>
           </form.FieldProvider>
 
@@ -144,7 +168,7 @@ export default function ProfileForm({
               <Label htmlFor="url" className="inline-block">
                 {t('users.settings.url')}
               </Label>
-              <InputForm name="url" />
+              <InputForm placeholder={t('users.settings.urlPlaceholder')} name="url" />
             </div>
             <FieldError />
           </form.FieldProvider>
@@ -154,7 +178,7 @@ export default function ProfileForm({
               <Label htmlFor="location" className="inline-block">
                 {t('users.settings.location')}
               </Label>
-              <InputForm name="location" />
+              <InputForm placeholder={t('users.settings.locationPlaceholder')} name="location" />
             </div>
           </form.FieldProvider>
 
@@ -187,13 +211,15 @@ export default function ProfileForm({
             {t('general.save')}
           </Button>
         </div>
-        <div className="mb-4 w-1/3">
+        <div className="w-full mb-4 md:w-1/3 order-1 md:order-2">
           <form.FieldProvider
             name="image"
             validator={z
               .any()
               .refine(
-                (files: File[]) => files.some((file) => file.size < 10485760),
+                (files: File[]) => {
+                  return files.length === 0 || files.some((file) => file.size < 10485760)
+                },
                 'A file is too large',
               )}
           >

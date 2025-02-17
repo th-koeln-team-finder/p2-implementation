@@ -14,7 +14,8 @@ import {Button} from '@repo/design-system/components/ui/button'
 import {UserPen} from 'lucide-react'
 import {getLocale, getTranslations} from 'next-intl/server'
 import {UserAvatar} from "@/features/auth/components/UserAvatar";
-import {UserWithImage} from "@/features/users/users.types";
+import type {UserWithImage} from "@/features/users/users.types";
+import ProfileBio from "@/features/users/components/ProfileBio";
 
 export default async function Profile({ user }: { user: UserWithImage }) {
   const translate = await getTranslations()
@@ -44,18 +45,18 @@ export default async function Profile({ user }: { user: UserWithImage }) {
     <main className="container mx-auto my-4">
       <div className="flex flex-col items-center gap-4 md:flex-row md:items-start">
         <div className="md:w-1/4">
-          <UserAvatar user={user} className="h-32 w-32" />
+          <UserAvatar user={user} className="h-32 w-32"/>
         </div>
 
         <div>
-          <div className="flex flex-1 flex-col space-y-2">
-            <p className="font-bold text-xs">Developer/Student</p>
+          <div className="flex flex-1 flex-col space-y-2 mb-2">
+            {user.occupation && <p className="font-bold text-xs">{user.occupation}</p>}
             <div className="flex items-center gap-8">
               <h1 className="inline font-bold text-3xl">{user.name}</h1>
               {isOwnProfile ? (
                 <Link href="/edit-profile">
                   <Button>
-                    <UserPen />
+                    <UserPen/>
                     {translate('users.editProfile')}
                   </Button>
                 </Link>
@@ -66,14 +67,14 @@ export default async function Profile({ user }: { user: UserWithImage }) {
                   loggedInUserId={loggedInUser.id}
                 />
               )}
-              <Ratings />
+              <Ratings/>
             </div>
             <p className="text-muted-foreground text-xs leading-none">
               {translate('users.lastActivity')}:{' '}
               {lastActivity.toLocaleDateString()}
             </p>
           </div>
-          <p className="text-sm mt-4">{user.bio}</p>
+          <ProfileBio bio={user.bio}/>
         </div>
       </div>
       <div className="mt-8">
@@ -87,7 +88,7 @@ export default async function Profile({ user }: { user: UserWithImage }) {
         <h2 className="font-bold text-2xl mb-4">
           {translate('users.previouslyWorkedOn')}
         </h2>
-        <PreviouslyWorkedOn userId={user.id} />
+        <PreviouslyWorkedOn userId={user.id}/>
       </div>
     </main>
   )

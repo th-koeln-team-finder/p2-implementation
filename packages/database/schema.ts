@@ -50,6 +50,7 @@ export const users = pgTable('user', {
     .$type<RolesType[]>()
     .$defaultFn(() => [Roles.defaultUser]),
   bio: text('bio'),
+  occupation: text('occupation'),
   url: text('url'),
   location: text('location'),
   allowInvites: boolean().notNull().default(true),
@@ -59,6 +60,7 @@ export const users = pgTable('user', {
     .default('en'),
   activateNotifications: boolean().notNull().default(true),
   ...notificationColumns,
+  lastActive: timestamp('lastActive', { mode: 'date' }),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 })
