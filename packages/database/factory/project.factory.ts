@@ -1,13 +1,15 @@
-import {ProjectInsert} from "../schema";
-import {faker} from "@faker-js/faker/locale/de";
+import { faker } from '@faker-js/faker/locale/de'
+import type { ProjectInsert } from '../schema'
 
 export function makeProject(): ProjectInsert {
-     enum a {open="open",
-            closed="closed"}
+  // biome-ignore lint/nursery/noEnum: <explanation>
+  enum a {
+    open = 'open',
+    closed = 'closed',
+  }
   return {
     name: faker.lorem.words(3),
     description: faker.lorem.sentence(),
-      status : faker.helpers.enumValue(a),
-
+    status: faker.helpers.enumValue(a),
   }
 }

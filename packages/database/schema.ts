@@ -1,4 +1,4 @@
-import {relations, sql} from 'drizzle-orm'
+import { relations, sql } from 'drizzle-orm'
 import {
   type AnyPgColumn,
   boolean,
@@ -49,19 +49,19 @@ export type UserSelect = typeof users.$inferSelect
  * Data specific for one project
  */
 export const projects = pgTable('projects', {
-    id: uuid().primaryKey().notNull().defaultRandom(),
-    name: varchar({ length: 255 }).notNull(),
-    description: text().notNull(),
-    status: varchar({ enum: ['open', 'closed'] }).notNull(),
-    phase: text(),
+  id: uuid().primaryKey().notNull().defaultRandom(),
+  name: varchar({ length: 255 }).notNull(),
+  description: text().notNull(),
+  status: varchar({ enum: ['open', 'closed'] }).notNull(),
+  phase: text(),
 
-    location: text(),
-    isPublic: boolean().notNull().default(true),
-    allowApplications: boolean().notNull().default(true),
-    createdAt: timestamp({ mode: 'date' }).defaultNow(),
-    updatedAt: timestamp({ mode: 'date' })
-        .defaultNow()
-        .$onUpdate(() => sql`current_timestamp`),
+  location: text(),
+  isPublic: boolean().notNull().default(true),
+  allowApplications: boolean().notNull().default(true),
+  createdAt: timestamp({ mode: 'date' }).defaultNow(),
+  updatedAt: timestamp({ mode: 'date' })
+    .defaultNow()
+    .$onUpdate(() => sql`current_timestamp`),
 })
 
 export type ProjectInsert = typeof projects.$inferInsert
@@ -71,28 +71,30 @@ export type ProjectSelect = typeof projects.$inferSelect
  * Apply for a project
  */
 export const projectApplication = pgTable(
-    'projectApplication',
-    {
-        userId: uuid('userId')
-            .notNull()
-            .references(() => users.id, { onDelete: 'cascade' }),
-        projectId: uuid('projectId')
-            .notNull()
-            .references(() => projects.id, { onDelete: 'cascade' }),
-        firstName: text().notNull(),
-        lastName: text().notNull(),
-        mail: text().notNull(),
-        phone: text().notNull(),
-        //file: text().notNull(),
-        message: text().notNull(),
-        createdAt: timestamp({ mode: 'date' }).defaultNow(),
-        updatedAt: timestamp({ mode: 'date' })
-            .defaultNow()
-            .$onUpdate(() => sql`current_timestamp`),
-    },
-    (projectApplication) => ({
-        pk: primaryKey({ columns: [projectApplication.projectId, projectApplication.userId] }),
+  'projectApplication',
+  {
+    userId: uuid('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    projectId: uuid('projectId')
+      .notNull()
+      .references(() => projects.id, { onDelete: 'cascade' }),
+    firstName: text().notNull(),
+    lastName: text().notNull(),
+    mail: text().notNull(),
+    phone: text().notNull(),
+    //file: text().notNull(),
+    message: text().notNull(),
+    createdAt: timestamp({ mode: 'date' }).defaultNow(),
+    updatedAt: timestamp({ mode: 'date' })
+      .defaultNow()
+      .$onUpdate(() => sql`current_timestamp`),
+  },
+  (projectApplication) => ({
+    pk: primaryKey({
+      columns: [projectApplication.projectId, projectApplication.userId],
     }),
+  }),
 )
 export type ProjectApplicationInsert = typeof projectApplication.$inferInsert
 export type ProjectApplicationSelect = typeof projectApplication.$inferSelect
@@ -303,23 +305,25 @@ export const authenticators = pgTable(
 export type AuthenticatorInsert = typeof authenticators.$inferInsert
 export type AuthenticatorSelect = typeof authenticators.$inferSelect
 
-
 export const projectRelations = relations(projects, ({ many }) => ({
-    application: many(projectApplication, {
-        relationName: 'projectApplication',
-    }),
+  application: many(projectApplication, {
+    relationName: 'projectApplication',
+  }),
 }))
 
-export const projectApplicationRelations = relations(projectApplication, ({ one }) => ({
+export const projectApplicationRelations = relations(
+  projectApplication,
+  ({ one }) => ({
     project: one(projects, {
-        fields: [projectApplication.projectId],
-        references: [projects.id],
+      fields: [projectApplication.projectId],
+      references: [projects.id],
     }),
     user: one(users, {
-        fields:[projectApplication.userId],
-        references:[users.id]
+      fields: [projectApplication.userId],
+      references: [users.id],
     }),
-}))
+  }),
+)
 
 export const brainstormRelations = relations(brainstorms, ({ one, many }) => ({
   creator: one(users, {

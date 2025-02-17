@@ -5,11 +5,11 @@ import { makeBrainstorm } from './factory/brainstorm.factory'
 import { makeBrainstormComment } from './factory/brainstormComment.factory'
 import { makeBrainstormCommentLike } from './factory/brainstormCommentLike.factory'
 import { makeBrainstormResource } from './factory/brainstormResource.factory'
+import { makeProject } from './factory/project.factory'
 import { makeTag } from './factory/tag.factory'
 import { makeTest } from './factory/test.factory'
 import { makeUser } from './factory/user.factory'
 import * as Schema from './schema'
-import {makeProject} from "./factory/project.factory";
 
 config()
 config({ path: '.env.local', override: true })
@@ -43,14 +43,16 @@ export async function seed() {
   const users = await db.insert(Schema.users).values(userData).returning()
   const userIds = users.map((e) => e.id)
 
-  console.log("Clearing Project table")
-    await db.delete(Schema.projects).execute()
+  console.log('Clearing Project table')
+  await db.delete(Schema.projects).execute()
 
   console.log('Creating 10 project records')
-    const projectData = makeMultiple(10, makeProject)
-    const projects = await db.insert(Schema.projects).values(projectData).returning()
+  const projectData = makeMultiple(10, makeProject)
+  const projects = await db
+    .insert(Schema.projects)
+    .values(projectData)
+    .returning()
   console.log(projects.map((e) => e.id))
-
 
   console.log("Clearing 'brainstorm' table")
   await db.delete(Schema.brainstorms).execute()

@@ -42,12 +42,11 @@ export type CreateProjectFormValues = CreateProjectFormBasic &
   CreateProjectFormTimeTable &
   CreateProjectFormLinks
 
-
 export type CreateApplicationFormValues = {
   firstName: string
-    lastName: string
-    mail: string
-    phone: string
-    file: File[]
-    message: string
+  lastName: string
+  mail: string
+  phone: string
+  file: File[]
+  message: string
 }
