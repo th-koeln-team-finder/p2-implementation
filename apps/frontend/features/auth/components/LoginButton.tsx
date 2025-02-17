@@ -1,8 +1,8 @@
 'use client'
-import { revalidateAll } from '@/features/auth/auth.actions'
-import { Button } from '@repo/design-system/components/ui/button'
-import { signIn } from 'next-auth/webauthn'
-import { useTranslations } from 'next-intl'
+import {revalidateAll} from '@/features/auth/auth.actions'
+import {Button} from '@repo/design-system/components/ui/button'
+import {signIn} from 'next-auth/webauthn'
+import {useTranslations} from 'next-intl'
 
 export function LoginButton() {
   const translate = useTranslations()

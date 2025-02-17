@@ -12,7 +12,7 @@ export default function ProfileBio({ bio }: { bio: string }) {
   return (
     <div className="flex flex-col gap-2">
       <div className={cn(`h-24 overflow-hidden transition ${bioOpened ? 'h-auto' : ''}`)}>
-        {bio && <WysiwygRenderer value={bio} renderAsString />}
+        <WysiwygRenderer value={bio} renderAsString />
       </div>
       <Button
 

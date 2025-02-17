@@ -1,11 +1,11 @@
 'use client'
-import { revalidateAll } from '@/features/auth/auth.actions'
-import { checkUsernameTaken } from '@/features/users/users.query'
-import { useForm } from '@formsignals/form-react'
-import { configureZodAdapter } from '@formsignals/validation-adapter-zod'
-import { useSignals } from '@preact/signals-react/runtime'
-import { FieldError } from '@repo/design-system/components/FormErrors'
-import { Button } from '@repo/design-system/components/ui/button'
+import {revalidateAll} from '@/features/auth/auth.actions'
+import {checkUsernameTaken} from '@/features/users/users.query'
+import {useForm} from '@formsignals/form-react'
+import {configureZodAdapter} from '@formsignals/validation-adapter-zod'
+import {useSignals} from '@preact/signals-react/runtime'
+import {FieldError} from '@repo/design-system/components/FormErrors'
+import {Button} from '@repo/design-system/components/ui/button'
 import {
   Card,
   CardContent,
@@ -14,11 +14,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@repo/design-system/components/ui/card'
-import { InputForm } from '@repo/design-system/components/ui/input'
-import { Label } from '@repo/design-system/components/ui/label'
-import { signIn } from 'next-auth/webauthn'
-import { useTranslations } from 'next-intl'
-import { z } from 'zod'
+import {InputForm} from '@repo/design-system/components/ui/input'
+import {Label} from '@repo/design-system/components/ui/label'
+import {signIn} from 'next-auth/webauthn'
+import {useTranslations} from 'next-intl'
+import {z} from 'zod'
 
 const registerAdapter = configureZodAdapter({
   takeFirstError: true,

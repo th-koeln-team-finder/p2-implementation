@@ -39,8 +39,6 @@ export default async function Profile({ user }: { user: UserWithImage }) {
     verifierId: loggedInUser.id,
   }))
 
-  const lastActivity = new Date()
-
   return (
     <main className="container mx-auto my-4">
       <div className="flex flex-col items-center gap-4 md:flex-row md:items-start">
@@ -67,14 +65,13 @@ export default async function Profile({ user }: { user: UserWithImage }) {
                   loggedInUserId={loggedInUser.id}
                 />
               )}
-              <Ratings/>
             </div>
-            <p className="text-muted-foreground text-xs leading-none">
+            {user.lastActive && <p className="text-muted-foreground text-xs leading-none">
               {translate('users.lastActivity')}:{' '}
-              {lastActivity.toLocaleDateString()}
-            </p>
+              {(new Date(user.lastActive)).toLocaleDateString()}
+            </p>}
           </div>
-          <ProfileBio bio={user.bio}/>
+          {user.bio && <ProfileBio bio={user.bio}/>}
         </div>
       </div>
       <div className="mt-8">
