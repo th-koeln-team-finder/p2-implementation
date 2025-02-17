@@ -1,38 +1,34 @@
 'use client'
 
-import { UserAvatar } from '@/features/auth/components/UserAvatar'
-import { removeFileUpload } from '@/features/file-upload/file-upload.actions'
-import { useFileUpload } from '@/features/file-upload/file-upload.hooks'
-import { revalidateUser, updateUserData } from '@/features/users/users.actions'
-import { checkUsernameTaken } from '@/features/users/users.query'
-import type { UserWithImage } from '@/features/users/users.types'
-import { useForm } from '@formsignals/form-react'
-import { ZodAdapter } from '@formsignals/validation-adapter-zod'
-import { useSignals } from '@preact/signals-react/runtime'
-import type { UserInsert } from '@repo/database/schema'
-import {
-  FieldError,
-  FormError,
-} from '@repo/design-system/components/FormErrors'
-import { FileInlinePreviewsForm } from '@repo/design-system/components/custom/file-inline-previews-form'
-import { FileListForm } from '@repo/design-system/components/custom/file-list-form'
-import { FileUploadForm } from '@repo/design-system/components/custom/file-upload'
-import { Button } from '@repo/design-system/components/ui/button'
-import { InputForm } from '@repo/design-system/components/ui/input'
-import { Label } from '@repo/design-system/components/ui/label'
-import { SwitchForm } from '@repo/design-system/components/ui/switch'
-import { TextareaForm } from '@repo/design-system/components/ui/textarea'
-import { LoaderCircleIcon, SaveIcon } from 'lucide-react'
-import { useTranslations } from 'next-intl'
-import { z } from 'zod'
+import {UserAvatar} from '@/features/auth/components/UserAvatar'
+import {removeFileUpload} from '@/features/file-upload/file-upload.actions'
+import {useFileUpload} from '@/features/file-upload/file-upload.hooks'
+import {revalidateUser, updateUserData} from '@/features/users/users.actions'
+import {checkUsernameTaken} from '@/features/users/users.query'
+import type {UserWithImage} from '@/features/users/users.types'
+import {useForm} from '@formsignals/form-react'
+import {ZodAdapter} from '@formsignals/validation-adapter-zod'
+import {useSignals} from '@preact/signals-react/runtime'
+import type {UserInsert} from '@repo/database/schema'
+import {FieldError, FormError,} from '@repo/design-system/components/FormErrors'
+import {FileInlinePreviewsForm} from '@repo/design-system/components/custom/file-inline-previews-form'
+import {FileListForm} from '@repo/design-system/components/custom/file-list-form'
+import {FileUploadForm} from '@repo/design-system/components/custom/file-upload'
+import {Button} from '@repo/design-system/components/ui/button'
+import {InputForm} from '@repo/design-system/components/ui/input'
+import {Label} from '@repo/design-system/components/ui/label'
+import {SwitchForm} from '@repo/design-system/components/ui/switch'
+import {TextareaForm} from '@repo/design-system/components/ui/textarea'
+import {LoaderCircleIcon, SaveIcon} from 'lucide-react'
+import {useTranslations} from 'next-intl'
+import {z} from 'zod'
 
 export default function ProfileForm({
   user,
   maxFileSize,
 }: { user: UserWithImage; maxFileSize: number }) {
   const t = useTranslations()
-  const translateError = useTranslations('validation')
-  const [progressState, uploadFile, resetFileProgress] = useFileUpload()
+  const [progressState, uploadFile] = useFileUpload()
 
   useSignals()
   const form = useForm({
@@ -86,30 +82,6 @@ export default function ProfileForm({
       })
     },
   })
-
-  const toBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = () => resolve(reader.result)
-      reader.onerror = reject
-    })
-
-  const setUserProfilePic = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0]
-    if (!file) return
-
-    const image = await toBase64(file)
-    if (typeof image !== 'string') return
-
-    /*setFormData({
-      ...formData,
-      image: image
-    })
-    updateUserProperties()*/
-  }
 
   return (
     <form
