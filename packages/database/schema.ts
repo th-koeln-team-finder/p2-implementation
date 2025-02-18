@@ -371,6 +371,16 @@ export const ProjectTimetable = pgTable(
 export type ProjectInsert = typeof projects.$inferInsert
 export type ProjectSelect = typeof projects.$inferSelect
 
+export const subscriptions = pgTable('subscriptions', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  userId: uuid('userId').references(() => users.id, { onDelete: 'cascade' }),
+  subscription: json().notNull(),
+})
+
+export type SubscriptionInsert = typeof subscriptions.$inferInsert
+export type SubscriptionSelect = typeof subscriptions.$inferSelect
+
+
 //region Technical Tables
 /**
  * Data used for authentication of a user, a user can have multiple accounts (so multiple login methods)

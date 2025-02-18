@@ -95,6 +95,7 @@ import {
   Settings2Icon,
 } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
+import PushNotificationManager from "@/features/test/components/PushNotificationManager";
 
 // TODO remove - Only for testing
 export const dynamic = 'force-dynamic'
@@ -354,6 +355,10 @@ export default async function Home() {
         </TooltipProvider>
 
         <LoggingWysiwygEditor />
+
+        {session?.user?.id && <PushNotificationManager
+            userId={session.user.id}
+        />}
       </div>
     </div>
   )
