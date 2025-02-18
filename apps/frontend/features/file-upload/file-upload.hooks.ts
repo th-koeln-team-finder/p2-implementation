@@ -17,6 +17,7 @@ export function useFileUpload() {
         file.type,
         file.size,
       )
+
       if (!uploadUrl) {
         return
       }

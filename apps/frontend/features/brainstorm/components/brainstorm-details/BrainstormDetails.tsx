@@ -35,6 +35,7 @@ export async function BrainstormDialogHeader({
   brainstormId,
 }: { brainstormId: string }) {
   const session = await authMiddleware()
+  // TODO Do not show bookmark button if user is not logged in
   const brainstorm = await getSingleBrainstorm(brainstormId, session?.user?.id)
   const translate = await getTranslations('brainstorm')
   if (!brainstorm) return null

@@ -15,13 +15,19 @@ const Select = SelectPrimitive.Root
 type SelectFormProps = Omit<SelectProps, 'value' | 'onValueChange'> & {
   className?: string
   valueProps?: Omit<SelectValueProps, 'className'>
+  onValueChange?: (value: string) => void
+  value?: string
   triggerClassName?: string
+  useTransformed?: boolean
 }
 const SelectForm = ({
   children,
   className,
   valueProps,
+  onValueChange,
+  value,
   triggerClassName,
+  useTransformed,
   ...props
 }: SelectFormProps) => {
   useSignals()
@@ -31,10 +37,20 @@ const SelectForm = ({
   )
   const classNames = cn(className, errorClassName.value)
 
+  const handleChange = (newValue: string) => {
+    if(useTransformed) {
+      field.handleChangeBound(newValue)
+    } else {
+      field.handleChange(newValue)
+    }
+    onValueChange?.(newValue)
+  }
+  const data = useTransformed ? field.transformedData : field.data
+
   return (
     <Select
-      value={field.data?.value}
-      onValueChange={(newValue) => field.handleChange(newValue)}
+      value={data?.value}
+      onValueChange={handleChange}
       {...props}
     >
       <SelectTrigger className={triggerClassName}>

@@ -1,6 +1,14 @@
-# Project Implementation Teamfinder
+# Collaborize (Implementation)
 
-TODO Add description
+![banner](/docs/github-banner.svg)
+
+Projekt Phase 2 für die Implementierung von der Teamfinding Plattform "Collaborize"
+
+## Documentation
+
+Bevor wir mit der Programmierung begonnen haben, erstellten wir ein [Exposé](/docs/P2_Implementation_Expose.pdf), in dem der Projektstand und das weitere Vorgehen erläutert sowie Meilensteine festgelegt wurden.
+
+Darüber hinaus haben wir im vorigen Semester eine ausführliche Konzeption des Projektes durchgeführt, die in folgendem Repository zu finden ist: [P1 -Vision & Konzeption](https://github.com/th-koeln-team-finder/p1-vision-concept)
 
 ## Setup
 
