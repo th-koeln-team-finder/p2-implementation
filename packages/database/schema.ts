@@ -192,6 +192,7 @@ export const projects = pgTable('projects', {
   description: text().notNull(),
   status: varchar({ enum: ['open', 'closed'] }).notNull(),
   phase: text(),
+  location: text(),
   isPublic: boolean().notNull().default(true),
   allowApplications: boolean().notNull().default(true),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
@@ -353,28 +354,6 @@ export const projectBookmarks = pgTable(
 )
 export type projectBookmarkInsert = typeof projectBookmarks.$inferInsert
 export type projectBookmarkSelect = typeof projectBookmarks.$inferSelect
-
-/**
- * Data specific for one project
- */
-export const projects = pgTable('projects', {
-  id: uuid().primaryKey().notNull().defaultRandom(),
-  name: varchar({ length: 255 }).notNull(),
-  description: text().notNull(),
-  status: varchar({ enum: ['open', 'closed'] }).notNull(),
-  phase: text(),
-
-  location: text(),
-  isPublic: boolean().notNull().default(true),
-  allowApplications: boolean().notNull().default(true),
-  createdAt: timestamp({ mode: 'date' }).defaultNow(),
-  updatedAt: timestamp({ mode: 'date' })
-    .defaultNow()
-    .$onUpdate(() => sql`current_timestamp`),
-})
-
-export type ProjectInsert = typeof projects.$inferInsert
-export type ProjectSelect = typeof projects.$inferSelect
 
 /**
  * Apply for a project
@@ -627,6 +606,9 @@ export const projectRelations = relations(projects, ({ many }) => ({
   }),
   bookmarks: many(projectBookmarks),
   projectSkills: many(projectSkill),
+  application: many(projectApplication, {
+    relationName: 'projectApplication',
+  }),
 }))
 
 export const projectSkillRelations = relations(projectSkill, ({ one }) => ({
@@ -681,12 +663,6 @@ export const issueRelations = relations(projectIssue, ({ one }) => ({
     fields: [projectIssue.projectId],
     references: [projects.id],
     relationName: 'projectIssues',
-  }),
-}))
-
-export const projectRelations = relations(projects, ({ many }) => ({
-  application: many(projectApplication, {
-    relationName: 'projectApplication',
   }),
 }))
 

@@ -6,11 +6,11 @@ import { redirect } from '@/features/i18n/routing'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
-// biome-ignore lint/style/useImportType: <explanation>
 import {
-    type ProjectApplicationInsert,
+  type ProjectApplicationInsert,
+  type ProjectResourceInsert,
+  Weekdays,
 } from '@repo/database/schema'
-import { type ProjectResourceInsert, Weekdays } from '@repo/database/schema'
 import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
 import { revalidateTag } from 'next/cache'
@@ -33,14 +33,14 @@ export async function createProject(payload: CreateProjectFormValues) {
     })
   }
 
-    const [project] = await db
-        .insert(Schema.projects)
-        .values({
-            name: payload.name,
-            description: payload.description,
-            status: payload.status,
-            phase: payload.phase,
-            location: payload.address,
+  const [project] = await db
+    .insert(Schema.projects)
+    .values({
+      name: payload.name,
+      description: payload.description,
+      status: payload.status,
+      phase: payload.phase,
+      location: payload.address,
     })
     .returning()
 
@@ -112,14 +112,14 @@ export async function createProject(payload: CreateProjectFormValues) {
   }
 
   // Insert project resources that are no files since they do not need a file upload
-   /* await createProjectResources(
+  /* await createProjectResources(
         project.id,
         payload.resources
             .filter((r) => !r.file?.[0])
             .map((r) => ({ label: r.label, href: r.href, projectId: project.id })),
     )*/
 
-    return project.id
+  return project.id
 }
 
 export async function createProjectResources(
@@ -191,37 +191,35 @@ export async function toggleProjectBookmark(
   })
 }
 
-
-
 export async function revalidateProjects() {
   return await revalidateTag('projects')
 }
 
 export async function createApplication(payload: ProjectApplicationInsert) {
-    try {
-        console.log(
-            'Starte Bewerbungserstellung für Projekt-ID:',
-            payload.projectId,
-        )
-        console.log('Payload für Bewerbung:', payload)
+  try {
+    console.log(
+      'Starte Bewerbungserstellung für Projekt-ID:',
+      payload.projectId,
+    )
+    console.log('Payload für Bewerbung:', payload)
 
-        const [application] = await db
-            .insert(Schema.projectApplication)
-            .values({
-                userId: payload.userId,
-                projectId: payload.projectId,
-                firstName: payload.firstName,
-                lastName: payload.lastName,
-                mail: payload.mail,
-                phone: payload.phone,
-                message: payload.message,
-            })
-            .returning()
+    const [application] = await db
+      .insert(Schema.projectApplication)
+      .values({
+        userId: payload.userId,
+        projectId: payload.projectId,
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        mail: payload.mail,
+        phone: payload.phone,
+        message: payload.message,
+      })
+      .returning()
 
-        console.log('Bewerbung erfolgreich gespeichert:', application)
-        return application
-    } catch (error) {
-        console.error('Fehler bei der Bewerbungserstellung:', error)
-        throw error
-    }
+    console.log('Bewerbung erfolgreich gespeichert:', application)
+    return application
+  } catch (error) {
+    console.error('Fehler bei der Bewerbungserstellung:', error)
+    throw error
+  }
 }
