@@ -10,6 +10,9 @@ self.addEventListener('push', (event) => {
                 dateOfArrival: Date.now(),
                 primaryKey: '2',
             },
+            image: data.image,
+            actions: data.actions,
+            lang: data.lang || 'en',
         }
         event.waitUntil(self.registration.showNotification(data.title, options))
     }

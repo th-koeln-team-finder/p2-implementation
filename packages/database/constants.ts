@@ -1,4 +1,5 @@
-import {boolean} from "drizzle-orm/pg-core";
+import {boolean} from 'drizzle-orm/pg-core'
+import type {PgBooleanBuilderInitial} from "drizzle-orm/pg-core/columns/boolean";
 
 export const Roles = {
   admin: 'admin',
@@ -13,7 +14,20 @@ export const RolesValues = Object.values(
 export type RolesType = (typeof Roles)[keyof typeof Roles]
 
 const notificationChannels = ['email', 'push'] as const
-export const notificationTypes = {
+
+type ArrayElement<ArrayType extends readonly unknown[]> =
+  ArrayType extends readonly (infer ElementType)[] ? ElementType : never
+
+export const notificationTypesByCategory: {
+  projects: [
+    'projectUpdated',
+    'memberJoinedProject',
+    'memberLeftProject',
+    'newApplication',
+    'bookmarkedProjectUpdated',
+  ]
+  profile: ['newFollower', 'newInvite', 'newSkillEvaluation']
+} = {
   projects: [
     'projectUpdated',
     'memberJoinedProject',
@@ -23,16 +37,25 @@ export const notificationTypes = {
   ],
   profile: ['newFollower', 'newInvite', 'newSkillEvaluation'],
 }
+
+export type NotificationType =
+  | ArrayElement<typeof notificationTypesByCategory.projects>
+  | ArrayElement<typeof notificationTypesByCategory.profile>
+
+type NotificationChannel = (typeof notificationChannels)[number]
+
+export type NotificationColumn = `${NotificationType}_${NotificationChannel}`
+
 export const notificationColumns = [
-  ...notificationTypes.projects,
-  ...notificationTypes.profile,
+  ...notificationTypesByCategory.projects,
+  ...notificationTypesByCategory.profile,
 ].reduce(
   (acc, type) => {
     for (const channel of notificationChannels) {
-      const columnName = `${type}_${channel}`
+      const columnName: NotificationColumn = `${type}_${channel}`
       acc[columnName] = boolean(columnName)
     }
     return acc
   },
-  {} as Record<string, ReturnType<typeof boolean>>,
+  {} as Record<NotificationColumn, PgBooleanBuilderInitial<NotificationColumn>>,
 )

@@ -1,8 +1,10 @@
 'use server'
 
-import { Schema, db } from '@repo/database'
-import { and, eq } from 'drizzle-orm'
-import { revalidateTag } from 'next/cache'
+import {db, Schema} from '@repo/database'
+import {and, eq} from 'drizzle-orm'
+import {revalidateTag} from 'next/cache'
+import {sendNotificationByType} from "@/features/notifications/notifications.actions";
+import {getUser} from "@/features/users/users.query";
 
 export async function revalidateFollows() {
   return revalidateTag('userFollows')
@@ -33,5 +35,12 @@ export async function setFollows(followerId: string, followeeId: string) {
         followeeId,
       })
       .execute()
+
+    const followerName = (await getUser(followerId))?.name
+
+    await sendNotificationByType([followeeId], 'newFollower', {
+      title: 'New follower',
+      body: followerName ? `"${followerName}" follows you now` : 'You have a new follower'
+    })
   }
 }

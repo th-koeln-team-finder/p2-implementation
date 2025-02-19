@@ -1,10 +1,12 @@
 'use server'
 
-import webpush from 'web-push'
-import {db, Schema} from "@repo/database";
-import {eq} from "drizzle-orm";
 import {getSubscription} from "@/features/notifications/notifications.query";
-import {subscriptions, SubscriptionSelect} from "@repo/database/schema";
+import {usersWhoWantToReceiveNotificationsByType} from "@/features/users/users.query";
+import {db} from "@repo/database";
+import type {NotificationType} from "@repo/database/constants";
+import {type SubscriptionSelect, subscriptions } from "@repo/database/schema";
+import {eq} from "drizzle-orm";
+import webpush from 'web-push'
 
 webpush.setVapidDetails(
   process.env.FRONTEND_URL,
@@ -26,7 +28,31 @@ export async function unsubscribeUser(userId: string) {
     .execute()
 }
 
-export async function sendNotification(userId: string, message: string) {
+export type NotificationData = {
+  title?: string
+  body?: string
+  icon?: string,
+  vibrate?: number[]
+  image?: string
+  actions?: { action: string, title: string, icon?: string }[],
+  lang?: string,
+  // biome-ignore lint/suspicious/noExplicitAny: any is needed here because the data can be anything
+  data?: any,
+}
+
+export async function sendNotificationByType(userIds: string[], type: NotificationType, data: NotificationData) {
+  const users = await usersWhoWantToReceiveNotificationsByType(userIds, type)
+  const promises = []
+  for (const user of users) {
+    if (user[`${type}_push`]) {
+      promises.push(sendPushNotification(user.id, data))
+    }
+  }
+  await Promise.allSettled(promises)
+}
+
+
+export async function sendPushNotification(userId: string, data: NotificationData) {
   const subscription: SubscriptionSelect | undefined = await getSubscription(userId)
 
   if (!subscription) {
@@ -38,9 +64,8 @@ export async function sendNotification(userId: string, message: string) {
     await webpush.sendNotification(
       subscriptionData,
       JSON.stringify({
-        title: 'Test Notification',
-        body: message,
-        icon: '/icons/192x192.png',
+        title: data.title || 'Notification',
+        body: data.body || 'You have a new notification',
       })
     )
     return { success: true }

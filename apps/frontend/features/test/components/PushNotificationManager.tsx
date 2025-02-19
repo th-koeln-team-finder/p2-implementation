@@ -3,7 +3,7 @@
 import {useEffect, useState} from "react";
 import {Input} from "@repo/design-system/components/ui/input";
 import {Button} from "@repo/design-system/components/ui/button";
-import {sendNotification, subscribeUser, unsubscribeUser} from "@/features/notifications/notifications.actions";
+import {sendPushNotification, subscribeUser, unsubscribeUser} from "@/features/notifications/notifications.actions";
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
@@ -62,7 +62,7 @@ export default function PushNotificationManager({userId}: { userId: string }) {
 
   async function sendTestNotification() {
     if (subscription) {
-      await sendNotification(userId, message)
+      await sendPushNotification(userId, { body: message })
       setMessage('')
     }
   }

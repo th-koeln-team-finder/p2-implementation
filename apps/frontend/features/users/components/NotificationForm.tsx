@@ -12,7 +12,7 @@ import {FormError} from "@repo/design-system/components/FormErrors";
 import {Button} from "@repo/design-system/components/ui/button";
 import {SwitchForm} from "@repo/design-system/components/ui/switch";
 import {computed} from "@preact/signals-react";
-import {notificationColumns, notificationTypes} from "@repo/database/constants";
+import {notificationColumns, notificationTypesByCategory} from "@repo/database/constants";
 import {ToggleForm} from "@repo/design-system/components/ui/toggle";
 import {revalidateUser, updateUserData} from "@/features/users/users.actions";
 
@@ -92,9 +92,9 @@ export default function NotificationForm({ user }: { user: UserSelect }) {
           </div>
         </div>
         {(
-          Object.keys(notificationTypes) as (keyof typeof notificationTypes)[]
+          Object.keys(notificationTypesByCategory) as (keyof typeof notificationTypesByCategory)[]
         ).map((type) => {
-          const notificationType = notificationTypes[type]
+          const notificationType = notificationTypesByCategory[type]
           return (
             <Card
               className={`overflow-hidden transition-opacity mb-4 ${isActive.value ? '' : 'opacity-50'}`}
