@@ -1,11 +1,9 @@
-import { ProjectItemList } from '@/features/projects/components/ProjectItemList'
+import { FindAprojectList } from '@/features/findAProject/components/findAprojectList'
 
 export default function Projects() {
   return (
-    <div>
-      <h1>Projects</h1>
-
-      <ProjectItemList />
+    <div className="container mx-auto px-4">
+      <FindAprojectList />
     </div>
   )
 }

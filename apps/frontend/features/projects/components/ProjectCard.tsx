@@ -21,8 +21,11 @@ export function ProjectCard({ project }: { project: Project }) {
     <Card className="overflow-hidden">
       <Link href={`/projects/${project.id}`} className="hover:underline">
         <CardHeader className="p-0">
-          <img className="max-h-32" src={project.image} alt={project.name} />
-          <CardTitle className="py-4 px-6">{project.name}</CardTitle>
+          {project.image && (
+            // biome-ignore lint/nursery/noImgElement: This is being worked on in a separate PR TODO remove this comment
+            <img className="max-h-32" src={project.image} alt={project.name} />
+          )}
+          <CardTitle className="px-6 py-4">{project.name}</CardTitle>
         </CardHeader>
       </Link>
       <CardContent>
@@ -33,7 +36,7 @@ export function ProjectCard({ project }: { project: Project }) {
           ? project.tags.map((tag) => (
               <Badge
                 key={tag}
-                className="bg-primary-foreground text-muted px-2 hover:bg-primary-foreground"
+                className="bg-primary-foreground px-2 text-muted hover:bg-primary-foreground"
               >
                 {tag}
               </Badge>

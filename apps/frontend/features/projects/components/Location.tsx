@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server'
+import { useTranslations } from 'next-intl'
 
 type LocationDef = {
   description?: string
@@ -6,21 +6,21 @@ type LocationDef = {
   longitude?: number
 }
 
-export async function Location({
+export function Location({
   location,
 }: { location: LocationDef | null | undefined }) {
   if (!location) return
-  const t = await getTranslations('projects')
+  const t = useTranslations('projects')
   const map = null
 
   if (location.latitude && location.longitude) {
   }
 
   return (
-    <div className="inline-flex flex-col justify-start items-start gap-2">
-      <h3 className="text-2xl font-medium leading-loose">{t('location')}</h3>
+    <div className="inline-flex flex-col items-start justify-start gap-2">
+      <h3 className="font-medium text-2xl leading-loose">{t('location')}</h3>
       {map}
-      <div className="self-stretch text-base font-normal leading-normal">
+      <div className="self-stretch font-normal text-base leading-normal">
         {location.description}
       </div>
     </div>

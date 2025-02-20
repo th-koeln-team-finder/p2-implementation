@@ -45,12 +45,43 @@ export const en = {
       removeAll: 'Remove All',
     },
   },
+  home: {
+    cardFind: {
+      title: 'Want to work with others?',
+      content: 'Check out projects you can join',
+      button: 'Find a project',
+    },
+    cardCreate: {
+      title: 'Need a team for your next project?',
+      content: 'Create your project and search for team members',
+      button: 'Create a project',
+    },
+    cardBrainstorm: {
+      title: 'Need ideas or want to share them?',
+      content: 'Share your ideas and be creative with others',
+      button: 'Brainstorm your ideas',
+    },
+  },
   projects: {
     title: 'Projekte',
     location: 'Location',
     join: 'Join the team',
     links: 'Links and other resources',
-    issuesTitle: 'open issues for starters',
+    phase: 'phase',
+    createProjectWarning: 'You need to login',
+    createProjectWarningDescription:
+      'Please login or register to create a project',
+
+    issueList: {
+      showMore: 'Show more',
+      showLess: 'Show less',
+      issueTitle: 'Issues for starters',
+    },
+    skillScale: {
+      skillTitle: 'Skills needed',
+      emptySkills: 'No special skills are required for this project',
+    },
+
     skills: {
       title: 'Skills needed',
       toggleLess: 'Show less',
@@ -61,6 +92,80 @@ export const en = {
     },
     team: {
       title: 'Team Members',
+    },
+  },
+  createProjects: {
+    fieldRequired: 'This field is required',
+    name: 'Projektname',
+    namePlaceholder: 'Title of the project...',
+    phase: 'Project Phase',
+    phasePlaceholder: 'Phase of the project...',
+    images: 'Images',
+    description: 'Project description',
+    descriptionPlaceholder: 'Description of the project...',
+    location: 'Location',
+    locationPlaceholder: 'Address...',
+    linksTitle: 'Links & Other Resources',
+    timetable: {
+      title: 'Timetable ',
+      table: 'Table',
+      custom: 'Custom',
+      noTable: 'No timetable',
+      days: {
+        monday: 'Monday',
+        tuesday: 'Tuesday',
+        wednesday: 'Wednesday',
+        thursday: 'Thursday',
+        friday: 'Friday',
+        saturday: 'Saturday',
+        sunday: 'Sunday',
+        placeholder: 'e.g. 2-3pm...',
+      },
+      customPlaceholder: 'Custom timetable...',
+    },
+    issues: {
+      sectionTitle: '(Github) Issues',
+      addIssue: 'Add Issue',
+      title: 'Title',
+      titlePlaceholder: 'Title of the issue...',
+      description: 'Description',
+      descPlaceholder: 'Description of the issue...',
+    },
+    resources: {
+      selection: 'Select',
+      select: {
+        link: 'Link',
+        fileUpload: 'File Upload',
+      },
+      label: 'Label',
+      labelPlaceholder: 'Label of the link...',
+      url: 'Link',
+      urlPlaceholder: 'URL of the link...',
+      fileUpload: 'File Upload',
+      addLink: 'Add Link',
+    },
+    details: {
+      pleaseSelect: 'Please select',
+    },
+    skills: {
+      skill: 'Skill',
+      skillPlaceholder: 'Title of the skill...',
+      level: 'Skill-Level',
+      levelPlaceholder: 'Level of the skill...',
+      addSkill: 'Add Skill',
+    },
+    stepper: {
+      main: 'Main',
+      skills: 'Skills',
+      timeManagement: 'Time Management',
+      details: 'Details',
+      preview: 'Preview',
+      back: 'Back',
+      next: 'Next',
+      reset: 'Reset',
+      done: 'Done',
+      step: 'Step',
+      of: 'of',
     },
   },
   brainstorm: {
@@ -238,6 +343,17 @@ export const en = {
         'There was a problem when trying to authenticate: Access Denied',
       verification: 'There was a problem when trying to verify authentication',
       default: 'There was a problem when trying to authenticate',
+    },
+  },
+  utils: {
+    weekdays: {
+      monday: 'Mon',
+      tuesday: 'Tue',
+      wednesday: 'Wed',
+      thursday: 'Thu',
+      friday: 'Fri',
+      saturday: 'Sat',
+      sunday: 'Sun',
     },
   },
 }

@@ -13,7 +13,6 @@ import { BrainstormCommentForm } from '@/features/brainstorm/components/brainsto
 import { Button } from '@repo/design-system/components/ui/button'
 import { cn } from '@repo/design-system/lib/utils'
 import { HeartIcon, PinIcon, ReplyIcon } from 'lucide-react'
-import { useSession } from 'next-auth/react'
 import { useFormatter, useTranslations } from 'next-intl'
 import { useState } from 'react'
 
@@ -26,8 +25,6 @@ export function BrainstormComment({
   comment,
   setOptimistic,
 }: BrainstormCommentProps) {
-  const { data: session } = useSession()
-  const _userId = session?.user?.id
   const translate = useTranslations('brainstorm.comments')
   const [replying, setReplying] = useState(false)
   const formatter = useFormatter()

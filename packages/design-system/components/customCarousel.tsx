@@ -159,16 +159,15 @@ const Carousel = React.forwardRef<
           canScrollNext,
         }}
       >
-        <div
+        <section
           ref={ref}
           onKeyDownCapture={handleKeyDown}
           className={cn('relative', className)}
-          role="region"
           aria-roledescription="carousel"
           {...props}
         >
           {children}
-        </div>
+        </section>
       </CarouselContext.Provider>
     )
   },
@@ -277,7 +276,7 @@ const CarouselNext = React.forwardRef<
 })
 CarouselNext.displayName = 'CarouselNext'
 
-const CarouselPagination: React.FC<{ items: any[] }> = ({ items }) => {
+const CarouselPagination: React.FC<{ items: unknown[] }> = ({ items }) => {
   const { api } = useCarousel()
   const [selectedIndex, setSelectedIndex] = React.useState(0)
 
@@ -300,8 +299,9 @@ const CarouselPagination: React.FC<{ items: any[] }> = ({ items }) => {
       {items.map((_, index) => (
         <button
           type="button"
+          // biome-ignore lint/suspicious/noArrayIndexKey: Index is unique
           key={index}
-          className={`h-2 w-2 rounded-full transition-all ${index === selectedIndex ? 'bg-fuchsia-700' : 'bg-fuchsia-200'}`}
+          className={`h-2 w-2 rounded-full transition-all ${index === selectedIndex ? 'bg-primary' : 'bg-primary/20 dark:bg-primary-foreground/60'}`}
           onClick={() => api?.scrollTo(index)}
         />
       ))}

@@ -48,12 +48,44 @@ export const de: Language = {
       removeAll: 'Alle entfernen',
     },
   },
+  home: {
+    cardFind: {
+      title: 'Du willst mit anderen zusammenarbeiten?',
+      content: 'Dann schau hier nach Projekten, an denen du teilnehmen kannst',
+      button: 'Projekte finden',
+    },
+    cardCreate: {
+      title: 'Du benötigst ein Team für dein nächstes Projekt?',
+      content: 'Erstelle dein Projekt und suche nach Teammitgliedern',
+      button: 'Projekt erstellen',
+    },
+    cardBrainstorm: {
+      title: 'Brauchst du Ideen oder möchtest du sie teilen?',
+      content: 'Teile deine Ideen und sei mit anderen kreativ',
+      button: 'Brainstorme deine Ideen',
+    },
+  },
   projects: {
     title: 'Projekte',
     location: 'Standort/Treffpunkt',
     join: 'Team beitreten',
-    links: 'Links und andere Ressourcen',
-    issuesTitle: 'Offene Issues für neue Mitglieder',
+    links: 'Links und andere Resourcen',
+    phase: 'Phase',
+    createProjectWarning: 'Sie müssen sich anmelden',
+    createProjectWarningDescription:
+      'Sie müssen sich anmelden, um ein Projekt zu erstellen',
+
+    issueList: {
+      showMore: 'mehr anzeigen',
+      showLess: 'weniger anzeigen',
+      issueTitle: 'Issues für Neueinsteiger',
+    },
+    skillScale: {
+      skillTitle: 'Benötige Fähigkeiten',
+      emptySkills:
+        'Für dieses Projekt sind keine speziellen Fähigkeiten erforderlich',
+    },
+
     skills: {
       title: 'Deine Fähigkeiten',
       toggleLess: 'Weniger anzeigen',
@@ -64,6 +96,79 @@ export const de: Language = {
     },
     team: {
       title: 'Team-Mitglieder',
+    },
+  },
+  createProjects: {
+    fieldRequired: 'Diese Eingabe ist erforderlich',
+    name: 'Projektname',
+    namePlaceholder: 'Name des Projekts...',
+    phase: 'Projektphase',
+    phasePlaceholder: 'Phase des Projekts...',
+    images: 'Bilder',
+    description: 'Projektbeschreibung',
+    descriptionPlaceholder: 'Beschreibung des Projekts...',
+    location: 'Ort',
+    locationPlaceholder: 'Adresse...',
+    linksTitle: 'Links & Ressourcen',
+    timetable: {
+      title: 'Zeitplan',
+      table: 'Tabelle',
+      custom: 'Benutzerdefiniert',
+      noTable: 'Kein Zeitplan',
+      days: {
+        monday: 'Montag',
+        tuesday: 'Dienstag',
+        wednesday: 'Mittwoch',
+        thursday: 'Donnerstag',
+        friday: 'Freitag',
+        saturday: 'Samstag',
+        sunday: 'Sonntag',
+        placeholder: 'z.B. 14-15Uhr...',
+      },
+      customPlaceholder: 'Benutzerdefinierter Zeitplan...',
+    },
+    issues: {
+      sectionTitle: '(Github) Issues',
+      addIssue: 'Issue hinzufügen',
+      title: 'Titel',
+      titlePlaceholder: 'Titel des Issues...',
+      description: 'Beschreibung',
+      descPlaceholder: 'Beschreibung des Issues...',
+    },
+    resources: {
+      selection: 'Auswahl',
+      select: {
+        link: 'Link',
+        fileUpload: 'Datei hochladen',
+      },
+      label: 'Label',
+      labelPlaceholder: 'Name des Links...',
+      url: 'Link',
+      urlPlaceholder: 'URL des Links...',
+      fileUpload: 'Datei hochladen',
+      addLink: 'Link hinzufügen',
+    },
+    details: {
+      pleaseSelect: 'Bitte auswählen',
+    },
+    skills: {
+      skill: 'Benötigte Fähigkeit',
+      skillPlaceholder: 'Name der Fähigkeit...',
+      level: 'Fähigkeitslevel',
+      addSkill: 'Fähigkeit hinzufügen',
+    },
+    stepper: {
+      main: 'Basis',
+      skills: 'Fähigkeiten',
+      timeManagement: 'Zeitplan',
+      details: 'Details',
+      preview: 'Übersicht',
+      back: 'Zurück',
+      next: 'Weiter',
+      reset: 'Zurücksetzen',
+      done: 'Fertig',
+      step: 'Schritt',
+      of: 'von',
     },
   },
   brainstorm: {
@@ -245,6 +350,17 @@ export const de: Language = {
         'Es gab ein Problem beim Authentifizieren: Zugriff verweigert',
       verification: 'Es gab ein Problem beim Überprüfen der Authentifizierung',
       default: 'Es gab ein Problem beim Authentifizieren',
+    },
+  },
+  utils: {
+    weekdays: {
+      monday: 'Mo',
+      tuesday: 'Di',
+      wednesday: 'Mi',
+      thursday: 'Do',
+      friday: 'Fr',
+      saturday: 'Sa',
+      sunday: 'So',
     },
   },
 }

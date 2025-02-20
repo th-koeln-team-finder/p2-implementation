@@ -27,7 +27,7 @@ export default async function Ratings() {
         <span className="text-primary">{ratingIcon}</span>
       </PopoverTrigger>
       <PopoverContent>
-        <div className="font-bold text-xl flex gap-2 mb-2">
+        <div className="mb-2 flex gap-2 font-bold text-xl">
           {ratingIcon}
           {ratingHeadline}
         </div>
