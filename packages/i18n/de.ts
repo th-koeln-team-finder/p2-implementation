@@ -1,4 +1,4 @@
-import type { Language } from './en'
+import type {Language} from './en'
 
 export const de: Language = {
   general: {
@@ -243,6 +243,7 @@ export const de: Language = {
     title: 'Profil',
     lastActivity: 'Letzte Aktivität',
     skills: 'Skills',
+    emptySkills: 'Dieser Nutzer hat noch keine Skills hinzugefügt.',
     previouslyWorkedOn: 'Hat zuvor gearbeitet an',
     loadMoreProjects: 'Mehr Projekte laden',
     noProjectsFound: 'Nutzer hat bisher noch an keinem Projekt gearbeitet',

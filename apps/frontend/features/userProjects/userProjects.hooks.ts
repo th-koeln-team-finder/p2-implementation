@@ -64,7 +64,6 @@ export function useOptimisticUserProjects(
             return {
               ...userProject,
               visible: payload.values.visible ?? true,
-              updatedAt: new Date(),
             }
           })
         }

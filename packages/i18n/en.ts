@@ -240,6 +240,7 @@ export const en = {
     title: 'Page',
     lastActivity: 'Last activity',
     skills: 'Skills',
+    emptySkills: 'Dieser Nutzer hat noch keine Skills hinzugefügt.',
     previouslyWorkedOn: 'Previously worked on',
     loadMoreProjects: 'Load more projects',
     noProjectsFound: 'User has not worked on any projects yet',

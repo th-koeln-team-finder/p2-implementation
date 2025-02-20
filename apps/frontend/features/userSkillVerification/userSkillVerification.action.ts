@@ -25,7 +25,7 @@ export async function unverifyUserSkill(userId: string, userSkillId: number) {
     .execute()
 }
 
-export async function resetVerification(userSkillId: number) {
+export async function resetVerification(userSkillId: string) {
   await db
     .delete(Schema.userSkillVerification)
     .where(eq(Schema.userSkillVerification.userSkillId, userSkillId))

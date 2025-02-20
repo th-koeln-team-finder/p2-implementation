@@ -19,7 +19,7 @@ import {
 } from "./popover"
 import {Badge} from "./badge"
 
-type Option = {
+export type Option = {
   value: string
   label: string
   count?: number

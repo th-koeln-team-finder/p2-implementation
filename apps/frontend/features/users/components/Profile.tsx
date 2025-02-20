@@ -2,12 +2,10 @@
 
 import {authMiddleware} from '@/auth'
 import {Link, redirect} from '@/features/i18n/routing'
-import {SkillScale} from '@repo/design-system/components/custom/SkillScale'
 import {userFollowsUser} from '@/features/userFollows/userFollows.queries'
 import {getUserSkills} from '@/features/userSkills/userSkills.query'
 import FollowButton from '@/features/users/components/FollowButton'
 import PreviouslyWorkedOn from '@/features/users/components/PreviouslyWorkedOn'
-import Ratings from '@/features/users/components/Ratings'
 import {getUser} from '@/features/users/users.query'
 import type {UserSelect} from '@repo/database/schema'
 import {Button} from '@repo/design-system/components/ui/button'
@@ -16,6 +14,7 @@ import {getLocale, getTranslations} from 'next-intl/server'
 import {UserAvatar} from "@/features/auth/components/UserAvatar";
 import type {UserWithImage} from "@/features/users/users.types";
 import ProfileBio from "@/features/users/components/ProfileBio";
+import {SkillScale} from "@repo/design-system/components/custom/SkillScale";
 
 export default async function Profile({ user }: { user: UserWithImage }) {
   const translate = await getTranslations()
@@ -78,11 +77,11 @@ export default async function Profile({ user }: { user: UserWithImage }) {
         <SkillScale
           title={translate('users.skills')}
           skills={skills}
-          renderVerificationControl={!isOwnProfile}
+          showVerificationControl={!isOwnProfile}
         />
       </div>
       <div className="mt-8">
-        <h2 className="font-bold text-2xl mb-4">
+        <h2 className="font-bold text-2xl mb-2">
           {translate('users.previouslyWorkedOn')}
         </h2>
         <PreviouslyWorkedOn userId={user.id}/>

@@ -1,17 +1,12 @@
 'use client'
+import {Button} from '@/components/ui/button'
+import {Collapsible, CollapsibleContent, CollapsibleTrigger,} from '@/components/ui/collapsible'
+import {BadgeCheck, ChevronDownIcon} from 'lucide-react'
+import {useTranslations} from 'next-intl'
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
+import VerificationControl from "../../../../apps/frontend/features/users/components/VerificationControl";
 
-import VerificationControl from '../../../../apps/frontend/features/users/components/VerificationControl'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
-import { BadgeCheck } from 'lucide-react'
-import { useTranslations } from 'next-intl'
-import { useEffect, useRef, useState } from 'react'
-
-type Skill = {
+type ProjectSkill = {
   name: string
   level: number
 }
@@ -25,144 +20,155 @@ type UserSkill = {
   verifierId: string
 }
 
-type SkillScaleProps = {
+type UserSkillScaleProps = {
   title?: string
-  skills: Skill[] | UserSkill[]
-  renderVerificationControl?: boolean
+  skills: UserSkill[]
+  showVerificationControl?: boolean
 }
 
-type ConditionalSkillScaleProps<T extends SkillScaleProps> =
-  T['renderVerificationControl'] extends undefined | false
-    ? T & {
-        skills: Skill[]
-      }
-    : T & {
-        skills: UserSkill[]
-      }
+type ProjectSkillScaleProps = {
+  title?: string
+  skills: ProjectSkill[]
+}
 
-export function SkillScale({
-  title,
-  skills,
-  renderVerificationControl,
-}: ConditionalSkillScaleProps<SkillScaleProps>) {
-  const t = useTranslations()
 
-  const [showAll, setShowAll] = useState(false)
-  const toggleShowAll = () => setShowAll(!showAll)
+function isUserSkillProps (
+  props: UserSkillScaleProps | ProjectSkillScaleProps
+): props is UserSkillScaleProps {
+  return 'showVerificationControl' in props
+}
 
-  const [itemHeight, setItemHeight] = useState(0)
-  const itemRef = useRef<HTMLDivElement>(null)
-
-  // Berechne die Höhe eines Items, sobald das DOM geladen ist
-  useEffect(() => {
-    if (itemRef.current) {
-      // Hole den computedStyle für das Element
-      const computedStyle = window.getComputedStyle(itemRef.current)
-
-      // Berechne die tatsächliche Höhe einschließlich des Margins
-      const marginBottom = Number.parseFloat(computedStyle.marginBottom)
-      const totalHeight = itemRef.current.offsetHeight + marginBottom
-      setItemHeight(totalHeight)
-    }
-  }, [itemRef.current])
-
-  const maxHeight = showAll
-    ? `${skills.length * itemHeight}px`
-    : `${6 * itemHeight}px`
+// @ts-ignore
+export function SkillScale(
+  props: UserSkillScaleProps | ProjectSkillScaleProps,
+) {
+  const { title, skills } = props
+  const showVerificationControl =
+    'showVerificationControl' in props ? props.showVerificationControl : undefined
+  const translate = useTranslations()
 
   return (
-    <div className="SkillScale flex w-full flex-col">
-      <div className="mb-2 font-medium text-2xl">{title}</div>
+    <div className="w-full">
+      <h2 className="mb-2 font-medium text-2xl">{title}</h2>
 
-      <div className="flex flex-col" style={{ maxHeight }}>
-        <div className="overflow-hidden transition-all duration-300 ease-in-out" />
-        {skills.map((skill, index) => (
-          <div
-            key={skill.name}
-            ref={index === 0 ? itemRef : null}
-            className={`mb-2 inline-flex w-full items-center justify-between self-stretch opacity-0 transition-opacity duration-300 ${
-              showAll || index < 6 ? 'opacity-100' : ''
-            }`}
-          >
-            <div className="text-base">{skill.name}</div>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center justify-center gap-2.5 py-px">
-                {[...Array(5)].map((_, i) => (
-                  <div
-                    key={i}
-                    className={`h-2 w-2 rounded-full ${
-                      i < skill.level ? 'bg-fuchsia-800' : 'bg-fuchsia-200'
-                    }`}
-                  />
-                ))}
+      {!skills.length && (
+        <p className="text-muted-foreground text-sm italic">
+          {isUserSkillProps(props) ? translate('users.emptySkills') : translate('projects.skillScale.emptySkills')}
+        </p>
+      )}
+
+      {!!skills.length && (
+        <div
+          className="max-h-56 overflow-auto pr-1 pb-1"
+          style={{ scrollbarGutter: 'stable' }}
+        >
+          <Collapsible className="group">
+            <SkillPointList list={skills.slice(0, 5)} showVerificationControl={showVerificationControl}/>
+            <CollapsibleContent>
+              <SkillPointList list={skills.slice(5)} showVerificationControl={showVerificationControl} />
+            </CollapsibleContent>
+            {skills.length > 5 && (
+              <div className="-bottom-1 sticky flex flex-row bg-background pt-2">
+                <CollapsibleTrigger asChild>
+                  <Button variant="ghost" className="mx-auto">
+                    <p className="block group-data-[state=open]:hidden">
+                      Show more
+                    </p>
+                    <p className="hidden group-data-[state=open]:block">
+                      Show less
+                    </p>
+                    <ChevronDownIcon className="group-data-[state=open]:-rotate-180 rotate-0 transition-transform" />
+                  </Button>
+                </CollapsibleTrigger>
               </div>
-
-              <div className="flex items-center gap-2 w-10 justify-center">
-                {skill.verifications !== undefined &&
-                  skill.verifications > 0 && (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger className="flex items-center gap-1 text-sm text-fuchsia-700">
-                          <BadgeCheck size={16} />
-                          <span>{skill.verifications}</span>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>
-                            {t('users.verificationTooltip', {
-                              verifications: skill.verifications,
-                            })}
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  )}
-              </div>
-              {renderVerificationControl && (
-                <div className="flex justify-end">
-                  <VerificationControl
-                    skillId={skill.id}
-                    isVerified={skill.isVerified}
-                    verifierId={skill.verifierId}
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {skills.length > 6 && (
-        <div className="mx-auto inline-flex">
-          <button
-            type="button"
-            onClick={toggleShowAll}
-            className="inline-flex gap-4 self-stretch"
-          >
-            <div className="text-fuchsia-700">
-              {showAll ? 'Weniger anzeigen' : 'Mehr anzeigen'}
-            </div>
-            <div
-              className={`my-auto transform transition-transform ${showAll ? '-rotate-180' : 'rotate-0'} duration-300`}
-            >
-              <svg
-                alt="Caret down"
-                width="21"
-                height="12"
-                viewBox="0 0 21 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M20.208 0.86652C20.598 1.27152 20.598 1.92652 20.208 2.33052L11.944 10.8935C11.7619 11.0852 11.5426 11.2378 11.2996 11.3421C11.0566 11.4464 10.795 11.5002 10.5305 11.5002C10.2661 11.5002 10.0044 11.4464 9.76142 11.3421C9.51843 11.2378 9.29918 11.0852 9.11702 10.8935L0.792021 2.26852C0.605968 2.07277 0.501394 1.81355 0.499537 1.5435C0.49768 1.27344 0.598678 1.01281 0.782021 0.81452C0.872561 0.716291 0.982302 0.637696 1.10445 0.5836C1.2266 0.529504 1.35855 0.50106 1.49214 0.500029C1.62572 0.498998 1.7581 0.525402 1.88107 0.577605C2.00403 0.629809 2.11497 0.706701 2.20702 0.80352L9.82402 8.69752C9.91511 8.79344 10.0248 8.86982 10.1463 8.92201C10.2678 8.97421 10.3987 9.00112 10.531 9.00112C10.6633 9.00112 10.7942 8.97421 10.9157 8.92201C11.0373 8.86982 11.1469 8.79344 11.238 8.69752L18.795 0.86652C18.886 0.77063 18.9956 0.694268 19.1171 0.642085C19.2385 0.589903 19.3693 0.562992 19.5015 0.562992C19.6337 0.562992 19.7645 0.589903 19.886 0.642085C20.0075 0.694268 20.117 0.77063 20.208 0.86652Z"
-                  fill="#A21CAF"
-                />
-              </svg>
-            </div>
-          </button>
+            )}
+          </Collapsible>
         </div>
       )}
+    </div>
+  )
+}
+
+type ProjectSkillPointListProps = {
+  list: ProjectSkill[],
+}
+type UserSkillPointListProps = {
+  list: UserSkill[],
+  showVerificationControl?: boolean
+}
+function isUserSkillList(
+  props: ProjectSkillPointListProps | UserSkillPointListProps
+): props is UserSkillPointListProps {
+  return 'showVerificationControl' in props
+}
+
+function SkillPointList(props: ProjectSkillPointListProps | UserSkillPointListProps) {
+  const translate = useTranslations()
+
+  return (
+    <div className="flex flex-col gap-1">
+      {isUserSkillList(props) ? props.list.map((skill) => (
+        <div key={skill.name} className="flex flex-row justify-between">
+          <p>{skill.name}</p>
+          <SkillPoints currentLevel={skill.level} />
+          <div className="flex items-center gap-2 w-10 justify-center">
+            {skill.verifications !== undefined &&
+              skill.verifications > 0 && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger className="flex items-center gap-1 text-sm text-fuchsia-700">
+                      <BadgeCheck size={16} />
+                      <span>{skill.verifications}</span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>
+                        {translate('users.verificationTooltip', {
+                          verifications: skill.verifications,
+                        })}
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                )}
+            </div>
+          {props.showVerificationControl && (
+            <div className="flex justify-end">
+              <VerificationControl
+                skillId={skill.id}
+                isVerified={skill.isVerified}
+                verifierId={skill.verifierId}
+              />
+            </div>
+          )}
+        </div>
+      )) : props.list.map((skill) => (
+        <div key={skill.name} className="flex flex-row justify-between">
+          <p>{skill.name}</p>
+          <SkillPoints currentLevel={skill.level} />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+type SkillPointsProps = {
+  currentLevel: number
+}
+
+const array5 = Array.from({ length: 5 }, (_, i) => i)
+function SkillPoints({ currentLevel }: SkillPointsProps) {
+  return (
+    <div className="flex flex-row gap-2">
+      {array5.map((level) => (
+        <div
+          key={level}
+          className={`size-2 rounded-full ${
+            level < currentLevel
+              ? 'bg-primary'
+              : 'bg-primary/20 dark:bg-primary-foreground/60'
+          }`}
+        />
+      ))}
     </div>
   )
 }

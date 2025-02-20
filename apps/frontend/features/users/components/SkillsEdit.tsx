@@ -13,7 +13,7 @@ import { useOptimisticUserSkills } from '@/features/userSkills/userSkills.hooks'
 import { debounce } from '@/utils'
 import type { SkillsSelect, UserSkillsSelect } from '@repo/database/schema'
 import { Button } from '@repo/design-system/components/ui/button'
-import { Combobox } from '@repo/design-system/components/ui/combobox'
+import {Combobox, type Option} from '@repo/design-system/components/ui/combobox'
 import {
   Dialog,
   DialogClose,
@@ -39,13 +39,13 @@ export default function SkillsEdit({
   const [optimisticUserSkills, setOptimisticUserSkills] =
     useOptimisticUserSkills(userSkills)
   const [skillInput, setSkillInput] = useState('')
-  const [suggestions, setSuggestions] = useState<ComboboxOption[]>([])
+  const [suggestions, setSuggestions] = useState<Option[]>([])
   const [suggestionsLoading, setSuggestionsLoading] = useState(false)
   const popoverTrigger: MutableRefObject<HTMLButtonElement | null> =
     useRef(null)
   const [showDialog, setShowDialog] = useState(false)
   const [selectedSkill, setSelectedSkill] = useState<{
-    skillId: number
+    skillId: string
     level: number
   } | null>(null)
 
@@ -89,10 +89,10 @@ export default function SkillsEdit({
       action: 'add',
       values: {
         userId,
-        skillId: Number.parseInt(value),
+        skillId: value,
         level: 1,
         skill: {
-          id: Number.parseInt(value),
+          id: value,
           skill: selectedSkillLabel,
         },
       },
@@ -100,19 +100,19 @@ export default function SkillsEdit({
     popoverTrigger.current?.click()
     await addUserSkill({
       userId,
-      skillId: Number.parseInt(value),
+      skillId: value,
       level: 1,
     })
     await revalidateUserSkills()
   }
 
-  const handleRemoveSkill = async (skillId: number) => {
+  const handleRemoveSkill = async (skillId: string) => {
     setOptimisticUserSkills({ action: 'delete', values: { id: skillId } })
     await removeUserSkill(skillId)
     await revalidateUserSkills()
   }
 
-  const handleUpdateSkillLevel = async (skillId: number, level: number) => {
+  const handleUpdateSkillLevel = async (skillId: string, level: number) => {
     const skill = optimisticUserSkills.find((skill) => skill.id === skillId)
     if (!skill || skill.level === level) {
       return

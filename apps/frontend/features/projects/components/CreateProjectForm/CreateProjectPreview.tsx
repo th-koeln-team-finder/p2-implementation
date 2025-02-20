@@ -3,7 +3,7 @@ import { ProjectIssuesList } from '@/features/projects/components/ProjectIssuesL
 import { ProjectResourcePreview } from '@/features/projects/components/ProjectResourcePreview'
 import { ProjectTimetable } from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
-import { SkillScale } from '@/features/projects/components/SkillScale'
+import { SkillScale } from '../../../../../../packages/design-system/components/custom/SkillScale'
 import TeamMembers from '@/features/projects/components/TeamMembers'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { useFormContext } from '@formsignals/form-react'
@@ -43,7 +43,7 @@ export function CreateProjectPreview() {
 
       <div className="grid grid-cols-2 gap-8">
         <ImageCarousel />
-        <SkillScale projectSkills={formValues.skills} />
+        <SkillScale skills={formValues.skills} title={t('skillScale.skillTitle')} />
 
         <div className="col-span-2">
           {formValues.description && (

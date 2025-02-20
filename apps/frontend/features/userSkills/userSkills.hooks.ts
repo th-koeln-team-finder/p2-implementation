@@ -1,44 +1,38 @@
-import type {
-  SkillsSelect,
-  UserSkillVerificationSelect,
-  UserSkillsSelect,
-} from '@repo/database/schema'
-import { useSession } from 'next-auth/react'
-import { useOptimistic, useTransition } from 'react'
+import type {SkillsSelect, UserSkillsSelect, UserSkillVerificationSelect,} from '@repo/database/schema'
+import {useOptimistic, useTransition} from 'react'
 
 export type OptimisticPayload =
   | {
       action: 'add'
       values: {
         userId: string
-        skillId: number
+        skillId: string
         level: number
         skill: {
-          id: number
+          id: string
           skill: string
         }
       }
     }
   | {
       action: 'delete'
-      values: { id: number }
+      values: { id: string }
     }
   | {
       action: 'update'
       values: {
-        id: number
+        id: string
         level: number
       }
     }
 
 export function useOptimisticUserSkills(
   userSkills: (UserSkillsSelect & {
-    id: number
+    id: string
     skill?: Partial<SkillsSelect>
     userSkillVerification?: Partial<UserSkillVerificationSelect>[]
   })[],
 ) {
-  const { data: session } = useSession()
   const [_, startTransition] = useTransition()
   const [optimisticUpdates, dispatchOptimistic] = useOptimistic(
     userSkills,
@@ -46,7 +40,7 @@ export function useOptimisticUserSkills(
       switch (payload.action) {
         case 'add': {
           const newUserSkill = {
-            id: Math.random(),
+            id: Math.random().toString(),
             userId: payload.values.userId,
             skillId: payload.values.skillId,
             level: payload.values.level,
@@ -70,7 +64,6 @@ export function useOptimisticUserSkills(
             return {
               ...userSkill,
               level: payload.values.level,
-              updatedAt: new Date(),
             }
           })
         }

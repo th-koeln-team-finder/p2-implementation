@@ -1,4 +1,4 @@
-import {relations, sql } from 'drizzle-orm'
+import {relations, sql} from 'drizzle-orm'
 import {
   type AnyPgColumn,
   boolean,
@@ -10,14 +10,13 @@ import {
   pgTable,
   primaryKey,
   text,
-  time,
   timestamp,
   uniqueIndex,
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core'
 import type {AdapterAccountType} from 'next-auth/adapters'
-import {notificationColumns, Roles, type RolesType, RolesValues} from './constants'
+import {notificationColumns, Roles, type RolesType, RolesValues,} from './constants'
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
 
@@ -44,7 +43,6 @@ export const users = pgTable('user', {
   image: uuid().references((): AnyPgColumn => uploadedFiles.id, {
     onDelete: 'cascade',
   }),
-  bio: text('bio'),
   roles: pgRoles()
     .array()
     .notNull()
@@ -62,58 +60,42 @@ export const users = pgTable('user', {
   activateNotifications: boolean().notNull().default(true),
   ...notificationColumns,
   lastActive: timestamp('lastActive', { mode: 'date' }),
-  createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow(),
+  createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
+  updatedAt: timestamp({ mode: 'date' }).notNull().defaultNow()
+    .$onUpdate(() => new Date()),
 })
 export type UserInsert = typeof users.$inferInsert
 export type UserSelect = typeof users.$inferSelect
-/**
- * Skills for a User and a Project. All can have multiple skills
- */
-export const skill = pgTable('skill', {
-  id: uuid().primaryKey().notNull().defaultRandom(),
-  name: varchar().notNull(),
-})
-export type SkillInsert = typeof skill.$inferInsert
-export type SkillSelect = typeof skill.$inferSelect
 
-//Project Tables
-/**
- * Data specific for one user
- */
-export const skills = pgTable('skills', {
-  id: uuid().primaryKey().notNull().defaultRandom(),
-  skill: varchar({ length: 255 }).notNull().unique(),
-  createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow(),
-})
-export type SkillsInsert = typeof skills.$inferInsert
-export type SkillsSelect = typeof skills.$inferSelect
-
-export const userSkills = pgTable('userSkills', {
-  id: uuid().primaryKey().notNull().defaultRandom(),
-  userId: uuid('userId')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  skillId: uuid('skillId')
-    .notNull()
-    .references(() => skills.id, { onDelete: 'cascade' }),
-  level: integer().notNull(),
-  createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow(),
-})
+export const userSkills = pgTable(
+  'userSkills',
+  {
+    id: uuid().primaryKey().notNull().defaultRandom(),
+    userId: uuid()
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    skillId: uuid()
+      .notNull()
+      .references(() => skills.id, { onDelete: 'cascade' }),
+    level: integer().notNull(),
+    createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
+    updatedAt: timestamp({ mode: 'date' }).notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (userSkill) => ({
+    validLevel: check('valid_userSkill_level', sql`${userSkill.level} >= 0`),
+  }),
+)
 export type UserSkillsInsert = typeof userSkills.$inferInsert
 export type UserSkillsSelect = typeof userSkills.$inferSelect
 
-export const userSkillRelations = relations(userSkills, ({ one }) => ({
+export const userSkillRelations = relations(userSkills, ({ one, many }) => ({
   skill: one(skills, {
     fields: [userSkills.skillId],
     references: [skills.id],
   }),
-}))
-
-export const skillRelations = relations(skills, ({ many }) => ({
-  userSkills: many(userSkills),
+  userSkillVerification: many(userSkillVerification),
 }))
 
 export const userSkillVerification = pgTable('userSkillVerification', {
@@ -121,12 +103,13 @@ export const userSkillVerification = pgTable('userSkillVerification', {
   verifierId: uuid('userId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  userSkillId: uuid('skillId')
+  userSkillId: uuid('userSkillId')
     .notNull()
     .references(() => userSkills.id, { onDelete: 'cascade' }),
   status: varchar({ enum: ['pending', 'approved', 'rejected'] }).notNull(),
-  createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow(),
+  createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
+  updatedAt: timestamp({ mode: 'date' }).notNull().defaultNow()
+    .$onUpdate(() => new Date()),
 })
 export type UserSkillVerificationInsert =
   typeof userSkillVerification.$inferInsert
@@ -142,20 +125,20 @@ export const userRatings = pgTable('userRatings', {
     .notNull()
     .references(() => users.id),
   ratingType: varchar({ enum: ['friendly', 'reliable'] }).notNull(),
-  createdAt: timestamp().notNull().defaultNow(),
+  createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
 })
 export type UserRatingsInsert = typeof userRatings.$inferInsert
 export type UserRatingsSelect = typeof userRatings.$inferSelect
 
 export const userFollows = pgTable('userFollows', {
   id: uuid().primaryKey().notNull().defaultRandom(),
-  followerId: uuid('userId')
+  followerId: uuid('followerId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  followeeId: uuid('userId')
+  followeeId: uuid('followeeId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  createdAt: timestamp().notNull().defaultNow(),
+  createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
 })
 export type UserFollowsInsert = typeof userRatings.$inferInsert
 
@@ -180,7 +163,8 @@ export const userProjects = pgTable('userProjects', {
   projectDescription: varchar({ length: 255 }),
   visible: boolean().notNull().default(true),
   createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow()
+    .$onUpdate(() => new Date()),
 })
 export type UserProjectsInsert = typeof userProjects.$inferInsert
 export type UserProjectsSelect = typeof userProjects.$inferSelect
@@ -198,8 +182,29 @@ export const userProjectSettings = pgTable('userProjectSettings', {
     .notNull()
     .default('email'),
   createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow()
+    .$onUpdate(() => new Date()),
 })
+
+
+/**
+ * Skills for a User and a Project. All can have multiple skills
+ */
+
+export const skills = pgTable('skills', {
+  id: uuid().primaryKey().notNull().defaultRandom(),
+  skill: varchar({ length: 255 }).notNull().unique(),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow()
+    .$onUpdate(() => new Date()),
+})
+export type SkillsInsert = typeof skills.$inferInsert
+export type SkillsSelect = typeof skills.$inferSelect
+
+export const skillRelations = relations(skills, ({ many }) => ({
+  userSkills: many(userSkills),
+  projectSkills: many(projectSkill),
+}))
 
 /**
  * Data specific for one project
@@ -232,7 +237,7 @@ export const projectSkill = pgTable(
       .references(() => projects.id, { onDelete: 'cascade' }),
     skillId: uuid()
       .notNull()
-      .references(() => skill.id, { onDelete: 'cascade' }),
+      .references(() => skills.id, { onDelete: 'cascade' }),
     // TODO This needs to be removed since the name is stored in the skill relation
     name: text().notNull(),
     level: integer().notNull(),
@@ -272,29 +277,6 @@ export const projectResource = pgTable('projectResource', {
 })
 export type ProjectResourceInsert = typeof projectResource.$inferInsert
 export type ProjectResourceSelect = typeof projectResource.$inferSelect
-
-export const userSkill = pgTable(
-  'userSkill',
-  {
-    userId: uuid()
-      .notNull()
-      .references(() => users.id, { onDelete: 'cascade' }),
-    skillId: uuid()
-      .notNull()
-      .references(() => skill.id, { onDelete: 'cascade' }),
-    level: integer().notNull(),
-    createdAt: timestamp({ mode: 'date' }).defaultNow(),
-    updatedAt: timestamp({ mode: 'date' })
-      .defaultNow()
-      .$onUpdate(() => sql`current_timestamp`),
-  },
-  (userSkill) => ({
-    pk: primaryKey({ columns: [userSkill.userId, userSkill.skillId] }), //
-    validLevel: check('valid_userSkill_level', sql`${userSkill.level} >= 0`),
-  }),
-)
-export type UserSkillInsert = typeof userSkill.$inferInsert
-export type UserSkillSelect = typeof userSkill.$inferSelect
 
 /**
  * ProjectIssues for a project. A project can have multiple issues
@@ -510,172 +492,6 @@ export const uploadedFiles = pgTable('uploaded_file', {
 export type UploadedFileInsert = typeof uploadedFiles.$inferInsert
 export type UploadedFileSelect = typeof uploadedFiles.$inferSelect
 
-/**
- * Data specific for one user
- */
-export const skills = pgTable('skills', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  skill: varchar({ length: 255 }).notNull().unique(),
-  createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow(),
-})
-export type SkillsInsert = typeof skills.$inferInsert
-export type SkillsSelect = typeof skills.$inferSelect
-
-export const userSkills = pgTable('userSkills', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  userId: uuid('userId')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  skillId: integer('skillId')
-    .notNull()
-    .references(() => skills.id, { onDelete: 'cascade' }),
-  level: integer().notNull(),
-  createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow(),
-})
-export type UserSkillsInsert = typeof userSkills.$inferInsert
-export type UserSkillsSelect = typeof userSkills.$inferSelect
-
-export const userSkillVerification = pgTable('userSkillVerification', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  verifierId: uuid('userId')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  userSkillId: integer('skillId')
-    .notNull()
-    .references(() => userSkills.id, { onDelete: 'cascade' }),
-  createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow(),
-})
-export type UserSkillVerificationInsert =
-  typeof userSkillVerification.$inferInsert
-export type UserSkillVerificationSelect =
-  typeof userSkillVerification.$inferSelect
-
-export const userRatings = pgTable('userRatings', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  raterId: uuid('userId')
-    .notNull()
-    .references(() => users.id),
-  rateeId: uuid('userId')
-    .notNull()
-    .references(() => users.id),
-  ratingType: varchar({ enum: ['friendly', 'reliable'] }).notNull(),
-  createdAt: timestamp().notNull().defaultNow(),
-})
-export type UserRatingsInsert = typeof userRatings.$inferInsert
-export type UserRatingsSelect = typeof userRatings.$inferSelect
-
-export const userFollows = pgTable('userFollows', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  followerId: uuid('followerId')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  followeeId: uuid('followeeId')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  createdAt: timestamp().notNull().defaultNow(),
-})
-export type UserFollowsInsert = typeof userRatings.$inferInsert
-
-/**
- * This table stores all the projects a user is and was part of.
- * They may also add other projects to their timeline that they worked on
- * but did not use this platform.
- */
-export const userProjects = pgTable('userProjects', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  userId: uuid('userId')
-    .notNull()
-    .references(() => users.id),
-  // for projects from this platform
-  projectId: integer('projectId').references(() => projects.id),
-  // for projects not from this platform
-  projectName: varchar({ length: 255 }),
-  projectJoinedDate: date(),
-  projectLeftDate: date(),
-  projectDescription: varchar({ length: 255 }),
-  visible: boolean().notNull().default(true),
-  createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow(),
-})
-export type UserProjectsInsert = typeof userProjects.$inferInsert
-export type UserProjectsSelect = typeof userProjects.$inferSelect
-
-export const userProjectSettings = pgTable('userProjectSettings', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  userId: uuid('userId')
-    .notNull()
-    .references(() => users.id),
-  projectId: integer('projectId')
-    .notNull()
-    .references(() => projects.id),
-  enableNotifications: boolean().notNull().default(true),
-  preferredNotificationChannel: varchar({ enum: ['email', 'push', 'both'] })
-    .notNull()
-    .default('email'),
-  createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow(),
-})
-
-/**
- * Data specific for one project
- */
-export const projects = pgTable('projects', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  name: varchar({ length: 255 }).notNull(),
-  description: varchar({ length: 255 }).notNull(),
-  status: varchar({ enum: ['open', 'closed'] }).notNull(),
-  createdAt: varchar({ length: 255 }).notNull(),
-  updatedAt: varchar({ length: 255 }).notNull(),
-  isPublic: boolean().notNull().default(true),
-  allowApplications: boolean().notNull().default(true),
-  additionalInfo: json().default({}),
-})
-export const ProjectIssue = pgTable('ProjectIssue', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  projectId: integer()
-    .notNull()
-    .references(() => projects.id), // Fremdschlüssel auf projects.id
-  title: varchar({ length: 255 }).notNull(),
-  description: varchar({ length: 255 }).notNull(),
-  createdAt: varchar({ length: 255 }).notNull(),
-  updatedAt: varchar({ length: 255 }).notNull(),
-})
-export const ProjectTimetable = pgTable(
-  'ProjectTimetable',
-  {
-    id: integer().primaryKey().generatedAlwaysAsIdentity(),
-    projectId: integer()
-      .notNull()
-      .references(() => projects.id),
-    weekdays: varchar({
-      enum: [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday',
-      ],
-    }).notNull(),
-    startTime: time('startTime').notNull(),
-    endTime: time('endTime').notNull(),
-  },
-  (timeTable) => ({
-    uniqueWeekday: uniqueIndex('unique_weekday').on(timeTable.weekdays), //
-    validTimeRange: check(
-      'valid_time_range',
-      sql`${timeTable.startTime} < ${timeTable.endTime}`,
-    ), //
-  }),
-)
-
-export type ProjectInsert = typeof projects.$inferInsert
-export type ProjectSelect = typeof projects.$inferSelect
-
 export const subscriptions = pgTable('subscriptions', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   userId: uuid('userId').references(() => users.id, { onDelete: 'cascade' }),
@@ -684,7 +500,6 @@ export const subscriptions = pgTable('subscriptions', {
 
 export type SubscriptionInsert = typeof subscriptions.$inferInsert
 export type SubscriptionSelect = typeof subscriptions.$inferSelect
-
 
 //region Technical Tables
 /**
@@ -771,9 +586,9 @@ export const projectRelations = relations(projects, ({ many }) => ({
 }))
 
 export const projectSkillRelations = relations(projectSkill, ({ one }) => ({
-  skill: one(skill, {
+  skill: one(skills, {
     fields: [projectSkill.skillId],
-    references: [skill.id],
+    references: [skills.id],
   }),
   project: one(projects, {
     fields: [projectSkill.projectId],
@@ -811,10 +626,6 @@ export const FileUploadRelations = relations(uploadedFiles, ({ one }) => ({
     references: [projectResource.fileUpload],
     relationName: 'projectResourceFileUpload',
   }),
-}))
-
-export const skillProjectRelations = relations(skill, ({ many }) => ({
-  projectSkills: many(projectSkill),
 }))
 
 export const issueRelations = relations(projectIssue, ({ one }) => ({
@@ -914,17 +725,6 @@ export const brainstormResourceRelations = relations(
   }),
 )
 
-export const userSkillRelations = relations(userSkills, ({ one, many }) => ({
-  skill: one(skills, {
-    fields: [userSkills.skillId],
-    references: [skills.id],
-  }),
-  userSkillVerification: many(userSkillVerification),
-}))
-
-export const skillRelations = relations(skills, ({ many }) => ({
-  userSkills: many(userSkills),
-}))
 export const uploadedFileRelations = relations(uploadedFiles, ({ one }) => ({
   uploadedBy: one(users, {
     fields: [uploadedFiles.uploadedById],
