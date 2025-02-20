@@ -364,4 +364,10 @@ export const de: Language = {
       sunday: 'So',
     },
   },
+  notifications: {
+    newSkillEvaluation: {
+      title: 'Jemand hat deinen Skill verifiziert!',
+      message: 'Dein Skill "{skill}" wurde verifiziert.'
+    }
+  }
 }

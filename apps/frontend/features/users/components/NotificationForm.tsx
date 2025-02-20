@@ -15,6 +15,7 @@ import {computed} from "@preact/signals-react";
 import {notificationColumns, notificationTypesByCategory} from "@repo/database/constants";
 import {ToggleForm} from "@repo/design-system/components/ui/toggle";
 import {revalidateUser, updateUserData} from "@/features/users/users.actions";
+import PushNotificationManager from "@/features/test/components/PushNotificationManager";
 
 export default function NotificationForm({ user }: { user: UserSelect }) {
   const t = useTranslations()
@@ -65,6 +66,7 @@ export default function NotificationForm({ user }: { user: UserSelect }) {
         await form.handleSubmit()
       }}
     >
+      <PushNotificationManager userId={user.id} />
       <form.FormProvider>
         <div className="flex items-end justify-between">
           <form.FieldProvider name="activateNotifications">

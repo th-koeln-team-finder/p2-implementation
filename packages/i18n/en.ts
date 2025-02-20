@@ -357,6 +357,12 @@ export const en = {
       sunday: 'Sun',
     },
   },
+  notifications: {
+    newSkillEvaluation: {
+      title: 'Someone verified a skill of yours!',
+      message: 'Your skill "{skill}" was verified.'
+    }
+  }
 }
 
 type PathOf<T> = {

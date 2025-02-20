@@ -17,7 +17,7 @@ import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 type VerificationControlProps = {
-  skillId: number
+  skillId: string
   isVerified: boolean
   verifierId: string
 }
@@ -30,14 +30,14 @@ export default function VerificationControl({
   const t = useTranslations('users')
   const [loading, setLoading] = useState(false)
 
-  const verifySkill = async (skillId: number) => {
+  const verifySkill = async (skillId: string) => {
     setLoading(true)
     await verifyUserSkill(verifierId, skillId)
     await revalidateUserSkills()
     setLoading(false)
   }
 
-  const unverifySkill = async (skillId: number) => {
+  const unverifySkill = async (skillId: string) => {
     setLoading(true)
     await unverifyUserSkill(verifierId, skillId)
     await revalidateUserSkills()

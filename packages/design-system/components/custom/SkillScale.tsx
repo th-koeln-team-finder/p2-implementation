@@ -15,7 +15,7 @@ type UserSkill = {
   name: string
   level: number
   verifications: number
-  id: number
+  id: string
   isVerified: boolean
   verifierId: string
 }

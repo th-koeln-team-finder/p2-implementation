@@ -106,7 +106,6 @@ export const userSkillVerification = pgTable('userSkillVerification', {
   userSkillId: uuid('userSkillId')
     .notNull()
     .references(() => userSkills.id, { onDelete: 'cascade' }),
-  status: varchar({ enum: ['pending', 'approved', 'rejected'] }).notNull(),
   createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
   updatedAt: timestamp({ mode: 'date' }).notNull().defaultNow()
     .$onUpdate(() => new Date()),
