@@ -1,6 +1,8 @@
+"use client"
+
 import * as React from "react"
 
-import { cn } from "@/lib/utils"
+import { cn } from "../../lib/utils"
 import {useSignals} from "@preact/signals-react/runtime";
 import {useFieldContext} from "@formsignals/form-react";
 import {useComputed} from "@preact/signals-react";
