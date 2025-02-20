@@ -1,13 +1,13 @@
 'use client'
 
-import { getStringContentFromEditor } from '@/components/WysiwygEditor/index'
 import { LexicalComposer } from '@lexical/react/LexicalComposer'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import type { EditorState } from 'lexical'
-import { initialWysiwygConfig } from '../../components/WysiwygEditor/wysiwyg.config'
+import { getStringContentFromEditor } from './index'
+import { initialWysiwygConfig } from './wysiwyg.config'
 
 type WysiwygRendererProps = {
   className?: string

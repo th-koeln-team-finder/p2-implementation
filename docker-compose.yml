@@ -25,6 +25,7 @@ services:
 
   app:
     container_name: 'app'
+    platform: linux/amd64
     build:
       context: .
       dockerfile: ./apps/frontend/Dockerfile
