@@ -17,6 +17,7 @@ export type PopulatedBrainstorm = Omit<BrainstormSelect, 'embedding'> & {
   resources: PopulatedBrainstormResource[]
   totalSimilarity: number
   similarity: number
+  tagSimilarity: number
   commentSimilarity: number
 }
 

@@ -10,16 +10,16 @@ import { Suspense } from 'react'
 export default async function BrainstormPage({
   searchParams,
 }: {
-  searchParams: Promise<{ search: string; tags: string }>
+  searchParams: Promise<{ search: string; tags: string; offset: string }>
 }) {
   const translate = await getTranslations('brainstorm')
-  const { search, tags } = await searchParams
+  const { search, tags, offset } = await searchParams
   return (
     <div className="h-screen">
       <div className="container mx-auto px-4">
-        <h1 className="mb-4 font-semibold text-4xl">Your Brainstorms</h1>
+        <h1 className="mb-4 font-semibold text-4xl">Brainstorms</h1>
         <Suspense key={search} fallback={<BrainstormListLoading />}>
-          <BrainstormList search={search} tags={tags} />
+          <BrainstormList search={search} tags={tags} offset={offset} />
         </Suspense>
       </div>
       <CanUserServer target="brainstorm" action="create">

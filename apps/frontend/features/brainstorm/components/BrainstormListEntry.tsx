@@ -21,11 +21,40 @@ export function BrainstormListEntry({ brainstorm }: BrainstormListEntryProps) {
     <Link href={`/brainstorm/${brainstorm.id}`}>
       <Card>
         <CardHeader>
-          <span className="-mb-3 text-muted-foreground text-xs">
-            ({brainstorm.totalSimilarity?.toFixed(2)}|
-            {brainstorm.similarity?.toFixed(2)}|
-            {brainstorm.commentSimilarity?.toFixed(2)})
-          </span>
+          <div className="-mb-2 flex flex-row flex-wrap gap-1 text-xs">
+            {brainstorm.totalSimilarity && (
+              <span className="rounded bg-muted px-1 text-muted-foreground/80">
+                similarity:{' '}
+                <span className="text-muted-foreground">
+                  {brainstorm.totalSimilarity?.toFixed(2)}
+                </span>
+              </span>
+            )}
+            {brainstorm.similarity && (
+              <span className="rounded bg-muted px-1 text-muted-foreground/80">
+                content:{' '}
+                <span className="text-muted-foreground">
+                  {brainstorm.similarity?.toFixed(2)}
+                </span>
+              </span>
+            )}
+            {brainstorm.commentSimilarity && (
+              <span className="rounded bg-muted px-1 text-muted-foreground/80">
+                comments:{' '}
+                <span className="text-muted-foreground">
+                  {brainstorm.commentSimilarity?.toFixed(2)}
+                </span>
+              </span>
+            )}
+            {brainstorm.tagSimilarity && (
+              <span className="rounded bg-muted px-1 text-muted-foreground/80">
+                tags:{' '}
+                <span className="text-muted-foreground">
+                  {brainstorm.tagSimilarity?.toFixed(2)}
+                </span>
+              </span>
+            )}
+          </div>
           <div className="flex flex-row items-center justify-between gap-2">
             <CardTitle className="text-xl">{brainstorm.title}</CardTitle>
             <BrainstormBookmarkButton
