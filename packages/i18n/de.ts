@@ -98,16 +98,19 @@ export const de: Language = {
   },
   createProjects: {
     fieldRequired: 'Diese Eingabe ist erforderlich',
-    name: 'Projektname',
-    namePlaceholder: 'Name des Projekts...',
-    phase: 'Projektphase',
-    phasePlaceholder: 'Phase des Projekts...',
-    images: 'Bilder',
-    description: 'Projektbeschreibung',
-    descriptionPlaceholder: 'Beschreibung des Projekts...',
+
     location: 'Ort',
     locationPlaceholder: 'Adresse...',
     linksTitle: 'Links & Ressourcen',
+    main:{
+      name: 'Projektname',
+      namePlaceholder: 'Name des Projekts...',
+      phase: 'Projektphase',
+      phasePlaceholder: 'Phase des Projekts...',
+      addImages: 'Bilder Hinzufügen',
+      description: 'Projektbeschreibung',
+      descriptionPlaceholder: 'Beschreibung des Projekts...',
+    },
     timetable: {
       title: 'Zeitplan',
       table: 'Tabelle',

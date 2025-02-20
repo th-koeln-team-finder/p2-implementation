@@ -16,6 +16,7 @@ import {
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
 import { Roles, type RolesType, RolesValues } from './constants'
+import exp from "node:constants";
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
 
@@ -237,6 +238,24 @@ export type ProjectSkillSelect = typeof projectSkill.$inferSelect
 /**
  * Resources for a project, referencing Project and Resource
  */
+export const projectPicture = pgTable('projectPicture', {
+  id: uuid().primaryKey().notNull().defaultRandom(),
+    projectId: uuid()
+        .notNull()
+        .references(() => projects.id, { onDelete: 'cascade' }),
+    label: text().notNull(),
+    fileUpload: uuid().references(() => uploadedFiles.id, {
+        onDelete: 'cascade',
+    }),
+  createdAt: timestamp({ mode: 'date' }).defaultNow(),
+  updatedAt: timestamp({ mode: 'date' })
+      .defaultNow()
+      .$onUpdate(() => sql`current_timestamp`),
+})
+export type ProjectPictureInsert = typeof projectPicture.$inferInsert
+export type ProjectPictureSelect = typeof projectPicture.$inferSelect
+
+
 export const projectResource = pgTable('projectResource', {
   id: uuid().primaryKey().notNull().defaultRandom(),
   projectId: uuid()
@@ -571,6 +590,9 @@ export const projectRelations = relations(projects, ({ many }) => ({
   resources: many(projectResource, {
     relationName: 'projectResources',
   }),
+  projectPictures: many(projectPicture, {
+    relationName: 'projectPictures',
+  }),
   bookmarks: many(projectBookmarks),
   projectSkills: many(projectSkill),
 }))
@@ -593,6 +615,21 @@ export const timetableRelations = relations(projectTimetable, ({ one }) => ({
     relationName: 'projectTimetable',
   }),
 }))
+export const projectPictureRelations = relations(
+    projectPicture,
+    ({ one }) => ({
+    project: one(projects, {
+        fields: [projectPicture.projectId],
+        references: [projects.id],
+        relationName: 'projectPictures',
+    }),
+    uploadedFile: one(uploadedFiles, {
+        fields: [projectPicture.fileUpload],
+        references: [uploadedFiles.id],
+        relationName: 'projectPictureFileUpload',
+    }),
+  })
+)
 
 export const projectResourceRelations = relations(
   projectResource,
@@ -616,6 +653,11 @@ export const FileUploadRelations = relations(uploadedFiles, ({ one }) => ({
     references: [projectResource.fileUpload],
     relationName: 'projectResourceFileUpload',
   }),
+    projectPicture: one(projectPicture, {
+        fields: [uploadedFiles.id],
+        references: [projectPicture.fileUpload],
+        relationName: 'projectPictureFileUpload',
+    })
 }))
 
 export const skillProjectRelations = relations(skill, ({ many }) => ({

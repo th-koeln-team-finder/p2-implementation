@@ -36,8 +36,15 @@ export type CreateProjectFormLinks = {
     file: File[]
   }>
 }
+export type CreateProjectFormPictures = {
+    pictures: Array<{
+    label:string
+    file: File[]
+    }>
+}
 
 export type CreateProjectFormValues = CreateProjectFormBasic &
   CreateProjectFormSkills &
   CreateProjectFormTimeTable &
-  CreateProjectFormLinks
+  CreateProjectFormLinks &
+  CreateProjectFormPictures

@@ -6,7 +6,7 @@ import { redirect } from '@/features/i18n/routing'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
-import { type ProjectResourceInsert, Weekdays } from '@repo/database/schema'
+import {type ProjectPictureInsert, type ProjectResourceInsert, Weekdays} from '@repo/database/schema'
 import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
 import { revalidateTag } from 'next/cache'
@@ -109,9 +109,10 @@ export async function createProject(payload: CreateProjectFormValues) {
   return project.id
 }
 
-export async function createProjectResources(
+export async function createProjectUploadedData(
   projectId: string,
-  resources: ProjectResourceInsert[],
+  data:{ resources: ProjectResourceInsert[],pictures?:never}|{
+    pictures: ProjectPictureInsert[];resources?:never}
 ) {
   const session = await authMiddleware()
   if (!session?.user?.id) {
@@ -129,21 +130,35 @@ export async function createProjectResources(
       locale,
     })
   }
-
-  const resourcesToCreate = resources.map((resource) => ({
+  //checks, if data is a resource or picture and creates the respective data
+if("resources" in data && data.resources){
+  const resourcesToCreate = data.resources.map((resource) => ({
     projectId,
     label: resource.label,
     href: resource.href,
     fileUpload: resource.fileUpload,
   }))
-  console.log(resourcesToCreate)
+
   if (!resourcesToCreate.length) {
     return
   }
-
   await db.insert(Schema.projectResource).values(resourcesToCreate)
-}
 
+}
+//TODO: Add Check for picture DataType for upload
+if("resources" in data && data.pictures){
+    const picturesToCreate = data.pictures.map((picture ) => ({
+      projectId,
+      label: picture.label,
+      file: picture.fileUpload,
+    }))
+    if (!picturesToCreate.length) {
+      return
+    }
+    await db.insert(Schema.projectPicture).values(picturesToCreate)
+  }
+
+}
 export async function toggleProjectBookmark(
   id: string,
   shouldBookmark: boolean,
