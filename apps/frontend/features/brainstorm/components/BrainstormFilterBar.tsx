@@ -26,8 +26,6 @@ export function BrainstormFilterBar({ disabled }: BrainstormFilterBarProps) {
     await revalidateBrainstorms()
   }, 500)
 
-  // TODO Add scroll to top button on bottom left
-
   return (
     <div className="mb-8">
       <div className="relative">
