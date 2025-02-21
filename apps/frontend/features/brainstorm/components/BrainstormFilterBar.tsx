@@ -18,12 +18,15 @@ export function BrainstormFilterBar({ disabled }: BrainstormFilterBarProps) {
   useSignals()
 
   const [search, setSearchRaw] = useQueryState('search')
+  const [_, setOffset] = useQueryState('offset')
 
   const [searchInput, setSearchInput] = useState(search ?? '')
   const [setSearch, isLoading] = useDebounceFunction(async (input: string) => {
-    await setSearchRaw(input)
+    await Promise.all([setSearchRaw(input), setOffset('0')])
     await revalidateBrainstorms()
   }, 500)
+
+  // TODO Add scroll to top button on bottom left
 
   return (
     <div className="mb-8">

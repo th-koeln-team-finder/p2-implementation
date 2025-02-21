@@ -1,11 +1,12 @@
 import { authMiddleware } from '@/auth'
 import { getBrainstorms } from '@/features/brainstorm/brainstorm.queries'
 import { BrainstormFilterBar } from '@/features/brainstorm/components/BrainstormFilterBar'
-import { BrainstormLazyList } from '@/features/brainstorm/components/BrainstormLazyList'
+import { BrainstormLazyLoader } from '@/features/brainstorm/components/BrainstormLazyLoader'
 import { BrainstormListEntry } from '@/features/brainstorm/components/BrainstormListEntry'
+import { ScrollTopButton } from '@repo/design-system/components/custom/ScrollTopButton'
 import { Masonry } from '@repo/design-system/components/ui/Masonry'
 
-const pageSize = 25
+const pageSize = 20
 
 export async function BrainstormList({
   search,
@@ -13,16 +14,17 @@ export async function BrainstormList({
   offset,
 }: { search: string; tags: string; offset: string }) {
   const session = await authMiddleware()
-  const offsetNumber = Number.parseInt(offset)
-  // TODO Include offset here as well
+  const offsetNumber = Number.parseInt(offset ?? '0')
+  const limit = pageSize + offsetNumber
   const brainstorms = await getBrainstorms(
     session?.user?.id,
     search,
     tags,
-    pageSize + offsetNumber,
+    limit,
   )
+  const hasMore = limit <= brainstorms.length
   return (
-    <section>
+    <section className="pb-4">
       <BrainstormFilterBar />
       <Masonry
         masonryGutter="16px"
@@ -32,12 +34,8 @@ export async function BrainstormList({
           <BrainstormListEntry key={brainstorm.id} brainstorm={brainstorm} />
         ))}
       </Masonry>
-      <BrainstormLazyList
-        userId={session?.user?.id}
-        search={search}
-        tags={tags}
-        pageSize={pageSize}
-      />
+      <BrainstormLazyLoader hasMore={hasMore} pageSize={pageSize} />
+      <ScrollTopButton />
     </section>
   )
 }
