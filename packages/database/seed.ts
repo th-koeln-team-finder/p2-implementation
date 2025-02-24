@@ -1,11 +1,11 @@
-import { faker } from '@faker-js/faker/locale/de'
 import { config } from 'dotenv'
 import { drizzle } from 'drizzle-orm/node-postgres'
+import { brainstormData, uniqueBrainstormTags } from './factory/brainstorm.data'
 import { makeBrainstorm } from './factory/brainstorm.factory'
 import { makeBrainstormComment } from './factory/brainstormComment.factory'
 import { makeBrainstormCommentLike } from './factory/brainstormCommentLike.factory'
 import { makeBrainstormResource } from './factory/brainstormResource.factory'
-import { makeTag, technicalTags } from './factory/tag.factory'
+import { makeTag } from './factory/tag.factory'
 import { makeTest } from './factory/test.factory'
 import { makeUser } from './factory/user.factory'
 import * as Schema from './schema'
@@ -66,62 +66,72 @@ export async function seed() {
   const users = await db.insert(Schema.users).values(userData).returning()
   const userIds = users.map((e) => e.id)
 
+  console.log("Clearing 'tag' table")
+  await db.delete(Schema.tags).execute()
+
+  console.log(`Creating ${uniqueBrainstormTags.length} tag records`)
+  const uniqueTags = new Set<string>()
+  const tagData = []
+  for (const technicalTag of uniqueBrainstormTags) {
+    const tag = await makeTag([technicalTag], uniqueTags)
+    if (tag) {
+      tagData.push(tag)
+    }
+  }
+  const tags = await db.insert(Schema.tags).values(tagData).returning()
+  const tagIds = Object.fromEntries(tags.map((e) => [e.name, e.id]))
+
   console.log("Clearing 'brainstorm' table")
   await db.delete(Schema.brainstorms).execute()
-
-  console.log('Creating 50 brainstorm records')
-  const brainstormData = []
-  for (let i = 0; i < 50; i++) {
-    const brainstorm = await makeBrainstorm(userIds)
-    brainstormData.push(brainstorm)
-  }
-  const brainstorms = await db
-    .insert(Schema.brainstorms)
-    .values(brainstormData)
-    .returning()
-  const brainstormIds = brainstorms.map((e) => e.id)
-
-  console.log("Clearing 'brainstorm_resource' table")
-  await db.delete(Schema.brainstormResources).execute()
-
-  console.log('Creating 100 brainstorm resource records')
-  const resourceData = makeMultiple(100, () =>
-    makeBrainstormResource(brainstormIds),
-  )
-  await db.insert(Schema.brainstormResources).values(resourceData).execute()
-
+  console.log("Clearing 'brainstorm_tag' table")
+  await db.delete(Schema.brainstormTags).execute()
   console.log("Clearing 'brainstorm_comment' table")
   await db.delete(Schema.brainstormComments).execute()
 
-  console.log('Creating 100 brainstorm comment records')
-  const commentData = []
-  for (let i = 0; i < 100; i++) {
-    const comment = await makeBrainstormComment(brainstormIds, userIds)
-    commentData.push(comment)
-  }
-  const parentComments = await db
-    .insert(Schema.brainstormComments)
-    .values(commentData)
-    .returning()
-  const parentCommentIds = parentComments.map((e) => e.id)
-
-  console.log('Creating 50 child brainstorm comment records')
-  const childCommentData = []
-  for (let i = 0; i < 50; i++) {
-    const childComment = await makeBrainstormComment(
-      brainstormIds,
-      userIds,
-      parentCommentIds,
+  console.log(`Creating ${brainstormData.length} brainstorm records`)
+  const brainstormsToInsert = []
+  for (const brainstorm of brainstormData) {
+    brainstormsToInsert.push(
+      await makeBrainstorm(
+        brainstorm.title,
+        JSON.stringify(brainstorm.description),
+        brainstorm.descriptionText,
+        userIds,
+      ),
     )
-    childCommentData.push(childComment)
   }
-  const childComments = await db
-    .insert(Schema.brainstormComments)
-    .values(childCommentData)
+  const brainstorms = await db
+    .insert(Schema.brainstorms)
+    .values(brainstormsToInsert)
     .returning()
-  const childCommentIds = childComments.map((e) => e.id)
+  const brainstormIds = Object.fromEntries(
+    brainstorms.map((e) => [e.title, e.id]),
+  )
 
-  const commentIds = [...parentCommentIds, ...childCommentIds]
+  console.log('Creating brainstorm tag records')
+  const brainstormTagData = brainstormData.flatMap((brainstorm) => {
+    const brainstormId = brainstormIds[brainstorm.title]
+    return brainstorm.tags.map((tag) => ({
+      brainstormId,
+      tagId: tagIds[tag],
+    }))
+  })
+  await db.insert(Schema.brainstormTags).values(brainstormTagData).execute()
+
+  console.log('Creating brainstorm comment records')
+  const brainstormCommentData = await Promise.all(
+    brainstormData.flatMap((brainstorm) => {
+      const brainstormId = brainstormIds[brainstorm.title]
+      return brainstorm.comments.map((comment) =>
+        makeBrainstormComment(brainstormId, comment, userIds),
+      )
+    }),
+  )
+  const comments = await db
+    .insert(Schema.brainstormComments)
+    .values(brainstormCommentData)
+    .returning()
+  const commentIds = comments.map((e) => e.id)
 
   console.log("Clearing 'brainstorm_comment_like' table")
   await db.delete(Schema.brainstormCommentLikes).execute()
@@ -133,34 +143,14 @@ export async function seed() {
   ).filter((e) => !!e)
   await db.insert(Schema.brainstormCommentLikes).values(likesData).execute()
 
-  console.log("Clearing 'tag' table")
-  await db.delete(Schema.tags).execute()
+  console.log("Clearing 'brainstorm_resource' table")
+  await db.delete(Schema.brainstormResources).execute()
 
-  console.log(`Creating ${technicalTags.length} tag records`)
-  const uniqueTags = new Set<string>()
-  const tagData = []
-  for (const technicalTag of technicalTags) {
-    const tag = await makeTag([technicalTag], uniqueTags)
-    if (tag) {
-      tagData.push(tag)
-    }
-  }
-  const tags = await db.insert(Schema.tags).values(tagData).returning()
-  const tagIds = tags.map((e) => e.id)
-
-  console.log("Clearing 'brainstorm_tag' table")
-  await db.delete(Schema.brainstormTags).execute()
-
-  console.log('Creating 50 brainstorm tag records')
-  const brainstormTagData = brainstormIds.flatMap((brainstormId) => {
-    const tagAmount = faker.number.int({ min: 1, max: 8 })
-    const selectedTagIds = faker.helpers.arrayElements(tagIds, tagAmount)
-    return selectedTagIds.map((tagId) => ({
-      brainstormId,
-      tagId,
-    }))
-  })
-  await db.insert(Schema.brainstormTags).values(brainstormTagData).execute()
+  console.log('Creating 100 brainstorm resource records')
+  const resourceData = makeMultiple(100, () =>
+    makeBrainstormResource(Object.values(brainstormIds)),
+  )
+  await db.insert(Schema.brainstormResources).values(resourceData).execute()
 
   console.log('### Seeding complete ###')
   process.exit(0)
