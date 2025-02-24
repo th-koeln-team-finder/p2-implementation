@@ -170,12 +170,17 @@ export const de: Language = {
     },
   },
   brainstorm: {
+    pageTitle: 'Brainstorms',
     makeActionButton: 'Erstelle das Projekt',
     deleteActionButton: 'Löschen',
     headingResources: 'Links & andere Ressourcen',
     emptyResources: 'Keine Links oder Ressourcen verfügbar...',
     createButton: 'Brainstorming starten',
     createFormTitle: 'Brainstorm erstellen',
+    actionShowBookmarks: 'Markierte nach oben',
+    searchPlaceholder: 'Suche nach Brainstorms...',
+    searchNotice:
+      'Du kannst auch in ganzen Sätzen suchen, da wir nach der semantischen Bedeutung suchen.',
     createForm: {
       labelTitle: 'Titel',
       placeholderTitle: 'Titel hier eingeben...',

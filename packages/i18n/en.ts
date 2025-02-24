@@ -167,12 +167,17 @@ export const en = {
     },
   },
   brainstorm: {
+    pageTitle: 'Brainstorms',
     makeActionButton: 'Create the project',
     deleteActionButton: 'Delete',
     headingResources: 'Links & Other Resources',
     emptyResources: 'No links or resources available...',
     createButton: 'Start brainstorming',
     createFormTitle: 'Create a Brainstorm',
+    actionShowBookmarks: 'Bookmarks to top',
+    searchPlaceholder: 'Search for a brainstorm...',
+    searchNotice:
+      'You may also search with whole sentences, since we are semantically searching for you.',
     createForm: {
       labelTitle: 'Title',
       placeholderTitle: 'Write title here...',

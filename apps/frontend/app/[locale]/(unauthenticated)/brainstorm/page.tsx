@@ -17,12 +17,18 @@ export default async function BrainstormPage({
     bookmarks: string
   }>
 }) {
-  const translate = await getTranslations('brainstorm')
-  const { search, tags, offset, bookmarks } = await searchParams
+  const [translate, { search, tags, offset, bookmarks }] = await Promise.all([
+    getTranslations('brainstorm'),
+    searchParams,
+  ])
+
   return (
     <div className="h-screen">
       <div className="container mx-auto px-4">
-        <h1 className="mb-4 font-semibold text-4xl">Brainstorms</h1>
+        <h1 className="mb-4 font-semibold text-4xl">
+          {translate('pageTitle')}
+        </h1>
+
         <Suspense key={search} fallback={<BrainstormListLoading />}>
           <BrainstormList
             search={search}
@@ -32,6 +38,7 @@ export default async function BrainstormPage({
           />
         </Suspense>
       </div>
+
       <CanUserServer target="brainstorm" action="create">
         <div className="pointer-events-none fixed right-0 bottom-0 left-0 flex flex-row justify-end p-4">
           <Link href="/brainstorm/create">

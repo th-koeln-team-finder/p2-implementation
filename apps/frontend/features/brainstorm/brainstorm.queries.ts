@@ -17,6 +17,7 @@ export const getBrainstorms = cache(
       .split(',')
       .map((tag: string) => tag.split(':')[0])
       .filter(Boolean) as string[]
+
     const searchEmbeddings = await generateTextEmbeddings(search)
     const tagSearchEmbeddings = await generateTextEmbeddings(search, 'small')
 
@@ -96,6 +97,9 @@ export const getBrainstorms = cache(
 export const getSingleBrainstorm = cache(
   (id: string, userId?: string) => {
     return db.query.brainstorms.findFirst({
+      columns: {
+        embedding: false,
+      },
       extras: {
         isBookmarked: !userId
           ? sql<boolean>`false`.as('isBookmarked')
@@ -108,7 +112,11 @@ export const getSingleBrainstorm = cache(
         creator: true,
         tags: {
           with: {
-            tag: true,
+            tag: {
+              columns: {
+                embedding: false,
+              },
+            },
           },
         },
         resources: {

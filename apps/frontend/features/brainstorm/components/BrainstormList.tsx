@@ -15,6 +15,7 @@ export async function BrainstormList({
   bookmarks,
 }: { search: string; tags: string; offset: string; bookmarks: string }) {
   const session = await authMiddleware()
+
   const offsetNumber = Number.parseInt(offset ?? '0')
   const limit = pageSize + offsetNumber
   const brainstorms = await getBrainstorms(
@@ -25,6 +26,7 @@ export async function BrainstormList({
     limit,
   )
   const hasMore = limit <= brainstorms.length
+
   return (
     <section className="pb-4">
       <BrainstormFilterBar />

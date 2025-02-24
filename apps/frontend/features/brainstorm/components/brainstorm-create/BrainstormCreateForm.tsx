@@ -206,7 +206,7 @@ export function BrainstormCreateForm({
         </form.FieldProvider>
 
         <p className="mt-2 flex flex-row items-center gap-2 rounded border-primary border-l-4 bg-primary/20 p-2 text-foreground text-sm">
-          <BadgeInfoIcon className="size-4" />
+          <BadgeInfoIcon className="size-4 min-w-4" />
           {translate('createForm.whiteboardNotice')}
         </p>
 

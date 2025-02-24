@@ -6,6 +6,7 @@ import { useSignals } from '@preact/signals-react/runtime'
 import { Input } from '@repo/design-system/components/ui/input'
 import { Toggle } from '@repo/design-system/components/ui/toggle'
 import { BookmarkIcon, InfoIcon, Loader2Icon, SearchIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useQueryState } from 'nuqs'
 import { useState } from 'react'
 
@@ -15,6 +16,8 @@ type BrainstormFilterBarProps = {
 
 export function BrainstormFilterBar({ disabled }: BrainstormFilterBarProps) {
   useSignals()
+
+  const translate = useTranslations('brainstorm')
 
   const [bookmarks, setBookmarks] = useQueryState('bookmarks')
   const bookmarksPinned = bookmarks === 'pinned'
@@ -29,7 +32,7 @@ export function BrainstormFilterBar({ disabled }: BrainstormFilterBarProps) {
 
   return (
     <div className="mb-8">
-      <div className="flex flex-row items-center gap-2">
+      <div className="flex flex-col gap-2 md:flex-row md:items-center">
         <div className="relative flex-1">
           <SearchIcon className="absolute top-2 left-3 text-muted-foreground" />
           {(disabled || isLoading) && (
@@ -37,8 +40,8 @@ export function BrainstormFilterBar({ disabled }: BrainstormFilterBarProps) {
           )}
           <Input
             autoFocus
-            placeholder="Search for everything..."
-            className="h-10 flex-1 pl-11 md:text-lg"
+            placeholder={translate('searchPlaceholder')}
+            className="h-10 flex-1 pl-11 md:text-md"
             disabled={disabled}
             value={searchInput}
             onChange={(e) => {
@@ -49,7 +52,7 @@ export function BrainstormFilterBar({ disabled }: BrainstormFilterBarProps) {
         </div>
         <Toggle
           size="lg"
-          className="group group"
+          className="group ml-auto md:ml-0"
           onClick={async () => {
             await setBookmarks(bookmarksPinned ? null : 'pinned')
             await revalidateBrainstorms()
@@ -57,13 +60,12 @@ export function BrainstormFilterBar({ disabled }: BrainstormFilterBarProps) {
           pressed={bookmarksPinned}
         >
           <BookmarkIcon className="group-data-[state=on]:fill-foreground" />
-          Pin bookmarks
+          {translate('actionShowBookmarks')}
         </Toggle>
       </div>
       <div className="mt-2 flex flex-row items-center gap-2 rounded border-primary border-l-4 bg-primary/20 p-2 text-foreground text-sm">
-        <InfoIcon className="size-4" />
-        You may also search with whole sentences, since we are semantically
-        searching for you.
+        <InfoIcon className="size-4 min-w-4" />
+        {translate('searchNotice')}
       </div>
     </div>
   )

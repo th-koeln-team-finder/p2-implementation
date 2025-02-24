@@ -25,7 +25,7 @@ export function BrainstormLazyLoader({
   })
 
   const { ref, inView } = useInView()
-
+  // This triggers every time the user scrolls to the bottom of the page
   useEffect(() => {
     if (!inView || isLoadingReal || !hasMore) {
       return
@@ -34,7 +34,6 @@ export function BrainstormLazyLoader({
 
     startTransition(() => dispatchOptimistic(true))
 
-    console.log('loading more brainstorms', queryOffset, pageSize)
     const newOffset = queryOffset + pageSize
     setQueryOffset(newOffset.toString())
       .then(() => revalidateBrainstorms())

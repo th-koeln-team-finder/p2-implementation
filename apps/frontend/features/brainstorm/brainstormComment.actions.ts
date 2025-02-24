@@ -16,13 +16,6 @@ type AddBrainstormPayload = {
   parentCommentId?: string
 }
 
-export async function redirectServer(url: string) {
-  return redirect({
-    href: url,
-    locale: await getLocale(),
-  })
-}
-
 export async function addBrainstormComment(values: AddBrainstormPayload) {
   const session = await authMiddleware()
   const hasPermission = await hasSessionPermission(
