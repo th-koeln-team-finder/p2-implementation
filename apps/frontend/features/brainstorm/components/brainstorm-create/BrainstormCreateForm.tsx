@@ -168,7 +168,6 @@ export function BrainstormCreateForm({
               emptyMessage={translate('createForm.emptyTags')}
               loadingMessage={translate('createForm.loadingTags')}
               enableCommaSeparation
-              clearAfterSelect
             />
             <FieldError />
           </div>
