@@ -2,9 +2,9 @@ import { relations, sql } from 'drizzle-orm'
 import {
   type AnyPgColumn,
   boolean,
-  index,
   check,
   date,
+  index,
   integer,
   pgEnum,
   pgTable,
