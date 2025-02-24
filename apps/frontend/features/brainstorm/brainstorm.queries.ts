@@ -5,7 +5,14 @@ import { and, cosineDistance, desc, eq, sql } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
 
 export const getBrainstorms = cache(
-  async (userId?: string, search = '', tags = '', limit = 25, offset = 0) => {
+  async (
+    userId?: string,
+    search = '',
+    tags = '',
+    pinBookmarks = false,
+    limit = 25,
+    offset = 0,
+  ) => {
     const tagIds = tags
       .split(',')
       .map((tag: string) => tag.split(':')[0])
@@ -31,6 +38,12 @@ export const getBrainstorms = cache(
       ),
     )
 
+    const isBookmarked = !userId
+      ? sql<boolean>`(false)`.as('isBookmarked')
+      : sql<boolean>`(EXISTS (SELECT id FROM "brainstorm_bookmark" bookmark WHERE bookmark."brainstormId" = "brainstorms"."id" AND bookmark."userId" = ${userId}))`.as(
+          'isBookmarked',
+        )
+
     return db.query.brainstorms.findMany({
       columns: {
         embedding: false,
@@ -40,11 +53,7 @@ export const getBrainstorms = cache(
         similarity: similarity.as('similarity'),
         tagSimilarity: tagSimilarity.as('tagSimilarity'),
         commentSimilarity: commentSimilarity.as('commentSimilarity'),
-        isBookmarked: !userId
-          ? sql<boolean>`false`.as('isBookmarked')
-          : sql<boolean>`EXISTS (SELECT id FROM "brainstorm_bookmark" bookmark WHERE bookmark."brainstormId" = "brainstorms"."id" AND bookmark."userId" = ${userId})`.as(
-              'isBookmarked',
-            ),
+        isBookmarked,
       },
       with: {
         tags: {
@@ -66,6 +75,7 @@ export const getBrainstorms = cache(
       offset,
       where: tagFilter,
       orderBy: [
+        pinBookmarks && desc(isBookmarked),
         search && desc(correctTotalSimilarity),
         desc(Schema.brainstorms.createdAt),
       ].filter(Boolean),

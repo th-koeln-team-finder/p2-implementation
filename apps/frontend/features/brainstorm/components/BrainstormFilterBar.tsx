@@ -4,11 +4,10 @@ import { revalidateBrainstorms } from '@/features/brainstorm/brainstorm.actions'
 import { useDebounceFunction } from '@/features/general/utils.hooks'
 import { useSignals } from '@preact/signals-react/runtime'
 import { Input } from '@repo/design-system/components/ui/input'
-import { InfoIcon, Loader2Icon, SearchIcon } from 'lucide-react'
+import { Toggle } from '@repo/design-system/components/ui/toggle'
+import { BookmarkIcon, InfoIcon, Loader2Icon, SearchIcon } from 'lucide-react'
 import { useQueryState } from 'nuqs'
 import { useState } from 'react'
-
-// TODO Add button for bookmarks + navigate in drop down menu to this page
 
 type BrainstormFilterBarProps = {
   disabled?: boolean
@@ -17,6 +16,8 @@ type BrainstormFilterBarProps = {
 export function BrainstormFilterBar({ disabled }: BrainstormFilterBarProps) {
   useSignals()
 
+  const [bookmarks, setBookmarks] = useQueryState('bookmarks')
+  const bookmarksPinned = bookmarks === 'pinned'
   const [search, setSearchRaw] = useQueryState('search')
   const [_, setOffset] = useQueryState('offset')
 
@@ -28,25 +29,39 @@ export function BrainstormFilterBar({ disabled }: BrainstormFilterBarProps) {
 
   return (
     <div className="mb-8">
-      <div className="relative">
-        <SearchIcon className="absolute top-3 left-3 text-muted-foreground" />
-        {(disabled || isLoading) && (
-          <Loader2Icon className="absolute top-3 right-3 animate-spin" />
-        )}
-        <Input
-          autoFocus
-          placeholder="Search for everything..."
-          className="h-12 pl-11 md:text-xl"
-          disabled={disabled}
-          value={searchInput}
-          onChange={(e) => {
-            setSearch(e.target.value)
-            setSearchInput(e.target.value)
+      <div className="flex flex-row items-center gap-2">
+        <div className="relative flex-1">
+          <SearchIcon className="absolute top-2 left-3 text-muted-foreground" />
+          {(disabled || isLoading) && (
+            <Loader2Icon className="absolute top-2 right-3 animate-spin" />
+          )}
+          <Input
+            autoFocus
+            placeholder="Search for everything..."
+            className="h-10 flex-1 pl-11 md:text-lg"
+            disabled={disabled}
+            value={searchInput}
+            onChange={(e) => {
+              setSearch(e.target.value)
+              setSearchInput(e.target.value)
+            }}
+          />
+        </div>
+        <Toggle
+          size="lg"
+          className="group group"
+          onClick={async () => {
+            await setBookmarks(bookmarksPinned ? null : 'pinned')
+            await revalidateBrainstorms()
           }}
-        />
+          pressed={bookmarksPinned}
+        >
+          <BookmarkIcon className="group-data-[state=on]:fill-foreground" />
+          Pin bookmarks
+        </Toggle>
       </div>
-      <div className="mt-2 flex flex-row items-center gap-1 rounded border-primary border-l-4 bg-primary/20 p-2 text-foreground">
-        <InfoIcon />
+      <div className="mt-2 flex flex-row items-center gap-2 rounded border-primary border-l-4 bg-primary/20 p-2 text-foreground text-sm">
+        <InfoIcon className="size-4" />
         You may also search with whole sentences, since we are semantically
         searching for you.
       </div>

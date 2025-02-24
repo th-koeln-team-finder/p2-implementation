@@ -12,7 +12,8 @@ export async function BrainstormList({
   search,
   tags,
   offset,
-}: { search: string; tags: string; offset: string }) {
+  bookmarks,
+}: { search: string; tags: string; offset: string; bookmarks: string }) {
   const session = await authMiddleware()
   const offsetNumber = Number.parseInt(offset ?? '0')
   const limit = pageSize + offsetNumber
@@ -20,6 +21,7 @@ export async function BrainstormList({
     session?.user?.id,
     search,
     tags,
+    bookmarks === 'pinned',
     limit,
   )
   const hasMore = limit <= brainstorms.length
