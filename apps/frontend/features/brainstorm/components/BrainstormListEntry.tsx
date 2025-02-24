@@ -1,4 +1,5 @@
 'use client'
+import { CanUserClient } from '@/features/auth/components/CanUser.client'
 import type { PopulatedBrainstorm } from '@/features/brainstorm/brainstorm.types'
 import { BrainstormBookmarkButton } from '@/features/brainstorm/components/brainstorm-details/BrainstormBookmarkButton'
 import { BrainstormTagList } from '@/features/brainstorm/components/brainstorm-details/BrainstormTagList'
@@ -57,10 +58,12 @@ export function BrainstormListEntry({ brainstorm }: BrainstormListEntryProps) {
           </div>
           <div className="flex flex-row items-center justify-between gap-2">
             <CardTitle className="text-xl">{brainstorm.title}</CardTitle>
-            <BrainstormBookmarkButton
-              brainstormId={brainstorm.id}
-              isBookmarked={brainstorm.isBookmarked}
-            />
+            <CanUserClient target="commentBrainstorm" action="create">
+              <BrainstormBookmarkButton
+                brainstormId={brainstorm.id}
+                isBookmarked={brainstorm.isBookmarked}
+              />
+            </CanUserClient>
           </div>
           <CardDescription className="max-h-10 overflow-hidden">
             {brainstorm.description && (
@@ -69,7 +72,7 @@ export function BrainstormListEntry({ brainstorm }: BrainstormListEntryProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <BrainstormTagList tags={brainstorm.tags} />
+          <BrainstormTagList tags={brainstorm.tags} splitUp={5} />
         </CardContent>
       </Card>
     </Link>

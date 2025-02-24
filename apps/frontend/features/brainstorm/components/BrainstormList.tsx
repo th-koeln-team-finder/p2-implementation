@@ -6,7 +6,7 @@ import { BrainstormListEntry } from '@/features/brainstorm/components/Brainstorm
 import { ScrollTopButton } from '@repo/design-system/components/custom/ScrollTopButton'
 import { Masonry } from '@repo/design-system/components/ui/Masonry'
 
-const pageSize = 20
+const pageSize = 15
 
 export async function BrainstormList({
   search,
