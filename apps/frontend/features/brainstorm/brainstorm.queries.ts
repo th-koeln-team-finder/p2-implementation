@@ -49,10 +49,18 @@ export const getBrainstorms = cache(
         embedding: false,
       },
       extras: {
-        totalSimilarity: correctTotalSimilarity.as('totalSimilarity'),
-        similarity: similarity.as('similarity'),
-        tagSimilarity: tagSimilarity.as('tagSimilarity'),
-        commentSimilarity: commentSimilarity.as('commentSimilarity'),
+        totalSimilarity: search
+          ? correctTotalSimilarity.as('totalSimilarity')
+          : sql<number>`NULL`.as('totalSimilarity'),
+        similarity: search
+          ? similarity.as('similarity')
+          : sql<number>`NULL`.as('similarity'),
+        tagSimilarity: search
+          ? tagSimilarity.as('tagSimilarity')
+          : sql<number>`NULL`.as('tagSimilarity'),
+        commentSimilarity: search
+          ? commentSimilarity.as('commentSimilarity')
+          : sql<number>`NULL`.as('commentSimilarity'),
         isBookmarked,
       },
       with: {
