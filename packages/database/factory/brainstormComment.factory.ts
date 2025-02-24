@@ -14,7 +14,7 @@ export async function makeBrainstormComment(
     parentCommentId: parentCommentIds
       ? faker.helpers.arrayElement(parentCommentIds)
       : undefined,
-    isPinned: faker.datatype.boolean(0.1),
+    isPinned: faker.datatype.boolean(0.2),
     brainstormId,
     comment,
     embedding,

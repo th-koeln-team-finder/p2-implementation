@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker/locale/de'
 import { config } from 'dotenv'
 import { drizzle } from 'drizzle-orm/node-postgres'
 import { brainstormData, uniqueBrainstormTags } from './factory/brainstorm.data'
@@ -61,8 +62,8 @@ export async function seed() {
   console.log("Clearing 'user' table")
   await db.delete(Schema.users).execute()
 
-  console.log('Creating 25 user records')
-  const userData = makeMultiple(25, makeUser)
+  console.log('Creating 75 user records')
+  const userData = makeMultiple(75, makeUser)
   const users = await db.insert(Schema.users).values(userData).returning()
   const userIds = users.map((e) => e.id)
 
@@ -120,25 +121,51 @@ export async function seed() {
 
   console.log('Creating brainstorm comment records')
   const brainstormCommentData = await Promise.all(
-    brainstormData.flatMap((brainstorm) => {
+    brainstormData.flatMap(async (brainstorm) => {
       const brainstormId = brainstormIds[brainstorm.title]
-      return brainstorm.comments.map((comment) =>
-        makeBrainstormComment(brainstormId, comment, userIds),
+      const comments = await Promise.all(
+        brainstorm.comments.map((comment) =>
+          makeBrainstormComment(brainstormId, comment, userIds),
+        ),
       )
+      const amountOfParentComments = faker.helpers.rangeToNumber({
+        min: 1,
+        max: comments.length,
+      })
+      const parentComments = comments.slice(0, amountOfParentComments)
+      const childComments = comments.slice(amountOfParentComments)
+      return [brainstormId, parentComments, childComments] as const
     }),
   )
+
   const comments = await db
     .insert(Schema.brainstormComments)
-    .values(brainstormCommentData)
+    .values(brainstormCommentData.flatMap((e) => e[1]))
     .returning()
   const commentIds = comments.map((e) => e.id)
+
+  const childCommentData = brainstormCommentData.flatMap(
+    ([brainstormId, , childComments]) => {
+      const parentComments = comments.filter(
+        (e) => e.brainstormId === brainstormId,
+      )
+      return childComments.map((c) => {
+        const parentCommentId = faker.helpers.arrayElement(parentComments).id
+        return {
+          ...c,
+          parentCommentId,
+        }
+      })
+    },
+  )
+  await db.insert(Schema.brainstormComments).values(childCommentData).execute()
 
   console.log("Clearing 'brainstorm_comment_like' table")
   await db.delete(Schema.brainstormCommentLikes).execute()
 
-  console.log('Creating 1500 like records')
+  console.log('Creating 800 like records')
   const uniqueUserLikes = new Set<string>()
-  const likesData = makeMultiple(1500, () =>
+  const likesData = makeMultiple(800, () =>
     makeBrainstormCommentLike(commentIds, userIds, uniqueUserLikes),
   ).filter((e) => !!e)
   await db.insert(Schema.brainstormCommentLikes).values(likesData).execute()
