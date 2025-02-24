@@ -32,7 +32,7 @@ export async function BrainstormList({
       <BrainstormFilterBar />
       <Masonry
         masonryGutter="16px"
-        columnsCountBreakPoints={{ 350: 1, 640: 2, 768: 3, 1200: 4 }}
+        columnsCountBreakPoints={{ 350: 1, 640: 2, 768: 3, 1400: 4 }}
       >
         {brainstorms.map((brainstorm) => (
           <BrainstormListEntry key={brainstorm.id} brainstorm={brainstorm} />
