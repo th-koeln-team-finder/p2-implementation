@@ -217,6 +217,8 @@ export const de: Language = {
   },
   tag: {
     createNewTag: "Neu: ''{tagName}''",
+    labelRightNew: 'neu',
+    labelRightUses: '{usage}x verwendet',
   },
   help: {
     title: 'Hilfe',

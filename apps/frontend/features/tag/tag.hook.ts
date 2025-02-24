@@ -9,10 +9,16 @@ export function useTagSearch(enableNewTagCreation = true) {
   const [searchInput, setSearchInput] = useState<string>('')
   const [debouncedSearchInput, isDebouncing] = useDebouncedValue(searchInput)
 
-  const { data, isLoading } = useQuery<{ label: string; value: string }[]>({
+  const { data, isLoading } = useQuery<
+    { label: string; value: string; labelRight?: string }[]
+  >({
     queryFn: async () => {
       const tags = await getTagSearchResults(debouncedSearchInput)
-      const mappedTags = tags.map((tag) => ({ label: tag.name, value: tag.id }))
+      const mappedTags = tags.map((tag) => ({
+        label: tag.name,
+        value: tag.id,
+        labelRight: translate('labelRightUses', { usage: tag.usage }),
+      }))
       if (
         enableNewTagCreation &&
         debouncedSearchInput &&
@@ -24,6 +30,7 @@ export function useTagSearch(enableNewTagCreation = true) {
         mappedTags.unshift({
           label: translate('createNewTag', { tagName: debouncedSearchInput }),
           value: `new:${debouncedSearchInput}`,
+          labelRight: translate('labelRightNew'),
         })
       }
       return mappedTags

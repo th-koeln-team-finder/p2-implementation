@@ -214,6 +214,8 @@ export const en = {
   },
   tag: {
     createNewTag: "New: ''{tagName}''",
+    labelRightNew: 'new',
+    labelRightUses: '{usage}x used',
   },
   help: {
     title: 'Help',

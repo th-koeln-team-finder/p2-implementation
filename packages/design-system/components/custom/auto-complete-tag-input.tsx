@@ -22,16 +22,22 @@ import {
 } from '../ui/command'
 import { Popover, PopoverAnchor, PopoverContent } from '../ui/popover'
 
+type AutoCompleteEntry<T extends string> = {
+  value: T
+  label: string
+  labelRight?: string
+}
+
 type AutoCompleteTagInputProps<T extends string> = Omit<
   InputProps,
   'value' | 'onChange'
 > & {
   enableCommaSeparation?: boolean
-  values: { value: T; label: string }[]
-  onValuesChange: (values: { value: T; label: string }[]) => void
+  values: AutoCompleteEntry<T>[]
+  onValuesChange: (values: AutoCompleteEntry<T>[]) => void
   searchInput: string
   onSearchInputChange: (value: string) => void
-  data: { value: T; label: string }[]
+  data: AutoCompleteEntry<T>[]
   isLoading?: boolean
   emptyMessage?: string
   loadingMessage?: string
@@ -59,7 +65,7 @@ export function AutoCompleteTagInput<T extends string>({
 }: AutoCompleteTagInputProps<T>) {
   const [open, setOpen] = useState(false)
 
-  const onSelectItem = (inputValue: { value: T; label: string }) => {
+  const onSelectItem = (inputValue: AutoCompleteEntry<T>) => {
     if (values.some((value) => value.value === inputValue.value)) {
       onValuesChange(values.filter((value) => value.value !== inputValue.value))
     } else {
@@ -88,7 +94,7 @@ export function AutoCompleteTagInput<T extends string>({
               )}
             >
               {isLoading && (
-                <Loader2Icon className="absolute top-2 right-2 animate-spin" />
+                <Loader2Icon className="absolute top-1 right-2 animate-spin" />
               )}
               {values.map((option) => (
                 <Badge key={option.value} variant="tag">
@@ -177,9 +183,12 @@ export function AutoCompleteTagInput<T extends string>({
                       onSelect={() => onSelectItem(option)}
                     >
                       {option.label}
+                      <p className="ml-auto text-muted-foreground text-sm">
+                        {option.labelRight}
+                      </p>
                       <Check
                         className={cn(
-                          'mr-2 ml-auto h-4 w-4',
+                          'mr-2 ml-2 h-4 w-4',
                           values.some((o) => o.value === option.value)
                             ? 'opacity-100'
                             : 'opacity-0',
@@ -189,16 +198,23 @@ export function AutoCompleteTagInput<T extends string>({
                   ))}
                 </CommandGroup>
               )}
-              {!isLoading && (
-                <CommandEmpty>
+              <CommandEmpty>
+                {isLoading ? (
+                  <div className="flex flex-row items-center justify-center gap-2">
+                    <Loader2Icon className="animate-spin" />
+                    <span className="text-muted-foreground text-sm">
+                      {loadingMessage}
+                    </span>
+                  </div>
+                ) : (
                   <div className="flex flex-row items-center justify-center gap-2">
                     <SearchXIcon />
                     <span className="text-muted-foreground text-sm">
                       {emptyMessage}
                     </span>
                   </div>
-                </CommandEmpty>
-              )}
+                )}
+              </CommandEmpty>
             </CommandList>
           </PopoverContent>
         </Command>
