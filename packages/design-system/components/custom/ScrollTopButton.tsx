@@ -22,7 +22,11 @@ export function ScrollTopButton() {
   return (
     <div className="fixed bottom-0 left-0 p-4">
       <Button
-        className={cn('opacity-0 transition-all', showScroll && 'opacity-100')}
+        disabled={!showScroll}
+        className={cn(
+          'opacity-0 transition-all disabled:opacity-0',
+          showScroll ? 'opacity-100' : 'pointer-events-none',
+        )}
         size="icon"
         onClick={scrollTop}
       >
