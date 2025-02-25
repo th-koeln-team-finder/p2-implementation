@@ -8,8 +8,7 @@ export async function makeBrainstorm(
   descriptionText: string,
   createdByIds: string[],
 ): Promise<BrainstormInsert> {
-  console.log('Generating embeddings for text: ', descriptionText)
-  const embedding = await generateTextEmbeddings(descriptionText)
+  const embedding = await generateTextEmbeddings(`${title}\n${descriptionText}`)
   return {
     title,
     description,

@@ -7,11 +7,12 @@ import type { CreateProjectFormValues } from '@/features/projects/projects.types
 import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
 import { type ProjectResourceInsert, Weekdays } from '@repo/database/schema'
+import { generateTextEmbeddings } from '@repo/semantic-search'
 import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
 import { revalidateTag } from 'next/cache'
 
-export async function createProject(payload: CreateProjectFormValues) {
+async function authCheckCreateProject() {
   const session = await authMiddleware()
   if (!session?.user?.id) {
     const locale = await getLocale()
@@ -28,22 +29,43 @@ export async function createProject(payload: CreateProjectFormValues) {
       locale,
     })
   }
+  return false
+}
+
+export async function createProject(
+  payload: CreateProjectFormValues,
+  descriptionTextValue: string,
+) {
+  const authCheck = await authCheckCreateProject()
+  if (authCheck) {
+    return authCheck as never
+  }
+
+  const embedding = await generateTextEmbeddings(
+    `${payload.name}\n${descriptionTextValue}`,
+  )
 
   const [project] = await db
     .insert(Schema.projects)
     .values({
       name: payload.name,
       description: payload.description,
+      embedding,
       status: payload.status,
       phase: payload.phase,
     })
     .returning()
 
-  const issuesToCreate = payload.issues.map((issue) => ({
-    projectId: project.id,
-    description: issue.description,
-    title: issue.title,
-  }))
+  const issuesToCreate = await Promise.all(
+    payload.issues.map(async (issue) => ({
+      projectId: project.id,
+      description: issue.description,
+      embedding: await generateTextEmbeddings(
+        `${issue.title}\n${issue.description}`,
+      ),
+      title: issue.title,
+    })),
+  )
   if (issuesToCreate.length) {
     await db.insert(Schema.projectIssue).values(issuesToCreate)
   }
@@ -113,21 +135,9 @@ export async function createProjectResources(
   projectId: string,
   resources: ProjectResourceInsert[],
 ) {
-  const session = await authMiddleware()
-  if (!session?.user?.id) {
-    const locale = await getLocale()
-    return redirect({
-      href: '/error?error=AccessDenied',
-      locale,
-    })
-  }
-  const canCreate = await hasSessionPermission('project', 'create')
-  if (!canCreate) {
-    const locale = await getLocale()
-    return redirect({
-      href: '/error?error=AccessDenied',
-      locale,
-    })
+  const authCheck = await authCheckCreateProject()
+  if (authCheck) {
+    return authCheck
   }
 
   const resourcesToCreate = resources.map((resource) => ({

@@ -198,6 +198,7 @@ export const projects = pgTable('projects', {
   id: uuid().primaryKey().notNull().defaultRandom(),
   name: varchar({ length: 255 }).notNull(),
   description: text().notNull(),
+  embedding: vector({ dimensions: VectorSizes.large }).notNull(),
   status: varchar({ enum: ['open', 'closed'] }).notNull(),
   phase: text(),
   isPublic: boolean().notNull().default(true),
@@ -296,6 +297,7 @@ export const projectIssue = pgTable('projectIssue', {
     .references(() => projects.id, { onDelete: 'cascade' }), // Fremdschlüssel auf projects.id
   title: varchar({ length: 255 }).notNull(),
   description: text().notNull(),
+  embedding: vector({ dimensions: VectorSizes.large }).notNull(),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
   updatedAt: timestamp({ mode: 'date' })
     .defaultNow()

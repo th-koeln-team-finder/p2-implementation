@@ -17,6 +17,7 @@ import {
   type ZodAdapter,
   configureZodAdapter,
 } from '@formsignals/validation-adapter-zod'
+import { signal } from '@preact/signals-react'
 import { useSignals } from '@preact/signals-react/runtime'
 import { FieldError } from '@repo/design-system/components/FormErrors'
 import {
@@ -49,6 +50,8 @@ export function CreateProjectForm() {
   const router = useRouter()
   const t = useTranslations('createProjects')
   const translateError = useTranslations('validation')
+
+  const descriptionText = signal('')
 
   //Stepper
   const steps = [
@@ -88,7 +91,10 @@ export function CreateProjectForm() {
           file: [],
         })),
       }
-      const projectId = await createProject(serverActionData)
+      const projectId = await createProject(
+        serverActionData,
+        descriptionText.peek(),
+      )
       const uploadedFileResources = await Promise.all(
         values.resources.map(async ({ file, label, href }) => {
           if (!file.length) {
@@ -270,6 +276,9 @@ export function CreateProjectForm() {
             <div>
               <Label>{t('description')}</Label>
               <WysiwygEditorForm
+                onChange={(_, editor) => {
+                  descriptionText.value = getStringContentFromEditor(editor)
+                }}
                 editorRef={editorRef}
                 placeholder={t('descriptionPlaceholder')}
                 className="min-h-56"
@@ -418,7 +427,7 @@ export function CreateProjectForm() {
           <div className="flex w-full flex-col">
             <Label>{t('issues.sectionTitle')}</Label>
             <form.FieldProvider name="issues">
-              <CreateProjectIssueList editorRef={editorRef} />
+              <CreateProjectIssueList />
             </form.FieldProvider>
           </div>
           <div className="flex w-full flex-col gap-4 lg:flex-row">
@@ -426,10 +435,7 @@ export function CreateProjectForm() {
               <Label>{t('linksTitle')}</Label>
               <div>
                 <form.FieldProvider name="resources">
-                  <CreateProjectLinksList
-                    uploadFile={uploadFile}
-                    progressState={progressState}
-                  />
+                  <CreateProjectLinksList progressState={progressState} />
                 </form.FieldProvider>
               </div>
             </div>

@@ -50,20 +50,26 @@ async function checkAuthCreateBrainstorm() {
   const session = await authMiddleware()
   if (!session?.user?.id) {
     const locale = await getLocale()
-    return redirect({
-      href: '/error?error=AccessDenied',
-      locale,
-    })
+    return [
+      true,
+      redirect({
+        href: '/error?error=AccessDenied',
+        locale,
+      }),
+    ] as const
   }
   const canCreate = await hasSessionPermission('brainstorm', 'create')
   if (!canCreate) {
     const locale = await getLocale()
-    return redirect({
-      href: '/error?error=AccessDenied',
-      locale,
-    })
+    return [
+      true,
+      redirect({
+        href: '/error?error=AccessDenied',
+        locale,
+      }),
+    ] as const
   }
-  return false
+  return [false, session] as const
 }
 
 export async function createBrainstorm(
@@ -71,17 +77,18 @@ export async function createBrainstorm(
   descriptionTextValue: string,
 ) {
   const authCheck = await checkAuthCreateBrainstorm()
-  if (authCheck) return authCheck
+  if (authCheck[0]) return authCheck[1]
 
-  const descriptionEmbedding =
-    await generateTextEmbeddings(descriptionTextValue)
+  const descriptionEmbedding = await generateTextEmbeddings(
+    `${formValues.title}\n${descriptionTextValue}`,
+  )
   const [brainstorm] = await db
     .insert(Schema.brainstorms)
     .values({
       title: formValues.title,
       description: formValues.description,
       embedding: descriptionEmbedding,
-      createdById: session.user.id,
+      createdById: authCheck[1].user.id,
     })
     .returning()
 
