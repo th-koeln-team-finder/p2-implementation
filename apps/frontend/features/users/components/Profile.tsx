@@ -13,29 +13,34 @@ import {UserPen} from 'lucide-react'
 import {getLocale, getTranslations} from 'next-intl/server'
 import {UserAvatar} from "@/features/auth/components/UserAvatar";
 import type {UserWithImage} from "@/features/users/users.types";
-import ProfileBio from "@/features/users/components/ProfileBio";
-import {SkillScale} from "@repo/design-system/components/custom/SkillScale";
+import {SkillScale, UserSkill} from "@repo/design-system/components/custom/SkillScale";
 
 export default async function Profile({user}: { user: UserWithImage }) {
   const translate = await getTranslations()
 
   const session = await authMiddleware()
-  if (!session?.user?.id) {
+  if (!user.isPublic) {
     return redirect({href: '/', locale: await getLocale()})
   }
-  const isOwnProfile = user.id === session.user.id
-  const loggedInUser = (await getUser(session.user.id)) as UserSelect
+  let isOwnProfile, isFollowing = false
+  let loggedInUser: UserSelect | null = null
+  let skills: UserSkill[] = []
 
-  const isFollowing = !!(await userFollowsUser(loggedInUser.id, user.id))
-  const skills = (await getUserSkills(user.id)).map((userSkill) => ({
+  if (session?.user.id) {
+    isOwnProfile = user.id === session?.user.id
+    loggedInUser = (await getUser(session?.user.id)) as UserSelect
+
+    isFollowing = !!(await userFollowsUser(loggedInUser.id, user.id))
+  }
+  skills = (await getUserSkills(user.id)).map((userSkill) => ({
     id: userSkill.id,
     name: userSkill.skill.skill,
     level: userSkill.level,
     verifications: userSkill.userSkillVerification.length,
     isVerified: userSkill.userSkillVerification.some(
-      (verification) => verification.verifierId === loggedInUser.id,
+      (verification) => verification.verifierId === loggedInUser?.id,
     ),
-    verifierId: loggedInUser.id,
+    verifierId: loggedInUser?.id,
   }))
 
   return (
@@ -61,19 +66,19 @@ export default async function Profile({user}: { user: UserWithImage }) {
                     {translate('users.editProfile')}
                   </Button>
                 </Link>
-              ) : (
-                <FollowButton
-                  isFollowing={isFollowing}
-                  userId={user.id}
-                  loggedInUserId={loggedInUser.id}
-                />
+              ) : !!loggedInUser && (
+                  <FollowButton
+                    isFollowing={isFollowing}
+                    userId={user.id}
+                    loggedInUserId={loggedInUser.id}
+                  />
               )}
             </div>
             {user.lastActive && <p className="text-muted-foreground text-xs leading-none">
               {translate('users.lastActivity')}: {(new Date(user.lastActive)).toLocaleDateString()}
             </p>}
           </div>
-          {user.bio && <ProfileBio bio={user.bio}/>}
+          {/*{user.bio && <ProfileBio bio={user.bio}/>}*/}
         </div>
       </div>
       <div className="mt-8">

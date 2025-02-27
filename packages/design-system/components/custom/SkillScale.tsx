@@ -11,13 +11,13 @@ type ProjectSkill = {
   level: number
 }
 
-type UserSkill = {
+export type UserSkill = {
   name: string
   level: number
   verifications: number
   id: string
   isVerified: boolean
-  verifierId: string
+  verifierId: string | undefined
 }
 
 type UserSkillScaleProps = {
@@ -59,7 +59,7 @@ export function SkillScale(
 
       {!!skills.length && (
         <div
-          className="max-h-56 overflow-auto pr-1 pb-1"
+          className="overflow-auto pr-1 pb-1"
           style={{scrollbarGutter: 'stable'}}
         >
           <Collapsible className="group">
@@ -134,7 +134,7 @@ function SkillPointList(props: ProjectSkillPointListProps | UserSkillPointListPr
                   </TooltipProvider>
                 )}
             </div>
-            {props.showVerificationControl && (
+            {props.showVerificationControl && skill.verifierId && (
               <div className="flex justify-end">
                 <VerificationControl
                   skillId={skill.id}
