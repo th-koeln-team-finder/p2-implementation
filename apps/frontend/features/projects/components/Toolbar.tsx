@@ -7,7 +7,9 @@ import {
 import { Button } from '@repo/design-system/components/ui/button'
 import { cn } from '@repo/design-system/lib/utils'
 import { BookmarkIcon, LinkIcon, StarIcon } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/router'
 import { useOptimistic, useTransition } from 'react'
 
 type ProjectBookmarkButtonProps = {
@@ -32,6 +34,16 @@ export function Toolbar({
       return payload
     },
   )
+  const { data: session } = useSession()
+  const router = useRouter()
+
+  const join = () => {
+    if (!session?.user?.id) {
+      router.push('/login') // TODO Falls nicht eingeloggt, sollen die Anmelden und Registrieren Buttons erscheinen
+    } else {
+      router.push(`/projects/${projectId}/apply`)
+    }
+  }
 
   return (
     <div className="flex flex-row items-center gap-2">
@@ -64,6 +76,7 @@ export function Toolbar({
         variant="default"
         size="default"
         className="ml-2 w-full lg:w-auto"
+        onClick={join}
       >
         {t('join')}
       </Button>
