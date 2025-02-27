@@ -28,6 +28,7 @@ export default function AccountForm({ user }: { user: UserSelect }) {
   const form = useForm({
     validatorAdapter: ZodAdapter,
     defaultValues: {
+      id: user.id,
       name: user.name,
       email: user.email,
       languagePreference: user.languagePreference,
