@@ -1,26 +1,22 @@
 'use client'
-import { ApplicationIcon } from '@/features/general/components/ApplicationIcon'
-import { Link } from '@/features/i18n/routing'
-import { Button } from '@repo/design-system/components/ui/button'
+import {ApplicationIcon} from '@/features/general/components/ApplicationIcon'
+import {Link} from '@/features/i18n/routing'
+import {Button} from '@repo/design-system/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@repo/design-system/components/ui/dropdown-menu'
-import { Input } from '@repo/design-system/components/ui/input'
-import {
-  BellIcon,
-  BrainCircuitIcon,
-  SearchIcon,
-  SettingsIcon,
-  User2Icon,
-  Users2Icon,
-} from 'lucide-react'
-import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import {Input} from '@repo/design-system/components/ui/input'
+import {BellIcon, BrainCircuitIcon, SearchIcon, SettingsIcon, Users2Icon,} from 'lucide-react'
+import {useEffect, useState} from 'react'
+import {UserAvatar} from "@/features/auth/components/UserAvatar";
+import {UserWithImage} from "@/features/users/users.types";
 
-export default function Header() {
+export default function Header({user}: { user: UserWithImage | undefined }) {
   const [_isDarkMode, setIsDarkMode] = useState(false)
 
   useEffect(() => {
@@ -33,7 +29,7 @@ export default function Header() {
   return (
     <header className="header flex w-full self-stretch px-4 py-2">
       <a href="/">
-        <ApplicationIcon className="size-16" />
+        <ApplicationIcon className="size-16"/>
       </a>
 
       <div className="flex w-full items-center justify-end gap-12 self-stretch">
@@ -44,7 +40,7 @@ export default function Header() {
             placeholder={'Search everywhere...'}
           />
           <div className="pointer-events-none absolute top-0 bottom-0 left-2 flex flex-row items-center">
-            <SearchIcon className="size-5 text-muted-foreground" />
+            <SearchIcon className="size-5 text-muted-foreground"/>
           </div>
         </div>
 
@@ -76,30 +72,37 @@ export default function Header() {
           {/* //TODO Anmelden und Registrieren Buttons & weitere Account etc. verlinken */}
           <DropdownMenu>
             <DropdownMenuTrigger className="focus:outline-none focus-visible:outline-none">
-              <Image
-                className="h-8 w-8 rounded-full"
-                src="/images/image-placeholder-square.jpg"
-                height={800}
-                width={1200}
-                alt="placeholder"
-              />
+              <UserAvatar user={user} className="h-10 w-10"/>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+              {user && <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                      <Link href="/profile" className="hover:underline">
+                          <p className="font-medium text-sm leading-none">
+                            {user.name}
+                          </p>
+                      </Link>
+                      <p className="text-muted-foreground text-xs leading-none">
+                        {user.email}
+                      </p>
+                  </div>
+              </DropdownMenuLabel>
+              }
+              {user && <DropdownMenuSeparator/>}
               <DropdownMenuItem className="cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary">
-                <User2Icon /> Account
+                <Users2Icon/> My Projects
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary">
-                <Users2Icon /> My Projects
+                <BrainCircuitIcon/> My Brainstorms
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary">
-                <BrainCircuitIcon /> My Brainstorms
+                <BellIcon/> Notifications
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary">
-                <BellIcon /> Notifications
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary">
-                <SettingsIcon /> Settings
-              </DropdownMenuItem>
+              <Link href="/edit-profile">
+                <DropdownMenuItem className="cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary">
+                  <SettingsIcon/> Settings
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuContent>
           </DropdownMenu>
         </nav>
