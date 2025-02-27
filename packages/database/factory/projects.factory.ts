@@ -1,4 +1,4 @@
-import type { ProjectInsert } from '@/schema'
+import type { ProjectInsert } from '../schema'
 import { faker } from '@faker-js/faker/locale/de'
 
 export function makeProject(): ProjectInsert {

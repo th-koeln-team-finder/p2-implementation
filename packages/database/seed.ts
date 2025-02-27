@@ -1,18 +1,23 @@
-import { faker } from '@faker-js/faker/locale/de'
-import { config } from 'dotenv'
-import { drizzle } from 'drizzle-orm/node-postgres'
-import { makeBrainstorm } from './factory/brainstorm.factory'
-import { makeBrainstormComment } from './factory/brainstormComment.factory'
-import { makeBrainstormCommentLike } from './factory/brainstormCommentLike.factory'
-import { makeBrainstormResource } from './factory/brainstormResource.factory'
-import { makeProjects } from './factory/projects.factory'
-import { makeTag } from './factory/tag.factory'
-import { makeTest } from './factory/test.factory'
-import { makeUser } from './factory/user.factory'
+import {faker} from '@faker-js/faker/locale/de'
+import {config} from 'dotenv'
+import {drizzle} from 'drizzle-orm/node-postgres'
+import {makeBrainstorm} from './factory/brainstorm.factory'
+import {makeBrainstormComment} from './factory/brainstormComment.factory'
+import {makeBrainstormCommentLike} from './factory/brainstormCommentLike.factory'
+import {makeBrainstormResource} from './factory/brainstormResource.factory'
+import {makeProject} from './factory/projects.factory'
+import {makeTag} from './factory/tag.factory'
+import {makeTest} from './factory/test.factory'
+import {makeUser} from './factory/user.factory'
 import * as Schema from './schema'
+import {makeSkill} from "./factory/skill.factory";
+import {makeUserSkills} from "./factory/userSkills.factory";
+import {makeUserProjects} from "./factory/userProjects.factory";
+import {makeUserFollows} from "./factory/userFollows.factory";
+import {makeUserSkillVerification} from "./factory/userSkillVerification.factory";
 
 config()
-config({ path: '.env.local', override: true })
+config({path: '.env.local', override: true})
 
 const db = drizzle({
   schema: Schema,
@@ -22,7 +27,7 @@ const db = drizzle({
 })
 
 export function makeMultiple<T>(count: number, maker: () => T): T[] {
-  return Array.from({ length: count }, maker)
+  return Array.from({length: count}, maker)
 }
 
 export async function seed() {
@@ -38,13 +43,21 @@ export async function seed() {
   console.log("Clearing 'projects' table")
   await db.delete(Schema.projects).execute()
   console.log("Clearing 'skills' table")
-  await db.delete(Schema.skill).execute()
+  await db.delete(Schema.skills).execute()
   console.log(
     "Clearing 'projectSkill', 'projectIssue' and 'projectTimetable' table",
   )
   await db.delete(Schema.projectSkill).execute()
   await db.delete(Schema.projectIssue).execute()
   await db.delete(Schema.projectTimetable).execute()
+  console.log(
+    "Clearing 'userProjects', 'userSkills', 'userFollows' and 'userSkillVerification' table",
+  )
+  await db.delete(Schema.userProjects).execute()
+  await db.delete(Schema.userSkills).execute()
+  await db.delete(Schema.userFollows).execute()
+  await db.delete(Schema.userSkillVerification).execute()
+
   console.log("Clearing 'user' table")
   await db.delete(Schema.users).execute()
 
@@ -122,7 +135,7 @@ export async function seed() {
 
   console.log('Creating 50 brainstorm tag records')
   const brainstormTagData = brainstormIds.flatMap((brainstormId) => {
-    const tagAmount = faker.number.int({ min: 1, max: 8 })
+    const tagAmount = faker.number.int({min: 1, max: 8})
     const selectedTagIds = faker.helpers.arrayElements(tagIds, tagAmount)
     return selectedTagIds.map((tagId) => ({
       brainstormId,
@@ -132,8 +145,40 @@ export async function seed() {
   await db.insert(Schema.brainstormTags).values(brainstormTagData).execute()
 
   console.log('Creating 10 project records')
-  const projectData = makeProjects(10)
-  await db.insert(Schema.projects).values(projectData).execute()
+  const projectData = makeMultiple(10, () => makeProject())
+  const projects = await db.insert(Schema.projects).values(projectData).returning()
+
+  console.log('Creating 100 skill records')
+  const skillData = makeMultiple(100, () => makeSkill())
+  const skills = await db.insert(Schema.skills).values(skillData).returning()
+
+  console.log('Creating 500 user skill records')
+  const uniqueUserSkills = new Set<string>()
+  const userSkillData = makeMultiple(500, () =>
+    makeUserSkills(userIds, skills.map(it => it.id), uniqueUserSkills),
+  ).filter((e) => !!e)
+  const userSkills = await db.insert(Schema.userSkills).values(userSkillData).returning()
+
+  console.log('Creating 100 userProject records')
+  const uniqueUserProjects = new Set<string>()
+  const userProjectData = makeMultiple(100, () =>
+    makeUserProjects(userIds, projects.map(it => it.id), uniqueUserProjects),
+  ).filter((e) => !!e)
+  await db.insert(Schema.userProjects).values(userProjectData).execute()
+
+  console.log('Creating 50 userFollow records')
+  const userFollowData = makeMultiple(50, () => makeUserFollows(
+    userIds, userIds, new Set<string>)
+  )
+    .filter((e) => !!e)
+  await db.insert(Schema.userFollows).values(userFollowData).execute()
+
+  console.log('Creating 1000 userSkillVerification records')
+  const uniqueUserSkillVerifications = new Set<string>()
+  const userSkillVerificationData = makeMultiple(1000, () =>
+    makeUserSkillVerification(userSkills.map(it => it.id), userIds, uniqueUserSkillVerifications),
+  ).filter((e) => !!e)
+  await db.insert(Schema.userSkillVerification).values(userSkillVerificationData).execute()
 
   console.log('### Seeding complete ###')
   process.exit(0)

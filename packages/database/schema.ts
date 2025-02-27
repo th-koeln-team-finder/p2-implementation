@@ -145,7 +145,7 @@ export const userFollows = pgTable('userFollows', {
     .references(() => users.id, { onDelete: 'cascade' }),
   createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
 })
-export type UserFollowsInsert = typeof userRatings.$inferInsert
+export type UserFollowsInsert = typeof userFollows.$inferInsert
 
 /**
  * This table stores all the projects a user is and was part of.
