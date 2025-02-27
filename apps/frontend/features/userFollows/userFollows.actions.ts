@@ -1,10 +1,10 @@
 'use server'
 
-import {db, Schema} from '@repo/database'
-import {and, eq} from 'drizzle-orm'
-import {revalidateTag} from 'next/cache'
-import {sendNotificationByType} from "@/features/notifications/notifications.actions";
-import {getUser} from "@/features/users/users.query";
+import { sendNotificationByType } from '@/features/notifications/notifications.actions'
+import { getUser } from '@/features/users/users.query'
+import { Schema, db } from '@repo/database'
+import { and, eq } from 'drizzle-orm'
+import { revalidateTag } from 'next/cache'
 
 export async function revalidateFollows() {
   return revalidateTag('userFollows')
@@ -40,7 +40,7 @@ export async function setFollows(followerId: string, followeeId: string) {
 
     await sendNotificationByType([followeeId], 'newFollower', {
       title: ['notifications.newFollower.title'],
-      body: ['notifications.newFollower.message', {follower: followerName}]
+      body: ['notifications.newFollower.message', { follower: followerName }],
     })
   }
 }

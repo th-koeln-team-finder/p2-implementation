@@ -3,7 +3,6 @@ import { ProjectIssuesList } from '@/features/projects/components/ProjectIssuesL
 import { ProjectResourcePreview } from '@/features/projects/components/ProjectResourcePreview'
 import { ProjectTimetable } from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
-import { SkillScale } from '../../../../../../packages/design-system/components/custom/SkillScale'
 import TeamMembers from '@/features/projects/components/TeamMembers'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { useFormContext } from '@formsignals/form-react'
@@ -11,6 +10,7 @@ import { useSignals } from '@preact/signals-react/runtime'
 import { Weekdays } from '@repo/database/schema'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { useTranslations } from 'next-intl'
+import { SkillScale } from '../../../../../../packages/design-system/components/custom/SkillScale'
 
 export function CreateProjectPreview() {
   useSignals()
@@ -43,7 +43,10 @@ export function CreateProjectPreview() {
 
       <div className="grid grid-cols-2 gap-8">
         <ImageCarousel />
-        <SkillScale skills={formValues.skills} title={t('skillScale.skillTitle')} />
+        <SkillScale
+          skills={formValues.skills}
+          title={t('skillScale.skillTitle')}
+        />
 
         <div className="col-span-2">
           {formValues.description && (

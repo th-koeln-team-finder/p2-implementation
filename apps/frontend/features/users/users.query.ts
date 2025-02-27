@@ -1,10 +1,13 @@
 'use server'
 
-import {db, Schema} from '@repo/database'
-import {users} from '@repo/database/schema'
-import {and, eq, inArray, or} from 'drizzle-orm'
-import {unstable_cache as cache} from 'next/dist/server/web/spec-extension/unstable-cache'
-import type {NotificationColumn, NotificationType} from "@repo/database/constants";
+import { Schema, db } from '@repo/database'
+import type {
+  NotificationColumn,
+  NotificationType,
+} from '@repo/database/constants'
+import { users } from '@repo/database/schema'
+import { and, eq, inArray, or } from 'drizzle-orm'
+import { unstable_cache as cache } from 'next/dist/server/web/spec-extension/unstable-cache'
 
 export async function checkUsernameTaken(username: string) {
   const result = await db.query.users.findFirst({
@@ -35,9 +38,9 @@ export const usersWhoWantToReceiveNotificationsByType = cache(
         or(
           eq(Schema.users[pushColumn], true),
           eq(Schema.users[emailColumn], true),
-        )
-      )
-    });
+        ),
+      ),
+    })
   },
   ['usersWhoWantToReceiveNotificationsByType'],
   { tags: ['user'] },

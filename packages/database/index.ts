@@ -1,11 +1,11 @@
 import 'server-only'
 
-import {DrizzleAdapter} from '@auth/drizzle-adapter'
-import {serverEnv} from '@repo/env/server'
-import {drizzle} from 'drizzle-orm/node-postgres'
+import { DrizzleAdapter } from '@auth/drizzle-adapter'
+import { serverEnv } from '@repo/env/server'
+import { eq } from 'drizzle-orm'
+import { drizzle } from 'drizzle-orm/node-postgres'
 import * as schema from './schema'
-import {users} from './schema'
-import {eq} from "drizzle-orm";
+import { users } from './schema'
 
 export const Schema = schema
 
@@ -28,13 +28,14 @@ export const CustomDrizzleAdapter: typeof DrizzleAdapter = (db, schema) => {
       }
       const user = await adapter.getUser(id)
       if (user) {
-        await db.update(users)
+        await db
+          .update(users)
           .set({ lastActive: new Date() })
           .where(eq(users.id, id))
           .execute()
       }
       return user
-    }
+    },
   }
 }
 

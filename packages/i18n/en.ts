@@ -364,13 +364,13 @@ export const en = {
   notifications: {
     newSkillEvaluation: {
       title: 'Someone verified a skill of yours!',
-      message: 'Your skill "{skill}" was verified.'
+      message: 'Your skill "{skill}" was verified.',
     },
     newFollower: {
       title: 'You have a new follower!',
-      message: '{follower} is now following you.'
+      message: '{follower} is now following you.',
     },
-  }
+  },
 }
 
 type PathOf<T> = {

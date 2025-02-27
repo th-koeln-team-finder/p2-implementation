@@ -1,6 +1,12 @@
 import { SidebarNav } from '@/features/users/components/SidebarNav'
+import {
+  BadgeCheck,
+  BellIcon,
+  NotebookTabsIcon,
+  SettingsIcon,
+  SquareUserIcon,
+} from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
-import {BadgeCheck, BellIcon, NotebookTabsIcon, SettingsIcon, SquareUserIcon, UserIcon, WrenchIcon} from "lucide-react";
 
 export default async function EditProfileLayout({
   children,
@@ -23,7 +29,7 @@ export default async function EditProfileLayout({
     {
       title: translate('projects.title'),
       href: '/edit-profile/projects',
-      icon: <NotebookTabsIcon />
+      icon: <NotebookTabsIcon />,
     },
     {
       title: translate('account'),

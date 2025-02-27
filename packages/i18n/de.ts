@@ -1,4 +1,4 @@
-import type {Language} from './en'
+import type { Language } from './en'
 
 export const de: Language = {
   general: {
@@ -371,11 +371,11 @@ export const de: Language = {
   notifications: {
     newSkillEvaluation: {
       title: 'Jemand hat deinen Skill verifiziert!',
-      message: 'Dein Skill "{skill}" wurde verifiziert.'
+      message: 'Dein Skill "{skill}" wurde verifiziert.',
     },
     newFollower: {
       title: 'Neuer Follower',
-      message: '{follower} folgt dir jetzt.'
-    }
-  }
+      message: '{follower} folgt dir jetzt.',
+    },
+  },
 }

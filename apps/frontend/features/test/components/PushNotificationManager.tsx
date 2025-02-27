@@ -1,9 +1,13 @@
 'use client'
 
-import {useEffect, useState} from "react";
-import {Input} from "@repo/design-system/components/ui/input";
-import {Button} from "@repo/design-system/components/ui/button";
-import {sendPushNotification, subscribeUser, unsubscribeUser} from "@/features/notifications/notifications.actions";
+import {
+  sendPushNotification,
+  subscribeUser,
+  unsubscribeUser,
+} from '@/features/notifications/notifications.actions'
+import { Button } from '@repo/design-system/components/ui/button'
+import { Input } from '@repo/design-system/components/ui/input'
+import { useEffect, useState } from 'react'
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
@@ -18,10 +22,12 @@ function urlBase64ToUint8Array(base64String: string) {
   return outputArray
 }
 
-export default function PushNotificationManager({userId}: { userId: string }) {
+export default function PushNotificationManager({
+  userId,
+}: { userId: string }) {
   const [isSupported, setIsSupported] = useState(false)
   const [subscription, setSubscription] = useState<PushSubscription | null>(
-    null
+    null,
   )
   const [message, setMessage] = useState('')
 
@@ -46,7 +52,7 @@ export default function PushNotificationManager({userId}: { userId: string }) {
     const sub = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(
-        process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || ''
+        process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || '',
       ),
     })
     setSubscription(sub)

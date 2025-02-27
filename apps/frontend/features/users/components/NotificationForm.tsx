@@ -1,21 +1,29 @@
 'use client'
 
-import {Card, CardContent, CardHeader, CardTitle,} from '@repo/design-system/components/ui/card'
-import {Label} from '@repo/design-system/components/ui/label'
-import {useTranslations} from 'next-intl'
-import {useSignals} from '@preact/signals-react/runtime'
-import {useForm} from '@formsignals/form-react'
-import {ZodAdapter} from '@formsignals/validation-adapter-zod'
-import type {UserInsert, UserSelect} from '@repo/database/schema'
-import {Bell, LoaderCircleIcon, LucideMail, SaveIcon} from 'lucide-react'
-import {FormError} from "@repo/design-system/components/FormErrors";
-import {Button} from "@repo/design-system/components/ui/button";
-import {SwitchForm} from "@repo/design-system/components/ui/switch";
-import {computed} from "@preact/signals-react";
-import {notificationColumns, notificationTypesByCategory} from "@repo/database/constants";
-import {ToggleForm} from "@repo/design-system/components/ui/toggle";
-import {revalidateUser, updateUserData} from "@/features/users/users.actions";
-import PushNotificationManager from "@/features/test/components/PushNotificationManager";
+import PushNotificationManager from '@/features/test/components/PushNotificationManager'
+import { revalidateUser, updateUserData } from '@/features/users/users.actions'
+import { useForm } from '@formsignals/form-react'
+import { ZodAdapter } from '@formsignals/validation-adapter-zod'
+import { computed } from '@preact/signals-react'
+import { useSignals } from '@preact/signals-react/runtime'
+import {
+  notificationColumns,
+  notificationTypesByCategory,
+} from '@repo/database/constants'
+import type { UserInsert, UserSelect } from '@repo/database/schema'
+import { FormError } from '@repo/design-system/components/FormErrors'
+import { Button } from '@repo/design-system/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@repo/design-system/components/ui/card'
+import { Label } from '@repo/design-system/components/ui/label'
+import { SwitchForm } from '@repo/design-system/components/ui/switch'
+import { ToggleForm } from '@repo/design-system/components/ui/toggle'
+import { Bell, LoaderCircleIcon, LucideMail, SaveIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 export default function NotificationForm({ user }: { user: UserSelect }) {
   const t = useTranslations()
@@ -32,7 +40,7 @@ export default function NotificationForm({ user }: { user: UserSelect }) {
   )
 
   const defaultValues: {
-    id: string,
+    id: string
     activateNotifications: boolean
   } & Partial<UserInsert> = {
     id: user.id,
@@ -94,7 +102,9 @@ export default function NotificationForm({ user }: { user: UserSelect }) {
           </div>
         </div>
         {(
-          Object.keys(notificationTypesByCategory) as (keyof typeof notificationTypesByCategory)[]
+          Object.keys(
+            notificationTypesByCategory,
+          ) as (keyof typeof notificationTypesByCategory)[]
         ).map((type) => {
           const notificationType = notificationTypesByCategory[type]
           return (
@@ -124,12 +134,16 @@ export default function NotificationForm({ user }: { user: UserSelect }) {
                         }
                       </Label>
                       <div className="space-x-1">
-                        <form.FieldProvider name={(`${notification}_push` as keyof UserInsert)}>
+                        <form.FieldProvider
+                          name={`${notification}_push` as keyof UserInsert}
+                        >
                           <ToggleForm>
                             <Bell className="w-6 h-6" />
                           </ToggleForm>
                         </form.FieldProvider>
-                        <form.FieldProvider name={(`${notification}_email` as keyof UserInsert)}>
+                        <form.FieldProvider
+                          name={`${notification}_email` as keyof UserInsert}
+                        >
                           <ToggleForm>
                             <LucideMail className="w-6 h-6" />
                           </ToggleForm>

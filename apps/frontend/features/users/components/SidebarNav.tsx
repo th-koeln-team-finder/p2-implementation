@@ -1,13 +1,13 @@
 'use client'
 
-import {Link, usePathname} from '@/features/i18n/routing'
-import {buttonVariants} from '@repo/design-system/components/ui/button'
-import {cn} from '@repo/design-system/lib/utils'
+import { Link, usePathname } from '@/features/i18n/routing'
+import { buttonVariants } from '@repo/design-system/components/ui/button'
+import { cn } from '@repo/design-system/lib/utils'
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
     href: string
-    title: string,
+    title: string
     icon: React.ReactNode
   }[]
 }
@@ -36,9 +36,7 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
           )}
         >
           {item.icon}
-          <span className="text-xs lg:text-sm">
-            {item.title}
-          </span>
+          <span className="text-xs lg:text-sm">{item.title}</span>
         </Link>
       ))}
     </nav>

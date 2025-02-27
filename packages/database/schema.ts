@@ -1,4 +1,4 @@
-import {relations, sql} from 'drizzle-orm'
+import { relations, sql } from 'drizzle-orm'
 import {
   type AnyPgColumn,
   boolean,
@@ -15,8 +15,13 @@ import {
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core'
-import type {AdapterAccountType} from 'next-auth/adapters'
-import {notificationColumns, Roles, type RolesType, RolesValues,} from './constants'
+import type { AdapterAccountType } from 'next-auth/adapters'
+import {
+  Roles,
+  type RolesType,
+  RolesValues,
+  notificationColumns,
+} from './constants'
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
 
@@ -63,7 +68,9 @@ export const users = pgTable('user', {
   ...notificationColumns,
   lastActive: timestamp('lastActive', { mode: 'date' }),
   createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
-  updatedAt: timestamp({ mode: 'date' }).notNull().defaultNow()
+  updatedAt: timestamp({ mode: 'date' })
+    .notNull()
+    .defaultNow()
     .$onUpdate(() => new Date()),
 })
 export type UserInsert = typeof users.$inferInsert
@@ -81,7 +88,8 @@ export const userSkills = pgTable(
       .references(() => skills.id, { onDelete: 'cascade' }),
     level: integer().notNull(),
     createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
-    updatedAt: timestamp({ mode: 'date' }).notNull()
+    updatedAt: timestamp({ mode: 'date' })
+      .notNull()
       .defaultNow()
       .$onUpdate(() => new Date()),
   },
@@ -101,7 +109,7 @@ export const userSkillRelations = relations(userSkills, ({ one, many }) => ({
   user: one(users, {
     fields: [userSkills.userId],
     references: [users.id],
-  })
+  }),
 }))
 
 export const userSkillVerification = pgTable('userSkillVerification', {
@@ -113,7 +121,9 @@ export const userSkillVerification = pgTable('userSkillVerification', {
     .notNull()
     .references(() => userSkills.id, { onDelete: 'cascade' }),
   createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
-  updatedAt: timestamp({ mode: 'date' }).notNull().defaultNow()
+  updatedAt: timestamp({ mode: 'date' })
+    .notNull()
+    .defaultNow()
     .$onUpdate(() => new Date()),
 })
 export type UserSkillVerificationInsert =
@@ -168,7 +178,9 @@ export const userProjects = pgTable('userProjects', {
   projectDescription: varchar({ length: 255 }),
   visible: boolean().notNull().default(true),
   createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow()
+  updatedAt: timestamp()
+    .notNull()
+    .defaultNow()
     .$onUpdate(() => new Date()),
 })
 export type UserProjectsInsert = typeof userProjects.$inferInsert
@@ -187,10 +199,11 @@ export const userProjectSettings = pgTable('userProjectSettings', {
     .notNull()
     .default('email'),
   createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow()
+  updatedAt: timestamp()
+    .notNull()
+    .defaultNow()
     .$onUpdate(() => new Date()),
 })
-
 
 /**
  * Skills for a User and a Project. All can have multiple skills
@@ -200,7 +213,9 @@ export const skills = pgTable('skills', {
   id: uuid().primaryKey().notNull().defaultRandom(),
   skill: varchar({ length: 255 }).notNull().unique(),
   createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow()
+  updatedAt: timestamp()
+    .notNull()
+    .defaultNow()
     .$onUpdate(() => new Date()),
 })
 export type SkillsInsert = typeof skills.$inferInsert

@@ -37,7 +37,7 @@ export function Toolbar({
     <div className="flex flex-row items-center gap-2">
       <div className="flex flex-row items-center gap-1">
         <Button variant="ghost" type="button">
-        {starsString}
+          {starsString}
           <StarIcon />
         </Button>
         <Button variant="ghost" type="button" size="icon">

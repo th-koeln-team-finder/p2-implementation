@@ -1,5 +1,5 @@
-import {boolean} from 'drizzle-orm/pg-core'
-import type {PgBooleanBuilderInitial} from "drizzle-orm/pg-core/columns/boolean";
+import { boolean } from 'drizzle-orm/pg-core'
+import type { PgBooleanBuilderInitial } from 'drizzle-orm/pg-core/columns/boolean'
 
 export const Roles = {
   admin: 'admin',

@@ -1,9 +1,9 @@
-import {authMiddleware} from '@/auth'
-import {redirect} from '@/features/i18n/routing'
-import {getUser} from '@/features/users/users.query'
-import type {UserSelect} from '@repo/database/schema'
-import {getLocale, getTranslations} from 'next-intl/server'
-import NotificationForm from "@/features/users/components/NotificationForm";
+import { authMiddleware } from '@/auth'
+import { redirect } from '@/features/i18n/routing'
+import NotificationForm from '@/features/users/components/NotificationForm'
+import { getUser } from '@/features/users/users.query'
+import type { UserSelect } from '@repo/database/schema'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 export default async function EditProfile() {
   const t = await getTranslations()

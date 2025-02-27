@@ -14,6 +14,7 @@ import {
   FieldError,
   FormError,
 } from '@repo/design-system/components/FormErrors'
+import { WysiwygEditorForm } from '@repo/design-system/components/WysiwygEditor'
 import { FileInlinePreviewsForm } from '@repo/design-system/components/custom/file-inline-previews-form'
 import { FileListForm } from '@repo/design-system/components/custom/file-list-form'
 import { FileUploadForm } from '@repo/design-system/components/custom/file-upload'
@@ -24,7 +25,6 @@ import { SwitchForm } from '@repo/design-system/components/ui/switch'
 import { LoaderCircleIcon, SaveIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { z } from 'zod'
-import { WysiwygEditorForm } from '@repo/design-system/components/WysiwygEditor'
 
 export default function ProfileForm({
   user,
@@ -131,7 +131,10 @@ export default function ProfileForm({
                 <Label htmlFor="firstName" className="inline-block">
                   {t('users.settings.firstName')}
                 </Label>
-                <InputForm placeholder={t('users.settings.firstNamePlaceholder')} name="firstName"/>
+                <InputForm
+                  placeholder={t('users.settings.firstNamePlaceholder')}
+                  name="firstName"
+                />
               </div>
             </form.FieldProvider>
             <form.FieldProvider name="lastName">
@@ -139,7 +142,10 @@ export default function ProfileForm({
                 <Label htmlFor="lastName" className="inline-block">
                   {t('users.settings.lastName')}
                 </Label>
-                <InputForm placeholder={t('users.settings.lastNamePlaceholder')} name="lastName"/>
+                <InputForm
+                  placeholder={t('users.settings.lastNamePlaceholder')}
+                  name="lastName"
+                />
               </div>
             </form.FieldProvider>
           </div>
@@ -191,7 +197,10 @@ export default function ProfileForm({
               <Label htmlFor="url" className="inline-block">
                 {t('users.settings.url')}
               </Label>
-              <InputForm placeholder={t('users.settings.urlPlaceholder')} name="url" />
+              <InputForm
+                placeholder={t('users.settings.urlPlaceholder')}
+                name="url"
+              />
             </div>
             <FieldError />
           </form.FieldProvider>
@@ -201,7 +210,10 @@ export default function ProfileForm({
               <Label htmlFor="location" className="inline-block">
                 {t('users.settings.location')}
               </Label>
-              <InputForm placeholder={t('users.settings.locationPlaceholder')} name="location" />
+              <InputForm
+                placeholder={t('users.settings.locationPlaceholder')}
+                name="location"
+              />
             </div>
           </form.FieldProvider>
 
@@ -237,14 +249,11 @@ export default function ProfileForm({
         <div className="w-full mb-4 md:w-1/3 order-1 md:order-2">
           <form.FieldProvider
             name="image"
-            validator={z
-              .any()
-              .refine(
-                (files: File[]) => {
-                  return files.length === 0 || files.some((file) => file.size < 10485760)
-                },
-                'A file is too large',
-              )}
+            validator={z.any().refine((files: File[]) => {
+              return (
+                files.length === 0 || files.some((file) => file.size < 10485760)
+              )
+            }, 'A file is too large')}
           >
             <Label htmlFor="image" className="inline-block mb-2">
               {t('users.settings.profilePicture')}

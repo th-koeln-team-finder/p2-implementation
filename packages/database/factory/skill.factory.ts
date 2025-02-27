@@ -1,5 +1,5 @@
-import type { ProjectSkillInsert, SkillsInsert } from '../schema'
 import { faker } from '@faker-js/faker/locale/de'
+import type { ProjectSkillInsert, SkillsInsert } from '../schema'
 
 const uniqueSkills = new Set<string>()
 

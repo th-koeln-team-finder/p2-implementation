@@ -13,7 +13,10 @@ import { useOptimisticUserSkills } from '@/features/userSkills/userSkills.hooks'
 import { debounce } from '@/utils'
 import type { SkillsSelect, UserSkillsSelect } from '@repo/database/schema'
 import { Button } from '@repo/design-system/components/ui/button'
-import {Combobox, type Option} from '@repo/design-system/components/ui/combobox'
+import {
+  Combobox,
+  type Option,
+} from '@repo/design-system/components/ui/combobox'
 import {
   Dialog,
   DialogClose,

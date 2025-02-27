@@ -1,9 +1,9 @@
 'use server'
 
-import {unstable_cache as cache} from "next/dist/server/web/spec-extension/unstable-cache";
-import {db} from "@repo/database";
-import {eq} from "drizzle-orm";
-import {subscriptions} from "@repo/database/schema";
+import { db } from '@repo/database'
+import { subscriptions } from '@repo/database/schema'
+import { eq } from 'drizzle-orm'
+import { unstable_cache as cache } from 'next/dist/server/web/spec-extension/unstable-cache'
 
 export const getSubscription = cache(
   async (userId: string) =>

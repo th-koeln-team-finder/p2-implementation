@@ -1,12 +1,12 @@
 'use client'
 
-import {ProjectCard} from '@/features/projects/components/ProjectCard'
-import {loadMoreProjects} from '@/features/users/users.actions'
-import type {UserProjectsSelect} from '@repo/database/schema'
-import {Button} from '@repo/design-system/components/ui/button'
-import {ChevronDown, LoaderCircle} from 'lucide-react'
-import {useTranslations} from 'next-intl'
-import {useEffect, useState} from 'react'
+import { ProjectCard } from '@/features/projects/components/ProjectCard'
+import { loadMoreProjects } from '@/features/users/users.actions'
+import type { UserProjectsSelect } from '@repo/database/schema'
+import { Button } from '@repo/design-system/components/ui/button'
+import { ChevronDown, LoaderCircle } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { useEffect, useState } from 'react'
 
 export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
   const [previouslyWorkedOn, setPreviouslyWorkedOn] = useState<

@@ -3,9 +3,6 @@ import type { UserSelect } from '@repo/database/schema'
 import { serverEnv } from '@repo/env/server'
 import NextAuth from 'next-auth'
 import Passkey from 'next-auth/providers/passkey'
-import {revalidateUser, updateLastActive} from "@/features/users/users.actions";
-import {db, Schema} from "@repo/database";
-import {eq} from "drizzle-orm";
 
 const FRONTEND_HOST = serverEnv.FRONTEND_URL.replace(/^https?:\/\//, '')
 

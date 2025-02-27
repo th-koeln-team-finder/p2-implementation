@@ -1,10 +1,19 @@
 'use client'
-import {Button} from '@/components/ui/button'
-import {Collapsible, CollapsibleContent, CollapsibleTrigger,} from '@/components/ui/collapsible'
-import {BadgeCheck, ChevronDownIcon} from 'lucide-react'
-import {useTranslations} from 'next-intl'
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
-import VerificationControl from "../../../../apps/frontend/features/users/components/VerificationControl";
+import { Button } from '@/components/ui/button'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import { BadgeCheck, ChevronDownIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import VerificationControl from '../../../../apps/frontend/features/users/components/VerificationControl'
 
 type ProjectSkill = {
   name: string
@@ -31,9 +40,8 @@ type ProjectSkillScaleProps = {
   skills: ProjectSkill[]
 }
 
-
 function isUserSkillProps(
-  props: UserSkillScaleProps | ProjectSkillScaleProps
+  props: UserSkillScaleProps | ProjectSkillScaleProps,
 ): props is UserSkillScaleProps {
   return 'showVerificationControl' in props
 }
@@ -42,9 +50,11 @@ function isUserSkillProps(
 export function SkillScale(
   props: UserSkillScaleProps | ProjectSkillScaleProps,
 ) {
-  const {title, skills} = props
+  const { title, skills } = props
   const showVerificationControl =
-    'showVerificationControl' in props ? props.showVerificationControl : undefined
+    'showVerificationControl' in props
+      ? props.showVerificationControl
+      : undefined
   const translate = useTranslations()
 
   return (
@@ -53,19 +63,27 @@ export function SkillScale(
 
       {!skills.length && (
         <p className="text-muted-foreground text-sm italic">
-          {isUserSkillProps(props) ? translate('users.emptySkills') : translate('projects.skillScale.emptySkills')}
+          {isUserSkillProps(props)
+            ? translate('users.emptySkills')
+            : translate('projects.skillScale.emptySkills')}
         </p>
       )}
 
       {!!skills.length && (
         <div
           className="overflow-auto pr-1 pb-1"
-          style={{scrollbarGutter: 'stable'}}
+          style={{ scrollbarGutter: 'stable' }}
         >
           <Collapsible className="group">
-            <SkillPointList list={skills.slice(0, 5)} showVerificationControl={showVerificationControl}/>
+            <SkillPointList
+              list={skills.slice(0, 5)}
+              showVerificationControl={showVerificationControl}
+            />
             <CollapsibleContent>
-              <SkillPointList list={skills.slice(5)} showVerificationControl={showVerificationControl}/>
+              <SkillPointList
+                list={skills.slice(5)}
+                showVerificationControl={showVerificationControl}
+              />
             </CollapsibleContent>
             {skills.length > 5 && (
               <div className="-bottom-1 sticky flex flex-row bg-background pt-2">
@@ -77,7 +95,7 @@ export function SkillScale(
                     <p className="hidden group-data-[state=open]:block">
                       Show less
                     </p>
-                    <ChevronDownIcon className="group-data-[state=open]:-rotate-180 rotate-0 transition-transform"/>
+                    <ChevronDownIcon className="group-data-[state=open]:-rotate-180 rotate-0 transition-transform" />
                   </Button>
                 </CollapsibleTrigger>
               </div>
@@ -90,67 +108,71 @@ export function SkillScale(
 }
 
 type ProjectSkillPointListProps = {
-  list: ProjectSkill[],
+  list: ProjectSkill[]
 }
 type UserSkillPointListProps = {
-  list: UserSkill[],
+  list: UserSkill[]
   showVerificationControl?: boolean
 }
 
 function isUserSkillList(
-  props: ProjectSkillPointListProps | UserSkillPointListProps
+  props: ProjectSkillPointListProps | UserSkillPointListProps,
 ): props is UserSkillPointListProps {
   return 'showVerificationControl' in props
 }
 
-function SkillPointList(props: ProjectSkillPointListProps | UserSkillPointListProps) {
+function SkillPointList(
+  props: ProjectSkillPointListProps | UserSkillPointListProps,
+) {
   const translate = useTranslations()
 
   return (
     <div className="flex flex-col gap-1">
-      {isUserSkillList(props) ? props.list.map((skill) => (
-        <div key={skill.name} className="flex flex-row justify-between">
-          <p>{skill.name}</p>
-          <div className="flex gap-4 items-center">
-            <SkillPoints currentLevel={skill.level}/>
+      {isUserSkillList(props)
+        ? props.list.map((skill) => (
+            <div key={skill.name} className="flex flex-row justify-between">
+              <p>{skill.name}</p>
+              <div className="flex gap-4 items-center">
+                <SkillPoints currentLevel={skill.level} />
 
-            <div className="flex items-center gap-2 w-10 justify-center">
-              {skill.verifications !== undefined &&
-                skill.verifications > 0 && (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger className="flex items-center gap-1 text-sm text-fuchsia-700">
-                        <BadgeCheck size={16}/>
-                        <span>{skill.verifications}</span>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>
-                          {translate('users.verificationTooltip', {
-                            verifications: skill.verifications,
-                          })}
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                <div className="flex items-center gap-2 w-10 justify-center">
+                  {skill.verifications !== undefined &&
+                    skill.verifications > 0 && (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger className="flex items-center gap-1 text-sm text-fuchsia-700">
+                            <BadgeCheck size={16} />
+                            <span>{skill.verifications}</span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>
+                              {translate('users.verificationTooltip', {
+                                verifications: skill.verifications,
+                              })}
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
+                </div>
+                {props.showVerificationControl && skill.verifierId && (
+                  <div className="flex justify-end">
+                    <VerificationControl
+                      skillId={skill.id}
+                      isVerified={skill.isVerified}
+                      verifierId={skill.verifierId}
+                    />
+                  </div>
                 )}
-            </div>
-            {props.showVerificationControl && skill.verifierId && (
-              <div className="flex justify-end">
-                <VerificationControl
-                  skillId={skill.id}
-                  isVerified={skill.isVerified}
-                  verifierId={skill.verifierId}
-                />
               </div>
-            )}
-          </div>
-        </div>
-      )) : props.list.map((skill) => (
-        <div key={skill.name} className="flex flex-row justify-between">
-          <p>{skill.name}</p>
-          <SkillPoints currentLevel={skill.level}/>
-        </div>
-      ))}
+            </div>
+          ))
+        : props.list.map((skill) => (
+            <div key={skill.name} className="flex flex-row justify-between">
+              <p>{skill.name}</p>
+              <SkillPoints currentLevel={skill.level} />
+            </div>
+          ))}
     </div>
   )
 }
@@ -159,9 +181,9 @@ type SkillPointsProps = {
   currentLevel: number
 }
 
-const array5 = Array.from({length: 5}, (_, i) => i)
+const array5 = Array.from({ length: 5 }, (_, i) => i)
 
-function SkillPoints({currentLevel}: SkillPointsProps) {
+function SkillPoints({ currentLevel }: SkillPointsProps) {
   return (
     <div className="flex flex-row gap-2">
       {array5.map((level) => (

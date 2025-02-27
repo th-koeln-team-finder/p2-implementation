@@ -1,8 +1,8 @@
+import { redirect } from '@/features/i18n/routing'
 import Profile from '@/features/users/components/Profile'
-import {getUser} from '@/features/users/users.query'
-import type {UserWithImage} from "@/features/users/users.types";
-import {redirect} from "@/features/i18n/routing";
-import {getLocale} from "next-intl/server";
+import { getUser } from '@/features/users/users.query'
+import type { UserWithImage } from '@/features/users/users.types'
+import { getLocale } from 'next-intl/server'
 
 export default async function ProfilePage({
   params,
@@ -10,7 +10,7 @@ export default async function ProfilePage({
   params: Promise<{ id: string }>
 }>) {
   const id: string = (await params).id
-  const user = await getUser(id) as UserWithImage
+  const user = (await getUser(id)) as UserWithImage
   if (!user) {
     return redirect({ href: '/', locale: await getLocale() })
   }

@@ -18,7 +18,7 @@ export async function updateUserSkillLevel(userSkillId: string, level: number) {
     db
       .update(Schema.userSkills)
       .set({ level })
-      /*.where(eq(Schema.userSkills.id, userSkillId))*/.toSQL().sql
+      /*.where(eq(Schema.userSkills.id, userSkillId))*/ .toSQL().sql,
   )
   await db
     .update(Schema.userSkills)

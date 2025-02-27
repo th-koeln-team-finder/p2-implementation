@@ -1,5 +1,9 @@
-import type {SkillsSelect, UserSkillsSelect, UserSkillVerificationSelect,} from '@repo/database/schema'
-import {useOptimistic, useTransition} from 'react'
+import type {
+  SkillsSelect,
+  UserSkillVerificationSelect,
+  UserSkillsSelect,
+} from '@repo/database/schema'
+import { useOptimistic, useTransition } from 'react'
 
 export type OptimisticPayload =
   | {

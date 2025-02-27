@@ -17,7 +17,7 @@ const carouselItems = Array.from({ length: 5 })
             className="h-full w-full object-cover"
             key={v}
             src="/images/image-placeholder.jpg"
-           height={800}
+            height={800}
             width={1200}
             alt="palm-trees"
           />
