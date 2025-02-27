@@ -16,12 +16,12 @@ import type {UserWithImage} from "@/features/users/users.types";
 import ProfileBio from "@/features/users/components/ProfileBio";
 import {SkillScale} from "@repo/design-system/components/custom/SkillScale";
 
-export default async function Profile({ user }: { user: UserWithImage }) {
+export default async function Profile({user}: { user: UserWithImage }) {
   const translate = await getTranslations()
 
   const session = await authMiddleware()
   if (!session?.user?.id) {
-    return redirect({ href: '/', locale: await getLocale() })
+    return redirect({href: '/', locale: await getLocale()})
   }
   const isOwnProfile = user.id === session.user.id
   const loggedInUser = (await getUser(session.user.id)) as UserSelect
@@ -47,7 +47,11 @@ export default async function Profile({ user }: { user: UserWithImage }) {
 
         <div>
           <div className="flex flex-1 flex-col space-y-2 mb-2">
-            {user.occupation && <p className="font-bold text-xs">{user.occupation}</p>}
+            <p className="text-xs">
+              {user.firstName || user.lastName ? (<span>{user.firstName} {user.lastName}</span>) : null}
+              {(user.firstName || user.lastName) && user.occupation ? ' • ' : null}
+              {user.occupation && <span className="font-bold">{user.occupation}</span>}
+            </p>
             <div className="flex items-center gap-8">
               <h1 className="inline font-bold text-3xl">{user.name}</h1>
               {isOwnProfile ? (
@@ -66,8 +70,7 @@ export default async function Profile({ user }: { user: UserWithImage }) {
               )}
             </div>
             {user.lastActive && <p className="text-muted-foreground text-xs leading-none">
-              {translate('users.lastActivity')}:{' '}
-              {(new Date(user.lastActive)).toLocaleDateString()}
+              {translate('users.lastActivity')}: {(new Date(user.lastActive)).toLocaleDateString()}
             </p>}
           </div>
           {user.bio && <ProfileBio bio={user.bio}/>}

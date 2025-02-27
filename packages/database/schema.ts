@@ -40,6 +40,8 @@ export const users = pgTable('user', {
   name: text('name').unique().notNull(),
   email: text('email').unique().notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
+  firstName: text('firstName'),
+  lastName: text('lastName'),
   image: uuid().references((): AnyPgColumn => uploadedFiles.id, {
     onDelete: 'cascade',
   }),

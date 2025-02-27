@@ -39,6 +39,8 @@ export default function ProfileForm({
     defaultValues: {
       id: user.id,
       name: user.name,
+      firstName: user.firstName || '',
+      lastName: user.lastName || '',
       occupation: user.occupation || '',
       bio: user.bio || '',
       url: user.url || '',
@@ -52,6 +54,8 @@ export default function ProfileForm({
       let parsedValues: Partial<UserInsert> = {
         id: values.id,
         name: values.name,
+        firstName: values.firstName,
+        lastName: values.lastName,
         occupation: values.occupation,
         bio: values.bio,
         url: values.url,
@@ -120,6 +124,25 @@ export default function ProfileForm({
               <FieldError />
             </div>
           </form.FieldProvider>
+
+          <div className="flex gap-4">
+            <form.FieldProvider name="firstName">
+              <div className="flex-1 grid gap-2">
+                <Label htmlFor="firstName" className="inline-block">
+                  {t('users.settings.firstName')}
+                </Label>
+                <InputForm placeholder={t('users.settings.firstNamePlaceholder')} name="firstName"/>
+              </div>
+            </form.FieldProvider>
+            <form.FieldProvider name="lastName">
+              <div className="flex-1 grid gap-2">
+                <Label htmlFor="lastName" className="inline-block">
+                  {t('users.settings.lastName')}
+                </Label>
+                <InputForm placeholder={t('users.settings.lastNamePlaceholder')} name="lastName"/>
+              </div>
+            </form.FieldProvider>
+          </div>
 
           <form.FieldProvider name="occupation">
             <div className="grid gap-2">
