@@ -39,7 +39,7 @@ export default async function Profile({ user }: { user: UserWithImage }) {
   }))
 
   return (
-    <main className="container mx-auto my-4">
+    <div>
       <div className="flex flex-col items-center gap-4 md:flex-row md:items-start">
         <div className="md:w-1/4">
           <UserAvatar user={user} className="h-32 w-32"/>
@@ -86,6 +86,6 @@ export default async function Profile({ user }: { user: UserWithImage }) {
         </h2>
         <PreviouslyWorkedOn userId={user.id}/>
       </div>
-    </main>
+    </div>
   )
 }

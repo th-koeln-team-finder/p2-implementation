@@ -16,7 +16,7 @@ export default async function ProfilePage({
   }
 
   return (
-    <main className="container mx-auto my-4">
+    <main className="container px-4 mx-auto my-4">
       <Profile user={user} />
     </main>
   )
