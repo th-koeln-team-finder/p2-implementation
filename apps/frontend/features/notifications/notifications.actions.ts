@@ -7,6 +7,8 @@ import type {NotificationType} from "@repo/database/constants";
 import {type SubscriptionSelect, subscriptions } from "@repo/database/schema";
 import {eq} from "drizzle-orm";
 import webpush from 'web-push'
+import {getTranslations} from "next-intl/server";
+import {useTranslations} from "next-intl";
 
 webpush.setVapidDetails(
   process.env.FRONTEND_URL,
@@ -28,6 +30,8 @@ export async function unsubscribeUser(userId: string) {
     .execute()
 }
 
+type TranslationParams = Parameters<ReturnType<typeof useTranslations<never>>>
+
 export type NotificationData = {
   title?: string
   body?: string
@@ -40,12 +44,30 @@ export type NotificationData = {
   data?: any,
 }
 
-export async function sendNotificationByType(userIds: string[], type: NotificationType, data: NotificationData) {
+export type NotificationSettings = {
+  title: TranslationParams
+  body: TranslationParams
+  icon?: string,
+  vibrate?: number[]
+  image?: string
+  actions?: { action: string, title: string, icon?: string }[],
+  lang?: string,
+  // biome-ignore lint/suspicious/noExplicitAny: any is needed here because the data can be anything
+  data?: any,
+}
+
+export async function sendNotificationByType(userIds: string[], type: NotificationType, data: NotificationSettings) {
   const users = await usersWhoWantToReceiveNotificationsByType(userIds, type)
   const promises = []
   for (const user of users) {
+    const translate = await getTranslations({locale: user.languagePreference})
     if (user[`${type}_push`]) {
-      promises.push(sendPushNotification(user.id, data))
+      promises.push(sendPushNotification(user.id, {
+        ...data,
+        title: translate(...data.title),
+        body: translate(...data.body),
+        lang: user.languagePreference,
+      }))
     }
   }
   await Promise.allSettled(promises)

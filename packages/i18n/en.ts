@@ -361,7 +361,11 @@ export const en = {
     newSkillEvaluation: {
       title: 'Someone verified a skill of yours!',
       message: 'Your skill "{skill}" was verified.'
-    }
+    },
+    newFollower: {
+      title: 'You have a new follower!',
+      message: '{follower} is now following you.'
+    },
   }
 }
 

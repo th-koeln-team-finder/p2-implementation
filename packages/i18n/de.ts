@@ -368,6 +368,10 @@ export const de: Language = {
     newSkillEvaluation: {
       title: 'Jemand hat deinen Skill verifiziert!',
       message: 'Dein Skill "{skill}" wurde verifiziert.'
+    },
+    newFollower: {
+      title: 'Neuer Follower',
+      message: '{follower} folgt dir jetzt.'
     }
   }
 }

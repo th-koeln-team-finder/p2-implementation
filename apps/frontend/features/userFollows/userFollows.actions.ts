@@ -39,8 +39,8 @@ export async function setFollows(followerId: string, followeeId: string) {
     const followerName = (await getUser(followerId))?.name
 
     await sendNotificationByType([followeeId], 'newFollower', {
-      title: 'New follower',
-      body: followerName ? `"${followerName}" follows you now` : 'You have a new follower'
+      title: ['notifications.newFollower.title'],
+      body: ['notifications.newFollower.message', {follower: followerName}]
     })
   }
 }

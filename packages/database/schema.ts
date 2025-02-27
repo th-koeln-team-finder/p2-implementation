@@ -96,6 +96,10 @@ export const userSkillRelations = relations(userSkills, ({ one, many }) => ({
     references: [skills.id],
   }),
   userSkillVerification: many(userSkillVerification),
+  user: one(users, {
+    fields: [userSkills.userId],
+    references: [users.id],
+  })
 }))
 
 export const userSkillVerification = pgTable('userSkillVerification', {

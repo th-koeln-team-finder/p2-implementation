@@ -13,19 +13,19 @@ export async function verifyUserSkill(userId: string, userSkillId: string) {
       userSkillId,
     })
 
-  const translate = await getTranslations('notifications.newSkillEvaluation')
-
   const userSkill = await db.query.userSkills.findFirst({
     where: eq(Schema.userSkills.id, userSkillId),
     with: {
       skill: true,
+      user: true,
     }
   })
 
   if (userSkill) {
+
     await sendNotificationByType([userSkill.userId], 'newSkillEvaluation', {
-      title: translate('title'),
-      body: translate('message', {skill: userSkill.skill.skill})
+      title: ['notifications.newSkillEvaluation.title'],
+      body: ['notifications.newSkillEvaluation.message', {skill: userSkill.skill.skill}],
     })
   }
 }
