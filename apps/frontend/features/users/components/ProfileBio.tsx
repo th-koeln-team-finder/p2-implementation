@@ -24,7 +24,7 @@ export default function ProfileBio({ bio }: { bio: string }) {
         onClick={() => setBioOpened(!bioOpened)}
       >
         <span
-          className={`text-primary transition ${bioOpened ? 'transform rotate-180' : ''}`}
+          className={`text-primary transition ${bioOpened ? 'rotate-180 transform' : ''}`}
         >
           <ChevronDown />
         </span>

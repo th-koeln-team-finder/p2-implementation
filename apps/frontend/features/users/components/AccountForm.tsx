@@ -45,7 +45,7 @@ export default function AccountForm({ user }: { user: UserSelect }) {
 
   return (
     <form
-      className="space-y-4 mb-8"
+      className="mb-8 space-y-4"
       onSubmit={async (e) => {
         e.preventDefault()
         e.stopPropagation()

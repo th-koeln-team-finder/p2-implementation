@@ -37,7 +37,7 @@ export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
   return (
     <div>
       <div className="text-center">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {previouslyWorkedOn.map((project) => (
             <ProjectCard
               key={project.projectName}
@@ -50,7 +50,7 @@ export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
           ))}
         </div>
         {loading ? (
-          <LoaderCircle className="animate-spin mx-auto" />
+          <LoaderCircle className="mx-auto animate-spin" />
         ) : (
           !allLoaded && (
             <Button variant="link" className="my-2" onClick={() => loadMore()}>

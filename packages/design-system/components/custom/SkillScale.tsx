@@ -132,15 +132,15 @@ function SkillPointList(
         ? props.list.map((skill) => (
             <div key={skill.name} className="flex flex-row justify-between">
               <p>{skill.name}</p>
-              <div className="flex gap-4 items-center">
+              <div className="flex items-center gap-4">
                 <SkillPoints currentLevel={skill.level} />
 
-                <div className="flex items-center gap-2 w-10 justify-center">
+                <div className="flex w-10 items-center justify-center gap-2">
                   {skill.verifications !== undefined &&
                     skill.verifications > 0 && (
                       <TooltipProvider>
                         <Tooltip>
-                          <TooltipTrigger className="flex items-center gap-1 text-sm text-fuchsia-700">
+                          <TooltipTrigger className="flex items-center gap-1 text-fuchsia-700 text-sm">
                             <BadgeCheck size={16} />
                             <span>{skill.verifications}</span>
                           </TooltipTrigger>

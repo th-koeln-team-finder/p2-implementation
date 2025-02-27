@@ -16,20 +16,20 @@ export default async function Account() {
 
   const user = (await getUser(session.user.id)) as UserSelect
 
-  const handleDelete = async () => {
+  const _handleDelete = async () => {
     await deleteUser(user.id)
     return redirect({ href: '/', locale: await getLocale() })
   }
 
   return (
     <section>
-      <h2 className="text-2xl font-bold mb-8">
+      <h2 className="mb-8 font-bold text-2xl">
         {translate('users.settings.account')}
       </h2>
 
       <AccountForm user={user} />
 
-      <h3 className="font-bold text-xl my-8">
+      <h3 className="my-8 font-bold text-xl">
         {translate('users.settings.dangerZone')}
       </h3>
 

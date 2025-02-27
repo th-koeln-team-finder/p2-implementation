@@ -159,31 +159,30 @@ export default function SkillsEdit({
         .map((userSkill, index) => (
           <div
             key={index}
-            className={`max-w-sm grid grid-cols-3 items-center justify-around py-1 ${index % 2 === 0 ? 'bg-accent/30' : ''}`}
+            className={`grid max-w-sm grid-cols-3 items-center justify-around py-1 ${index % 2 === 0 ? 'bg-accent/30' : ''}`}
           >
-            <div className="text-sm px-2">{userSkill.skill?.skill}</div>
+            <div className="px-2 text-sm">{userSkill.skill?.skill}</div>
             <div className="flex items-center gap-2.5">
               {[...Array(5)].map((_, i) => (
                 <div
                   key={i}
-                  tabIndex={0}
-                  className={`h-2 w-2 rounded-full cursor-pointer ${i < userSkill.level ? 'bg-primary' : 'bg-gray-200'}`}
+                  className={`h-2 w-2 cursor-pointer rounded-full ${i < userSkill.level ? 'bg-primary' : 'bg-gray-200'}`}
                   onClick={() => handleUpdateSkillLevel(userSkill.id, i + 1)}
                 />
               ))}
             </div>
-            <div className="flex items-center px-2 place-self-end h-full">
+            <div className="flex h-full items-center place-self-end px-2">
               {(userSkill.userSkillVerification?.length || 0) > 0 && (
-                <BadgeCheck className="text-sm text-primary mr-4" size={16} />
+                <BadgeCheck className="mr-4 text-primary text-sm" size={16} />
               )}
               <Trash
-                className="cursor-pointer w-4 h-4 text-destructive"
+                className="h-4 w-4 cursor-pointer text-destructive"
                 onClick={() => handleRemoveSkill(userSkill.id)}
               />
             </div>
           </div>
         ))}
-      <div className="flex my-4">
+      <div className="my-4 flex">
         <div>
           <Label htmlFor="search">{translate('add')}</Label>
           <div className="flex w-full max-w-xl items-center space-x-2">

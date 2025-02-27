@@ -16,7 +16,7 @@ export default async function EditProfile() {
 
   return (
     <section>
-      <h2 className="text-2xl font-bold mb-8">
+      <h2 className="mb-8 font-bold text-2xl">
         {translate('users.settings.profile')}
       </h2>
 

@@ -67,7 +67,7 @@ export default function ProjectList({
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold">
+      <h2 className="font-bold text-xl">
         {t('users.settings.projects.yourProjects')}
       </h2>
       {projects.length > 0 ? (
@@ -112,7 +112,7 @@ export default function ProjectList({
         ))
       ) : (
         <div>
-          <h3 className="text-lg font-bold">
+          <h3 className="font-bold text-lg">
             {t('users.settings.projects.noProjectsDesc')}
           </h3>
         </div>

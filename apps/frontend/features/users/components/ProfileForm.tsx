@@ -94,7 +94,7 @@ export default function ProfileForm({
 
   return (
     <form
-      className="flex flex-wrap md:flex-nowrap gap-8 mb-8"
+      className="mb-8 flex flex-wrap gap-8 md:flex-nowrap"
       onSubmit={async (e) => {
         e.preventDefault()
         e.stopPropagation()
@@ -102,7 +102,7 @@ export default function ProfileForm({
       }}
     >
       <form.FormProvider>
-        <div className="w-full space-y-4 order-2 md:order-1">
+        <div className="order-2 w-full space-y-4 md:order-1">
           <form.FieldProvider
             name="name"
             validator={z
@@ -127,7 +127,7 @@ export default function ProfileForm({
 
           <div className="flex gap-4">
             <form.FieldProvider name="firstName">
-              <div className="flex-1 grid gap-2">
+              <div className="grid flex-1 gap-2">
                 <Label htmlFor="firstName" className="inline-block">
                   {t('users.settings.firstName')}
                 </Label>
@@ -138,7 +138,7 @@ export default function ProfileForm({
               </div>
             </form.FieldProvider>
             <form.FieldProvider name="lastName">
-              <div className="flex-1 grid gap-2">
+              <div className="grid flex-1 gap-2">
                 <Label htmlFor="lastName" className="inline-block">
                   {t('users.settings.lastName')}
                 </Label>
@@ -246,7 +246,7 @@ export default function ProfileForm({
             {t('general.save')}
           </Button>
         </div>
-        <div className="w-full mb-4 md:w-1/3 order-1 md:order-2">
+        <div className="order-1 mb-4 w-full md:order-2 md:w-1/3">
           <form.FieldProvider
             name="image"
             validator={z.any().refine((files: File[]) => {
@@ -255,11 +255,11 @@ export default function ProfileForm({
               )
             }, 'A file is too large')}
           >
-            <Label htmlFor="image" className="inline-block mb-2">
+            <Label htmlFor="image" className="mb-2 inline-block">
               {t('users.settings.profilePicture')}
             </Label>
             <div className="flex flex-col items-center gap-4">
-              <UserAvatar user={user} className="w-40 h-40" />
+              <UserAvatar user={user} className="h-40 w-40" />
               <div>
                 <FileUploadForm
                   accepts="image/*,application/pdf"

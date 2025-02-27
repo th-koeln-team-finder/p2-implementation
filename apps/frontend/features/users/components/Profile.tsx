@@ -25,8 +25,8 @@ export default async function Profile({ user }: { user: UserWithImage }) {
   if (!user.isPublic) {
     return redirect({ href: '/', locale: await getLocale() })
   }
-  let isOwnProfile,
-    isFollowing = false
+  let isOwnProfile
+  let isFollowing = false
   let loggedInUser: UserSelect | null = null
   let skills: UserSkill[] = []
 
@@ -55,7 +55,7 @@ export default async function Profile({ user }: { user: UserWithImage }) {
         </div>
 
         <div>
-          <div className="flex flex-1 flex-col space-y-2 mb-2">
+          <div className="mb-2 flex flex-1 flex-col space-y-2">
             <p className="text-xs">
               {user.firstName || user.lastName ? (
                 <span>
@@ -106,7 +106,7 @@ export default async function Profile({ user }: { user: UserWithImage }) {
         />
       </div>
       <div className="mt-8">
-        <h2 className="font-bold text-2xl mb-2">
+        <h2 className="mb-2 font-bold text-2xl">
           {translate('users.previouslyWorkedOn')}
         </h2>
         <PreviouslyWorkedOn userId={user.id} />

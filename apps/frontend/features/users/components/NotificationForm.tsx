@@ -67,7 +67,7 @@ export default function NotificationForm({ user }: { user: UserSelect }) {
 
   return (
     <form
-      className="space-y-4 mb-8"
+      className="mb-8 space-y-4"
       onSubmit={async (e) => {
         e.preventDefault()
         e.stopPropagation()
@@ -109,11 +109,11 @@ export default function NotificationForm({ user }: { user: UserSelect }) {
           const notificationType = notificationTypesByCategory[type]
           return (
             <Card
-              className={`overflow-hidden transition-opacity mb-4 ${isActive.value ? '' : 'opacity-50'}`}
+              className={`mb-4 overflow-hidden transition-opacity ${isActive.value ? '' : 'opacity-50'}`}
               key={type}
             >
               <CardHeader className="p-0">
-                <CardTitle className="text-xl py-4 px-6 border-b mb-4">
+                <CardTitle className="mb-4 border-b px-6 py-4 text-xl">
                   {t(`users.settings.notifications.${type}`)}
                 </CardTitle>
               </CardHeader>
@@ -138,14 +138,14 @@ export default function NotificationForm({ user }: { user: UserSelect }) {
                           name={`${notification}_push` as keyof UserInsert}
                         >
                           <ToggleForm>
-                            <Bell className="w-6 h-6" />
+                            <Bell className="h-6 w-6" />
                           </ToggleForm>
                         </form.FieldProvider>
                         <form.FieldProvider
                           name={`${notification}_email` as keyof UserInsert}
                         >
                           <ToggleForm>
-                            <LucideMail className="w-6 h-6" />
+                            <LucideMail className="h-6 w-6" />
                           </ToggleForm>
                         </form.FieldProvider>
                       </div>

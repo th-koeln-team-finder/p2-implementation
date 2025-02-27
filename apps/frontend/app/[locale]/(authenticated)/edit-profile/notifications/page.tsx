@@ -16,7 +16,7 @@ export default async function EditProfile() {
 
   return (
     <div>
-      <h2 className="font-bold text-2xl mb-8">
+      <h2 className="mb-8 font-bold text-2xl">
         {t('users.settings.notifications.title')}
       </h2>
 

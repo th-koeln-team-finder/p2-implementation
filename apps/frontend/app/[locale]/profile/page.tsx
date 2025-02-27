@@ -13,7 +13,7 @@ export default async function ProfilePage() {
   const user = (await getUser(session.user.id)) as UserWithImage
 
   return (
-    <main className="container px-4 mx-auto my-4">
+    <main className="container mx-auto my-4 px-4">
       <Profile user={user} />
     </main>
   )
