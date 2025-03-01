@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/tooltip'
 import { BadgeCheck, ChevronDownIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import VerificationControl from '../../../../apps/frontend/features/users/components/VerificationControl'
+import VerificationControl from './VerificationControl'
 
 type ProjectSkill = {
   name: string
