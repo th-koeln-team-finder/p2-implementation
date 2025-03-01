@@ -25,11 +25,11 @@ import { SwitchForm } from '@repo/design-system/components/ui/switch'
 import { LoaderCircleIcon, SaveIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { z } from 'zod'
+import {clientEnv} from "@repo/env";
 
 export default function ProfileForm({
   user,
-  maxFileSize,
-}: { user: UserWithImage; maxFileSize: number }) {
+}: { user: UserWithImage }) {
   const t = useTranslations()
   const [progressState, uploadFile] = useFileUpload()
 
@@ -65,7 +65,7 @@ export default function ProfileForm({
       }
 
       if (file) {
-        if (file.size >= maxFileSize) {
+        if (file.size >= clientEnv.NEXT_PUBLIC_MAX_FILE_SIZE) {
           return
         }
         const uploadedFile = await uploadFile(
@@ -266,7 +266,7 @@ export default function ProfileForm({
                   placeholder={
                     <FileInlinePreviewsForm
                       progressState={progressState}
-                      maxFileSize={maxFileSize}
+                      maxFileSize={clientEnv.NEXT_PUBLIC_MAX_FILE_SIZE}
                     />
                   }
                 />
@@ -274,7 +274,7 @@ export default function ProfileForm({
                 <FileListForm
                   className="my-2"
                   progressState={progressState}
-                  maxFileSize={maxFileSize}
+                  maxFileSize={clientEnv.NEXT_PUBLIC_MAX_FILE_SIZE}
                 />
               </div>
             </div>

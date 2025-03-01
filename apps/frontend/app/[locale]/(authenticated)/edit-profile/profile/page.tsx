@@ -22,7 +22,7 @@ export default async function EditProfile() {
         {translate('users.settings.profile')}
       </h2>
 
-      <ProfileForm user={user} maxFileSize={serverEnv.MAX_FILE_SIZE} />
+      <ProfileForm user={user} />
     </section>
   )
 }
