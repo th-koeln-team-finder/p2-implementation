@@ -9,6 +9,7 @@ import {
 } from '@repo/design-system/components/ui/avatar'
 import { cn } from '@repo/design-system/lib/utils'
 import { useEffect, useState } from 'react'
+import {LoaderCircleIcon} from "lucide-react";
 
 type UserAvatarProps = {
   user?: UserWithImage
@@ -34,20 +35,24 @@ export function UserAvatar({
 
   return (
     <Avatar className={cn('h-8 w-8', className)}>
-      {userAvatarUrl ? (
+      {userAvatarUrl && (
         <AvatarImage
           src={userAvatarUrl}
           alt={user?.name ?? user?.email ?? fallback}
         />
-      ) : (
+      )}
+      {!userAvatarUrl && !!user?.image?.bucketPath && (
+        <LoaderCircleIcon className="h-full w-full animate-spin" />
+      )}
+      {!userAvatarUrl && !user?.image?.bucketPath && (
         <AvatarImage
           src={`https://api.dicebear.com/9.x/thumbs/svg?seed=${user?.name ?? 'anonymous'}&backgroundColor=ffdfbf,ffd5dc,d1d4f9,c0aede,b6e3f4,f88c49,f1f4dc,69d2e7&backgroundType=gradientLinear,solid&backgroundRotation=0,180,270,360&scale=80`}
           alt={user?.name ?? user?.email ?? fallback}
         />
       )}
-      <AvatarFallback className={cn('text-sm', fallbackClassName)}>
+      {/*<AvatarFallback className={cn('text-sm', fallbackClassName)}>
         {fallback}
-      </AvatarFallback>
+      </AvatarFallback>*/}
     </Avatar>
   )
 }
