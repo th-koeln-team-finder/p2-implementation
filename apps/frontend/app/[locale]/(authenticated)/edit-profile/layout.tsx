@@ -47,8 +47,8 @@ export default async function EditProfileLayout({
     <main className="container mx-auto my-4 px-4">
       <h1 className="mb-8 font-bold text-3xl">{translate('title')}</h1>
 
-      <div className="flex flex-col divide-y *:py-8 first:*:pt-0 last:*:pb-0 lg:flex-row lg:space-x-12 lg:space-y-0 lg:divide-y-0 *:lg:py-0">
-        <aside className="lg:-mx-4 bg-sidebar lg:w-1/5 lg:py-0">
+      <div className="flex flex-col lg:flex-row">
+        <aside className="lg:-mx-4 bg-sidebar lg:w-1/5 pb-6 mb-6 lg:pr-6 lg:mr-6 lg:pb-0 lg:mb-0 border-b lg:border-b-0">
           <SidebarNav items={sidebarNavItems} />
         </aside>
         <main className="flex-1">{children}</main>
