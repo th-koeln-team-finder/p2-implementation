@@ -6,6 +6,6 @@ export function makeUser(): UserInsert {
     name: faker.internet.username(),
     email: faker.internet.email(),
     roles: ['default-user'],
-    bio: `<p>${faker.lorem.sentence()}`,
+    bio: `<p>${faker.lorem.sentence()}</p>`,
   }
 }
