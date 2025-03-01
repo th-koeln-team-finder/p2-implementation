@@ -8,7 +8,7 @@ export async function searchSkills(input: string) {
   return await db
     .select({
       ...getTableColumns(skills),
-      usedCount: sql<number>`count(${userSkills.id}) as usedCount`,
+      usedCount: sql<number>`count(${userSkills.id})`.as('usedCount'),
     })
     .from(skills)
     .leftJoin(userSkills, eq(userSkills.skillId, skills.id))
