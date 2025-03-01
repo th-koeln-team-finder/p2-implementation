@@ -51,7 +51,7 @@ export default async function EditProfileLayout({
         <aside className="lg:-mx-4 bg-sidebar lg:w-1/5 lg:py-0">
           <SidebarNav items={sidebarNavItems} />
         </aside>
-        <main className="flex-1 lg:max-w-2xl">{children}</main>
+        <main className="flex-1">{children}</main>
       </div>
     </main>
   )
