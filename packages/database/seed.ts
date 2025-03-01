@@ -152,7 +152,7 @@ export async function seed() {
     .returning()
 
   console.log('Creating 100 skill records')
-  const skillData = makeMultiple(100, () => makeSkill())
+  const skillData = makeMultiple(100, () => makeSkill()).filter((e) => !!e)
   const skills = await db.insert(Schema.skills).values(skillData).returning()
 
   console.log('Creating 500 user skill records')

@@ -3,13 +3,17 @@ import type { ProjectSkillInsert, SkillsInsert } from '../schema'
 
 const uniqueSkills = new Set<string>()
 
-export function makeSkill(): SkillsInsert {
+export function makeSkill(): SkillsInsert | null {
   let tries = 0
   let skill = `${faker.person.jobArea()} ${faker.person.jobType()}`
 
   while (uniqueSkills.has(skill) && tries < 10) {
     skill = `${faker.person.jobArea()} ${faker.person.jobType()}`
     tries++
+  }
+
+  if (tries >= 10) {
+    return null
   }
 
   uniqueSkills.add(skill)
