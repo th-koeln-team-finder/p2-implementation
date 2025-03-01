@@ -158,16 +158,25 @@ export default function SkillsEdit({
         .sort((a, b) => b.level - a.level)
         .map((userSkill, index) => (
           <div
-            key={index}
+            key={userSkill.id}
             className={`grid max-w-sm grid-cols-3 items-center justify-around py-1 ${index % 2 === 0 ? 'bg-accent/30' : ''}`}
           >
             <div className="px-2 text-sm">{userSkill.skill?.skill}</div>
             <div className="flex items-center gap-2.5">
-              {[...Array(5)].map((_, i) => (
+              {[...Array(5).keys()].map((level: number) => (
                 <div
-                  key={i}
-                  className={`h-2 w-2 cursor-pointer rounded-full ${i < userSkill.level ? 'bg-primary' : 'bg-gray-200'}`}
-                  onClick={() => handleUpdateSkillLevel(userSkill.id, i + 1)}
+                  key={level}
+                  tabIndex={0}
+                  className={`h-2 w-2 cursor-pointer rounded-full ${level < userSkill.level ? 'bg-primary' : 'bg-gray-200'}`}
+                  onClick={() =>
+                    handleUpdateSkillLevel(userSkill.id, level + 1)
+                  }
+                  onKeyDown={async (event) => {
+                    if (event.key === 'Enter') {
+                      await handleUpdateSkillLevel(userSkill.id, level + 1)
+                    }
+                  }
+                }
                 />
               ))}
             </div>
