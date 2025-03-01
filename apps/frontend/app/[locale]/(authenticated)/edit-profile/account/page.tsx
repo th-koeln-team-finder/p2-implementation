@@ -16,11 +16,6 @@ export default async function Account() {
 
   const user = (await getUser(session.user.id)) as UserSelect
 
-  const _handleDelete = async () => {
-    await deleteUser(user.id)
-    return redirect({ href: '/', locale: await getLocale() })
-  }
-
   return (
     <section>
       <h2 className="mb-8 font-bold text-2xl">
