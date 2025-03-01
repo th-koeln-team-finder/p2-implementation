@@ -14,12 +14,6 @@ export async function addUserSkill(userSkill: UserSkillsInsert) {
 }
 
 export async function updateUserSkillLevel(userSkillId: string, level: number) {
-  console.log(
-    db
-      .update(Schema.userSkills)
-      .set({ level })
-      /*.where(eq(Schema.userSkills.id, userSkillId))*/ .toSQL().sql,
-  )
   await db
     .update(Schema.userSkills)
     .set({ level })
