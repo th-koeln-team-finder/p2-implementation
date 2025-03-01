@@ -512,14 +512,14 @@ export const uploadedFiles = pgTable('uploaded_file', {
 export type UploadedFileInsert = typeof uploadedFiles.$inferInsert
 export type UploadedFileSelect = typeof uploadedFiles.$inferSelect
 
-export const subscriptions = pgTable('subscriptions', {
+export const pushSubscriptions = pgTable('pushSubscriptions', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   userId: uuid('userId').references(() => users.id, { onDelete: 'cascade' }),
   subscription: json().notNull(),
 })
 
-export type SubscriptionInsert = typeof subscriptions.$inferInsert
-export type SubscriptionSelect = typeof subscriptions.$inferSelect
+export type PushSubscriptionInsert = typeof pushSubscriptions.$inferInsert
+export type PushSubscriptionSelect = typeof pushSubscriptions.$inferSelect
 
 //region Technical Tables
 /**

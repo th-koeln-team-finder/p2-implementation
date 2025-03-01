@@ -1,11 +1,13 @@
 'use server'
 
-import {getSubscription} from "@/features/notifications/notifications.query";
-import {usersWhoWantToReceiveNotificationsByType} from "@/features/users/users.query";
-import {db} from "@repo/database";
-import type {NotificationType} from "@repo/database/constants";
-import {type SubscriptionSelect, subscriptions } from "@repo/database/schema";
-import {eq} from "drizzle-orm";
+import { getSubscription } from '@/features/notifications/notifications.query'
+import { usersWhoWantToReceiveNotificationsByType } from '@/features/users/users.query'
+import { db } from '@repo/database'
+import type { NotificationType } from '@repo/database/constants'
+import { type PushSubscriptionSelect, pushSubscriptions } from '@repo/database/schema'
+import { eq } from 'drizzle-orm'
+import type { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import webpush from 'web-push'
 import {getTranslations} from "next-intl/server";
 import {useTranslations} from "next-intl";
@@ -18,15 +20,15 @@ webpush.setVapidDetails(
 
 export async function subscribeUser(userId: string, sub: PushSubscription) {
   await db
-    .insert(subscriptions)
+    .insert(pushSubscriptions)
     .values({ userId, subscription: JSON.stringify(sub) })
     .execute()
 }
 
 export async function unsubscribeUser(userId: string) {
   await db
-    .delete(subscriptions)
-    .where(eq(subscriptions.userId, userId))
+    .delete(pushSubscriptions)
+    .where(eq(pushSubscriptions.userId, userId))
     .execute()
 }
 
