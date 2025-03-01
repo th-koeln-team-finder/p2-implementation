@@ -1,9 +1,5 @@
 import '@repo/design-system/styles/globals.css'
-import { authMiddleware } from '@/auth'
 import { QueryClientProvider } from '@/features/general/queryClient'
-import Header from '@/features/header/header'
-import { getUser } from '@/features/users/users.query'
-import type { UserWithImage } from '@/features/users/users.types'
 import { DesignSystemProvider } from '@repo/design-system'
 import type { Metadata } from 'next'
 import { Rubik, Saira_Condensed } from 'next/font/google'
@@ -38,23 +34,17 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const session = await authMiddleware()
-
-  const user = session?.user
-    ? ((await getUser(session?.user.id)) as UserWithImage)
-    : undefined
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
         className={`${rubik.variable} ${sairaCondensed.variable} flex min-h-screen flex-col bg-background font-sans text-foreground antialiased`}
       >
-        <Header user={user} />
         <QueryClientProvider>
           <NuqsAdapter>
             <DesignSystemProvider>{children}</DesignSystemProvider>

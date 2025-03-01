@@ -12,6 +12,16 @@ export const de: Language = {
     notSupported: 'Nicht unterstützt',
     confirm: 'Bestätigen',
   },
+  header: {
+    placeholderSearchEverywhere: 'Suche überall...',
+    linkProjectList: 'Projekte',
+    linkProjectCreate: 'Projekt erstellen',
+    linkBrainstorm: 'Brainstorm',
+    settingLinkMyProjects: 'Meine Projekte',
+    settingLinkMyBrainstorms: 'Meine Brainstorms',
+    settingLinkNotifications: 'Benachrichtigungen',
+    settingLinkSettings: 'Einstellungen',
+  },
   components: {
     wysiwyg: {
       heading1: 'Überschrift 1',

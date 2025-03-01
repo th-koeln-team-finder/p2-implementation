@@ -1,17 +1,13 @@
-'use client'
-import { UserAvatar } from '@/features/auth/components/UserAvatar'
+import { authMiddleware } from '@/auth'
+import { LoginButton } from '@/features/auth/components/LoginButton'
+import { RegisterButton } from '@/features/auth/components/RegisterButton'
+import { UserProfileMenu } from '@/features/auth/components/UserProfileMenu'
 import { ApplicationIcon } from '@/features/general/components/ApplicationIcon'
 import { Link } from '@/features/i18n/routing'
+import { getUser } from '@/features/users/users.query'
 import type { UserWithImage } from '@/features/users/users.types'
 import { Button } from '@repo/design-system/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@repo/design-system/components/ui/dropdown-menu'
+import { DropdownMenuItem } from '@repo/design-system/components/ui/dropdown-menu'
 import { Input } from '@repo/design-system/components/ui/input'
 import {
   BellIcon,
@@ -20,17 +16,17 @@ import {
   SettingsIcon,
   Users2Icon,
 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { getTranslations } from 'next-intl/server'
 
-export default function Header({ user }: { user: UserWithImage | undefined }) {
-  const [_isDarkMode, setIsDarkMode] = useState(false)
+export default async function Header() {
+  const [translsate, session] = await Promise.all([
+    getTranslations('header'),
+    authMiddleware(),
+  ])
 
-  useEffect(() => {
-    const html = document.querySelector('html')
-    if (html?.classList.contains('dark')) {
-      setIsDarkMode(true)
-    }
-  }, [])
+  const user = session?.user
+    ? ((await getUser(session?.user.id)) as UserWithImage)
+    : undefined
 
   return (
     <header className="header flex w-full self-stretch px-4 py-2">
@@ -43,7 +39,7 @@ export default function Header({ user }: { user: UserWithImage | undefined }) {
           <Input
             className="min-w-72 pl-8"
             type="search"
-            placeholder={'Search everywhere...'}
+            placeholder={translsate('placeholderSearchEverywhere')}
           />
           <div className="pointer-events-none absolute top-0 bottom-0 left-2 flex flex-row items-center">
             <SearchIcon className="size-5 text-muted-foreground" />
@@ -56,7 +52,7 @@ export default function Header({ user }: { user: UserWithImage | undefined }) {
             variant="link"
             className="h-fit justify-start p-0 font-medium text-foreground text-sm"
           >
-            <Link href="/projects">Find a Project</Link>
+            <Link href="/projects">{translsate('linkProjectList')}</Link>
           </Button>
 
           <Button
@@ -64,7 +60,9 @@ export default function Header({ user }: { user: UserWithImage | undefined }) {
             variant="link"
             className="h-fit justify-start p-0 font-medium text-foreground text-sm"
           >
-            <Link href="/projects/create">Create a Project</Link>
+            <Link href="/projects/create">
+              {translsate('linkProjectCreate')}
+            </Link>
           </Button>
 
           <Button
@@ -72,46 +70,32 @@ export default function Header({ user }: { user: UserWithImage | undefined }) {
             variant="link"
             className="h-fit justify-start p-0 font-medium text-foreground text-sm"
           >
-            <Link href="/brainstorm">Brainstorm</Link>
+            <Link href="/brainstorm">{translsate('linkBrainstorm')}</Link>
           </Button>
 
-          {/* //TODO Anmelden und Registrieren Buttons & weitere Account etc. verlinken */}
-          <DropdownMenu>
-            <DropdownMenuTrigger className="focus:outline-none focus-visible:outline-none">
-              <UserAvatar user={user} className="h-10 w-10" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {user && (
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <Link href="/profile" className="hover:underline">
-                      <p className="font-medium text-sm leading-none">
-                        {user.name}
-                      </p>
-                    </Link>
-                    <p className="text-muted-foreground text-xs leading-none">
-                      {user.email}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-              )}
-              {user && <DropdownMenuSeparator />}
-              <DropdownMenuItem className="cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary">
-                <Users2Icon /> My Projects
+          {user ? (
+            <UserProfileMenu>
+              <DropdownMenuItem>
+                <Users2Icon /> {translsate('settingLinkMyProjects')}
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary">
-                <BrainCircuitIcon /> My Brainstorms
+              <DropdownMenuItem>
+                <BrainCircuitIcon /> {translsate('settingLinkMyBrainstorms')}
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary">
-                <BellIcon /> Notifications
+              <DropdownMenuItem>
+                <BellIcon /> {translsate('settingLinkNotifications')}
               </DropdownMenuItem>
-              <Link href="/edit-profile">
-                <DropdownMenuItem className="cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary">
-                  <SettingsIcon /> Settings
+              <Link href="/edit-profile/profile">
+                <DropdownMenuItem>
+                  <SettingsIcon /> {translsate('settingLinkSettings')}
                 </DropdownMenuItem>
               </Link>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            </UserProfileMenu>
+          ) : (
+            <>
+              <LoginButton />
+              <RegisterButton />
+            </>
+          )}
         </nav>
       </div>
     </header>

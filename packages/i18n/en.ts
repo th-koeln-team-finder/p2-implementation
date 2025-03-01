@@ -10,6 +10,16 @@ export const en = {
     notSupported: 'Not supported',
     confirm: 'Confirm',
   },
+  header: {
+    placeholderSearchEverywhere: 'Search everywhere...',
+    linkProjectList: 'Find a Project',
+    linkProjectCreate: 'Create a Project',
+    linkBrainstorm: 'Brainstorm',
+    settingLinkMyProjects: 'My Projects',
+    settingLinkMyBrainstorms: 'My Brainstorms',
+    settingLinkNotifications: 'Notifications',
+    settingLinkSettings: 'Settings',
+  },
   components: {
     wysiwyg: {
       heading1: 'Heading 1',
