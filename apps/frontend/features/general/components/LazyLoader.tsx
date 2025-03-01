@@ -1,18 +1,19 @@
 'use client'
-import { revalidateBrainstorms } from '@/features/brainstorm/brainstorm.actions'
 import { Loader2Icon } from 'lucide-react'
 import { useQueryState } from 'nuqs'
 import { useEffect, useOptimistic, useTransition } from 'react'
 import { useInView } from 'react-intersection-observer'
 
-export function BrainstormLazyLoader({
+export function LazyLoader({
   pageSize,
   hasMore,
   loading = false,
+  onInvalidate,
 }: {
   pageSize: number
   hasMore?: boolean
   loading?: boolean
+  onInvalidate?: () => void
 }) {
   const [_, startTransition] = useTransition()
   const [isLoadingReal, dispatchOptimistic] = useOptimistic(
@@ -36,7 +37,7 @@ export function BrainstormLazyLoader({
 
     const newOffset = queryOffset + pageSize
     setQueryOffset(newOffset.toString())
-      .then(() => revalidateBrainstorms())
+      .then(() => onInvalidate?.())
       .catch((e) => console.error('Failed to set query offset', e))
   }, [
     dispatchOptimistic,
@@ -45,6 +46,7 @@ export function BrainstormLazyLoader({
     isLoadingReal,
     queryOffsetParam,
     pageSize,
+    onInvalidate,
     setQueryOffset,
   ])
 

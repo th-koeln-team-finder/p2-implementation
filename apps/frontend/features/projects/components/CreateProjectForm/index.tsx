@@ -17,7 +17,6 @@ import {
   type ZodAdapter,
   configureZodAdapter,
 } from '@formsignals/validation-adapter-zod'
-import { signal } from '@preact/signals-react'
 import { useSignals } from '@preact/signals-react/runtime'
 import { FieldError } from '@repo/design-system/components/FormErrors'
 import {
@@ -51,8 +50,6 @@ export function CreateProjectForm() {
   const t = useTranslations('createProjects')
   const translateError = useTranslations('validation')
 
-  const descriptionText = signal('')
-
   //Stepper
   const steps = [
     { id: 'basics', title: t('stepper.main') },
@@ -84,6 +81,7 @@ export function CreateProjectForm() {
       resources: [],
     },
     onSubmit: async (values) => {
+      if (!editorRef.current) return null
       const serverActionData = {
         ...values,
         resources: values.resources.map((r) => ({
@@ -93,7 +91,7 @@ export function CreateProjectForm() {
       }
       const projectId = await createProject(
         serverActionData,
-        descriptionText.peek(),
+        getStringContentFromEditor(editorRef.current),
       )
       const uploadedFileResources = await Promise.all(
         values.resources.map(async ({ file, label, href }) => {
@@ -276,9 +274,6 @@ export function CreateProjectForm() {
             <div>
               <Label>{t('description')}</Label>
               <WysiwygEditorForm
-                onChange={(_, editor) => {
-                  descriptionText.value = getStringContentFromEditor(editor)
-                }}
                 editorRef={editorRef}
                 placeholder={t('descriptionPlaceholder')}
                 className="min-h-56"

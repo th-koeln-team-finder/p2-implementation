@@ -1,3 +1,9 @@
+import type { ProjectSelect } from '@repo/database/schema'
+
+export type PopulatedProjects = ProjectSelect & {
+  //  isBookmarked: boolean
+}
+
 export type CreateProjectFormBasic = {
   name: string
   description: string

@@ -1,3 +1,5 @@
+'use client'
+
 import { Badge } from '@repo/design-system/components/ui/badge'
 import {
   Tooltip,
@@ -5,6 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@repo/design-system/components/ui/tooltip'
+import { useTranslations } from 'next-intl'
 
 type BrainstormTagListProps = {
   tags: { tag: { id: string; name: string } }[]
@@ -15,6 +18,7 @@ export function BrainstormTagList({
   tags,
   splitUp = 0,
 }: BrainstormTagListProps) {
+  const translate = useTranslations('tag')
   const tagsToShow = tags.slice(0, splitUp)
   const otherTags = tags.slice(splitUp)
   return (
@@ -29,7 +33,7 @@ export function BrainstormTagList({
           <Tooltip>
             <TooltipTrigger>
               <Badge variant="outline" className="text-nowrap">
-                {otherTags.length} more
+                {translate('xMore', { amount: otherTags.length })}
               </Badge>
             </TooltipTrigger>
             <TooltipContent className="max-w-96">

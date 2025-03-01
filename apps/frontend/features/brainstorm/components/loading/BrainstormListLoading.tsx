@@ -1,11 +1,9 @@
-import { BrainstormFilterBar } from '@/features/brainstorm/components/BrainstormFilterBar'
 import { Masonry } from '@repo/design-system/components/ui/Masonry'
 import { Skeleton } from '@repo/design-system/components/ui/skeleton'
 
 export function BrainstormListLoading() {
   return (
     <section>
-      <BrainstormFilterBar disabled />
       <Masonry
         masonryGutter="16px"
         columnsCountBreakPoints={{ 350: 1, 640: 2, 768: 3, 1400: 4 }}

@@ -1,10 +1,10 @@
 import { authMiddleware } from '@/auth'
+import { revalidateBrainstorms } from '@/features/brainstorm/brainstorm.actions'
 import { getBrainstorms } from '@/features/brainstorm/brainstorm.queries'
-import { BrainstormFilterBar } from '@/features/brainstorm/components/BrainstormFilterBar'
-import { BrainstormLazyLoader } from '@/features/brainstorm/components/BrainstormLazyLoader'
 import { BrainstormListEntry } from '@/features/brainstorm/components/BrainstormListEntry'
-import { ScrollTopButton } from '@repo/design-system/components/custom/ScrollTopButton'
+import { LazyLoader } from '@/features/general/components/LazyLoader'
 import { Masonry } from '@repo/design-system/components/ui/Masonry'
+import { getTranslations } from 'next-intl/server'
 
 const pageSize = 15
 
@@ -15,6 +15,7 @@ export async function BrainstormList({
   bookmarks,
 }: { search: string; tags: string; offset: string; bookmarks: string }) {
   const session = await authMiddleware()
+  const translate = await getTranslations('brainstorm')
 
   const offsetNumber = Number.parseInt(offset ?? '0')
   const limit = pageSize + offsetNumber
@@ -28,8 +29,12 @@ export async function BrainstormList({
   const hasMore = limit <= brainstorms.length
 
   return (
-    <section className="pb-4">
-      <BrainstormFilterBar />
+    <>
+      {!brainstorms.length && (
+        <p className="col-span-3 my-3 text-center text-muted-foreground italic">
+          {translate('emptyBrainstorms')}
+        </p>
+      )}
       <Masonry
         masonryGutter="16px"
         columnsCountBreakPoints={{ 350: 1, 640: 2, 768: 3, 1400: 4 }}
@@ -38,8 +43,11 @@ export async function BrainstormList({
           <BrainstormListEntry key={brainstorm.id} brainstorm={brainstorm} />
         ))}
       </Masonry>
-      <BrainstormLazyLoader hasMore={hasMore} pageSize={pageSize} />
-      <ScrollTopButton />
-    </section>
+      <LazyLoader
+        hasMore={hasMore}
+        pageSize={pageSize}
+        onInvalidate={revalidateBrainstorms}
+      />
+    </>
   )
 }

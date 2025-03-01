@@ -1,7 +1,9 @@
 import { CanUserServer } from '@/features/auth/components/CanUser.server'
+import { BrainstormFilterBar } from '@/features/brainstorm/components/BrainstormFilterBar'
 import { BrainstormList } from '@/features/brainstorm/components/BrainstormList'
 import { BrainstormListLoading } from '@/features/brainstorm/components/loading/BrainstormListLoading'
 import { Link } from '@/features/i18n/routing'
+import { ScrollTopButton } from '@repo/design-system/components/custom/ScrollTopButton'
 import { Button } from '@repo/design-system/components/ui/button'
 import { BrainIcon } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
@@ -29,14 +31,18 @@ export default async function BrainstormPage({
           {translate('pageTitle')}
         </h1>
 
-        <Suspense key={search} fallback={<BrainstormListLoading />}>
-          <BrainstormList
-            search={search}
-            tags={tags}
-            offset={offset}
-            bookmarks={bookmarks}
-          />
-        </Suspense>
+        <section className="pb-4">
+          <BrainstormFilterBar />
+          <Suspense key={search} fallback={<BrainstormListLoading />}>
+            <BrainstormList
+              search={search}
+              tags={tags}
+              offset={offset}
+              bookmarks={bookmarks}
+            />
+          </Suspense>
+          <ScrollTopButton />
+        </section>
       </div>
 
       <CanUserServer target="brainstorm" action="create">
