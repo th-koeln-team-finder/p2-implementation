@@ -10,7 +10,7 @@ import { useSignals } from '@preact/signals-react/runtime'
 import { Weekdays } from '@repo/database/schema'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { useTranslations } from 'next-intl'
-import { SkillScale } from '../../../../../../packages/design-system/components/custom/SkillScale'
+import {SkillScale} from "@repo/design-system/components/custom/SkillScale";
 
 export function CreateProjectPreview() {
   useSignals()
