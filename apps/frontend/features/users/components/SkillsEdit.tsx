@@ -10,7 +10,7 @@ import {
   updateUserSkillLevel,
 } from '@/features/userSkills/userSkills.actions'
 import { useOptimisticUserSkills } from '@/features/userSkills/userSkills.hooks'
-import { debounce } from '@/utils'
+import { debounce } from '@/features/general/utils'
 import type { SkillsSelect, UserSkillsSelect } from '@repo/database/schema'
 import { Button } from '@repo/design-system/components/ui/button'
 import {
