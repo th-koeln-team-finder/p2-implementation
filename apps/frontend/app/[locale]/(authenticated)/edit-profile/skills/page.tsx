@@ -12,7 +12,7 @@ export default async function EditSkills() {
   if (!session?.user?.id) {
     return redirect({ href: '/', locale: await getLocale() })
   }
-  const user = (await getUser(session.user.id)) as UserSelect
+  const user = await getUser(session.user.id)
 
   const skills = await getUserSkills(user.id)
 

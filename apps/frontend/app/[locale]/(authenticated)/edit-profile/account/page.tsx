@@ -14,7 +14,10 @@ export default async function Account() {
     return redirect({ href: '/', locale: await getLocale() })
   }
 
-  const user = (await getUser(session.user.id)) as UserSelect
+  const user = await getUser(session.user.id)
+  if (!user) {
+    return redirect({ href: '/', locale: await getLocale() })
+  }
 
   return (
     <section>

@@ -4,7 +4,7 @@ import { RegisterButton } from '@/features/auth/components/RegisterButton'
 import { UserProfileMenu } from '@/features/auth/components/UserProfileMenu'
 import { ApplicationIcon } from '@/features/general/components/ApplicationIcon'
 import { Link } from '@/features/i18n/routing'
-import { getUser } from '@/features/users/users.query'
+import {getUser, getUserWithImage} from '@/features/users/users.query'
 import type { UserWithImage } from '@/features/users/users.types'
 import { Button } from '@repo/design-system/components/ui/button'
 import { DropdownMenuItem } from '@repo/design-system/components/ui/dropdown-menu'
@@ -25,7 +25,7 @@ export default async function Header() {
   ])
 
   const user = session?.user
-    ? ((await getUser(session?.user.id)) as UserWithImage)
+    ? await getUserWithImage(session?.user.id)
     : undefined
 
   return (

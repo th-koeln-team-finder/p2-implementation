@@ -1,10 +1,9 @@
-import { authMiddleware } from '@/auth'
-import { redirect } from '@/features/i18n/routing'
+import {authMiddleware} from '@/auth'
+import {redirect} from '@/features/i18n/routing'
 import ProfileForm from '@/features/users/components/ProfileForm'
-import { getUser } from '@/features/users/users.query'
-import type { UserSelect } from '@repo/database/schema'
-import { serverEnv } from '@repo/env'
-import { getLocale, getTranslations } from 'next-intl/server'
+import {getUserWithImage} from '@/features/users/users.query'
+import {serverEnv} from '@repo/env'
+import {getLocale, getTranslations} from 'next-intl/server'
 
 export default async function EditProfile() {
   const translate = await getTranslations()
@@ -12,7 +11,10 @@ export default async function EditProfile() {
   if (!session?.user?.id) {
     return redirect({ href: '/', locale: await getLocale() })
   }
-  const user = (await getUser(session.user.id)) as UserSelect
+  const user = await getUserWithImage(session.user.id)
+  if (!user) {
+    return redirect({ href: '/', locale: await getLocale() })
+  }
 
   return (
     <section>

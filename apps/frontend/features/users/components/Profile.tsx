@@ -17,6 +17,7 @@ import {
 import { Button } from '@repo/design-system/components/ui/button'
 import { UserPen } from 'lucide-react'
 import { getLocale, getTranslations } from 'next-intl/server'
+import ProfileBio from "@/features/users/components/ProfileBio";
 
 export default async function Profile({ user }: { user: UserWithImage }) {
   const translate = await getTranslations()
@@ -31,7 +32,7 @@ export default async function Profile({ user }: { user: UserWithImage }) {
 
   if (session?.user.id) {
     isOwnProfile = user.id === session?.user.id
-    loggedInUser = (await getUser(session?.user.id)) as UserSelect
+    loggedInUser = await getUser(session?.user.id)
 
     isFollowing = !!(await userFollowsUser(loggedInUser.id, user.id))
   }

@@ -12,7 +12,7 @@ export default async function EditProfile() {
     return redirect({ href: '/', locale: await getLocale() })
   }
 
-  const user = (await getUser(session.user.id)) as UserSelect
+  const user = await getUser(session.user.id)
 
   return (
     <div>

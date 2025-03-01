@@ -5,9 +5,10 @@ import type {
   NotificationColumn,
   NotificationType,
 } from '@repo/database/constants'
-import { users } from '@repo/database/schema'
+import {users, UserSelect} from '@repo/database/schema'
 import { and, eq, inArray, or } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/dist/server/web/spec-extension/unstable-cache'
+import {UserWithImage} from "@/features/users/users.types";
 
 export async function checkUsernameTaken(username: string) {
   const result = await db.query.users.findFirst({
@@ -17,7 +18,16 @@ export async function checkUsernameTaken(username: string) {
 }
 
 export const getUser = cache(
-  async (id: string) =>
+  async (id: string): Promise<UserSelect | undefined> =>
+    db.query.users.findFirst({
+      where: eq(users.id, id),
+    }),
+  ['getUser'],
+  { tags: ['user'] },
+)
+
+export const getUserWithImage = cache(
+  async (id: string): Promise<UserWithImage | undefined> =>
     db.query.users.findFirst({
       where: eq(users.id, id),
       with: {
