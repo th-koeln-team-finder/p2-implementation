@@ -59,13 +59,8 @@ export default function VerificationControl({
             }}
             disabled={loading}
           >
-            {loading ? (
-              <LoaderCircleIcon className="h-4 w-4 animate-spin" />
-            ) : isVerified ? (
-              <BadgeMinus />
-            ) : (
-              <BadgePlus />
-            )}
+            {loading && <LoaderCircleIcon className="h-4 w-4 animate-spin" />}
+            {!loading && isVerified ? <BadgeMinus /> : <BadgePlus />}
           </Button>
         </TooltipTrigger>
         <TooltipContent>

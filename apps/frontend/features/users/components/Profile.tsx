@@ -25,10 +25,9 @@ export default async function Profile({ user }: { user: UserWithImage }) {
   if (!user.isPublic) {
     return redirect({ href: '/', locale: await getLocale() })
   }
-  let isOwnProfile
+  let isOwnProfile: boolean | undefined
   let isFollowing = false
   let loggedInUser: UserSelect | null = null
-  let skills: UserSkill[] = []
 
   if (session?.user.id) {
     isOwnProfile = user.id === session?.user.id
@@ -36,16 +35,18 @@ export default async function Profile({ user }: { user: UserWithImage }) {
 
     isFollowing = !!(await userFollowsUser(loggedInUser.id, user.id))
   }
-  skills = (await getUserSkills(user.id)).map((userSkill) => ({
-    id: userSkill.id,
-    name: userSkill.skill.skill,
-    level: userSkill.level,
-    verifications: userSkill.userSkillVerification.length,
-    isVerified: userSkill.userSkillVerification.some(
-      (verification) => verification.verifierId === loggedInUser?.id,
-    ),
-    verifierId: loggedInUser?.id,
-  }))
+  const skills: UserSkill[] = (await getUserSkills(user.id)).map(
+    (userSkill) => ({
+      id: userSkill.id,
+      name: userSkill.skill.skill,
+      level: userSkill.level,
+      verifications: userSkill.userSkillVerification.length,
+      isVerified: userSkill.userSkillVerification.some(
+        (verification) => verification.verifierId === loggedInUser?.id,
+      ),
+      verifierId: loggedInUser?.id,
+    }),
+  )
 
   return (
     <div>

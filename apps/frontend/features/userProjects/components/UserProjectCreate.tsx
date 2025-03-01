@@ -29,14 +29,6 @@ import { LoaderCircleIcon, Plus } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { z } from 'zod'
 
-interface Project {
-  id: string
-  name: string
-  description: string
-  joinedDate: Date
-  leftDate: Date | null
-}
-
 export default function UserProjectCreate({
   userId,
   setProjectsOptimistic,

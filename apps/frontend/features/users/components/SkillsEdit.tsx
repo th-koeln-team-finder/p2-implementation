@@ -166,7 +166,6 @@ export default function SkillsEdit({
               {[...Array(5).keys()].map((level: number) => (
                 <div
                   key={level}
-                  tabIndex={0}
                   className={`h-2 w-2 cursor-pointer rounded-full ${level < userSkill.level ? 'bg-primary' : 'bg-gray-200'}`}
                   onClick={() =>
                     handleUpdateSkillLevel(userSkill.id, level + 1)
@@ -175,8 +174,7 @@ export default function SkillsEdit({
                     if (event.key === 'Enter') {
                       await handleUpdateSkillLevel(userSkill.id, level + 1)
                     }
-                  }
-                }
+                  }}
                 />
               ))}
             </div>

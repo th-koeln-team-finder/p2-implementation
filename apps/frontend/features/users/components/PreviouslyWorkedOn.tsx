@@ -30,6 +30,7 @@ export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
     )
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: This is only supposed to run on first render
   useEffect(() => {
     loadMore(3)
   }, [])
@@ -42,7 +43,7 @@ export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
             <ProjectCard
               key={project.projectName}
               project={{
-                id: project.projectId || 0,
+                id: project.projectId || '',
                 name: project.projectName || '',
                 description: project.projectDescription || '',
               }}

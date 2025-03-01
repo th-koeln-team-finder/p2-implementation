@@ -17,12 +17,12 @@ export async function updateUserData(user: Partial<UserInsert>) {
   await db
     .update(Schema.users)
     .set(user)
-    .where(eq(Schema.users.id, user.id!))
+    .where(eq(Schema.users.id, user.id))
     .execute()
 }
 
 export async function revalidateUser() {
-  return revalidateTag('user')
+  return await revalidateTag('user')
 }
 
 export async function deleteUser(id: string) {

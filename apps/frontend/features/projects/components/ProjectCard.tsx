@@ -9,7 +9,7 @@ import {
 } from '@repo/design-system/components/ui/card'
 
 interface Project {
-  id: number
+  id: string
   name: string
   description: string
   image?: string
