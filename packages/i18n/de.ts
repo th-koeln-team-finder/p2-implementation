@@ -11,6 +11,8 @@ export const de: Language = {
     remove: 'Entfernen',
     notSupported: 'Nicht unterstützt',
     confirm: 'Bestätigen',
+    showMore: 'Mehr anzeigen',
+    showLess: 'Weniger anzeigen',
   },
   header: {
     placeholderSearchEverywhere: 'Suche überall...',

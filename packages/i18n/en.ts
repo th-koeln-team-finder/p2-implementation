@@ -9,6 +9,8 @@ export const en = {
     remove: 'Remove',
     notSupported: 'Not supported',
     confirm: 'Confirm',
+    showMore: 'Show more',
+    showLess: 'Show less',
   },
   header: {
     placeholderSearchEverywhere: 'Search everywhere...',

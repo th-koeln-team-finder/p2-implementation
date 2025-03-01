@@ -90,10 +90,10 @@ export function SkillScale(
                 <CollapsibleTrigger asChild>
                   <Button variant="ghost" className="mx-auto">
                     <p className="block group-data-[state=open]:hidden">
-                      Show more
+                      {translate('general.showMore')}
                     </p>
                     <p className="hidden group-data-[state=open]:block">
-                      Show less
+                      {translate('general.showLess')}
                     </p>
                     <ChevronDownIcon className="group-data-[state=open]:-rotate-180 rotate-0 transition-transform" />
                   </Button>
