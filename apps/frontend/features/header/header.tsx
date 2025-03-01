@@ -19,7 +19,7 @@ import {
 import { getTranslations } from 'next-intl/server'
 
 export default async function Header() {
-  const [translsate, session] = await Promise.all([
+  const [translate, session] = await Promise.all([
     getTranslations('header'),
     authMiddleware(),
   ])
@@ -39,7 +39,7 @@ export default async function Header() {
           <Input
             className="min-w-72 pl-8"
             type="search"
-            placeholder={translsate('placeholderSearchEverywhere')}
+            placeholder={translate('placeholderSearchEverywhere')}
           />
           <div className="pointer-events-none absolute top-0 bottom-0 left-2 flex flex-row items-center">
             <SearchIcon className="size-5 text-muted-foreground" />
@@ -52,7 +52,7 @@ export default async function Header() {
             variant="link"
             className="h-fit justify-start p-0 font-medium text-foreground text-sm"
           >
-            <Link href="/projects">{translsate('linkProjectList')}</Link>
+            <Link href="/projects">{translate('linkProjectList')}</Link>
           </Button>
 
           <Button
@@ -61,7 +61,7 @@ export default async function Header() {
             className="h-fit justify-start p-0 font-medium text-foreground text-sm"
           >
             <Link href="/projects/create">
-              {translsate('linkProjectCreate')}
+              {translate('linkProjectCreate')}
             </Link>
           </Button>
 
@@ -70,23 +70,23 @@ export default async function Header() {
             variant="link"
             className="h-fit justify-start p-0 font-medium text-foreground text-sm"
           >
-            <Link href="/brainstorm">{translsate('linkBrainstorm')}</Link>
+            <Link href="/brainstorm">{translate('linkBrainstorm')}</Link>
           </Button>
 
           {user ? (
             <UserProfileMenu>
               <DropdownMenuItem>
-                <Users2Icon /> {translsate('settingLinkMyProjects')}
+                <Users2Icon /> {translate('settingLinkMyProjects')}
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <BrainCircuitIcon /> {translsate('settingLinkMyBrainstorms')}
+                <BrainCircuitIcon /> {translate('settingLinkMyBrainstorms')}
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <BellIcon /> {translsate('settingLinkNotifications')}
+                <BellIcon /> {translate('settingLinkNotifications')}
               </DropdownMenuItem>
               <Link href="/edit-profile/profile">
                 <DropdownMenuItem>
-                  <SettingsIcon /> {translsate('settingLinkSettings')}
+                  <SettingsIcon /> {translate('settingLinkSettings')}
                 </DropdownMenuItem>
               </Link>
             </UserProfileMenu>
