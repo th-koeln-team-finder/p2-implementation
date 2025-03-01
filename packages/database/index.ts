@@ -17,29 +17,7 @@ export const db = drizzle({
   logger: true,
 })
 
-export const CustomDrizzleAdapter: typeof DrizzleAdapter = (db, schema) => {
-  const adapter = DrizzleAdapter(db, schema)
-
-  return {
-    ...adapter,
-    async getUser(id: string) {
-      if (!adapter.getUser) {
-        return await db.query.users.where(eq(users.id, id)).execute()
-      }
-      const user = await adapter.getUser(id)
-      if (user) {
-        await db
-          .update(users)
-          .set({ lastActive: new Date() })
-          .where(eq(users.id, id))
-          .execute()
-      }
-      return user
-    },
-  }
-}
-
-export const AuthDrizzleAdapter = CustomDrizzleAdapter(db, {
+export const AuthDrizzleAdapter = DrizzleAdapter(db, {
   usersTable: schema.users,
   accountsTable: schema.accounts,
   sessionsTable: schema.sessions,
