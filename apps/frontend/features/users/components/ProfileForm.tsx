@@ -25,12 +25,13 @@ import { SwitchForm } from '@repo/design-system/components/ui/switch'
 import { LoaderCircleIcon, SaveIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { z } from 'zod'
-import {clientEnv} from "@repo/env";
+import { clientEnv } from '@repo/env/client'
 
 export default function ProfileForm({
   user,
 }: { user: UserWithImage }) {
   const t = useTranslations()
+  const translateValidation = useTranslations('validation')
   const [progressState, uploadFile] = useFileUpload()
 
   useSignals()
@@ -250,10 +251,18 @@ export default function ProfileForm({
           <form.FieldProvider
             name="image"
             validator={z.any().refine((files: File[]) => {
-              return (
-                files.length === 0 || files.some((file) => file.size < 10485760)
+              if (files.length === 0) return true
+              const file = files[0]
+              if (file.size > clientEnv.NEXT_PUBLIC_MAX_FILE_SIZE)
+                return translateValidation('fileIsTooLarge')
+              if (
+                !clientEnv.NEXT_PUBLIC_ALLOWED_FILE_TYPES.includes(
+                  file.type,
+                )
               )
-            }, 'A file is too large')}
+                return translateValidation('wrongFileType')
+              return true
+            })}
           >
             <Label htmlFor="image" className="mb-2 inline-block">
               {t('users.settings.profilePicture')}
