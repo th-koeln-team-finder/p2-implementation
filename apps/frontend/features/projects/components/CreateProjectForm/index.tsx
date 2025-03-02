@@ -287,7 +287,7 @@ export function CreateProjectForm() {
             </div>
 
             <form.FieldProvider name="resources">
-              <CreateProjectPictureList
+                <CreateProjectPictureList
                   uploadFile={uploadFile}
                   progressState={progressState}
               />
