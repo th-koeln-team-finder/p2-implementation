@@ -7,7 +7,7 @@ import { unstable_cache as cache } from 'next/dist/server/web/spec-extension/uns
 
 export const getSubscription = cache(
   async (userId: string) =>
-    db.query.subscriptions.findFirst({
+    db.query.pushSubscriptions.findFirst({
       where: eq(pushSubscriptions.userId, userId),
     }),
   ['getSubscription'],

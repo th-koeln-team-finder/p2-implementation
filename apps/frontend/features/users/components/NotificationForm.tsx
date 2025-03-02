@@ -74,7 +74,6 @@ export default function NotificationForm({ user }: { user: UserSelect }) {
         await form.handleSubmit()
       }}
     >
-      <PushNotificationManager userId={user.id} />
       <form.FormProvider>
         <div className="flex items-end justify-between">
           <form.FieldProvider name="activateNotifications">

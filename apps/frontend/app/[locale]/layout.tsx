@@ -1,9 +1,9 @@
 import Header from '@/features/header/header'
-import { routing } from '@/features/i18n/routing'
-import { SessionProvider } from 'next-auth/react'
-import { NextIntlClientProvider } from 'next-intl'
-import { getMessages } from 'next-intl/server'
-import { notFound } from 'next/navigation'
+import {routing} from '@/features/i18n/routing'
+import {SessionProvider} from 'next-auth/react'
+import {NextIntlClientProvider} from 'next-intl'
+import {getMessages} from 'next-intl/server'
+import {notFound} from 'next/navigation'
 
 export default async function RootLayout({
   children,

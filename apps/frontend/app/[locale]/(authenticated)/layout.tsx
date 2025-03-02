@@ -1,6 +1,7 @@
-import { authMiddleware } from '@/auth'
-import { redirect } from '@/features/i18n/routing'
-import { getLocale } from 'next-intl/server'
+import {authMiddleware} from '@/auth'
+import {redirect} from '@/features/i18n/routing'
+import {getLocale} from 'next-intl/server'
+import RegisterPush from "@/features/notifications/components/RegisterPush";
 
 export default async function AuthenticatedLayout({
   children,
@@ -17,5 +18,10 @@ export default async function AuthenticatedLayout({
     })
   }
 
-  return children
+  return (
+    <>
+      <RegisterPush userId={session.user.id} />
+      {children}
+    </>
+  )
 }
