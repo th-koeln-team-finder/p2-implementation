@@ -1,7 +1,7 @@
 'use client'
 
 import {subscribeUser} from '@/features/notifications/notifications.actions'
-import {clientEnv} from '@repo/env'
+import {clientEnv} from '@repo/env/client'
 import {useEffect, useState} from 'react'
 
 function urlBase64ToUint8Array(base64String: string) {
