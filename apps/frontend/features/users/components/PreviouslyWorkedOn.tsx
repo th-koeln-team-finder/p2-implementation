@@ -16,6 +16,7 @@ export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
   const [allLoaded, setAllLoaded] = useState(false)
   const translate = useTranslations('users')
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: setting all variables in here causes infinite loading issues since `loading` and `previouslyWorkedOn` are set by this function and thereby would re-trigger it
   const loadMore = useCallback(
     (count = 10) => {
       if (loading) return
@@ -29,7 +30,6 @@ export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
         },
       )
     },
-    // biome-ignore lint/correctness/useExhaustiveDependencies: setting all variables in here causes infinite loading issues since `loading` and `previouslyWorkedOn` are set by this function and thereby would re-trigger it
     [userId, previouslyWorkedOn.length],
   )
 
