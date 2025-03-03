@@ -32,6 +32,7 @@ export async function createProject(payload: CreateProjectFormValues) {
   const [project] = await db
     .insert(Schema.projects)
     .values({
+      createdBy: session.user.id,
       name: payload.name,
       description: payload.description,
       status: payload.status,
