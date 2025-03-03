@@ -22,7 +22,6 @@ export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
       setLoading(true)
       loadMoreProjects(userId, count, previouslyWorkedOn.length).then(
         (projects: UserProjectsSelect[]) => {
-          setLoading(false)
           setPreviouslyWorkedOn([...previouslyWorkedOn, ...projects])
           if (projects.length < count) {
             setAllLoaded(true)
@@ -30,7 +29,8 @@ export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
         },
       )
     },
-    [userId, previouslyWorkedOn, loading],
+    // biome-ignore lint/correctness/useExhaustiveDependencies: setting all variables in here causes infinite loading issues since `loading` and `previouslyWorkedOn` are set by this function and thereby would re-trigger it
+    [userId, previouslyWorkedOn.length],
   )
 
   useEffect(() => {
@@ -56,7 +56,11 @@ export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
           <LoaderCircle className="mx-auto animate-spin" />
         ) : (
           !allLoaded && (
-            <Button variant="link" className="my-2" onClick={() => loadMore()}>
+            <Button
+              variant="link"
+              className="my-2"
+              onClick={() => handleLoadMore()}
+            >
               {' '}
               <ChevronDown />
               {translate('loadMoreProjects')}

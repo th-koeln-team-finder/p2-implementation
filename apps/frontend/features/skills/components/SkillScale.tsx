@@ -17,13 +17,13 @@ export type UserSkill = {
   verifications: number
   id: string
   isVerified: boolean
-  verifierId: string | undefined
 }
 
 type UserSkillScaleProps = {
   title?: string
   skills: UserSkill[]
   showVerificationControl?: boolean
+  loggedInUserId: string | undefined
 }
 
 type ProjectSkillScaleProps = {
@@ -104,6 +104,7 @@ type ProjectSkillPointListProps = {
 type UserSkillPointListProps = {
   list: UserSkill[]
   showVerificationControl?: boolean
+  loggedInUserId: string
 }
 
 function isUserSkillList(
@@ -146,12 +147,12 @@ function SkillPointList(
                       </TooltipProvider>
                     )}
                 </div>
-                {props.showVerificationControl && skill.verifierId && (
+                {props.showVerificationControl && props.loggedInUserId && (
                   <div className="flex justify-end">
                     <VerificationControl
                       skillId={skill.id}
                       isVerified={skill.isVerified}
-                      verifierId={skill.verifierId}
+                      verifierId={props.loggedInUserId}
                     />
                   </div>
                 )}

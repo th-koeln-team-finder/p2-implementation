@@ -304,7 +304,7 @@ export const de: Language = {
         deleteProject: 'Projekt löschen',
         hideProject: 'Projekt ausblenden',
         showProject: 'Projekt anzeigen',
-        present: 'Gegenwart'
+        present: 'Gegenwart',
       },
       deleteAreYouSure: 'Are you sure you want to delete your account?',
       bio: 'Bio',

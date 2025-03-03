@@ -22,33 +22,39 @@ import {useTranslations} from 'next-intl'
 import {useCallback, useMemo} from 'react'
 
 export default function ProjectList({
-                                      userProjects,
-                                      setProjectsOptimistic,
-                                    }: {
+  userProjects,
+  setProjectsOptimistic,
+}: {
   userProjects: (UserProjectsSelect & { project?: ProjectSelect | null })[]
   setProjectsOptimistic: (payload: OptimisticPayload) => void
 }) {
   const t = useTranslations()
-  const handleDeleteProject = useCallback(async (id: string) => {
-    setProjectsOptimistic({
-      action: 'delete',
-      values: {id},
-    })
-    await removeUserProject(id)
-    await revalidateUserProjects()
-  }, [setProjectsOptimistic])
+  const handleDeleteProject = useCallback(
+    async (id: string) => {
+      setProjectsOptimistic({
+        action: 'delete',
+        values: { id },
+      })
+      await removeUserProject(id)
+      await revalidateUserProjects()
+    },
+    [setProjectsOptimistic],
+  )
 
-  const updateProjectVisibility = useCallback(async (id: string, visible: boolean) => {
-    setProjectsOptimistic({
-      action: 'update',
-      values: {
-        id,
-        visible,
-      },
-    })
-    await updateUserProject(id, {visible})
-    await revalidateUserProjects()
-  }, [setProjectsOptimistic])
+  const updateProjectVisibility = useCallback(
+    async (id: string, visible: boolean) => {
+      setProjectsOptimistic({
+        action: 'update',
+        values: {
+          id,
+          visible,
+        },
+      })
+      await updateUserProject(id, { visible })
+      await revalidateUserProjects()
+    },
+    [setProjectsOptimistic],
+  )
 
   const projects = useMemo(
     () =>
@@ -91,7 +97,7 @@ export default function ProjectList({
                 updateProjectVisibility(project.id, !project.visible)
               }
             >
-              {project.visible ? <EyeClosed/> : <Eye/>}
+              {project.visible ? <EyeClosed /> : <Eye />}
               {project.visible
                 ? t('users.settings.projects.hideProject')
                 : t('users.settings.projects.showProject')}
@@ -102,7 +108,7 @@ export default function ProjectList({
               variant="destructive"
               onClick={() => handleDeleteProject(project.id)}
             >
-              <Trash2 className="h-4 w-4"/>{' '}
+              <Trash2 className="h-4 w-4" />{' '}
               {t('users.settings.projects.deleteProject')}
             </Button>
           </CardFooter>

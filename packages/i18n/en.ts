@@ -300,7 +300,7 @@ export const en = {
         deleteProject: 'Delete project',
         hideProject: 'Hide project',
         showProject: 'Show project',
-        present: 'Present'
+        present: 'Present',
       },
       deleteAreYouSure: 'Are you sure you want to delete your account?',
       bio: 'Bio',

@@ -163,8 +163,9 @@ export const userProjects = pgTable('userProjects', {
     .notNull()
     .references(() => users.id),
   // for projects from this platform
-  projectId: uuid('projectId')
-    .references(() => projects.id, { onDelete: 'cascade' }),
+  projectId: uuid('projectId').references(() => projects.id, {
+    onDelete: 'cascade',
+  }),
   // for projects not from this platform
   projectName: varchar({ length: 255 }),
   projectJoinedDate: date().notNull(),
