@@ -19,7 +19,7 @@ import {
 import {format} from 'date-fns'
 import {Eye, EyeClosed, Trash2} from 'lucide-react'
 import {useTranslations} from 'next-intl'
-import {useMemo} from 'react'
+import {useCallback, useMemo} from 'react'
 
 interface Project {
   id: number
@@ -38,15 +38,16 @@ export default function ProjectList({
   setProjectsOptimistic: (payload: OptimisticPayload) => void
 }) {
   const t = useTranslations()
-  const handleDeleteProject = async (id: string) => {
+  const handleDeleteProject = useCallback(async (id: string) => {
     setProjectsOptimistic({
       action: 'delete',
       values: { id },
     })
     await removeUserProject(id)
-  }
+    await revalidateUserProjects()
+  }, [setProjectsOptimistic])
 
-  const updateProjectVisibility = async (id: string, visible: boolean) => {
+  const updateProjectVisibility = useCallback(async (id: string, visible: boolean) => {
     setProjectsOptimistic({
       action: 'update',
       values: {
@@ -56,7 +57,7 @@ export default function ProjectList({
     })
     await updateUserProject(id, { visible })
     await revalidateUserProjects()
-  }
+  }, [setProjectsOptimistic])
 
   const projects = useMemo(
     () =>
