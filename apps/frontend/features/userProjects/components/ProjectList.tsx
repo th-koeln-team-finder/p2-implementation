@@ -21,15 +21,6 @@ import {Eye, EyeClosed, Trash2} from 'lucide-react'
 import {useTranslations} from 'next-intl'
 import {useCallback, useMemo} from 'react'
 
-interface Project {
-  id: number
-  name: string
-  description: string
-  joinedDate: Date
-  leftDate: Date | null
-  visible: boolean
-}
-
 export default function ProjectList({
   userProjects,
   setProjectsOptimistic,
