@@ -2,10 +2,8 @@ import 'server-only'
 
 import { DrizzleAdapter } from '@auth/drizzle-adapter'
 import { serverEnv } from '@repo/env/server'
-import { eq } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/node-postgres'
 import * as schema from './schema'
-import { users } from './schema'
 
 export const Schema = schema
 

@@ -22,14 +22,12 @@ import { Button } from '@repo/design-system/components/ui/button'
 import { InputForm } from '@repo/design-system/components/ui/input'
 import { Label } from '@repo/design-system/components/ui/label'
 import { SwitchForm } from '@repo/design-system/components/ui/switch'
+import { clientEnv } from '@repo/env/client'
 import { LoaderCircleIcon, SaveIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { z } from 'zod'
-import { clientEnv } from '@repo/env/client'
 
-export default function ProfileForm({
-  user,
-}: { user: UserWithImage }) {
+export default function ProfileForm({ user }: { user: UserWithImage }) {
   const t = useTranslations()
   const translateValidation = useTranslations('validation')
   const [progressState, uploadFile] = useFileUpload()
@@ -255,11 +253,7 @@ export default function ProfileForm({
               const file = files[0]
               if (file.size > clientEnv.NEXT_PUBLIC_MAX_FILE_SIZE)
                 return translateValidation('fileIsTooLarge')
-              if (
-                !clientEnv.NEXT_PUBLIC_ALLOWED_FILE_TYPES.includes(
-                  file.type,
-                )
-              )
+              if (!clientEnv.NEXT_PUBLIC_ALLOWED_FILE_TYPES.includes(file.type))
                 return translateValidation('wrongFileType')
               return true
             })}

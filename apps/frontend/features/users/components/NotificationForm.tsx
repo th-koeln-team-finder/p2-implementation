@@ -1,6 +1,4 @@
 'use client'
-
-import PushNotificationManager from '@/features/test/components/PushNotificationManager'
 import { revalidateUser, updateUserData } from '@/features/users/users.actions'
 import { useForm } from '@formsignals/form-react'
 import { ZodAdapter } from '@formsignals/validation-adapter-zod'

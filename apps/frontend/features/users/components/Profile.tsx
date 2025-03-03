@@ -17,7 +17,6 @@ import {
 import { Button } from '@repo/design-system/components/ui/button'
 import { UserPen } from 'lucide-react'
 import { getLocale, getTranslations } from 'next-intl/server'
-import ProfileBio from "@/features/users/components/ProfileBio";
 
 export default async function Profile({ user }: { user: UserWithImage }) {
   const translate = await getTranslations()

@@ -1,7 +1,7 @@
-'use client';
+'use client'
 
-import {useEffect, useState} from "react";
-import {subscribeUser, unsubscribeUser} from "@/features/notifications/notifications.actions";
+import { subscribeUser } from '@/features/notifications/notifications.actions'
+import { useEffect, useState } from 'react'
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
@@ -16,19 +16,18 @@ function urlBase64ToUint8Array(base64String: string) {
   return outputArray
 }
 
-export default function RegisterPush({userId}: {userId: string}) {
+export default function RegisterPush({ userId }: { userId: string }) {
   const [subscription, setSubscription] = useState<PushSubscription | null>(
     null,
   )
 
   useEffect(() => {
     if ('serviceWorker' in navigator && 'PushManager' in window) {
-      registerServiceWorker()
-        .then(() => {
-          if (!subscription) {
-            subscribeToPush()
-          }
-        })
+      registerServiceWorker().then(() => {
+        if (!subscription) {
+          subscribeToPush()
+        }
+      })
     }
   }, [])
 

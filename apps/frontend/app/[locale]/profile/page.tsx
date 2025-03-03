@@ -1,9 +1,8 @@
-import {authMiddleware} from '@/auth'
-import {redirect} from '@/features/i18n/routing'
+import { authMiddleware } from '@/auth'
+import { redirect } from '@/features/i18n/routing'
 import Profile from '@/features/users/components/Profile'
-import {getUserWithImage} from '@/features/users/users.query'
-import type {UserWithImage} from '@/features/users/users.types'
-import {getLocale} from 'next-intl/server'
+import { getUserWithImage } from '@/features/users/users.query'
+import { getLocale } from 'next-intl/server'
 
 export default async function ProfilePage() {
   const session = await authMiddleware()

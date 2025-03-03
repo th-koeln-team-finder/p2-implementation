@@ -4,7 +4,10 @@ import { getSubscription } from '@/features/notifications/notifications.query'
 import { usersWhoWantToReceiveNotificationsByType } from '@/features/users/users.query'
 import { db } from '@repo/database'
 import type { NotificationType } from '@repo/database/constants'
-import { type PushSubscriptionSelect, pushSubscriptions } from '@repo/database/schema'
+import {
+  type PushSubscriptionSelect,
+  pushSubscriptions,
+} from '@repo/database/schema'
 import { eq } from 'drizzle-orm'
 import type { useTranslations } from 'next-intl'
 import { getTranslations } from 'next-intl/server'

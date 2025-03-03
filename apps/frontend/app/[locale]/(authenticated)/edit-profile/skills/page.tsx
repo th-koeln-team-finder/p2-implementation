@@ -3,7 +3,6 @@ import { redirect } from '@/features/i18n/routing'
 import { getUserSkills } from '@/features/userSkills/userSkills.query'
 import SkillsEdit from '@/features/users/components/SkillsEdit'
 import { getUser } from '@/features/users/users.query'
-import type { UserSelect } from '@repo/database/schema'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 export default async function EditSkills() {

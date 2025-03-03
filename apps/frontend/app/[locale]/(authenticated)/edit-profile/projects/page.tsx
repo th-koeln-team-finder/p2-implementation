@@ -3,7 +3,6 @@ import { redirect } from '@/features/i18n/routing'
 import UserProjectsEdit from '@/features/userProjects/components/UserProjectsEdit'
 import { getUserProjects } from '@/features/userProjects/userProjects.query'
 import { getUser } from '@/features/users/users.query'
-import type { UserSelect } from '@repo/database/schema'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 export default async function EditProjects() {

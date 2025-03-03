@@ -8,8 +8,8 @@ import TeamMembers from '@/features/projects/components/TeamMembers'
 import { Toolbar } from '@/features/projects/components/Toolbar'
 import { getProjectItem } from '@/features/projects/projects.queries'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
+import { SkillScale } from '@repo/design-system/components/custom/SkillScale'
 import { getTranslations } from 'next-intl/server'
-import {SkillScale} from "@repo/design-system/components/custom/SkillScale";
 
 export default async function Projects({
   params,

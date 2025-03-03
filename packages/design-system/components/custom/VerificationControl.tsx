@@ -1,10 +1,5 @@
 'use client'
 
-import {
-  unverifyUserSkill,
-  verifyUserSkill,
-} from '../../../../apps/frontend/features/userSkillVerification/userSkillVerification.action'
-import { revalidateUserSkills } from '../../../../apps/frontend/features/userSkills/userSkills.actions'
 import { Button } from '@/components/ui/button'
 import {
   Tooltip,
@@ -15,6 +10,11 @@ import {
 import { BadgeMinus, BadgePlus, LoaderCircleIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
+import {
+  unverifyUserSkill,
+  verifyUserSkill,
+} from '../../../../apps/frontend/features/userSkillVerification/userSkillVerification.action'
+import { revalidateUserSkills } from '../../../../apps/frontend/features/userSkills/userSkills.actions'
 
 type VerificationControlProps = {
   skillId: string

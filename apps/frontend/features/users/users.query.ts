@@ -1,14 +1,14 @@
 'use server'
 
+import type { UserWithImage } from '@/features/users/users.types'
 import { Schema, db } from '@repo/database'
 import type {
   NotificationColumn,
   NotificationType,
 } from '@repo/database/constants'
-import {users, UserSelect} from '@repo/database/schema'
+import { type UserSelect, users } from '@repo/database/schema'
 import { and, eq, inArray, or } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/dist/server/web/spec-extension/unstable-cache'
-import {UserWithImage} from "@/features/users/users.types";
 
 export async function checkUsernameTaken(username: string) {
   const result = await db.query.users.findFirst({

@@ -1,9 +1,8 @@
-import {authMiddleware} from '@/auth'
-import {redirect} from '@/features/i18n/routing'
+import { authMiddleware } from '@/auth'
+import { redirect } from '@/features/i18n/routing'
 import ProfileForm from '@/features/users/components/ProfileForm'
-import {getUserWithImage} from '@/features/users/users.query'
-import {serverEnv} from '@repo/env'
-import {getLocale, getTranslations} from 'next-intl/server'
+import { getUserWithImage } from '@/features/users/users.query'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 export default async function EditProfile() {
   const translate = await getTranslations()

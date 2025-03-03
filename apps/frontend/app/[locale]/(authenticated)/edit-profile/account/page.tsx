@@ -2,9 +2,7 @@ import { authMiddleware } from '@/auth'
 import { redirect } from '@/features/i18n/routing'
 import AccountForm from '@/features/users/components/AccountForm'
 import DeleteUser from '@/features/users/components/DeleteUser'
-import { deleteUser } from '@/features/users/users.actions'
 import { getUser } from '@/features/users/users.query'
-import type { UserSelect } from '@repo/database/schema'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 export default async function Account() {
