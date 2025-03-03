@@ -1,33 +1,21 @@
 'use client'
 
-import {
-  addUserProject,
-  revalidateUserProjects,
-} from '@/features/userProjects/userProjects.actions'
-import type { OptimisticPayload } from '@/features/userProjects/userProjects.hooks'
-import { useForm } from '@formsignals/form-react'
-import { ZodAdapter } from '@formsignals/validation-adapter-zod'
-import { useSignals } from '@preact/signals-react/runtime'
-import {
-  FieldError,
-  FormError,
-} from '@repo/design-system/components/FormErrors'
-import { Button } from '@repo/design-system/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@repo/design-system/components/ui/card'
-import { DatePickerForm } from '@repo/design-system/components/ui/datepicker'
-import { InputForm } from '@repo/design-system/components/ui/input'
-import { Label } from '@repo/design-system/components/ui/label'
-import { TextareaForm } from '@repo/design-system/components/ui/textarea'
-import { format, parse } from 'date-fns'
-import { LoaderCircleIcon, Plus } from 'lucide-react'
-import { useTranslations } from 'next-intl'
-import { z } from 'zod'
+import {addUserProject, revalidateUserProjects,} from '@/features/userProjects/userProjects.actions'
+import type {OptimisticPayload} from '@/features/userProjects/userProjects.hooks'
+import {useForm} from '@formsignals/form-react'
+import {ZodAdapter} from '@formsignals/validation-adapter-zod'
+import {useSignals} from '@preact/signals-react/runtime'
+import {FieldError, FormError,} from '@repo/design-system/components/FormErrors'
+import {Button} from '@repo/design-system/components/ui/button'
+import {Card, CardContent, CardFooter, CardHeader, CardTitle,} from '@repo/design-system/components/ui/card'
+import {DatePickerForm} from '@repo/design-system/components/ui/datepicker'
+import {InputForm} from '@repo/design-system/components/ui/input'
+import {Label} from '@repo/design-system/components/ui/label'
+import {TextareaForm} from '@repo/design-system/components/ui/textarea'
+import {format, parse} from 'date-fns'
+import {LoaderCircleIcon, Plus} from 'lucide-react'
+import {useTranslations} from 'next-intl'
+import {z} from 'zod'
 
 export default function UserProjectCreate({
   userId,
@@ -48,7 +36,6 @@ export default function UserProjectCreate({
       leftDate: null as Date | null,
     },
     onSubmit: async (values) => {
-      form.reset()
       const mappedValues = {
         userId: userId,
         visible: true,
@@ -62,6 +49,7 @@ export default function UserProjectCreate({
         values: mappedValues,
       })
       await addUserProject(mappedValues)
+      form.reset()
       await revalidateUserProjects()
     },
   })
