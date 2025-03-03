@@ -1,6 +1,6 @@
-import { createEnv } from '@t3-oss/env-core'
-import { z } from 'zod'
-import { onInvalidAccess, onValidationError } from './utils'
+import {createEnv} from '@t3-oss/env-core'
+import {z} from 'zod'
+import {onInvalidAccess, onValidationError} from './utils'
 
 export const serverEnv = createEnv({
   server: {
@@ -18,6 +18,8 @@ export const serverEnv = createEnv({
     MINIO_SECRET_KEY: z.string().min(1),
     NEXT_PUBLIC_MAX_FILE_SIZE: z.coerce.number().int().min(1),
     NEXT_PUBLIC_ALLOWED_FILE_TYPES: z.string().min(1).transform((s) => s.split(",").map((s) => s.trim()).filter(Boolean)).pipe(z.array(z.string().min(1))),
+    NEXT_PUBLIC_VAPID_PUBLIC_KEY: z.string().min(1),
+    VAPID_PRIVATE_KEY: z.string().min(1),
   },
   emptyStringAsUndefined: true,
   isServer: true,

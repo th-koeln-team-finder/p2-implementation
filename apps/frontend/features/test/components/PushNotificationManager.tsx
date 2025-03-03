@@ -1,13 +1,10 @@
 'use client'
 
-import {
-  sendPushNotification,
-  subscribeUser,
-  unsubscribeUser,
-} from '@/features/notifications/notifications.actions'
-import { Button } from '@repo/design-system/components/ui/button'
-import { Input } from '@repo/design-system/components/ui/input'
-import { useEffect, useState } from 'react'
+import {sendPushNotification, subscribeUser, unsubscribeUser,} from '@/features/notifications/notifications.actions'
+import {Button} from '@repo/design-system/components/ui/button'
+import {Input} from '@repo/design-system/components/ui/input'
+import {useEffect, useState} from 'react'
+import {clientEnv} from "@repo/env";
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
@@ -52,7 +49,7 @@ export default function PushNotificationManager({
     const sub = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(
-        process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || '',
+        clientEnv.NEXT_PUBLIC_VAPID_PUBLIC_KEY || '',
       ),
     })
     setSubscription(sub)
