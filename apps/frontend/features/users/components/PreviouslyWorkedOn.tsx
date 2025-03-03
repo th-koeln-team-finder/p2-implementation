@@ -59,7 +59,7 @@ export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
             <Button
               variant="link"
               className="my-2"
-              onClick={() => handleLoadMore()}
+              onClick={() => loadMore()}
             >
               {' '}
               <ChevronDown />
