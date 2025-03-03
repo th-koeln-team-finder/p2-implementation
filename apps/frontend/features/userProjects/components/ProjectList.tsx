@@ -1,6 +1,10 @@
 'use client'
 
-import {revalidateUserProjects, updateUserProject,} from '@/features/userProjects/userProjects.actions'
+import {
+  removeUserProject,
+  revalidateUserProjects,
+  updateUserProject,
+} from '@/features/userProjects/userProjects.actions'
 import type {OptimisticPayload} from '@/features/userProjects/userProjects.hooks'
 import type {ProjectSelect, UserProjectsSelect} from '@repo/database/schema'
 import {Button} from '@repo/design-system/components/ui/button'
@@ -34,11 +38,12 @@ export default function ProjectList({
   setProjectsOptimistic: (payload: OptimisticPayload) => void
 }) {
   const t = useTranslations()
-  const handleDeleteProject = (id: string) => {
+  const handleDeleteProject = async (id: string) => {
     setProjectsOptimistic({
       action: 'delete',
       values: { id },
     })
+    await removeUserProject(id)
   }
 
   const updateProjectVisibility = async (id: string, visible: boolean) => {
