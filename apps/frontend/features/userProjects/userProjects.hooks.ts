@@ -6,7 +6,7 @@ export type OptimisticPayload =
       action: 'add'
       values: {
         userId: string
-        projectId: string
+        projectId?: string
         visible: boolean
         projectName: string
         projectJoinedDate: string
@@ -41,7 +41,7 @@ export function useOptimisticUserProjects(
           const newUserProject = {
             id: Math.random().toString(),
             userId: payload.values.userId,
-            projectId: payload.values.projectId,
+            projectId: payload.values.projectId || null,
             visible: payload.values.visible,
             projectName: payload.values.projectName,
             projectJoinedDate: payload.values.projectJoinedDate,

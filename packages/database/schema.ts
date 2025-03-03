@@ -1,4 +1,4 @@
-import { relations, sql } from 'drizzle-orm'
+import {relations, sql} from 'drizzle-orm'
 import {
   type AnyPgColumn,
   boolean,
@@ -15,13 +15,8 @@ import {
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core'
-import type { AdapterAccountType } from 'next-auth/adapters'
-import {
-  Roles,
-  type RolesType,
-  RolesValues,
-  notificationColumns,
-} from './constants'
+import type {AdapterAccountType} from 'next-auth/adapters'
+import {notificationColumns, Roles, type RolesType, RolesValues,} from './constants'
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
 
@@ -169,7 +164,6 @@ export const userProjects = pgTable('userProjects', {
     .references(() => users.id),
   // for projects from this platform
   projectId: uuid('projectId')
-    .notNull()
     .references(() => projects.id, { onDelete: 'cascade' }),
   // for projects not from this platform
   projectName: varchar({ length: 255 }),
