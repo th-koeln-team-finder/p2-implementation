@@ -22,9 +22,9 @@ import {useTranslations} from 'next-intl'
 import {useCallback, useMemo} from 'react'
 
 export default function ProjectList({
-  userProjects,
-  setProjectsOptimistic,
-}: {
+                                      userProjects,
+                                      setProjectsOptimistic,
+                                    }: {
   userProjects: (UserProjectsSelect & { project?: ProjectSelect | null })[]
   setProjectsOptimistic: (payload: OptimisticPayload) => void
 }) {
@@ -32,7 +32,7 @@ export default function ProjectList({
   const handleDeleteProject = useCallback(async (id: string) => {
     setProjectsOptimistic({
       action: 'delete',
-      values: { id },
+      values: {id},
     })
     await removeUserProject(id)
     await revalidateUserProjects()
@@ -46,7 +46,7 @@ export default function ProjectList({
         visible,
       },
     })
-    await updateUserProject(id, { visible })
+    await updateUserProject(id, {visible})
     await revalidateUserProjects()
   }, [setProjectsOptimistic])
 
@@ -69,47 +69,46 @@ export default function ProjectList({
       <h2 className="font-bold text-xl">
         {t('users.settings.projects.yourProjects')}
       </h2>
-      {projects.length > 0 ? (
-        projects.map((project) => (
-          <Card key={project.id}>
-            <CardHeader>
-              <CardTitle>{project.name}</CardTitle>
-              <CardDescription>
-                {format(project.joinedDate, 'MMM yyyy')} -{' '}
-                {project.leftDate
-                  ? format(project.leftDate, 'MMM yyyy')
-                  : 'Present'}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>{project.description}</p>
-            </CardContent>
-            <CardFooter className="flex gap-4">
-              <Button
-                size="sm"
-                variant={project.visible ? 'default' : 'outline'}
-                onClick={() =>
-                  updateProjectVisibility(project.id, !project.visible)
-                }
-              >
-                {project.visible ? <EyeClosed /> : <Eye />}
-                {project.visible
-                  ? t('users.settings.projects.hideProject')
-                  : t('users.settings.projects.showProject')}
-              </Button>
+      {projects.map((project) => (
+        <Card key={project.id}>
+          <CardHeader>
+            <CardTitle>{project.name}</CardTitle>
+            <CardDescription>
+              {format(project.joinedDate, 'MMM yyyy')} -{' '}
+              {project.leftDate
+                ? format(project.leftDate, 'MMM yyyy')
+                : 'Present'}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p>{project.description}</p>
+          </CardContent>
+          <CardFooter className="flex gap-4">
+            <Button
+              size="sm"
+              variant={project.visible ? 'default' : 'outline'}
+              onClick={() =>
+                updateProjectVisibility(project.id, !project.visible)
+              }
+            >
+              {project.visible ? <EyeClosed/> : <Eye/>}
+              {project.visible
+                ? t('users.settings.projects.hideProject')
+                : t('users.settings.projects.showProject')}
+            </Button>
 
-              <Button
-                size="sm"
-                variant="destructive"
-                onClick={() => handleDeleteProject(project.id)}
-              >
-                <Trash2 className="h-4 w-4" />{' '}
-                {t('users.settings.projects.deleteProject')}
-              </Button>
-            </CardFooter>
-          </Card>
-        ))
-      ) : (
+            <Button
+              size="sm"
+              variant="destructive"
+              onClick={() => handleDeleteProject(project.id)}
+            >
+              <Trash2 className="h-4 w-4"/>{' '}
+              {t('users.settings.projects.deleteProject')}
+            </Button>
+          </CardFooter>
+        </Card>
+      ))}
+      {projects.length > 0 && (
         <div>
           <h3 className="font-bold text-lg">
             {t('users.settings.projects.noProjectsDesc')}
