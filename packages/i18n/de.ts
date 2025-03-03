@@ -1,4 +1,4 @@
-import type { Language } from './en'
+import type {Language} from './en'
 
 export const de: Language = {
   general: {
@@ -304,6 +304,7 @@ export const de: Language = {
         deleteProject: 'Projekt löschen',
         hideProject: 'Projekt ausblenden',
         showProject: 'Projekt anzeigen',
+        present: 'Gegenwart'
       },
       deleteAreYouSure: 'Are you sure you want to delete your account?',
       bio: 'Bio',

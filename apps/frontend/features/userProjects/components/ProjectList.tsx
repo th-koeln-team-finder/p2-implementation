@@ -77,7 +77,7 @@ export default function ProjectList({
               {format(project.joinedDate, 'MMM yyyy')} -{' '}
               {project.leftDate
                 ? format(project.leftDate, 'MMM yyyy')
-                : 'Present'}
+                : t('users.settings.projects.present')}
             </CardDescription>
           </CardHeader>
           <CardContent>
