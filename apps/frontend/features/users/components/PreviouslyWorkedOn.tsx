@@ -1,12 +1,12 @@
 'use client'
 
-import { ProjectCard } from '@/features/projects/components/ProjectCard'
-import { loadMoreProjects } from '@/features/users/users.actions'
-import type { UserProjectsSelect } from '@repo/database/schema'
-import { Button } from '@repo/design-system/components/ui/button'
-import { ChevronDown, LoaderCircle } from 'lucide-react'
-import { useTranslations } from 'next-intl'
-import { useEffect, useState } from 'react'
+import {ProjectCard} from '@/features/projects/components/ProjectCard'
+import {loadMoreProjects} from '@/features/users/users.actions'
+import type {UserProjectsSelect} from '@repo/database/schema'
+import {Button} from '@repo/design-system/components/ui/button'
+import {ChevronDown, LoaderCircle} from 'lucide-react'
+import {useTranslations} from 'next-intl'
+import {useCallback, useEffect, useState} from 'react'
 
 export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
   const [previouslyWorkedOn, setPreviouslyWorkedOn] = useState<
@@ -16,24 +16,26 @@ export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
   const [allLoaded, setAllLoaded] = useState(false)
   const translate = useTranslations('users')
 
-  function loadMore(count = 10) {
-    if (loading) return
-    setLoading(true)
-    loadMoreProjects(userId, count, previouslyWorkedOn.length).then(
-      (projects: UserProjectsSelect[]) => {
-        setLoading(false)
-        setPreviouslyWorkedOn([...previouslyWorkedOn, ...projects])
-        if (projects.length < count) {
-          setAllLoaded(true)
-        }
-      },
-    )
-  }
+  const loadMore = useCallback(
+    (count = 10) => {
+      if (loading) return
+      setLoading(true)
+      loadMoreProjects(userId, count, previouslyWorkedOn.length).then(
+        (projects: UserProjectsSelect[]) => {
+          setLoading(false)
+          setPreviouslyWorkedOn([...previouslyWorkedOn, ...projects])
+          if (projects.length < count) {
+            setAllLoaded(true)
+          }
+        },
+      )
+    },
+    [userId, previouslyWorkedOn, loading],
+  )
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: This is only supposed to run on first render
   useEffect(() => {
     loadMore(3)
-  }, [])
+  }, [loadMore])
 
   return (
     <div>
