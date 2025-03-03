@@ -33,7 +33,6 @@ export function useOptimisticUserProjects(
     project?: ProjectSelect | null
   })[],
 ) {
-  const { data: session } = useSession()
   const [_, startTransition] = useTransition()
   const [optimisticUpdates, dispatchOptimistic] = useOptimistic(
     userProjects,
