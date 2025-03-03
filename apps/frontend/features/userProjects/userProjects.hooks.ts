@@ -1,5 +1,4 @@
 import type { ProjectSelect, UserProjectsSelect } from '@repo/database/schema'
-import { useSession } from 'next-auth/react'
 import { useOptimistic, useTransition } from 'react'
 
 export type OptimisticPayload =
