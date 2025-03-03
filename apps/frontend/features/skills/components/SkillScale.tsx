@@ -1,19 +1,10 @@
 'use client'
-import { Button } from '@/components/ui/button'
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
-import { BadgeCheck, ChevronDownIcon } from 'lucide-react'
-import { useTranslations } from 'next-intl'
-import VerificationControl from './VerificationControl'
+import {Button} from '@repo/design-system/components/ui/button'
+import {Collapsible, CollapsibleContent, CollapsibleTrigger,} from '@repo/design-system/components/ui/collapsible'
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,} from '@repo/design-system/components/ui/tooltip'
+import {BadgeCheck, ChevronDownIcon} from 'lucide-react'
+import {useTranslations} from 'next-intl'
+import VerificationControl from "@/features/userSkills/components/VerificationControl";
 
 type ProjectSkill = {
   name: string
