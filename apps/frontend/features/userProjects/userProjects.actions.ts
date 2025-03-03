@@ -1,9 +1,9 @@
 'use server'
 
-import { Schema, db } from '@repo/database'
-import type { UserProjectsInsert } from '@repo/database/schema'
-import { eq } from 'drizzle-orm'
-import { revalidateTag } from 'next/cache'
+import {db, Schema} from '@repo/database'
+import type {UserProjectsInsert} from '@repo/database/schema'
+import {eq} from 'drizzle-orm'
+import {revalidateTag} from 'next/cache'
 
 export async function revalidateUserProjects() {
   return await revalidateTag('user-projects')
@@ -14,7 +14,7 @@ export async function addUserProject(userProject: UserProjectsInsert) {
 }
 
 export async function updateUserProject(
-  userProjectId: number,
+  userProjectId: string,
   data: Partial<UserProjectsInsert>,
 ) {
   await db
@@ -24,7 +24,7 @@ export async function updateUserProject(
     .execute()
 }
 
-export async function removeUserProject(userProjectId: number) {
+export async function removeUserProject(userProjectId: string) {
   await db
     .delete(Schema.userProjects)
     .where(eq(Schema.userProjects.id, userProjectId))

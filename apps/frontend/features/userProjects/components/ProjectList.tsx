@@ -1,12 +1,9 @@
 'use client'
 
-import {
-  revalidateUserProjects,
-  updateUserProject,
-} from '@/features/userProjects/userProjects.actions'
-import type { OptimisticPayload } from '@/features/userProjects/userProjects.hooks'
-import type { ProjectSelect, UserProjectsSelect } from '@repo/database/schema'
-import { Button } from '@repo/design-system/components/ui/button'
+import {revalidateUserProjects, updateUserProject,} from '@/features/userProjects/userProjects.actions'
+import type {OptimisticPayload} from '@/features/userProjects/userProjects.hooks'
+import type {ProjectSelect, UserProjectsSelect} from '@repo/database/schema'
+import {Button} from '@repo/design-system/components/ui/button'
 import {
   Card,
   CardContent,
@@ -15,9 +12,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@repo/design-system/components/ui/card'
-import { format } from 'date-fns'
-import { Eye, EyeClosed, Trash2 } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import {format} from 'date-fns'
+import {Eye, EyeClosed, Trash2} from 'lucide-react'
+import {useTranslations} from 'next-intl'
+import {useMemo} from 'react'
 
 interface Project {
   id: number
@@ -36,14 +34,14 @@ export default function ProjectList({
   setProjectsOptimistic: (payload: OptimisticPayload) => void
 }) {
   const t = useTranslations()
-  const handleDeleteProject = (id: number) => {
+  const handleDeleteProject = (id: string) => {
     setProjectsOptimistic({
       action: 'delete',
       values: { id },
     })
   }
 
-  const updateProjectVisibility = async (id: number, visible: boolean) => {
+  const updateProjectVisibility = async (id: string, visible: boolean) => {
     setProjectsOptimistic({
       action: 'update',
       values: {
@@ -55,15 +53,19 @@ export default function ProjectList({
     await revalidateUserProjects()
   }
 
-  const projects: Project[] = userProjects.map((project) => ({
-    id: project.id,
-    name: project.projectName || project.project?.name || '',
-    description:
-      project.projectDescription || project.project?.description || '',
-    joinedDate: new Date(project.projectJoinedDate ?? ''),
-    leftDate: new Date(project.projectLeftDate ?? ''),
-    visible: project.visible,
-  }))
+  const projects = useMemo(
+    () =>
+      userProjects.map((project) => ({
+        id: project.id,
+        name: project.projectName || project.project?.name || '',
+        description:
+          project.projectDescription || project.project?.description || '',
+        joinedDate: new Date(project.projectJoinedDate ?? ''),
+        leftDate: new Date(project.projectLeftDate ?? ''),
+        visible: project.visible,
+      })),
+    [userProjects],
+  )
 
   return (
     <div className="space-y-4">

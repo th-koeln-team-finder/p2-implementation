@@ -1,12 +1,12 @@
-import type { ProjectSelect, UserProjectsSelect } from '@repo/database/schema'
-import { useOptimistic, useTransition } from 'react'
+import type {ProjectSelect, UserProjectsSelect} from '@repo/database/schema'
+import {useOptimistic, useTransition} from 'react'
 
 export type OptimisticPayload =
   | {
       action: 'add'
       values: {
         userId: string
-        projectId: number
+        projectId: string
         visible: boolean
         projectName: string
         projectJoinedDate: string
@@ -16,19 +16,19 @@ export type OptimisticPayload =
     }
   | {
       action: 'delete'
-      values: { id: number }
+      values: { id: string }
     }
   | {
       action: 'update'
       values: {
-        id: number
+        id: string
         visible?: boolean
       }
     }
 
 export function useOptimisticUserProjects(
   userProjects: (UserProjectsSelect & {
-    id: number
+    id: string
     project?: ProjectSelect | null
   })[],
 ) {
@@ -39,7 +39,7 @@ export function useOptimisticUserProjects(
       switch (payload.action) {
         case 'add': {
           const newUserProject = {
-            id: Math.random(),
+            id: Math.random().toString(),
             userId: payload.values.userId,
             projectId: payload.values.projectId,
             visible: payload.values.visible,

@@ -5,11 +5,11 @@ import {ProjectTimetable} from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
 import TeamMembers from '@/features/projects/components/TeamMembers'
 import type {CreateProjectFormValues} from '@/features/projects/projects.types'
+import {SkillScale} from '@/features/skills/components/SkillScale'
 import {useFormContext} from '@formsignals/form-react'
 import {useSignals} from '@preact/signals-react/runtime'
 import {Weekdays} from '@repo/database/schema'
 import {WysiwygRenderer} from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
-import {SkillScale} from '@/features/skills/components/SkillScale'
 import {useTranslations} from 'next-intl'
 
 export function CreateProjectPreview() {
