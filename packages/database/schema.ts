@@ -205,6 +205,19 @@ export const projects = pgTable('projects', {
 export type ProjectInsert = typeof projects.$inferInsert
 export type ProjectSelect = typeof projects.$inferSelect
 
+export const participants = pgTable('participants', {
+    user: uuid('userId')
+        .notNull()
+        .references(() => users.id, { onDelete: 'cascade' }),
+    projectId: uuid('projectId')
+        .notNull()
+        .references(() => projects.id, { onDelete: 'cascade'})
+
+},(participants) => ({
+  pk: primaryKey({ columns: [participants.user, participants.projectId] }),
+    })
+)
+
 export const projectTags = pgTable(
     'project_tag',
     {
@@ -215,8 +228,8 @@ export const projectTags = pgTable(
           .notNull()
           .references(() => tags.id, { onDelete: 'cascade' }),
     },
-    (table) => ({
-      pk: primaryKey({ columns: [table.projectId, table.tagId] }),
+    (projectTags) => ({
+      pk: primaryKey({ columns: [projectTags.projectId, projectTags.tagId] }),
     }),
 )
 export type projectTagInsert = typeof projectTags.$inferInsert
@@ -599,6 +612,9 @@ export type AuthenticatorInsert = typeof authenticators.$inferInsert
 export type AuthenticatorSelect = typeof authenticators.$inferSelect
 //endregion
 
+//region Relations
+
+//projectRelations
 export const projectRelations = relations(projects, ({ many }) => ({
   issues: many(projectIssue, {
     relationName: 'projectIssues',
@@ -613,6 +629,7 @@ export const projectRelations = relations(projects, ({ many }) => ({
     relationName: 'projectPictures',
   }),
   tags: many(projectTags),
+  participants: many(participants),
   bookmarks: many(projectBookmarks),
   projectSkills: many(projectSkill),
 }))
@@ -628,9 +645,7 @@ export const projectTagRelations = relations(projectTags, ({ one }) => ({
   }),
 }))
 
-
-export const projectBookmarkRelations = relations(
-    projectBookmarks,
+export const projectBookmarkRelations = relations(projectBookmarks,
     ({ one }) => ({
       user: one(users, {
         fields: [projectBookmarks.userId],
@@ -654,6 +669,10 @@ export const projectSkillRelations = relations(projectSkill, ({ one }) => ({
   }),
 }))
 
+export const skillProjectRelations = relations(skill, ({ many }) => ({
+  projectSkills: many(projectSkill),
+}))
+
 export const timetableRelations = relations(projectTimetable, ({ one }) => ({
   project: one(projects, {
     fields: [projectTimetable.projectId],
@@ -661,6 +680,7 @@ export const timetableRelations = relations(projectTimetable, ({ one }) => ({
     relationName: 'projectTimetable',
   }),
 }))
+
 export const projectPictureRelations = relations(
     projectPicture,
     ({ one }) => ({
@@ -706,8 +726,25 @@ export const FileUploadRelations = relations(uploadedFiles, ({ one }) => ({
     })
 }))
 
-export const skillProjectRelations = relations(skill, ({ many }) => ({
-  projectSkills: many(projectSkill),
+
+
+export const participantsRelations = relations(participants, ({ one }) => ({
+  users: one(users, {
+    fields: [participants.user],
+    references: [users.id],
+  }),
+    projects: one(projects, {
+        fields: [participants.projectId],
+        references: [projects.id],
+    }),
+}))
+
+export const userParticipantRelations = relations(users, ({ many }) => ({
+    participants: many(participants),
+}))
+
+export const projectParticipantRelations = relations(projects, ({ many }) => ({
+    participants: many(participants),
 }))
 
 export const issueRelations = relations(projectIssue, ({ one }) => ({
@@ -718,6 +755,7 @@ export const issueRelations = relations(projectIssue, ({ one }) => ({
   }),
 }))
 
+//brainstormRelations
 export const brainstormRelations = relations(brainstorms, ({ one, many }) => ({
   creator: one(users, {
     fields: [brainstorms.createdById],
