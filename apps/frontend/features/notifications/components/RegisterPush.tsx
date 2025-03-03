@@ -1,7 +1,7 @@
 'use client'
 
-import { subscribeUser } from '@/features/notifications/notifications.actions'
-import { useEffect, useState } from 'react'
+import {subscribeUser} from '@/features/notifications/notifications.actions'
+import {useEffect, useState} from 'react'
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
@@ -29,7 +29,7 @@ export default function RegisterPush({ userId }: { userId: string }) {
         }
       })
     }
-  }, [])
+  }, [subscription])
 
   async function registerServiceWorker() {
     const registration = await navigator.serviceWorker.register('/sw.js', {
