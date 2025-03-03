@@ -204,6 +204,24 @@ export const projects = pgTable('projects', {
 export type ProjectInsert = typeof projects.$inferInsert
 export type ProjectSelect = typeof projects.$inferSelect
 
+export const projectTags = pgTable(
+    'project_tag',
+    {
+      projectId: uuid('projectId')
+          .notNull()
+          .references(() => projects.id, { onDelete: 'cascade' }),
+      tagId: uuid('tagId')
+          .notNull()
+          .references(() => tags.id, { onDelete: 'cascade' }),
+    },
+    (table) => ({
+      pk: primaryKey({ columns: [table.projectId, table.tagId] }),
+    }),
+)
+export type projectTagInsert = typeof projectTags.$inferInsert
+export type projectTagSelect = typeof projectTags.$inferSelect
+
+
 /**
  * Skills for a project, referencing Project and Skill
  */
@@ -593,9 +611,36 @@ export const projectRelations = relations(projects, ({ many }) => ({
   projectPictures: many(projectPicture, {
     relationName: 'projectPictures',
   }),
+  tags: many(projectTags),
   bookmarks: many(projectBookmarks),
   projectSkills: many(projectSkill),
 }))
+
+export const projectTagRelations = relations(projectTags, ({ one }) => ({
+  project: one(projects, {
+    fields: [projectTags.projectId],
+    references: [projects.id],
+  }),
+  tag: one(tags, {
+    fields: [projectTags.tagId],
+    references: [tags.id],
+  }),
+}))
+
+
+export const projectBookmarkRelations = relations(
+    projectBookmarks,
+    ({ one }) => ({
+      user: one(users, {
+        fields: [projectBookmarks.userId],
+        references: [users.id],
+      }),
+      project: one(projects, {
+        fields: [projectBookmarks.projectId],
+        references: [projects.id],
+      }),
+    }),
+)
 
 export const projectSkillRelations = relations(projectSkill, ({ one }) => ({
   skill: one(skill, {
