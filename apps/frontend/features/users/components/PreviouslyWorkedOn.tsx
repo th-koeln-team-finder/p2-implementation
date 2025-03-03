@@ -23,6 +23,7 @@ export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
       setLoading(true)
       loadMoreProjects(userId, count, previouslyWorkedOn.length).then(
         (projects: UserProjectsSelect[]) => {
+          setLoading(false)
           setPreviouslyWorkedOn([...previouslyWorkedOn, ...projects])
           if (projects.length < count) {
             setAllLoaded(true)
