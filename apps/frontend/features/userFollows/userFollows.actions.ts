@@ -7,7 +7,7 @@ import { and, eq } from 'drizzle-orm'
 import { revalidateTag } from 'next/cache'
 
 export async function revalidateFollows() {
-  return revalidateTag('userFollows')
+  return await revalidateTag('userFollows')
 }
 
 export async function setFollows(followerId: string, followeeId: string) {

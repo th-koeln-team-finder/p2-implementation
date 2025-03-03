@@ -6,7 +6,7 @@ import { eq } from 'drizzle-orm'
 import { revalidateTag } from 'next/cache'
 
 export async function revalidateUserSkills() {
-  return revalidateTag('user-skills')
+  return await revalidateTag('user-skills')
 }
 
 export async function addUserSkill(userSkill: UserSkillsInsert) {

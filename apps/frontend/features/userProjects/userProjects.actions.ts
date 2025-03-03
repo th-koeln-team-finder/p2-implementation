@@ -6,7 +6,7 @@ import { eq } from 'drizzle-orm'
 import { revalidateTag } from 'next/cache'
 
 export async function revalidateUserProjects() {
-  return revalidateTag('user-projects')
+  return await revalidateTag('user-projects')
 }
 
 export async function addUserProject(userProject: UserProjectsInsert) {
