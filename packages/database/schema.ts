@@ -189,6 +189,7 @@ export const userProjectSettings = pgTable('userProjectSettings', {
  */
 export const projects = pgTable('projects', {
   id: uuid().primaryKey().notNull().defaultRandom(),
+  createdBy: uuid('createdBy').notNull().references(() => users.id, {onDelete: 'cascade'}),
   name: varchar({ length: 255 }).notNull(),
   description: text().notNull(),
   status: varchar({ enum: ['open', 'closed'] }).notNull(),
