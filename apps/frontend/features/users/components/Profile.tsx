@@ -24,13 +24,13 @@ export default async function Profile({ user }: { user: UserWithImage }) {
   }
   let isOwnProfile: boolean | undefined
   let isFollowing = false
-  let loggedInUser: UserSelect | null = null
+  let loggedInUser: UserSelect | undefined
 
   if (session?.user.id) {
     isOwnProfile = user.id === session?.user.id
     loggedInUser = await getUser(session?.user.id)
 
-    isFollowing = !!(await userFollowsUser(loggedInUser.id, user.id))
+    isFollowing = loggedInUser?.id ? !!(await userFollowsUser(loggedInUser.id, user.id)) : false
   }
   const skills: UserSkill[] = (await getUserSkills(user.id)).map(
     (userSkill) => ({
@@ -101,6 +101,7 @@ export default async function Profile({ user }: { user: UserWithImage }) {
           title={translate('users.skills')}
           skills={skills}
           showVerificationControl={!isOwnProfile}
+          loggedInUserId={loggedInUser?.id}
         />
       </div>
       <div className="mt-8">

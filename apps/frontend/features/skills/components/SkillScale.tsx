@@ -46,6 +46,10 @@ export function SkillScale(
     'showVerificationControl' in props
       ? props.showVerificationControl
       : undefined
+  const loggedInUserId =
+    'loggedInUserId' in props
+      ? props.loggedInUserId
+      : undefined
   const translate = useTranslations()
 
   return (
@@ -69,11 +73,13 @@ export function SkillScale(
             <SkillPointList
               list={skills.slice(0, 5)}
               showVerificationControl={showVerificationControl}
+              loggedInUserId={loggedInUserId}
             />
             <CollapsibleContent>
               <SkillPointList
                 list={skills.slice(5)}
                 showVerificationControl={showVerificationControl}
+                loggedInUserId={loggedInUserId}
               />
             </CollapsibleContent>
             {skills.length > 5 && (
