@@ -1,7 +1,7 @@
 import { Schema, db } from '@repo/database'
 import { projects } from '@repo/database/schema'
 import { generateTextEmbeddings } from '@repo/semantic-search'
-import { cosineDistance, desc, eq, sql } from 'drizzle-orm'
+import { and, cosineDistance, desc, eq, gte, sql } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
 
 export const getProjectItems = cache(
@@ -31,7 +31,10 @@ export const getProjectItems = cache(
       columns: {
         embedding: false,
       },
-      where: eq(Schema.projects.isPublic, true),
+      where: and(
+        gte(correctTotalSimilarity, 0.6),
+        eq(Schema.projects.isPublic, true),
+      ),
       limit,
       orderBy: [
         search && desc(correctTotalSimilarity),
