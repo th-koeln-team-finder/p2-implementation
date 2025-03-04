@@ -32,7 +32,7 @@ export const getProjectItems = cache(
         embedding: false,
       },
       where: and(
-        gte(correctTotalSimilarity, 0.6),
+        gte(correctTotalSimilarity, 0.4),
         eq(Schema.projects.isPublic, true),
       ),
       limit,

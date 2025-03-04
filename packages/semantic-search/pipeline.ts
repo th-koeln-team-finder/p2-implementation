@@ -7,8 +7,7 @@ import {
 
 const modelTypes = {
   small: 'Xenova/multilingual-e5-small', // Vector size: 384
-  large: 'Xenova/multilingual-e5-small', // Vector size: 384
-  'extra-large': 'WhereIsAI/UAE-Large-V1', // Vector size: 1024
+  large: 'WhereIsAI/UAE-Large-V1', // Vector size: 1024
 } as const
 
 // Use the Singleton pattern to enable lazy construction of the pipeline.
@@ -37,6 +36,7 @@ const P = () =>
             dtype: 'fp16',
           },
         )
+        console.log('Model downloaded', type)
       }
       return PipelineSingleton.pipelineInstances[type]
     }

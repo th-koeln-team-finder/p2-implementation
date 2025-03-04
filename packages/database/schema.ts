@@ -21,8 +21,7 @@ import { Roles, type RolesType, RolesValues } from './constants'
 
 const VectorSizes = {
   small: 384,
-  large: 384,
-  'extra-large': 1024,
+  large: 1024,
 }
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
