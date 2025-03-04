@@ -3,7 +3,7 @@ import {
   DialogTitle,
 } from '@repo/design-system/components/ui/dialog'
 import { Skeleton } from '@repo/design-system/components/ui/skeleton'
-import { cn } from '../lib/utils'
+import { cn } from '@repo/design-system/lib/utils'
 
 type DialogHeaderLoadingProps = {
   withoutIndent?: boolean
