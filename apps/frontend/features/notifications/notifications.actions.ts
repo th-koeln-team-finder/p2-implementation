@@ -1,30 +1,26 @@
 'use server'
 
-import { getSubscription } from '@/features/notifications/notifications.query'
-import { usersWhoWantToReceiveNotificationsByType } from '@/features/users/users.query'
-import { db } from '@repo/database'
-import type { NotificationType } from '@repo/database/constants'
-import {
-  type PushSubscriptionSelect,
-  pushSubscriptions,
-} from '@repo/database/schema'
-import { eq } from 'drizzle-orm'
-import type { useTranslations } from 'next-intl'
-import { getTranslations } from 'next-intl/server'
+import {getSubscription} from '@/features/notifications/notifications.query'
+import {usersWhoWantToReceiveNotificationsByType} from '@/features/users/users.query'
+import {db} from '@repo/database'
+import type {NotificationType} from '@repo/database/constants'
+import {pushSubscriptions, type PushSubscriptionSelect,} from '@repo/database/schema'
+import {eq} from 'drizzle-orm'
+import type {useTranslations} from 'next-intl'
+import {getTranslations} from 'next-intl/server'
 import webpush from 'web-push'
-import {getTranslations} from "next-intl/server";
-import {useTranslations} from "next-intl";
+import {serverEnv} from "@repo/env/server";
 
 webpush.setVapidDetails(
-  process.env.FRONTEND_URL,
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
-  process.env.VAPID_PRIVATE_KEY
-);
+  serverEnv.FRONTEND_URL,
+  serverEnv.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+  serverEnv.VAPID_PRIVATE_KEY,
+)
 
 export async function subscribeUser(userId: string, sub: PushSubscription) {
   await db
     .insert(pushSubscriptions)
-    .values({ userId, subscription: JSON.stringify(sub) })
+    .values({userId, subscription: JSON.stringify(sub)})
     .execute()
 }
 
@@ -79,8 +75,12 @@ export async function sendNotificationByType(userIds: string[], type: Notificati
 }
 
 
-export async function sendPushNotification(userId: string, data: NotificationData) {
-  const subscription: SubscriptionSelect | undefined = await getSubscription(userId)
+export async function sendPushNotification(
+  userId: string,
+  data: NotificationData,
+) {
+  const subscription: PushSubscriptionSelect | undefined =
+    await getSubscription(userId)
 
   if (!subscription) {
     throw new Error('No subscription available')
@@ -95,9 +95,9 @@ export async function sendPushNotification(userId: string, data: NotificationDat
         body: data.body || 'You have a new notification',
       })
     )
-    return { success: true }
+    return {success: true}
   } catch (error) {
     console.error('Error sending push notification:', error)
-    return { success: false, error: 'Failed to send notification' }
+    return {success: false, error: 'Failed to send notification'}
   }
 }
