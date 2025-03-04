@@ -1,21 +1,21 @@
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@repo/design-system/components/ui/alert-dialog'
-import {
-  Button,
-  buttonVariants,
-} from '@repo/design-system/components/ui/button'
-import { getTranslations } from 'next-intl/server'
+import { authMiddleware } from '@/auth'
+import { redirect } from '@/features/i18n/routing'
+import AccountForm from '@/features/users/components/AccountForm'
+import DeleteUser from '@/features/users/components/DeleteUser'
+import { getUser } from '@/features/users/users.query'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 export default async function Account() {
   const translate = await getTranslations()
+  const session = await authMiddleware()
+  if (!session?.user?.id) {
+    return redirect({ href: '/', locale: await getLocale() })
+  }
+
+  const user = await getUser(session.user.id)
+  if (!user) {
+    return redirect({ href: '/', locale: await getLocale() })
+  }
 
   return (
     <section>
@@ -23,32 +23,13 @@ export default async function Account() {
         {translate('users.settings.account')}
       </h2>
 
-      <h3 className="mb-8 font-bold text-xl">
+      <AccountForm user={user} />
+
+      <h3 className="my-8 font-bold text-xl">
         {translate('users.settings.dangerZone')}
       </h3>
 
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button variant="destructive">
-            {translate('users.settings.deleteAccount')}
-          </Button>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              {translate('users.settings.deleteAreYouSure')}
-            </AlertDialogTitle>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>{translate('general.cancel')}</AlertDialogCancel>
-            <AlertDialogAction
-              className={buttonVariants({ variant: 'destructive' })}
-            >
-              {translate('general.delete')}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <DeleteUser user={user} />
     </section>
   )
 }

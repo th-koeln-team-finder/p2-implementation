@@ -28,7 +28,11 @@ export const getCommentsForBrainstorm = cache(
         },
         with: {
           brainstorm: true,
-          creator: true,
+          creator: {
+            with: {
+              image: true,
+            },
+          },
           childComments: {
             extras: {
               likeCount:
@@ -43,7 +47,11 @@ export const getCommentsForBrainstorm = cache(
             },
             with: {
               brainstorm: true,
-              creator: true,
+              creator: {
+                with: {
+                  image: true,
+                },
+              },
               // Technically not the best idea to load all likes instead of just the likes... but it's fine for now
               likes: {
                 columns: {

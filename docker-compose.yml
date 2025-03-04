@@ -43,6 +43,8 @@ services:
       MINIO_SECRET_KEY: collaborize-secret
       NEXT_PUBLIC_MAX_FILE_SIZE: 10485760
       NEXT_PUBLIC_ALLOWED_FILE_TYPES: image/jpeg,image/jpg,image/png,application/pdf
+      NEXT_PUBLIC_VAPID_PUBLIC_KEY: "BKDZHiOZbAxuapf0qypDyGCqns_d1imdaXBC8edJh7OJV3ToBSkzKCDuaOg050QP2CDL2fZpy9N2x6-BzGhy1RU"
+      VAPID_PRIVATE_KEY: "ytIkbaeepfNNkU4_eG656wpVLOaaSvnGpdkXvjBWdEk"
     ports:
       - '3000:3000'
     networks:
