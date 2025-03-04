@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from '@/features/i18n/routing'
 import {
   revalidateProjects,
   toggleProjectBookmark,
@@ -9,7 +10,6 @@ import { cn } from '@repo/design-system/lib/utils'
 import { BookmarkIcon, LinkIcon, StarIcon } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
-import { useRouter } from 'next/router'
 import { useOptimistic, useTransition } from 'react'
 
 type ProjectBookmarkButtonProps = {
