@@ -21,13 +21,21 @@ export const getProjectItem = cache(
       },
       where: eq(projects.id, id),
       with: {
-        timetable: true,
-        issues: true,
-        resources: {
-          with: {
-            uploadedFile: true,
+          issues: true,
+          timetable: true,
+          projectPictures: true,
+          tags: true,
+          participants: {
+              with: {
+                  users: true,
+              }
           },
-        },
+          bookmarks: true,
+          resources: {
+              with: {
+                    uploadedFile: true,
+              },
+          },
         projectSkills: {
           with: {
             skill: true,
