@@ -30,14 +30,16 @@ export function BrainstormTagList({
       ))}
       {!!splitUp && !!otherTags.length && (
         <TooltipProvider>
-          <Tooltip>
+          <Tooltip delayDuration={300}>
             <TooltipTrigger>
               <Badge variant="outline" className="text-nowrap">
                 {translate('xMore', { amount: otherTags.length })}
               </Badge>
             </TooltipTrigger>
             <TooltipContent className="max-w-96">
-              <h4 className="mb-2 font-semibold text-lg">Other Tags</h4>
+              <h4 className="mb-2 font-semibold text-lg">
+                {translate('otherTags')}
+              </h4>
               <div className="flex flex-row flex-wrap gap-1 pb-2">
                 {otherTags.map(({ tag }) => (
                   <Badge variant="tag" key={tag.id} className="text-nowrap">

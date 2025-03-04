@@ -227,6 +227,7 @@ export const de: Language = {
     labelRightNew: 'neu',
     labelRightUses: '{usage}x verwendet',
     xMore: '{amount} mehr',
+    otherTags: 'Andere Tags',
   },
   help: {
     title: 'Hilfe',

@@ -224,7 +224,7 @@ export const en = {
     labelRightNew: 'new',
     labelRightUses: '{usage}x used',
     xMore: '{amount} more',
-    // TODO Add more translation
+    otherTags: 'Other Tags',
   },
   help: {
     title: 'Help',
