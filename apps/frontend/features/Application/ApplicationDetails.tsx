@@ -26,8 +26,6 @@ import { useState } from 'react'
 import { z } from 'zod'
 
 type ApplyFormValues = {
-  firstName: string
-  lastName: string
   checkbox: boolean
   mail: string
   phone: string
@@ -46,6 +44,8 @@ export default function ApplicationDetail({
 }: ApplicationDetailProps) {
   useSignals()
 
+  const [alertMessage, setAlertMessage] = useState<string | null>(null)
+
   const { data: session } = useSession()
   const maxFileSize = 10485760
 
@@ -59,8 +59,6 @@ export default function ApplicationDetail({
   const form = useForm<ApplyFormValues, typeof ZodAdapter>({
     validatorAdapter: ZodAdapter,
     defaultValues: {
-      firstName: '',
-      lastName: '',
       checkbox: false,
       mail: '',
       phone: '',
@@ -70,6 +68,12 @@ export default function ApplicationDetail({
       message: '',
     },
     onSubmit: async (values) => {
+      setAlertMessage('Deine Anfrage wurde versendet.')
+
+      setTimeout(() => {
+        setAlertMessage(null)
+      }, 5000)
+
       if (!session?.user?.id) return
       try {
         if (!values.file) {
@@ -98,8 +102,8 @@ export default function ApplicationDetail({
         const applicationData = {
           projectId,
           userId: session.user.id,
-          firstName: values.firstName,
-          lastName: values.lastName,
+          firstName: session.user.name,
+          lastName: session.user.lastName,
           mail: values.mail,
           phone: values.phone,
           message: values.message,
@@ -121,24 +125,32 @@ export default function ApplicationDetail({
   const [checkboxValue, setCheckboxValue] = useState(false)
 
   return (
-    <div className="container mx-auto max-w-screen-lg px-4">
-      <form.FormProvider>
+    <form.FormProvider>
+      <form
+        className="container mx-auto max-w-screen-lg px-4"
+        onSubmit={async (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          await form.handleSubmit()
+        }}
+      >
         <h1 className="mb-6 font-semibold text-2xl">{t('title')}</h1>
+
+        {alertMessage && (
+          <div className="-translate-x-1/2 fixed top-4 left-1/2 z-101 rounded-lg border-2 border-primary bg-white p-8 text-normal">
+            {alertMessage}
+          </div>
+        )}
 
         <div className="text-lg">{t('infoTitle')}</div>
         <div className="mb-6 flex w-full flex-col gap-4 lg:flex-row">
           <div className="w-full lg:mb-4 lg:w-1/2">
-            <form.FieldProvider name="firstName">
-              <Label>{t('form.firstName')}</Label>
-              <InputForm placeholder={t('form.placeholderFirstName')} />
-            </form.FieldProvider>
+            <Label>{t('form.firstName')}</Label>
+            <p>{session?.user?.name}</p>
           </div>
           <div className="w-full lg:mb-4 lg:w-1/2">
-            <form.FieldProvider name="lastName">
-              <Label>{t('form.lastName')}</Label>
-              <InputForm placeholder={t('form.placeholderLastName')} />
-              <FieldError />
-            </form.FieldProvider>
+            <Label>{t('form.lastName')}</Label>
+            <p>{session?.user?.lastName}</p>
           </div>
         </div>
 
@@ -168,7 +180,7 @@ export default function ApplicationDetail({
                 name="mail"
                 validator={z
                   .string({ required_error: translateError('required') })
-                  .min(1, translateError('minLengthX', { amount: 1 }))}
+                  .min(5, translateError('minLengthX', { amount: 1 }))}
                 validatorOptions={{
                   validateOnChangeIfTouched: true,
                 }}
@@ -182,8 +194,9 @@ export default function ApplicationDetail({
               <form.FieldProvider
                 name="phone"
                 validator={z
+                  //.number().min(5).max(20)
                   .string({ required_error: translateError('required') })
-                  .min(1, translateError('minLengthX', { amount: 1 }))}
+                  .min(5, translateError('minLengthX', { amount: 5 }))}
                 validatorOptions={{
                   validateOnChangeIfTouched: true,
                 }}
@@ -227,7 +240,7 @@ export default function ApplicationDetail({
             <form.FieldProvider name="file">
               <Label>{t('form.fileUpload')}</Label>
               <FileUploadForm
-                accepts="image/*,application/pdf"
+                accepts="image/jpeg,image/png,application/pdf"
                 multiple
                 placeholder={
                   <FileInlinePreviewsForm
@@ -257,7 +270,7 @@ export default function ApplicationDetail({
             {t('form.submit')}
           </Button>
         </div>
-      </form.FormProvider>
-    </div>
+      </form>
+    </form.FormProvider>
   )
 }

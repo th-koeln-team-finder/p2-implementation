@@ -37,6 +37,7 @@ export type TestSelect = typeof test.$inferSelect
 export const users = pgTable('user', {
   id: uuid().primaryKey().notNull().defaultRandom(),
   name: text('name').unique().notNull(),
+  lastName: text('lastName').notNull(),
   email: text('email').unique().notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
