@@ -33,15 +33,16 @@ export const getProjectItem = cache(
                   skill: true,
               },
           },
-          /*
-          projectPictures: true,
-
-          tags: true,
           participants: {
               with: {
                   users: true,
               }
           },
+          /*
+          projectPictures: true,
+
+          tags: true,
+
           bookmarks: true,
            */
 

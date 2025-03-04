@@ -11,6 +11,7 @@ import { getProjectItem } from '@/features/projects/projects.queries'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { getTranslations } from 'next-intl/server'
 
+
 export default async function Projects({
   params,
 }: Readonly<{
@@ -20,6 +21,7 @@ export default async function Projects({
   const session = await authMiddleware()
   const project = await getProjectItem(id, session?.user?.id)
   const translations = await getTranslations('projects')
+
   if (!project) {
     return <div>Project not found</div>
   }
@@ -33,7 +35,7 @@ export default async function Projects({
             project.phase ? `${translations('phase')}: ${project.phase}` : ''
           }
         />
-        <Toolbar projectId={project.id} isBookmarked={project.isBookmarked} />
+        <Toolbar projectId={project.id} isBookmarked={project.isBookmarked}/>
       </div>
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         <ImageCarousel />
@@ -45,7 +47,8 @@ export default async function Projects({
           )}
         </div>
 
-        <TeamMembers />
+
+        <TeamMembers participants={project.participants} />
 
         {!!project.timetable.length && (
           <ProjectTimetable timetable={project.timetable} />

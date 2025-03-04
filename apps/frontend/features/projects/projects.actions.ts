@@ -6,10 +6,11 @@ import { redirect } from '@/features/i18n/routing'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
-import {type ProjectPictureInsert, type ProjectResourceInsert, Weekdays} from '@repo/database/schema'
+import {type ProjectPictureInsert, type ProjectResourceInsert, ProjectSelect, Weekdays} from '@repo/database/schema'
 import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
 import { revalidateTag } from 'next/cache'
+
 
 export async function createProject(payload: CreateProjectFormValues) {
   const session = await authMiddleware()
@@ -173,6 +174,7 @@ export async function toggleProjectBookmark(
     })
   }
 
+
   const matchBookmark = and(
     eq(Schema.projectBookmarks.projectId, id),
     eq(Schema.projectBookmarks.userId, session.user.id),
@@ -193,6 +195,30 @@ export async function toggleProjectBookmark(
     userId: session.user.id,
   })
 }
+
+export async function joinProject(projectId:string) {
+  const session = await authMiddleware()
+  if (!session?.user?.id) {
+    const locale = await getLocale()
+    return redirect({
+      href: '/error?error=AccessDenied',
+      locale,
+    })
+  }
+
+  if(await db.query.participants.findFirst({where: eq(Schema.participants.projectId, projectId) && eq(Schema.participants.userId, session.user.id)}))
+    {
+        console.log("Participant already exists!")
+    }
+  else {
+    console.log("inserting new Participant!")
+    await db.insert(Schema.participants).values({
+      projectId,
+      userId: session.user.id,
+    })
+  }
+}
+
 
 export async function revalidateProjects() {
   return await revalidateTag('projects')

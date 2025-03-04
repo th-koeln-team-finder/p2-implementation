@@ -205,7 +205,7 @@ export const projects = pgTable('projects', {
 export type ProjectInsert = typeof projects.$inferInsert
 export type ProjectSelect = typeof projects.$inferSelect
 
-/*
+
 export const participants = pgTable(
     'participants',
     {
@@ -220,7 +220,10 @@ export const participants = pgTable(
   pk: primaryKey({ columns: [participants.userId, participants.projectId] }),
     })
 )
+export type ParticipantsInsert = typeof participants.$inferInsert
+export type ParticipantsSelect = typeof participants.$inferSelect
 
+/*
 export const projectTags = pgTable(
     'project_tag',
     {
@@ -636,6 +639,8 @@ export const projectRelations = relations(projects, ({ many }) => ({
     relationName: 'projectPictures',
   }),
   projectSkills: many(projectSkill),
+
+  participants: many(participants),
   /*
   tags: many(projectTags,{
     relationName: 'projectTags',
@@ -644,9 +649,7 @@ export const projectRelations = relations(projects, ({ many }) => ({
         relationName: 'projectBookmarks',
       }),
 
-  participants: many(participants, {
-    relationName: 'participants',
-  })
+
 */
 
 
@@ -677,7 +680,7 @@ export const projectBookmarkRelations = relations(
       }),
     }),
 )
-
+*/
 export const participantsRelation = relations(participants, ({ one }) => ({
   users: one(users, {
     fields: [participants.userId],
@@ -693,7 +696,7 @@ export const userParticipantsRelation = relations(users, ({ many }) => ({
   participants: many(participants),
 }))
 
-*/
+
 export const projectSkillRelations = relations(projectSkill, ({ one }) => ({
   skill: one(skill, {
     fields: [projectSkill.skillId],
