@@ -1,6 +1,6 @@
 import { authMiddleware } from '@/auth'
-import { UserProfileMenu } from '@/features/auth/components/UserProfileMenu'
 import { redirect } from '@/features/i18n/routing'
+import RegisterPush from '@/features/notifications/components/RegisterPush'
 import { getLocale } from 'next-intl/server'
 
 export default async function AuthenticatedLayout({
@@ -20,9 +20,7 @@ export default async function AuthenticatedLayout({
 
   return (
     <>
-      <nav className="flex h-16 flex-row justify-end gap-2 bg-card p-4">
-        <UserProfileMenu />
-      </nav>
+      <RegisterPush userId={session.user.id} />
       {children}
     </>
   )

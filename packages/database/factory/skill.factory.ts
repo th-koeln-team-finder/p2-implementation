@@ -1,9 +1,25 @@
-import type { ProjectSkillInsert, SkillInsert } from '@/schema'
 import { faker } from '@faker-js/faker/locale/de'
+import type { ProjectSkillInsert, SkillsInsert } from '../schema'
 
-export function makeSkill(): SkillInsert {
+const uniqueSkills = new Set<string>()
+
+export function makeSkill(): SkillsInsert | null {
+  let tries = 0
+  let skill = `${faker.person.jobArea()} ${faker.person.jobType()}`
+
+  while (uniqueSkills.has(skill) && tries < 10) {
+    skill = `${faker.person.jobArea()} ${faker.person.jobType()}`
+    tries++
+  }
+
+  if (tries >= 10) {
+    return null
+  }
+
+  uniqueSkills.add(skill)
+
   return {
-    name: faker.person.jobArea(),
+    skill,
   }
 }
 

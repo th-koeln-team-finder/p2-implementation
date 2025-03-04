@@ -1,3 +1,4 @@
+import Header from '@/features/header/header'
 import { routing } from '@/features/i18n/routing'
 import { SessionProvider } from 'next-auth/react'
 import { NextIntlClientProvider } from 'next-intl'
@@ -21,6 +22,7 @@ export default async function RootLayout({
   return (
     <SessionProvider>
       <NextIntlClientProvider messages={messages}>
+        <Header />
         {children}
       </NextIntlClientProvider>
     </SessionProvider>

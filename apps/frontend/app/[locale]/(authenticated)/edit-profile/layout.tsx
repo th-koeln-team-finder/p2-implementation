@@ -1,4 +1,11 @@
 import { SidebarNav } from '@/features/users/components/SidebarNav'
+import {
+  BadgeCheck,
+  BellIcon,
+  NotebookTabsIcon,
+  SettingsIcon,
+  SquareUserIcon,
+} from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 export default async function EditProfileLayout({
@@ -6,39 +13,46 @@ export default async function EditProfileLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const translate = await getTranslations()
+  const translate = await getTranslations('users.settings')
 
   const sidebarNavItems = [
     {
-      title: translate('users.settings.profile'),
+      title: translate('profile'),
       href: '/edit-profile/profile',
+      icon: <SquareUserIcon />,
     },
     {
-      title: translate('users.settings.account'),
+      title: translate('skills.title'),
+      href: '/edit-profile/skills',
+      icon: <BadgeCheck />,
+    },
+    {
+      title: translate('projects.title'),
+      href: '/edit-profile/projects',
+      icon: <NotebookTabsIcon />,
+    },
+    {
+      title: translate('account'),
       href: '/edit-profile/account',
+      icon: <SettingsIcon />,
     },
     {
-      title: translate('users.settings.security'),
-      href: '/edit-profile/security',
-    },
-    {
-      title: translate('users.settings.notifications'),
+      title: translate('notifications.title'),
       href: '/edit-profile/notifications',
+      icon: <BellIcon />,
     },
   ]
 
   return (
-    <div className="container mx-auto my-4">
-      <h1 className="mb-8 font-bold text-3xl">
-        {translate('users.settings.title')}
-      </h1>
+    <main className="container mx-auto my-4 px-4">
+      <h1 className="mb-8 font-bold text-3xl">{translate('title')}</h1>
 
-      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <aside className="-mx-4 lg:w-1/5">
+      <div className="flex flex-col lg:flex-row">
+        <aside className="lg:-mx-4 mb-6 border-b bg-sidebar pb-6 lg:mr-6 lg:mb-0 lg:w-1/5 lg:border-b-0 lg:pr-6 lg:pb-0">
           <SidebarNav items={sidebarNavItems} />
         </aside>
-        <main className="flex-1 lg:max-w-2xl">{children}</main>
+        <main className="flex-1">{children}</main>
       </div>
-    </div>
+    </main>
   )
 }

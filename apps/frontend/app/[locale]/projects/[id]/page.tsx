@@ -4,10 +4,10 @@ import { ProjectIssuesList } from '@/features/projects/components/ProjectIssuesL
 import { ProjectResource } from '@/features/projects/components/ProjectResource'
 import { ProjectTimetable } from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
-import { SkillScale } from '@/features/projects/components/SkillScale'
 import TeamMembers from '@/features/projects/components/TeamMembers'
 import { Toolbar } from '@/features/projects/components/Toolbar'
 import { getProjectItem } from '@/features/projects/projects.queries'
+import { SkillScale } from '@/features/skills/components/SkillScale'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { getTranslations } from 'next-intl/server'
 
@@ -37,7 +37,7 @@ export default async function Projects({
       </div>
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         <ImageCarousel />
-        <SkillScale projectSkills={project.projectSkills} />
+        <SkillScale skills={project.projectSkills} />
 
         <div className="md:col-span-2">
           {project.description && (
