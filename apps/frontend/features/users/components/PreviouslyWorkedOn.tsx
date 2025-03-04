@@ -18,7 +18,7 @@ export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: setting all variables in here causes infinite loading issues since `loading` and `previouslyWorkedOn` are set by this function and thereby would re-trigger it
   const loadMore = useCallback(
-    (count = 10) => {
+    (count = 10, previouslyWorkedOn: UserProjectsSelect[] = []) => {
       if (loading) return
       setLoading(true)
       loadMoreProjects(userId, count, previouslyWorkedOn.length).then(
@@ -31,7 +31,7 @@ export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
         },
       )
     },
-    [userId, previouslyWorkedOn.length],
+    [userId],
   )
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
             <Button
               variant="link"
               className="my-2"
-              onClick={() => loadMore()}
+              onClick={() => loadMore(10, previouslyWorkedOn)}
             >
               {' '}
               <ChevronDown />
