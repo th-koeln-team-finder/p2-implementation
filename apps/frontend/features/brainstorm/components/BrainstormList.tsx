@@ -10,10 +10,9 @@ const pageSize = 15
 
 export async function BrainstormList({
   search,
-  tags,
   offset,
   bookmarks,
-}: { search: string; tags: string; offset: string; bookmarks: string }) {
+}: { search: string; offset: string; bookmarks: string }) {
   const session = await authMiddleware()
   const translate = await getTranslations('brainstorm')
 
@@ -22,7 +21,6 @@ export async function BrainstormList({
   const brainstorms = await getBrainstorms(
     session?.user?.id,
     search,
-    tags,
     bookmarks === 'pinned',
     limit,
   )

@@ -14,12 +14,11 @@ export default async function BrainstormPage({
 }: {
   searchParams: Promise<{
     search: string
-    tags: string
     offset: string
     bookmarks: string
   }>
 }) {
-  const [translate, { search, tags, offset, bookmarks }] = await Promise.all([
+  const [translate, { search, offset, bookmarks }] = await Promise.all([
     getTranslations('brainstorm'),
     searchParams,
   ])
@@ -36,7 +35,6 @@ export default async function BrainstormPage({
           <Suspense key={search} fallback={<BrainstormListLoading />}>
             <BrainstormList
               search={search}
-              tags={tags}
               offset={offset}
               bookmarks={bookmarks}
             />

@@ -1,23 +1,17 @@
 import { BrainstormCacheTags } from '@/features/brainstorm/brainstorm.constants'
 import { Schema, db } from '@repo/database'
 import { generateTextEmbeddings } from '@repo/semantic-search'
-import { and, cosineDistance, desc, eq, sql } from 'drizzle-orm'
+import { cosineDistance, desc, eq, sql } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
 
 export const getBrainstorms = cache(
   async (
     userId?: string,
     search = '',
-    tags = '',
     pinBookmarks = false,
     limit = 25,
     offset = 0,
   ) => {
-    const tagIds = tags
-      .split(',')
-      .map((tag: string) => tag.split(':')[0])
-      .filter(Boolean) as string[]
-
     const searchEmbeddings = await generateTextEmbeddings(search)
     const tagSearchEmbeddings = await generateTextEmbeddings(search, 'small')
 
@@ -31,13 +25,6 @@ export const getBrainstorms = cache(
     const totalSimilarityNoCommentTag = sql<number>`${similarity}`
 
     const correctTotalSimilarity = sql<number>`CASE WHEN ${commentSimilarity} IS NULL AND ${tagSimilarity} IS NULL THEN ${totalSimilarityNoCommentTag} WHEN ${commentSimilarity} IS NULL THEN ${totalSimilarityNoComment} WHEN ${tagSimilarity} IS NULL THEN ${totalSimilarityNoTag} ELSE ${totalSimilarity} END`
-
-    const tagFilter = and(
-      ...tagIds.map(
-        (tagId) =>
-          sql<boolean>`(EXISTS (SELECT 1 FROM "brainstorm_tag" WHERE "brainstorm_tag"."brainstormId" = "brainstorms"."id" AND "brainstorm_tag"."tagId" = ${tagId}))`,
-      ),
-    )
 
     const isBookmarked = !userId
       ? sql<boolean>`(false)`.as('isBookmarked')
@@ -82,7 +69,6 @@ export const getBrainstorms = cache(
       },
       limit,
       offset,
-      where: tagFilter,
       orderBy: [
         pinBookmarks && desc(isBookmarked),
         search && desc(correctTotalSimilarity),
