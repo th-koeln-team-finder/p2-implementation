@@ -1,12 +1,6 @@
-import { SidebarNav } from '@/features/users/components/SidebarNav'
-import {
-  BadgeCheck,
-  BellIcon,
-  NotebookTabsIcon,
-  SettingsIcon,
-  SquareUserIcon,
-} from 'lucide-react'
-import { getTranslations } from 'next-intl/server'
+import {SidebarNav} from '@/features/users/components/SidebarNav'
+import {BadgeCheck, BellIcon, NotebookTabsIcon, SettingsIcon, SquareUserIcon,} from 'lucide-react'
+import {getTranslations} from 'next-intl/server'
 
 export default async function EditProfileLayout({
   children,
@@ -48,7 +42,7 @@ export default async function EditProfileLayout({
       <h1 className="mb-8 font-bold text-3xl">{translate('title')}</h1>
 
       <div className="flex flex-col lg:flex-row">
-        <aside className="lg:-mx-4 bg-sidebar lg:w-1/5 pb-6 mb-6 lg:pr-6 lg:mr-6 lg:pb-0 lg:mb-0 border-b lg:border-b-0">
+        <aside className="lg:-mx-4 mb-6 border-b bg-sidebar pb-6 lg:mr-6 lg:mb-0 lg:w-1/5 lg:border-b-0 lg:pr-6 lg:pb-0">
           <SidebarNav items={sidebarNavItems} />
         </aside>
         <main className="flex-1">{children}</main>

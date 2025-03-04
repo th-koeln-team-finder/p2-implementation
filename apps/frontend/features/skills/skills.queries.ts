@@ -3,7 +3,7 @@
 import {db} from '@repo/database'
 import {skills, userSkills} from '@repo/database/schema'
 import {desc, eq, getTableColumns, ilike} from 'drizzle-orm'
-import {count} from "drizzle-orm/sql/functions/aggregate";
+import {count} from 'drizzle-orm/sql/functions/aggregate'
 
 export async function searchSkills(input: string) {
   return await db
@@ -16,6 +16,6 @@ export async function searchSkills(input: string) {
     .where(ilike(skills.skill, `%${input}%`))
     .limit(8)
     .groupBy(skills.id)
-    .orderBy(({usedCount}) => desc(usedCount))
+    .orderBy(({ usedCount }) => desc(usedCount))
     .execute()
 }

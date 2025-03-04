@@ -30,7 +30,9 @@ export default async function Profile({ user }: { user: UserWithImage }) {
     isOwnProfile = user.id === session?.user.id
     loggedInUser = await getUser(session?.user.id)
 
-    isFollowing = loggedInUser?.id ? !!(await userFollowsUser(loggedInUser.id, user.id)) : false
+    isFollowing = loggedInUser?.id
+      ? !!(await userFollowsUser(loggedInUser.id, user.id))
+      : false
   }
   const skills: UserSkill[] = (await getUserSkills(user.id)).map(
     (userSkill) => ({
@@ -38,7 +40,7 @@ export default async function Profile({ user }: { user: UserWithImage }) {
       name: userSkill.skill || '',
       level: userSkill.level,
       verifications: userSkill.verificationCount,
-      isVerified: userSkill.isVerified
+      isVerified: userSkill.isVerified,
     }),
   )
 

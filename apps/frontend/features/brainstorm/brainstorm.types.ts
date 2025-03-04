@@ -1,4 +1,4 @@
-import type { UserWithImage } from '@/features/users/users.types'
+import type {UserWithImage} from '@/features/users/users.types'
 import type {
   BrainstormCommentSelect,
   BrainstormResourceSelect,

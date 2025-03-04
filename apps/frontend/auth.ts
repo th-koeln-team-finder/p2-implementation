@@ -1,6 +1,6 @@
-import { DrizzleHttpAdapter } from '@/features/auth/DrizzleHttpAdapter'
-import type { UserSelect } from '@repo/database/schema'
-import { serverEnv } from '@repo/env/server'
+import {DrizzleHttpAdapter} from '@/features/auth/DrizzleHttpAdapter'
+import type {UserSelect} from '@repo/database/schema'
+import {serverEnv} from '@repo/env/server'
 import NextAuth from 'next-auth'
 import Passkey from 'next-auth/providers/passkey'
 
@@ -73,7 +73,7 @@ export const {
     },
     signIn: async ({ user }) => {
       if (DrizzleHttpAdapter && user.id) {
-        DrizzleHttpAdapter.updateUser({
+        await DrizzleHttpAdapter.updateUser({
           ...user,
           lastActive: new Date(),
         })

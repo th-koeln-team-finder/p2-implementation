@@ -47,9 +47,7 @@ export function SkillScale(
       ? props.showVerificationControl
       : undefined
   const loggedInUserId =
-    'loggedInUserId' in props
-      ? props.loggedInUserId
-      : undefined
+    'loggedInUserId' in props ? props.loggedInUserId : undefined
   const translate = useTranslations()
 
   return (
