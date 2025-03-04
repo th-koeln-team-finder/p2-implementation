@@ -1,8 +1,8 @@
 'use client'
 
-import {subscribeUser} from '@/features/notifications/notifications.actions'
-import {clientEnv} from '@repo/env/client'
-import {useEffect, useState} from 'react'
+import { subscribeUser } from '@/features/notifications/notifications.actions'
+import { clientEnv } from '@repo/env/client'
+import { useEffect, useState } from 'react'
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4)

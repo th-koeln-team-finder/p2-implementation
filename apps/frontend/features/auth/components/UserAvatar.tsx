@@ -1,10 +1,14 @@
 'use client'
 
-import {getPublicFileUrl} from '@/features/file-upload/file-upload.actions'
-import type {UserWithImage} from '@/features/users/users.types'
-import {Avatar, AvatarFallback, AvatarImage,} from '@repo/design-system/components/ui/avatar'
-import {cn} from '@repo/design-system/lib/utils'
-import {useEffect, useState} from 'react'
+import { getPublicFileUrl } from '@/features/file-upload/file-upload.actions'
+import type { UserWithImage } from '@/features/users/users.types'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@repo/design-system/components/ui/avatar'
+import { cn } from '@repo/design-system/lib/utils'
+import { useEffect, useState } from 'react'
 
 type UserAvatarProps = {
   user?: UserWithImage

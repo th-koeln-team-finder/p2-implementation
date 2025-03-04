@@ -1,9 +1,9 @@
 'use server'
 
-import {db, Schema} from '@repo/database'
-import type {UserProjectsInsert} from '@repo/database/schema'
-import {eq} from 'drizzle-orm'
-import {revalidateTag} from 'next/cache'
+import { Schema, db } from '@repo/database'
+import type { UserProjectsInsert } from '@repo/database/schema'
+import { eq } from 'drizzle-orm'
+import { revalidateTag } from 'next/cache'
 
 export async function revalidateUserProjects() {
   return await revalidateTag('user-projects')

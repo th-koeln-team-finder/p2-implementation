@@ -1,9 +1,9 @@
 'use server'
 
-import {db} from '@repo/database'
-import {skills, userSkills} from '@repo/database/schema'
-import {desc, eq, getTableColumns, ilike} from 'drizzle-orm'
-import {count} from 'drizzle-orm/sql/functions/aggregate'
+import { db } from '@repo/database'
+import { skills, userSkills } from '@repo/database/schema'
+import { desc, eq, getTableColumns, ilike } from 'drizzle-orm'
+import { count } from 'drizzle-orm/sql/functions/aggregate'
 
 export async function searchSkills(input: string) {
   return await db

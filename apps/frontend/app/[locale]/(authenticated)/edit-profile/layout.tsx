@@ -1,6 +1,12 @@
-import {SidebarNav} from '@/features/users/components/SidebarNav'
-import {BadgeCheck, BellIcon, NotebookTabsIcon, SettingsIcon, SquareUserIcon,} from 'lucide-react'
-import {getTranslations} from 'next-intl/server'
+import { SidebarNav } from '@/features/users/components/SidebarNav'
+import {
+  BadgeCheck,
+  BellIcon,
+  NotebookTabsIcon,
+  SettingsIcon,
+  SquareUserIcon,
+} from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
 export default async function EditProfileLayout({
   children,
