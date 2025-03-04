@@ -16,6 +16,7 @@ import {format, parse} from 'date-fns'
 import {LoaderCircleIcon, Plus} from 'lucide-react'
 import {useTranslations} from 'next-intl'
 import {z} from 'zod'
+import {useMemo} from "react";
 
 export default function UserProjectCreate({
   userId,
@@ -27,14 +28,18 @@ export default function UserProjectCreate({
   const t = useTranslations()
   useSignals()
 
-  const form = useForm({
-    validatorAdapter: ZodAdapter,
-    defaultValues: {
+  const defaultValues = useMemo(
+    () => ({
       name: '',
       description: '',
       joinedDate: new Date(),
       leftDate: null as Date | null,
-    },
+    }),
+    [],
+  )
+  const form = useForm({
+    validatorAdapter: ZodAdapter,
+    defaultValues,
     onSubmit: async (values) => {
       const mappedValues = {
         userId: userId,
