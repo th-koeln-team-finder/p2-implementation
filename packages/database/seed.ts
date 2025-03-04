@@ -5,7 +5,6 @@ import { makeBrainstorm } from './factory/brainstorm.factory'
 import { makeBrainstormComment } from './factory/brainstormComment.factory'
 import { makeBrainstormCommentLike } from './factory/brainstormCommentLike.factory'
 import { makeBrainstormResource } from './factory/brainstormResource.factory'
-import { makeProject } from './factory/projects.factory'
 import { makeSkill } from './factory/skill.factory'
 import { makeTag } from './factory/tag.factory'
 import { makeTest } from './factory/test.factory'
@@ -68,14 +67,6 @@ export async function seed() {
 
   console.log('Clearing Project table')
   await db.delete(Schema.projects).execute()
-
-  console.log('Creating 10 project records')
-  const projectData = makeMultiple(10, makeProject)
-  const projects = await db
-    .insert(Schema.projects)
-    .values(projectData)
-    .returning()
-  console.log(projects.map((e) => e.id))
 
   console.log("Clearing 'brainstorm' table")
   await db.delete(Schema.brainstorms).execute()
@@ -155,13 +146,6 @@ export async function seed() {
   })
   await db.insert(Schema.brainstormTags).values(brainstormTagData).execute()
 
-  console.log('Creating 10 project records')
-  const projectData = makeMultiple(10, () => makeProject())
-  const projects = await db
-    .insert(Schema.projects)
-    .values(projectData)
-    .returning()
-
   console.log('Creating 100 skill records')
   const skillData = makeMultiple(100, () => makeSkill()).filter((e) => !!e)
   const skills = await db.insert(Schema.skills).values(skillData).returning()
@@ -183,11 +167,7 @@ export async function seed() {
   console.log('Creating 100 userProject records')
   const uniqueUserProjects = new Set<string>()
   const userProjectData = makeMultiple(100, () =>
-    makeUserProjects(
-      userIds,
-      projects.map((it) => it.id),
-      uniqueUserProjects,
-    ),
+    makeUserProjects(userIds, [undefined] as any, uniqueUserProjects),
   ).filter((e) => !!e)
   await db.insert(Schema.userProjects).values(userProjectData).execute()
 

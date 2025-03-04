@@ -10,7 +10,7 @@ export function makeUserProjects(
   let userId = faker.helpers.arrayElement(userIds)
   let projectId = faker.helpers.arrayElement(projectIds)
 
-  while (uniqueIds.has(`${userId}-${projectId}`) && tries < 10) {
+  while (projectId && uniqueIds.has(`${userId}-${projectId}`) && tries < 10) {
     userId = faker.helpers.arrayElement(userIds)
     projectId = faker.helpers.arrayElement(projectIds)
     tries++
