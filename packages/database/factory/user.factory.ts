@@ -1,5 +1,5 @@
-import {faker} from '@faker-js/faker/locale/de'
-import type {UserInsert} from '../schema'
+import { faker } from '@faker-js/faker/locale/de'
+import type { UserInsert } from '../schema'
 
 export function makeUser(): UserInsert {
   return {

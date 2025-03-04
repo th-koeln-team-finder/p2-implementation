@@ -1,6 +1,6 @@
-import {authMiddleware} from '@/auth'
-import {db, Schema} from '@repo/database'
-import {asc, desc, eq, sql} from 'drizzle-orm'
+import { authMiddleware } from '@/auth'
+import { Schema, db } from '@repo/database'
+import { asc, desc, eq, sql } from 'drizzle-orm'
 
 export const getUserSkills = async (userId: string) => {
   const session = await authMiddleware()

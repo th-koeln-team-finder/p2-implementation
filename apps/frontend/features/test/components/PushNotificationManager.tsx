@@ -1,10 +1,14 @@
 'use client'
 
-import {sendPushNotification, subscribeUser, unsubscribeUser,} from '@/features/notifications/notifications.actions'
-import {Button} from '@repo/design-system/components/ui/button'
-import {Input} from '@repo/design-system/components/ui/input'
-import {clientEnv} from '@repo/env'
-import {useEffect, useState} from 'react'
+import {
+  sendPushNotification,
+  subscribeUser,
+  unsubscribeUser,
+} from '@/features/notifications/notifications.actions'
+import { Button } from '@repo/design-system/components/ui/button'
+import { Input } from '@repo/design-system/components/ui/input'
+import { clientEnv } from '@repo/env'
+import { useEffect, useState } from 'react'
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4)

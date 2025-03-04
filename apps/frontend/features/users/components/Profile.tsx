@@ -1,19 +1,22 @@
 'use server'
 
-import {authMiddleware} from '@/auth'
-import {UserAvatar} from '@/features/auth/components/UserAvatar'
-import {Link, redirect} from '@/features/i18n/routing'
-import {SkillScale, type UserSkill,} from '@/features/skills/components/SkillScale'
-import {userFollowsUser} from '@/features/userFollows/userFollows.queries'
-import {getUserSkills} from '@/features/userSkills/userSkills.query'
+import { authMiddleware } from '@/auth'
+import { UserAvatar } from '@/features/auth/components/UserAvatar'
+import { Link, redirect } from '@/features/i18n/routing'
+import {
+  SkillScale,
+  type UserSkill,
+} from '@/features/skills/components/SkillScale'
+import { userFollowsUser } from '@/features/userFollows/userFollows.queries'
+import { getUserSkills } from '@/features/userSkills/userSkills.query'
 import FollowButton from '@/features/users/components/FollowButton'
 import PreviouslyWorkedOn from '@/features/users/components/PreviouslyWorkedOn'
-import {getUser} from '@/features/users/users.query'
-import type {UserWithImage} from '@/features/users/users.types'
-import type {UserSelect} from '@repo/database/schema'
-import {Button} from '@repo/design-system/components/ui/button'
-import {UserPen} from 'lucide-react'
-import {getLocale, getTranslations} from 'next-intl/server'
+import { getUser } from '@/features/users/users.query'
+import type { UserWithImage } from '@/features/users/users.types'
+import type { UserSelect } from '@repo/database/schema'
+import { Button } from '@repo/design-system/components/ui/button'
+import { UserPen } from 'lucide-react'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 export default async function Profile({ user }: { user: UserWithImage }) {
   const translate = await getTranslations()

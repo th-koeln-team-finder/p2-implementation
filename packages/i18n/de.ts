@@ -1,4 +1,4 @@
-import type {Language} from './en'
+import type { Language } from './en'
 
 export const de: Language = {
   general: {

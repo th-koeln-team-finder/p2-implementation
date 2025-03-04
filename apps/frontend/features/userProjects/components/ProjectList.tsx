@@ -5,9 +5,9 @@ import {
   revalidateUserProjects,
   updateUserProject,
 } from '@/features/userProjects/userProjects.actions'
-import type {OptimisticPayload} from '@/features/userProjects/userProjects.hooks'
-import type {ProjectSelect, UserProjectsSelect} from '@repo/database/schema'
-import {Button} from '@repo/design-system/components/ui/button'
+import type { OptimisticPayload } from '@/features/userProjects/userProjects.hooks'
+import type { ProjectSelect, UserProjectsSelect } from '@repo/database/schema'
+import { Button } from '@repo/design-system/components/ui/button'
 import {
   Card,
   CardContent,
@@ -16,10 +16,10 @@ import {
   CardHeader,
   CardTitle,
 } from '@repo/design-system/components/ui/card'
-import {format} from 'date-fns'
-import {Eye, EyeClosed, Trash2} from 'lucide-react'
-import {useTranslations} from 'next-intl'
-import {useCallback, useMemo} from 'react'
+import { format } from 'date-fns'
+import { Eye, EyeClosed, Trash2 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { useCallback, useMemo } from 'react'
 
 export default function ProjectList({
   userProjects,

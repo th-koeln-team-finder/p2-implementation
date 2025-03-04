@@ -1,5 +1,5 @@
-import type {ProjectSelect, UserProjectsSelect} from '@repo/database/schema'
-import {useOptimistic, useTransition} from 'react'
+import type { ProjectSelect, UserProjectsSelect } from '@repo/database/schema'
+import { useOptimistic, useTransition } from 'react'
 
 export type OptimisticPayload =
   | {
