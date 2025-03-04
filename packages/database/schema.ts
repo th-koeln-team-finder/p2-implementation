@@ -205,6 +205,7 @@ export const projects = pgTable('projects', {
 export type ProjectInsert = typeof projects.$inferInsert
 export type ProjectSelect = typeof projects.$inferSelect
 
+/*
 export const participants = pgTable(
     'participants',
     {
@@ -237,6 +238,8 @@ export const projectTags = pgTable(
 export type projectTagInsert = typeof projectTags.$inferInsert
 export type projectTagSelect = typeof projectTags.$inferSelect
 
+
+ */
 
 /**
  * Skills for a project, referencing Project and Skill
@@ -272,6 +275,7 @@ export type ProjectSkillSelect = typeof projectSkill.$inferSelect
 /**
  * Resources for a project, referencing Project and Resource
  */
+
 export const projectPicture = pgTable('projectPicture', {
   id: uuid().primaryKey().notNull().defaultRandom(),
     projectId: uuid()
@@ -388,6 +392,7 @@ export type ProjectTimetableInsert = typeof projectTimetable.$inferInsert
 export type ProjectTimetableSelect = typeof projectTimetable.$inferSelect
 
 //region Technical Tables
+
 
 export const projectBookmarks = pgTable(
   'project_bookmark',
@@ -630,23 +635,23 @@ export const projectRelations = relations(projects, ({ many }) => ({
   projectPictures: many(projectPicture, {
     relationName: 'projectPictures',
   }),
+  projectSkills: many(projectSkill),
+  /*
   tags: many(projectTags,{
     relationName: 'projectTags',
   }),
   bookmarks: many(projectBookmarks, {
         relationName: 'projectBookmarks',
       }),
-  projectSkills: many(projectSkill,{
-    relationName: 'projectSkill',
-  }),
+
   participants: many(participants, {
     relationName: 'participants',
   })
-
+*/
 
 
 }))
-
+/*
 export const projectTagRelations = relations(projectTags, ({ one }) => ({
   project: one(projects, {
     fields: [projectTags.projectId],
@@ -688,7 +693,7 @@ export const userParticipantsRelation = relations(users, ({ many }) => ({
   participants: many(participants),
 }))
 
-
+*/
 export const projectSkillRelations = relations(projectSkill, ({ one }) => ({
   skill: one(skill, {
     fields: [projectSkill.skillId],

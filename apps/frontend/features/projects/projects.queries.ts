@@ -23,7 +23,19 @@ export const getProjectItem = cache(
       with: {
           issues: true,
           timetable: true,
+          resources: {
+              with: {
+                  uploadedFile: true,
+              },
+          },
+          projectSkills: {
+              with: {
+                  skill: true,
+              },
+          },
+          /*
           projectPictures: true,
+
           tags: true,
           participants: {
               with: {
@@ -31,16 +43,9 @@ export const getProjectItem = cache(
               }
           },
           bookmarks: true,
-          resources: {
-              with: {
-                    uploadedFile: true,
-              },
-          },
-        projectSkills: {
-          with: {
-            skill: true,
-          },
-        },
+           */
+
+
       },
     }),
   ['getProjectItem'],
