@@ -107,6 +107,7 @@ export default function ApplicationDetail({
           mail: values.mail,
           phone: values.phone,
           message: values.message,
+          file: values.file.map((file) => file.name),
         }
         console.log('Bewerbung:', applicationData)
 
@@ -137,7 +138,7 @@ export default function ApplicationDetail({
         <h1 className="mb-6 font-semibold text-2xl">{t('title')}</h1>
 
         {alertMessage && (
-          <div className="-translate-x-1/2 fixed top-4 left-1/2 z-101 rounded-lg border-2 border-primary bg-white p-8 text-normal">
+          <div className="-translate-x-1/2 fixed top-4 left-1/2 z-101 rounded-lg border-2 border-primary bg-background p-8 text-normal">
             {alertMessage}
           </div>
         )}
@@ -145,12 +146,15 @@ export default function ApplicationDetail({
         <div className="text-lg">{t('infoTitle')}</div>
         <div className="mb-6 flex w-full flex-col gap-4 lg:flex-row">
           <div className="w-full lg:mb-4 lg:w-1/2">
-            <Label>{t('form.firstName')}</Label>
-            <p>{session?.user?.name}</p>
-          </div>
-          <div className="w-full lg:mb-4 lg:w-1/2">
-            <Label>{t('form.lastName')}</Label>
-            <p>{session?.user?.lastName}</p>
+            <Label>{t('form.name')}</Label>
+            {session?.user?.firstName && session?.user?.lastName ? (
+                <p>
+                  {session?.user?.firstName} {session?.user?.lastName}
+                </p>
+                ) : (
+                <p>{session?.user?.name}</p>
+                )
+            }
           </div>
         </div>
 
@@ -159,7 +163,6 @@ export default function ApplicationDetail({
             <form.FieldProvider
               name="checkbox"
               validator={z.boolean()}
-              //.refine((v) => v, translate('test.validation.nice'))}
             >
               <Label>{t('form.checkbox')}</Label> <br />
               <div className="flex flex-row items-center gap-4">
@@ -179,8 +182,8 @@ export default function ApplicationDetail({
               <form.FieldProvider
                 name="mail"
                 validator={z
-                  .string({ required_error: translateError('required') })
-                  .min(5, translateError('minLengthX', { amount: 1 }))}
+                  .string().email({ message: translateError('email') })
+                  .min(4, translateError('minLengthX', { amount: 4 }))}
                 validatorOptions={{
                   validateOnChangeIfTouched: true,
                 }}
@@ -194,15 +197,16 @@ export default function ApplicationDetail({
               <form.FieldProvider
                 name="phone"
                 validator={z
-                  //.number().min(5).max(20)
-                  .string({ required_error: translateError('required') })
-                  .min(5, translateError('minLengthX', { amount: 5 }))}
+                    .string({ required_error: translateError('required') })
+                    .regex(/^\+[0-9]{2} [0-9]{5,14}$/, translateError('phone'))
+                  .min(7, translateError('minLengthX', { amount: 7 }))}
                 validatorOptions={{
                   validateOnChangeIfTouched: true,
                 }}
               >
                 <Label>{t('form.phone')}</Label>
-                <InputForm placeholder={t('form.placeholderPhone')} />
+                <InputForm type="tel"
+                           placeholder={t('form.placeholderPhone')}/>
                 <FieldError />
               </form.FieldProvider>
             </div>

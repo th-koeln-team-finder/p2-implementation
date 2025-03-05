@@ -391,7 +391,9 @@ export const projectApplication = pgTable(
     lastName: text().notNull(),
     mail: text().notNull(),
     phone: text().notNull(),
-    //file: text().notNull(),
+    file: uuid().references(() => uploadedFiles.id, {
+      onDelete: 'cascade',
+    }),
     message: text().notNull(),
     createdAt: timestamp({ mode: 'date' }).defaultNow(),
     updatedAt: timestamp({ mode: 'date' })
