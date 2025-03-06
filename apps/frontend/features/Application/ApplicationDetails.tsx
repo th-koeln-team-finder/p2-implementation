@@ -68,12 +68,6 @@ export default function ApplicationDetail({
       message: '',
     },
     onSubmit: async (values) => {
-      setAlertMessage('Deine Anfrage wurde versendet.')
-
-      setTimeout(() => {
-        setAlertMessage(null)
-      }, 5000)
-
       if (!session?.user?.id) return
       try {
         if (!values.file) {
@@ -114,6 +108,12 @@ export default function ApplicationDetail({
         const applicationReturning = await createApplication(applicationData)
         console.log('Bewerbung erfolgreich erstellt:', applicationReturning)
 
+        setAlertMessage('Deine Anfrage wurde versendet.')
+
+        setTimeout(() => {
+          setAlertMessage(null)
+        }, 5000)
+
         router.push(`/projects/${projectId}`)
       } catch (error) {
         console.error('Fehler beim Absenden des Formulars:', error)
@@ -148,22 +148,18 @@ export default function ApplicationDetail({
           <div className="w-full lg:mb-4 lg:w-1/2">
             <Label>{t('form.name')}</Label>
             {session?.user?.firstName && session?.user?.lastName ? (
-                <p>
-                  {session?.user?.firstName} {session?.user?.lastName}
-                </p>
-                ) : (
-                <p>{session?.user?.name}</p>
-                )
-            }
+              <p>
+                {session?.user?.firstName} {session?.user?.lastName}
+              </p>
+            ) : (
+              <p>{session?.user?.name}</p>
+            )}
           </div>
         </div>
 
         <div className="mb-6 flex w-full flex-col gap-4 lg:flex-row">
           <div className="w-full lg:mb-4 lg:w-1/2">
-            <form.FieldProvider
-              name="checkbox"
-              validator={z.boolean()}
-            >
+            <form.FieldProvider name="checkbox" validator={z.boolean()}>
               <Label>{t('form.checkbox')}</Label> <br />
               <div className="flex flex-row items-center gap-4">
                 <CheckboxForm
@@ -182,7 +178,8 @@ export default function ApplicationDetail({
               <form.FieldProvider
                 name="mail"
                 validator={z
-                  .string().email({ message: translateError('email') })
+                  .string()
+                  .email({ message: translateError('email') })
                   .min(4, translateError('minLengthX', { amount: 4 }))}
                 validatorOptions={{
                   validateOnChangeIfTouched: true,
@@ -197,16 +194,18 @@ export default function ApplicationDetail({
               <form.FieldProvider
                 name="phone"
                 validator={z
-                    .string({ required_error: translateError('required') })
-                    .regex(/^\+[0-9]{2} [0-9]{5,14}$/, translateError('phone'))
+                  .string({ required_error: translateError('required') })
+                  .regex(/^\+[0-9]{2} [0-9]{5,14}$/, translateError('phone'))
                   .min(7, translateError('minLengthX', { amount: 7 }))}
                 validatorOptions={{
                   validateOnChangeIfTouched: true,
                 }}
               >
                 <Label>{t('form.phone')}</Label>
-                <InputForm type="tel"
-                           placeholder={t('form.placeholderPhone')}/>
+                <InputForm
+                  type="tel"
+                  placeholder={t('form.placeholderPhone')}
+                />
                 <FieldError />
               </form.FieldProvider>
             </div>

@@ -80,6 +80,26 @@ export function Toolbar({
       >
         {t('join')}
       </Button>
+      {/* TODO: Wenn sich der User bereits für das Projekt beworben hat, soll der Button anders aussehen (bspw. disabled)
+        session?.user?.id === projectApplication?.userId && projectId === projectApplication?.projectId ? (
+          <Button
+              variant="destructive"
+              size="default"
+              className="ml-2 w-full lg:w-auto"
+              onClick={join}
+            >
+                {t('join')}
+            </Button>
+        ) : (
+          <Button
+              variant="default"
+              size="default"
+              className="ml-2 w-full lg:w-auto"
+              onClick={join}
+            >
+                {t('join')}
+            </Button>
+        )*/}
     </div>
   )
 }

@@ -167,6 +167,7 @@ export async function seed() {
   console.log('Creating 100 userProject records')
   const uniqueUserProjects = new Set<string>()
   const userProjectData = makeMultiple(100, () =>
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     makeUserProjects(userIds, [undefined] as any, uniqueUserProjects),
   ).filter((e) => !!e)
   await db.insert(Schema.userProjects).values(userProjectData).execute()
