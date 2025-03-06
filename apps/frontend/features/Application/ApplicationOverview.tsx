@@ -1,8 +1,3 @@
-'use client'
-
-import { useFileUpload } from '@/features/file-upload/file-upload.hooks'
-import { useRouter } from '@/features/i18n/routing'
-import { useSignals } from '@preact/signals-react/runtime'
 import { Button } from '@repo/design-system/components/ui/button'
 import {
   EyeIcon,
@@ -12,11 +7,11 @@ import {
   StarIcon,
   TextIcon,
 } from 'lucide-react'
-import { useSession } from 'next-auth/react'
-import { useTranslations } from 'next-intl'
 import Image from 'next/image'
-import {useEffect, useState} from 'react'
+
 import { getApplicationsForProject } from '@/features/Application/applications.queries'
+import {getLocale, getTranslations} from "next-intl/server";
+
 
 type ApplicationDetailProps = {
   projectId: string
@@ -33,24 +28,28 @@ type Application = {
   createdAt: string
 }
 
-export default function ApplicationOverview({
+export default async function ApplicationOverview({
   projectId,
   projectName,
 }: ApplicationDetailProps) {
-  useSignals()
-
-  //const { data: session } = useSession()
+  const [locale, translate, applications] = await Promise.all(
+      [
+        getLocale(),
+        getTranslations(),
+        getApplicationsForProject(projectId),
+      ],
+  )
+ /*
   const [applications, setApplications] = useState<Application[]>([])
 
   useEffect(() => {
     async function fetchApplications() {
-      const data = await getApplicationsForProject(projectId)
+      //const data = await
       setApplications(data)
     }
     fetchApplications()
   }, [projectId])
-
-  const _t = useTranslations('projects.apply')
+  */
 
   return (
     <div className="container mx-auto max-w-screen-lg px-4">
@@ -86,10 +85,10 @@ export default function ApplicationOverview({
         {applications.map((app) => (
             <div key={app.userId} className="border p-4 mb-4">
               <h3>{app.firstName} {app.lastName}</h3>
-              <p><strong>Email:</strong> {app.email}</p>
+              <p><strong>Email:</strong> {app.mail}</p>
               <p><strong>Telefon:</strong> {app.phone}</p>
               <p><strong>Nachricht:</strong> {app.message}</p>
-              <p><strong>Datum:</strong> {new Date(app.createdAt).toLocaleDateString()}</p>
+              <p><strong>Datum:</strong> {""+ app.createdAt}</p>
             </div>
         ))}
         {applications.map((app, index) => (

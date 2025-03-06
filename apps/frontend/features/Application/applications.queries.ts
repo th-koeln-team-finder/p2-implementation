@@ -6,7 +6,6 @@ import { unstable_cache as cache } from 'next/cache'
 export const getApplicationsForProject = cache(
     async (
         id: string,
-        userId?: string,
     ) => {
         return db.query.projectApplication
             .findMany({
@@ -14,12 +13,8 @@ export const getApplicationsForProject = cache(
                     eq(Schema.projectApplication.projectId, id),
                 ),
                 with: {
-                    applicationName: true,
-                    creator: {
-                        with: {
-                            image: true,
-                        },
-                    },
+                    project: true,
+                    user:true,
                 },
                 orderBy: desc(Schema.projectApplication.createdAt),
             })

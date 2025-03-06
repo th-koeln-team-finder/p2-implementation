@@ -388,7 +388,7 @@ export const projectApplication = pgTable(
       .notNull()
       .references(() => projects.id, { onDelete: 'cascade' }),
     firstName: text().notNull(),
-    lastName: text().notNull(),
+    lastName: text(),
     mail: text().notNull(),
     phone: text().notNull(),
     file: uuid().references(() => uploadedFiles.id, {
@@ -638,6 +638,7 @@ export const projectRelations = relations(projects, ({ many }) => ({
   }),
   bookmarks: many(projectBookmarks),
   projectSkills: many(projectSkill),
+
   application: many(projectApplication, {
     relationName: 'projectApplication',
   }),
