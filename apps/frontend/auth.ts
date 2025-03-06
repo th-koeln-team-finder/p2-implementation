@@ -71,6 +71,15 @@ export const {
 
       return res
     },
+    signIn: async ({ user }) => {
+      if (DrizzleHttpAdapter && user.id) {
+        await DrizzleHttpAdapter.updateUser({
+          ...user,
+          lastActive: new Date(),
+        })
+      }
+      return true
+    },
   },
   experimental: { enableWebAuthn: true },
 })

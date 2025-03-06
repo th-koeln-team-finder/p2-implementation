@@ -1,20 +1,19 @@
 import { authMiddleware } from '@/auth'
-import SkillsEdit from '@/features/users/components/SkillsEdit'
-import { getUserSkills } from '@/features/users/users.query'
-import type { UserSelect } from '@repo/database/schema'
-import { getTranslations } from 'next-intl/server'
+import { redirect } from '@/features/i18n/routing'
+import ProfileForm from '@/features/users/components/ProfileForm'
+import { getUserWithImage } from '@/features/users/users.query'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 export default async function EditProfile() {
   const translate = await getTranslations()
   const session = await authMiddleware()
-
-  if (!session) {
-    return <div>Not logged in</div>
+  if (!session?.user?.id) {
+    return redirect({ href: '/', locale: await getLocale() })
   }
-
-  const user = session.user as UserSelect
-
-  const skills = await getUserSkills(user.id)
+  const user = await getUserWithImage(session.user.id)
+  if (!user) {
+    return redirect({ href: '/', locale: await getLocale() })
+  }
 
   return (
     <section>
@@ -22,9 +21,7 @@ export default async function EditProfile() {
         {translate('users.settings.profile')}
       </h2>
 
-      <textarea className="mb-4">{user.bio}</textarea>
-
-      <SkillsEdit userSkills={skills} userId={user.id} />
+      <ProfileForm user={user} />
     </section>
   )
 }

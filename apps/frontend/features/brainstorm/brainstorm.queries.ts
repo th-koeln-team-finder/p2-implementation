@@ -95,7 +95,11 @@ export const getSingleBrainstorm = cache(
       },
       where: eq(Schema.brainstorms.id, id),
       with: {
-        creator: true,
+        creator: {
+          with: {
+            image: true,
+          },
+        },
         tags: {
           with: {
             tag: {

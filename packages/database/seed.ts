@@ -6,9 +6,15 @@ import { makeBrainstorm } from './factory/brainstorm.factory'
 import { makeBrainstormComment } from './factory/brainstormComment.factory'
 import { makeBrainstormCommentLike } from './factory/brainstormCommentLike.factory'
 import { makeBrainstormResource } from './factory/brainstormResource.factory'
+import { makeProject } from './factory/projects.factory'
+import { makeSkill } from './factory/skill.factory'
 import { makeTag } from './factory/tag.factory'
 import { makeTest } from './factory/test.factory'
 import { makeUser } from './factory/user.factory'
+import { makeUserFollows } from './factory/userFollows.factory'
+import { makeUserProjects } from './factory/userProjects.factory'
+import { makeUserSkillVerification } from './factory/userSkillVerification.factory'
+import { makeUserSkills } from './factory/userSkills.factory'
 import * as Schema from './schema'
 
 config()
@@ -52,13 +58,21 @@ export async function seed() {
   console.log("Clearing 'projects' table")
   await db.delete(Schema.projects).execute()
   console.log("Clearing 'skills' table")
-  await db.delete(Schema.skill).execute()
+  await db.delete(Schema.skills).execute()
   console.log(
     "Clearing 'projectSkill', 'projectIssue' and 'projectTimetable' table",
   )
   await db.delete(Schema.projectSkill).execute()
   await db.delete(Schema.projectIssue).execute()
   await db.delete(Schema.projectTimetable).execute()
+  console.log(
+    "Clearing 'userProjects', 'userSkills', 'userFollows' and 'userSkillVerification' table",
+  )
+  await db.delete(Schema.userProjects).execute()
+  await db.delete(Schema.userSkills).execute()
+  await db.delete(Schema.userFollows).execute()
+  await db.delete(Schema.userSkillVerification).execute()
+
   console.log("Clearing 'user' table")
   await db.delete(Schema.users).execute()
 
@@ -178,6 +192,62 @@ export async function seed() {
     makeBrainstormResource(Object.values(brainstormIds)),
   )
   await db.insert(Schema.brainstormResources).values(resourceData).execute()
+
+  console.log('Creating 10 project records')
+  const projectData = makeMultiple(10, () => makeProject())
+  const projects = await db
+    .insert(Schema.projects)
+    .values(projectData)
+    .returning()
+
+  console.log('Creating 100 skill records')
+  const skillData = makeMultiple(100, () => makeSkill()).filter((e) => !!e)
+  const skills = await db.insert(Schema.skills).values(skillData).returning()
+
+  console.log('Creating 500 user skill records')
+  const uniqueUserSkills = new Set<string>()
+  const userSkillData = makeMultiple(500, () =>
+    makeUserSkills(
+      userIds,
+      skills.map((it) => it.id),
+      uniqueUserSkills,
+    ),
+  ).filter((e) => !!e)
+  const userSkills = await db
+    .insert(Schema.userSkills)
+    .values(userSkillData)
+    .returning()
+
+  console.log('Creating 100 userProject records')
+  const uniqueUserProjects = new Set<string>()
+  const userProjectData = makeMultiple(100, () =>
+    makeUserProjects(
+      userIds,
+      projects.map((it) => it.id),
+      uniqueUserProjects,
+    ),
+  ).filter((e) => !!e)
+  await db.insert(Schema.userProjects).values(userProjectData).execute()
+
+  console.log('Creating 50 userFollow records')
+  const userFollowData = makeMultiple(50, () =>
+    makeUserFollows(userIds, userIds, new Set<string>()),
+  ).filter((e) => !!e)
+  await db.insert(Schema.userFollows).values(userFollowData).execute()
+
+  console.log('Creating 1000 userSkillVerification records')
+  const uniqueUserSkillVerifications = new Set<string>()
+  const userSkillVerificationData = makeMultiple(1000, () =>
+    makeUserSkillVerification(
+      userSkills.map((it) => it.id),
+      userIds,
+      uniqueUserSkillVerifications,
+    ),
+  ).filter((e) => !!e)
+  await db
+    .insert(Schema.userSkillVerification)
+    .values(userSkillVerificationData)
+    .execute()
 
   console.log('### Seeding complete ###')
   process.exit(0)

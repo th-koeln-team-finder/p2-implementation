@@ -1,9 +1,9 @@
+import type { UserWithImage } from '@/features/users/users.types'
 import type {
   BrainstormCommentSelect,
   BrainstormResourceSelect,
   BrainstormSelect,
   UploadedFileSelect,
-  UserSelect,
 } from '@repo/database/schema'
 
 export type PopulatedBrainstormResource = BrainstormResourceSelect & {
@@ -12,7 +12,7 @@ export type PopulatedBrainstormResource = BrainstormResourceSelect & {
 
 export type PopulatedBrainstorm = Omit<BrainstormSelect, 'embedding'> & {
   isBookmarked: boolean
-
+  creator?: UserWithImage
   tags: { tag: { id: string; name: string } }[]
   resources: PopulatedBrainstormResource[]
   totalSimilarity: number
@@ -25,7 +25,7 @@ export type PopulatedBrainstormComment = BrainstormCommentSelect & {
   likeCount: number
   isLiked: boolean
   brainstorm?: BrainstormSelect
-  creator?: UserSelect
+  creator?: UserWithImage
   childComments?: PopulatedBrainstormComment[]
 }
 
