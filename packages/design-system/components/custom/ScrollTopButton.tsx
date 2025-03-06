@@ -1,9 +1,9 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
 import { ChevronUpIcon } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
+import { Button } from '../../components/ui/button'
+import { cn } from '../../lib/utils'
 
 export function ScrollTopButton() {
   const [showScroll, setShowScroll] = useState(false)

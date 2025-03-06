@@ -13,7 +13,7 @@ import { getTranslations } from 'next-intl/server'
 export default async function Home() {
   const translate = await getTranslations()
   return (
-    <div className="container mx-auto grid h-[calc(100vh_-_4.5rem)] max-w-screen-xl grid-cols-1 gap-2 px-4 md:grid-cols-2">
+    <div className="continer container mx-auto grid flex-1 grid-cols-1 gap-4 px-4 pb-8 md:grid-cols-2">
       <ImageCard imageUrl="/images/find-a-project-2.jpg" className="w-full">
         <ImageCardTitle>{translate('home.cardFind.title')}</ImageCardTitle>
         <ImageCardContent>
