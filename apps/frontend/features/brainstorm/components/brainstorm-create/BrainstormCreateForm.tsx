@@ -18,10 +18,13 @@ import {
   type ZodAdapter,
   configureZodAdapter,
 } from '@formsignals/validation-adapter-zod'
-import { useSignals } from '@preact/signals-react/runtime'
+import { useSignal, useSignals } from '@preact/signals-react/runtime'
 import type { BrainstormResourceInsert } from '@repo/database/schema'
 import { FieldError } from '@repo/design-system/components/FormErrors'
-import { WysiwygEditorForm } from '@repo/design-system/components/WysiwygEditor'
+import {
+  WysiwygEditorForm,
+  getStringContentFromEditor,
+} from '@repo/design-system/components/WysiwygEditor'
 import { AutoCompleteTagInputForm } from '@repo/design-system/components/custom/auto-complete-tag-input'
 import { Button } from '@repo/design-system/components/ui/button'
 import { InputForm } from '@repo/design-system/components/ui/input'
@@ -48,6 +51,8 @@ export function BrainstormCreateForm({
   const [progressState, uploadFile, resetFileProgress] = useFileUpload()
   const { data, isLoading, searchInput, setSearchInput } = useTagSearch()
 
+  const descriptionTextValue = useSignal('')
+
   const form = useForm<CreateBrainstormFormValues, typeof ZodAdapter>({
     validatorAdapter: configureZodAdapter({ takeFirstError: true }),
     defaultValues: {
@@ -57,7 +62,10 @@ export function BrainstormCreateForm({
       resources: [],
     },
     onSubmit: async ({ resources, ...values }) => {
-      const brainstormId = await createBrainstorm(values)
+      const brainstormId = await createBrainstorm(
+        values,
+        descriptionTextValue.peek(),
+      )
 
       const fileIds = await Promise.all(
         resources
@@ -160,7 +168,6 @@ export function BrainstormCreateForm({
               emptyMessage={translate('createForm.emptyTags')}
               loadingMessage={translate('createForm.loadingTags')}
               enableCommaSeparation
-              clearAfterSelect
             />
             <FieldError />
           </div>
@@ -171,6 +178,12 @@ export function BrainstormCreateForm({
             <WysiwygEditorForm
               className="min-h-48"
               placeholder={translate('createForm.placeholderDescription')}
+              onChange={(_, editor) => {
+                editor.read(() => {
+                  descriptionTextValue.value =
+                    getStringContentFromEditor(editor)
+                })
+              }}
             />
             <FieldError />
           </div>
@@ -191,8 +204,8 @@ export function BrainstormCreateForm({
           </div>
         </form.FieldProvider>
 
-        <p className="mt-2 flex flex-row items-center gap-1 border-primary border-l-2 bg-primary/20 p-2 text-foreground">
-          <BadgeInfoIcon className="mr-2" />
+        <p className="mt-2 flex flex-row items-center gap-2 rounded border-primary border-l-4 bg-primary/20 p-2 text-foreground text-sm">
+          <BadgeInfoIcon className="size-4 min-w-4" />
           {translate('createForm.whiteboardNotice')}
         </p>
 

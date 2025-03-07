@@ -10,11 +10,15 @@ export type PopulatedBrainstormResource = BrainstormResourceSelect & {
   file?: UploadedFileSelect | null
 }
 
-export type PopulatedBrainstorm = BrainstormSelect & {
+export type PopulatedBrainstorm = Omit<BrainstormSelect, 'embedding'> & {
   isBookmarked: boolean
   creator?: UserWithImage
   tags: { tag: { id: string; name: string } }[]
   resources: PopulatedBrainstormResource[]
+  totalSimilarity: number
+  similarity: number
+  tagSimilarity: number
+  commentSimilarity: number
 }
 
 export type PopulatedBrainstormComment = BrainstormCommentSelect & {

@@ -76,6 +76,7 @@ export const en = {
   },
   projects: {
     title: 'Projekte',
+    pageTitle: 'Projects',
     location: 'Location',
     join: 'Join the team',
     links: 'Links and other resources',
@@ -83,6 +84,11 @@ export const en = {
     createProjectWarning: 'You need to login',
     createProjectWarningDescription:
       'Please login or register to create a project',
+    emptyProjects: 'No projects found',
+
+    searchPlaceholder: 'Search for a project...',
+    searchNotice:
+      'You may also search with whole sentences, since we are semantically searching for you.',
 
     issueList: {
       showMore: 'Show more',
@@ -181,12 +187,18 @@ export const en = {
     },
   },
   brainstorm: {
+    pageTitle: 'Brainstorms',
     makeActionButton: 'Create the project',
     deleteActionButton: 'Delete',
     headingResources: 'Links & Other Resources',
     emptyResources: 'No links or resources available...',
     createButton: 'Start brainstorming',
     createFormTitle: 'Create a Brainstorm',
+    actionShowBookmarks: 'Bookmarks to top',
+    searchPlaceholder: 'Search for a brainstorm...',
+    searchNotice:
+      'You may also search with whole sentences, since we are semantically searching for you.',
+    emptyBrainstorms: 'No brainstorms found',
     createForm: {
       labelTitle: 'Title',
       placeholderTitle: 'Write title here...',
@@ -223,6 +235,10 @@ export const en = {
   },
   tag: {
     createNewTag: "New: ''{tagName}''",
+    labelRightNew: 'new',
+    labelRightUses: '{usage}x used',
+    xMore: '{amount} more',
+    otherTags: 'Other Tags',
   },
   help: {
     title: 'Help',

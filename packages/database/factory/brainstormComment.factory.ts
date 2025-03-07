@@ -1,18 +1,23 @@
 import { faker } from '@faker-js/faker/locale/de'
+import { generateTextEmbeddings } from '@repo/semantic-search'
 import type { BrainstormCommentInsert } from '../schema'
 
-export function makeBrainstormComment(
-  brainstormIds: string[],
+export async function makeBrainstormComment(
+  brainstormId: string,
+  comment: string,
   createdByIds: string[],
   parentCommentIds?: string[],
-): BrainstormCommentInsert {
+): Promise<BrainstormCommentInsert> {
+  console.log('Generating embeddings for text: ', comment)
+  const embedding = await generateTextEmbeddings(comment)
   return {
     parentCommentId: parentCommentIds
       ? faker.helpers.arrayElement(parentCommentIds)
       : undefined,
-    isPinned: faker.datatype.boolean(0.1),
-    brainstormId: faker.helpers.arrayElement(brainstormIds),
-    comment: faker.lorem.paragraph(),
+    isPinned: faker.datatype.boolean(0.2),
+    brainstormId,
+    comment,
+    embedding,
     createdById: faker.helpers.arrayElement(createdByIds),
     createdAt: faker.date.past(),
   }

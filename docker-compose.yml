@@ -25,9 +25,12 @@ services:
 
   app:
     container_name: 'app'
+    platform: linux/amd64
     build:
       context: .
       dockerfile: ./apps/frontend/Dockerfile
+      target: dev
+    command: pnpm dev
     environment:
       DATABASE_URL: postgres://dbadmin:dbadmin@database:5432/collaborize
       AUTH_TRUST_HOST: true
