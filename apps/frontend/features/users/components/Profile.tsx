@@ -95,6 +95,7 @@ export default async function Profile({ user }: { user: UserWithImage }) {
               </p>
             )}
           </div>
+          {/* TODO Re-add user bio */}
           {/*{user.bio && <ProfileBio bio={user.bio}/>}*/}
         </div>
       </div>
