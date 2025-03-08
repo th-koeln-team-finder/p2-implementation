@@ -72,7 +72,7 @@ export default async function Profile({ user }: { user: UserWithImage }) {
             <div className="flex items-center gap-8">
               <h1 className="inline font-bold text-3xl">{user.name}</h1>
               {isOwnProfile ? (
-                <Link href="/edit-profile">
+                <Link href="/edit-profile/profile">
                   <Button>
                     <UserPen />
                     {translate('users.editProfile')}
