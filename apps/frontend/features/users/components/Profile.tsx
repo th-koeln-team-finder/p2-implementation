@@ -40,7 +40,7 @@ export default async function Profile({ user }: { user: UserWithImage }) {
   const skills: UserSkill[] = (await getUserSkills(user.id)).map(
     (userSkill) => ({
       id: userSkill.id,
-      name: userSkill.skill || '',
+      name: userSkill.skill?.skill || '',
       level: userSkill.level,
       verifications: userSkill.verificationCount,
       isVerified: userSkill.isVerified,
