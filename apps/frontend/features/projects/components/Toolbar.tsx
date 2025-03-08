@@ -58,7 +58,7 @@ export function Toolbar({
         size="default"
         className="ml-2 w-full lg:w-auto"
         onClick={async () => {
-            console.log("joining project")
+
             await joinProject(projectId)
         }}
       >

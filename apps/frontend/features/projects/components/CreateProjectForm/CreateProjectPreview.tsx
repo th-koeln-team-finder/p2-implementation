@@ -5,18 +5,24 @@ import { ProjectTimetable } from '@/features/projects/components/ProjectTimetabl
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
 import { SkillScale } from '@/features/projects/components/SkillScale'
 import TeamMembers from '@/features/projects/components/TeamMembers'
+import {CarouselItem} from '@/features/projects/components/TeamMembers'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { useFormContext } from '@formsignals/form-react'
 import { useSignals } from '@preact/signals-react/runtime'
-import { Weekdays } from '@repo/database/schema'
+import {participants, UserSelect, Weekdays} from '@repo/database/schema'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { useTranslations } from 'next-intl'
+import {authMiddleware} from "@/auth";
+import {getUserProfile} from "@/features/projects/projects.actions";
+import {useEffect, useState} from "react";
+
 
 export function CreateProjectPreview() {
   useSignals()
   const t = useTranslations('projects')
   const form = useFormContext<CreateProjectFormValues>()
   const formValues = form.json.value
+  const [sessionUser, setUser] = useState<UserSelect>();
 
   const timetabledata: { description: string; weekdays: string }[] = [
     { description: formValues.ttMon, weekdays: Weekdays.monday },
@@ -27,6 +33,14 @@ export function CreateProjectPreview() {
     { description: formValues.ttSat, weekdays: Weekdays.saturday },
     { description: formValues.ttSun, weekdays: Weekdays.sunday },
   ]
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+    setUser(await getUserProfile());
+    };
+    fetchUserProfile();
+  }, []);
+
 
   const timetable =
     formValues.timetableOutput === 'noTable'
@@ -51,7 +65,7 @@ export function CreateProjectPreview() {
           )}
         </div>
 
-        <TeamMembers />
+        <TeamMembers participants={ sessionUser?[{users:sessionUser!!}]:[]} />
 
         {!!timetable.length && (
           <div className="relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2">

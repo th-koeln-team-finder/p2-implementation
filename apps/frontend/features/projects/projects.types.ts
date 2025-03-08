@@ -3,6 +3,7 @@ export type CreateProjectFormBasic = {
   description: string
   phase: string
   status: 'open' | 'closed'
+  creatorId: string
 }
 
 export type CreateProjectFormSkills = {

@@ -110,6 +110,11 @@ export async function createProject(payload: CreateProjectFormValues) {
 
   return project.id
 }
+export async function getUserProfile() {
+  const session = await authMiddleware()
+  return session?.user
+}
+
 
 export async function createProjectUploadedData(
   projectId: string,
@@ -208,10 +213,10 @@ export async function joinProject(projectId:string) {
 
   if(await db.query.participants.findFirst({where: eq(Schema.participants.projectId, projectId) && eq(Schema.participants.userId, session.user.id)}))
     {
-        console.log("Participant already exists!")
+
     }
   else {
-    console.log("inserting new Participant!")
+
     await db.insert(Schema.participants).values({
       projectId,
       userId: session.user.id,

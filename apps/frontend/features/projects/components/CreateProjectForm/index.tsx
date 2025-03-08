@@ -8,7 +8,7 @@ import { CreateProjectPreview } from '@/features/projects/components/CreateProje
 import { CreateProjectSkills } from '@/features/projects/components/CreateProjectForm/CreateProjectSkills'
 import {
   createProject,
-  createProjectUploadedData,
+  createProjectUploadedData, getUserProfile,
   revalidateProjects,
 } from '@/features/projects/projects.actions'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
@@ -36,9 +36,10 @@ import {
   SelectItem,
 } from '@repo/design-system/components/ui/select'
 import { useTranslations } from 'next-intl'
-import { useMemo, useState } from 'react'
+import {useEffect, useMemo, useState} from 'react'
 import { z } from 'zod'
 import {CreateProjectPictureList} from "@/features/projects/components/CreateProjectForm/CreateProjectPictureList";
+import {UserSelect} from "@repo/database/schema";
 
 const registerAdapter = configureZodAdapter({
   takeFirstError: true,
@@ -50,7 +51,7 @@ export function CreateProjectForm() {
   const router = useRouter()
   const t = useTranslations('createProjects')
   const translateError = useTranslations('validation')
-
+  const [sessionUser, setUser] = useState<UserSelect>();
   //Stepper
   const steps = [
     { id: 'basics', title: t('stepper.main') },
@@ -59,12 +60,21 @@ export function CreateProjectForm() {
     { id: 'links', title: t('stepper.details') },
     { id: 'review', title: t('stepper.preview') },
   ]
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const profile = await getUserProfile();
+      if(profile) setUser(profile);
+    };
+    fetchUserProfile();
+  }, []);
+
 
   //Form Field Provider
   const form = useForm<CreateProjectFormValues, typeof ZodAdapter>({
     validatorAdapter: registerAdapter,
     defaultValues: {
       name: '',
+      creatorId: sessionUser? sessionUser.id : '',
       description: '',
       phase: '',
       status: 'open',
@@ -84,6 +94,7 @@ export function CreateProjectForm() {
 
     },
     onSubmit: async (values) => {
+
       const serverActionData = {
         ...values,
         resources: values.resources.map((r) => ({
@@ -155,7 +166,7 @@ export function CreateProjectForm() {
 
   const basicFieldGroup = useFieldGroup(
     form,
-    ['name', 'phase', 'description'],
+    ['name', 'phase', 'description','creatorId'],
     {
       onSubmit: () => setCurrentIndex(1),
     },
@@ -273,6 +284,7 @@ export function CreateProjectForm() {
                 <div>
                   <Label>{t('main.name')}</Label>
                   <InputForm id="name" placeholder={t('main.namePlaceholder')}/>
+
                   <FieldError/>
                 </div>
               </form.FieldProvider>
@@ -282,7 +294,9 @@ export function CreateProjectForm() {
                   <InputForm id="phase" placeholder={t('main.phasePlaceholder')}/>
                   <FieldError/>
                 </div>
-              </form.FieldProvider>
+                </form.FieldProvider>
+
+
 
             </div>
 
