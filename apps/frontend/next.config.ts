@@ -21,6 +21,16 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  serverExternalPackages: ['sharp', 'onnxruntime-node'],
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals = [
+        ...config.externals,
+        { 'onnxruntime-node': 'commonjs onnxruntime-node' },
+      ]
+    }
+    return config
+  },
   // biome-ignore lint/suspicious/useAwait: change the url path for assets
   async rewrites() {
     return [

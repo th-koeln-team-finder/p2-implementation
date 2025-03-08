@@ -4,6 +4,7 @@ import {
   boolean,
   check,
   date,
+  index,
   integer,
   json,
   pgEnum,
@@ -14,6 +15,7 @@ import {
   uniqueIndex,
   uuid,
   varchar,
+  vector,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
 import {
@@ -22,6 +24,11 @@ import {
   RolesValues,
   notificationColumns,
 } from './constants'
+
+const VectorSizes = {
+  small: 384,
+  large: 1024,
+}
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
 
@@ -233,6 +240,7 @@ export const projects = pgTable('projects', {
   id: uuid().primaryKey().notNull().defaultRandom(),
   name: varchar({ length: 255 }).notNull(),
   description: text().notNull(),
+  embedding: vector({ dimensions: VectorSizes.large }).notNull(),
   status: varchar({ enum: ['open', 'closed'] }).notNull(),
   phase: text(),
   location: text(),
@@ -309,6 +317,7 @@ export const projectIssue = pgTable('projectIssue', {
     .references(() => projects.id, { onDelete: 'cascade' }), // Fremdschlüssel auf projects.id
   title: varchar({ length: 255 }).notNull(),
   description: text().notNull(),
+  embedding: vector({ dimensions: VectorSizes.large }).notNull(),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
   updatedAt: timestamp({ mode: 'date' })
     .defaultNow()
@@ -412,39 +421,59 @@ export type ProjectApplicationSelect = typeof projectApplication.$inferSelect
 /**
  * Data for a single brainstorm
  */
-export const brainstorms = pgTable('brainstorm', {
-  id: uuid().primaryKey().notNull().defaultRandom(),
-  title: text('name').notNull(),
-  description: text('description'),
-  createdById: uuid('userId')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
-})
+export const brainstorms = pgTable(
+  'brainstorm',
+  {
+    id: uuid().primaryKey().notNull().defaultRandom(),
+    title: text('name').notNull(),
+    description: text('description'),
+    embedding: vector('embedding', { dimensions: VectorSizes.large }).notNull(),
+    createdById: uuid('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
+  },
+  (table) => ({
+    embeddingIndex: index('brainstormEmbeddingIndex').using(
+      'hnsw',
+      table.embedding.op('vector_cosine_ops'),
+    ),
+  }),
+)
 export type BrainstormInsert = typeof brainstorms.$inferInsert
 export type BrainstormSelect = typeof brainstorms.$inferSelect
 
 /**
  * General comments for brainstorms
  */
-export const brainstormComments = pgTable('brainstorm_comment', {
-  id: uuid().primaryKey().notNull().defaultRandom(),
-  comment: text('comment').notNull(),
-  isPinned: boolean('isPinned').notNull().default(false),
-  brainstormId: uuid('brainstormId')
-    .notNull()
-    .references(() => brainstorms.id, { onDelete: 'cascade' }),
-  parentCommentId: uuid('parentCommentId').references(
-    (): AnyPgColumn => brainstormComments.id,
-    {
-      onDelete: 'cascade',
-    },
-  ),
-  createdById: uuid('userId')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
-})
+export const brainstormComments = pgTable(
+  'brainstorm_comment',
+  {
+    id: uuid().primaryKey().notNull().defaultRandom(),
+    comment: text('comment').notNull(),
+    embedding: vector('embedding', { dimensions: VectorSizes.large }).notNull(),
+    isPinned: boolean('isPinned').notNull().default(false),
+    brainstormId: uuid('brainstormId')
+      .notNull()
+      .references(() => brainstorms.id, { onDelete: 'cascade' }),
+    parentCommentId: uuid('parentCommentId').references(
+      (): AnyPgColumn => brainstormComments.id,
+      {
+        onDelete: 'cascade',
+      },
+    ),
+    createdById: uuid('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
+  },
+  (table) => ({
+    embeddingIndex: index('commentEmbeddingIndex').using(
+      'hnsw',
+      table.embedding.op('vector_cosine_ops'),
+    ),
+  }),
+)
 export type BrainstormCommentInsert = typeof brainstormComments.$inferInsert
 export type BrainstormCommentSelect = typeof brainstormComments.$inferSelect
 
@@ -503,10 +532,20 @@ export const brainstormResources = pgTable('brainstorm_resource', {
 export type BrainstormResourceInsert = typeof brainstormResources.$inferInsert
 export type BrainstormResourceSelect = typeof brainstormResources.$inferSelect
 
-export const tags = pgTable('tag', {
-  id: uuid().primaryKey().notNull().defaultRandom(),
-  name: text('name').notNull().unique(),
-})
+export const tags = pgTable(
+  'tag',
+  {
+    id: uuid().primaryKey().notNull().defaultRandom(),
+    name: text('name').notNull().unique(),
+    embedding: vector('embedding', { dimensions: VectorSizes.small }).notNull(),
+  },
+  (table) => ({
+    embeddingIndex: index('tagEmbeddingIndex').using(
+      'hnsw',
+      table.embedding.op('vector_cosine_ops'),
+    ),
+  }),
+)
 export type TagInsert = typeof tags.$inferInsert
 export type TagSelect = typeof tags.$inferSelect
 

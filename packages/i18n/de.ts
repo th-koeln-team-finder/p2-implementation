@@ -79,6 +79,7 @@ export const de: Language = {
   },
   projects: {
     title: 'Projekte',
+    pageTitle: 'Projekte',
     location: 'Standort/Treffpunkt',
     join: 'Team beitreten',
     links: 'Links und andere Resourcen',
@@ -86,6 +87,11 @@ export const de: Language = {
     createProjectWarning: 'Sie müssen sich anmelden',
     createProjectWarningDescription:
       'Sie müssen sich anmelden, um ein Projekt zu erstellen',
+    emptyProjects: 'Keine Projekte gefunden',
+
+    searchPlaceholder: 'Suche nach Projekten...',
+    searchNotice:
+      'Sie können auch in ganzen Sätzen suchen, da wir nach der semantischen Bedeutung suchen.',
 
     issueList: {
       showMore: 'mehr anzeigen',
@@ -203,12 +209,18 @@ export const de: Language = {
     },
   },
   brainstorm: {
+    pageTitle: 'Brainstorms',
     makeActionButton: 'Erstelle das Projekt',
     deleteActionButton: 'Löschen',
     headingResources: 'Links & andere Ressourcen',
     emptyResources: 'Keine Links oder Ressourcen verfügbar...',
     createButton: 'Brainstorming starten',
     createFormTitle: 'Brainstorm erstellen',
+    actionShowBookmarks: 'Markierte nach oben',
+    searchPlaceholder: 'Suche nach Brainstorms...',
+    searchNotice:
+      'Du kannst auch in ganzen Sätzen suchen, da wir nach der semantischen Bedeutung suchen.',
+    emptyBrainstorms: 'Keine Brainstorms gefunden',
     createForm: {
       labelTitle: 'Titel',
       placeholderTitle: 'Titel hier eingeben...',
@@ -245,6 +257,10 @@ export const de: Language = {
   },
   tag: {
     createNewTag: "Neu: ''{tagName}''",
+    labelRightNew: 'neu',
+    labelRightUses: '{usage}x verwendet',
+    xMore: '{amount} mehr',
+    otherTags: 'Andere Tags',
   },
   help: {
     title: 'Hilfe',

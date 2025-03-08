@@ -7,6 +7,7 @@ import { LoggingWysiwygEditor } from '@/features/test/components/LoggingWysiwygE
 import { RemoveFileButton } from '@/features/test/components/RemoveFileButton'
 import { TestFileUploadForm } from '@/features/test/components/TestFileUploadForm'
 import { TestForm } from '@/features/test/components/TestForm'
+import { TestSemanticSearch } from '@/features/test/components/TestSemanticSearch'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -134,6 +135,7 @@ export default async function Home() {
         {translate('test.otherHeading')}
       </h1>
       <h2 className="mb-8 font-head text-3xl">{translate('test.otherFont')}</h2>
+      <TestSemanticSearch />
       {files.map((file) => (
         <div key={file.id}>
           <FilePreview
