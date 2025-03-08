@@ -170,9 +170,7 @@ export default function ProfileForm({ user }: { user: UserWithImage }) {
               <div>
                 <WysiwygEditorForm
                   placeholder={t('users.settings.bioPlaceholder')}
-                >
-                  {user.bio}
-                </WysiwygEditorForm>
+                />
               </div>
             </div>
           </form.FieldProvider>

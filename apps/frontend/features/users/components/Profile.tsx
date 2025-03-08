@@ -40,7 +40,7 @@ export default async function Profile({ user }: { user: UserWithImage }) {
   const skills: UserSkill[] = (await getUserSkills(user.id)).map(
     (userSkill) => ({
       id: userSkill.id,
-      name: userSkill.skill || '',
+      name: userSkill.skill?.skill || '',
       level: userSkill.level,
       verifications: userSkill.verificationCount,
       isVerified: userSkill.isVerified,
@@ -72,7 +72,7 @@ export default async function Profile({ user }: { user: UserWithImage }) {
             <div className="flex items-center gap-8">
               <h1 className="inline font-bold text-3xl">{user.name}</h1>
               {isOwnProfile ? (
-                <Link href="/edit-profile">
+                <Link href="/edit-profile/profile">
                   <Button>
                     <UserPen />
                     {translate('users.editProfile')}
@@ -95,6 +95,7 @@ export default async function Profile({ user }: { user: UserWithImage }) {
               </p>
             )}
           </div>
+          {/* TODO Re-add user bio */}
           {/*{user.bio && <ProfileBio bio={user.bio}/>}*/}
         </div>
       </div>

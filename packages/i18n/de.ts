@@ -284,7 +284,7 @@ export const de: Language = {
     verifySkill: 'Skill bestätigen',
     unverifySkill: 'Skillbestätigung aufheben',
     verificationTooltip:
-      'Dieser Skill wurde {verifications} Mal von anderen Benutzern bestätigt',
+      'Dieser Skill wurde {verifications} mal von anderen Benutzern bestätigt',
     settings: {
       title: 'Benutzereinstellungen',
       profile: 'Profil',
