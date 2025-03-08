@@ -1,9 +1,17 @@
+import {UserInsert} from "@repo/database/schema";
+
 export type CreateProjectFormBasic = {
   name: string
   description: string
   phase: string
   status: 'open' | 'closed'
-  creatorId: string
+  createdBy: string
+}
+
+export type CreateProjectFormParticipants = {
+    participants: Array<{
+        Users: UserInsert
+    }>
 }
 
 export type CreateProjectFormSkills = {
@@ -46,6 +54,7 @@ export type CreateProjectFormPictures = {
 
 export type CreateProjectFormValues = CreateProjectFormBasic &
   CreateProjectFormSkills &
+  CreateProjectFormParticipants &
   CreateProjectFormTimeTable &
   CreateProjectFormLinks &
   CreateProjectFormPictures

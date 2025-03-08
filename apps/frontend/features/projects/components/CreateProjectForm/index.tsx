@@ -74,11 +74,12 @@ export function CreateProjectForm() {
     validatorAdapter: registerAdapter,
     defaultValues: {
       name: '',
-      creatorId: sessionUser? sessionUser.id : '',
+      createdBy: sessionUser? sessionUser.id : '',
       description: '',
       phase: '',
       status: 'open',
       skills: [],
+      participants: sessionUser? [{ Users: sessionUser }] : [],
       timetableOutput: '',
       ttMon: '',
       ttTue: '',
@@ -166,7 +167,7 @@ export function CreateProjectForm() {
 
   const basicFieldGroup = useFieldGroup(
     form,
-    ['name', 'phase', 'description','creatorId'],
+    ['name', 'phase', 'description','createdBy'],
     {
       onSubmit: () => setCurrentIndex(1),
     },

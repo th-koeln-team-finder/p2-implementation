@@ -33,7 +33,7 @@ export async function createProject(payload: CreateProjectFormValues) {
   const [project] = await db
     .insert(Schema.projects)
     .values({
-      createdBy: session.user.id,
+      createdBy: payload.createdBy,
       name: payload.name,
       description: payload.description,
       status: payload.status,
@@ -41,6 +41,14 @@ export async function createProject(payload: CreateProjectFormValues) {
     })
     .returning()
 
+  if(payload.participants[0].Users.id) {
+    await db
+        .insert(Schema.participants)
+        .values({
+          userId: payload.participants[0].Users.id,
+          projectId: project.id,
+        })
+  }
   const issuesToCreate = payload.issues.map((issue) => ({
     projectId: project.id,
     description: issue.description,
