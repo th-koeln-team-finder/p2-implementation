@@ -1,12 +1,14 @@
 import { Schema, db } from '@repo/database'
 import { projects } from '@repo/database/schema'
 import { generateTextEmbeddings } from '@repo/semantic-search'
-import { and, cosineDistance, desc, eq, gte, sql } from 'drizzle-orm'
+import { and, cosineDistance, desc, eq, gte, lte, sql } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
+import type { parseFilters } from '@/features/projects/components/FilterBar/filterbar.utils'
+import { FilterKeys } from '@/features/projects/components/FilterBar/filterbar.constants'
 
 export const getProjectItems = cache(
-  async (search = '', limit = 25) => {
-    const searchEmbeddings = await generateTextEmbeddings(search)
+  async (search, filters: ReturnType<typeof parseFilters>, limit: number) => {
+    const searchEmbeddings = await generateTextEmbeddings(search ?? '')
 
     const similarity = sql<number>`(1 - (${cosineDistance(Schema.projects.embedding, searchEmbeddings)}))`
     const issueSimilarity = sql<number>`(select COALESCE(max(1 - ("issues"."embedding" <=> ${JSON.stringify(searchEmbeddings)})), NULL) from (select "projectIssue"."embedding" from "projectIssue" where "projectIssue"."projectId" = "projects".id) as "issues")`
@@ -15,6 +17,16 @@ export const getProjectItems = cache(
     const totalSimilarityNoIssue = sql<number>`${similarity}`
 
     const correctTotalSimilarity = sql<number>`CASE WHEN ${issueSimilarity} IS NULL THEN ${totalSimilarityNoIssue} ELSE ${totalSimilarity} END`
+
+    const minDateFilterValue = filters[FilterKeys.minCreationDate]
+    const maxDateFilterValue = filters[FilterKeys.maxCreationDate]
+    const minCreationDateFilter = minDateFilterValue
+      ? gte(Schema.projects.createdAt, minDateFilterValue)
+      : sql`true`
+    const maxCreationDateFilter = maxDateFilterValue
+      ? lte(Schema.projects.createdAt, maxDateFilterValue)
+      : sql`true`
+    const creationDateFilter = and(minCreationDateFilter, maxCreationDateFilter)
 
     return db.query.projects.findMany({
       extras: {
@@ -34,6 +46,7 @@ export const getProjectItems = cache(
       where: and(
         gte(correctTotalSimilarity, 0.4),
         eq(Schema.projects.isPublic, true),
+        creationDateFilter,
       ),
       limit,
       orderBy: [
