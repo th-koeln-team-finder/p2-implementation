@@ -48,7 +48,13 @@
         "noIrregularWhitespace": "error",
         "useAtIndex": "warn",
         "useConsistentMemberAccessibility": "warn",
-        "useSortedClasses": "warn",
+        "useSortedClasses": {
+          "level": "warn",
+          "fix": "safe",
+          "options": {
+
+          }
+        },
         "useValidAutocomplete": "warn"
       },
       "style": {
