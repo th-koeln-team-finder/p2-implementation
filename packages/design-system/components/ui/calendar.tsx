@@ -7,6 +7,7 @@ import { DayPicker } from 'react-day-picker'
 import { buttonVariants } from '../../components/ui/button'
 import { cn } from '../../lib/utils'
 import { useFieldContext } from '@formsignals/form-react'
+import { useSignals } from '@preact/signals-react/runtime'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
@@ -73,6 +74,7 @@ Calendar.displayName = 'Calendar'
 type CalendarFormProps = Omit<CalendarProps, 'selected' | 'onSelect'>
 
 const CalendarForm = (props: CalendarFormProps) => {
+  useSignals()
   const field = useFieldContext()
   return (
     <Calendar
