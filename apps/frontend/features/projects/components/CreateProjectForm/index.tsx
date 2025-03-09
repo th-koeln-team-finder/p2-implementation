@@ -95,7 +95,7 @@ export function CreateProjectForm() {
 
     },
     onSubmit: async (values) => {
-
+      if (!editorRef.current) return null
       const serverActionData = {
         ...values,
         resources: values.resources.map((r) => ({
@@ -107,7 +107,10 @@ export function CreateProjectForm() {
           file: [],
         })),
       }
-      const projectId = await createProject(serverActionData)
+      const projectId = await createProject(
+        serverActionData,
+        getStringContentFromEditor(editorRef.current),
+      )
       const uploadedFileResources = await Promise.all(
         values.resources.map(async ({ file, label, href }) => {
           if (!file.length) {
@@ -469,7 +472,7 @@ export function CreateProjectForm() {
           <div className="flex w-full flex-col">
             <Label>{t('issues.sectionTitle')}</Label>
             <form.FieldProvider name="issues">
-              <CreateProjectIssueList editorRef={editorRef} />
+              <CreateProjectIssueList />
             </form.FieldProvider>
           </div>
           <div className="flex w-full flex-col gap-4 lg:flex-row">
@@ -477,10 +480,7 @@ export function CreateProjectForm() {
               <Label>{t('linksTitle')}</Label>
               <div>
                 <form.FieldProvider name="resources">
-                  <CreateProjectLinksList
-                    uploadFile={uploadFile}
-                    progressState={progressState}
-                  />
+                  <CreateProjectLinksList progressState={progressState} />
                 </form.FieldProvider>
               </div>
             </div>

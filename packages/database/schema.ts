@@ -4,7 +4,9 @@ import {
   boolean,
   check,
   date,
+  index,
   integer,
+  json,
   pgEnum,
   pgTable,
   primaryKey,
@@ -13,10 +15,21 @@ import {
   uniqueIndex,
   uuid,
   varchar,
+  vector,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccountType } from 'next-auth/adapters'
-import { Roles, type RolesType, RolesValues } from './constants'
-import exp from "node:constants";
+import {
+  Roles,
+  type RolesType,
+  RolesValues,
+  notificationColumns,
+} from './constants'
+
+const VectorSizes = {
+  small: 384,
+  large: 1024,
+}
+
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
 
@@ -40,63 +53,71 @@ export const users = pgTable('user', {
   name: text('name').unique().notNull(),
   email: text('email').unique().notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
-  image: text('image'),
-  bio: text('bio'),
+  firstName: text('firstName'),
+  lastName: text('lastName'),
+  image: uuid().references((): AnyPgColumn => uploadedFiles.id, {
+    onDelete: 'cascade',
+  }),
   roles: pgRoles()
     .array()
     .notNull()
     .$type<RolesType[]>()
     .$defaultFn(() => [Roles.defaultUser]),
+  bio: text('bio'),
+  occupation: text('occupation'),
+  url: text('url'),
+  location: text('location'),
+  allowInvites: boolean().notNull().default(true),
+  isPublic: boolean().notNull().default(true),
+  languagePreference: varchar({ enum: ['en', 'de'] })
+    .notNull()
+    .default('en'),
+  activateNotifications: boolean().notNull().default(true),
+  ...notificationColumns,
+  lastActive: timestamp('lastActive', { mode: 'date' }),
+  createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
+  updatedAt: timestamp({ mode: 'date' })
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 })
 export type UserInsert = typeof users.$inferInsert
 export type UserSelect = typeof users.$inferSelect
-/**
- * Skills for a User and a Project. All can have multiple skills
- */
-export const skill = pgTable('skill', {
-  id: uuid().primaryKey().notNull().defaultRandom(),
-  name: varchar().notNull(),
-})
-export type SkillInsert = typeof skill.$inferInsert
-export type SkillSelect = typeof skill.$inferSelect
 
-//Project Tables
-/**
- * Data specific for one user
- */
-export const skills = pgTable('skills', {
-  id: uuid().primaryKey().notNull().defaultRandom(),
-  skill: varchar({ length: 255 }).notNull().unique(),
-  createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow(),
-})
-export type SkillsInsert = typeof skills.$inferInsert
-export type SkillsSelect = typeof skills.$inferSelect
-
-export const userSkills = pgTable('userSkills', {
-  id: uuid().primaryKey().notNull().defaultRandom(),
-  userId: uuid('userId')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  skillId: uuid('skillId')
-    .notNull()
-    .references(() => skills.id, { onDelete: 'cascade' }),
-  level: integer().notNull(),
-  createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow(),
-})
+export const userSkills = pgTable(
+  'userSkills',
+  {
+    id: uuid().primaryKey().notNull().defaultRandom(),
+    userId: uuid()
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    skillId: uuid()
+      .notNull()
+      .references(() => skills.id, { onDelete: 'cascade' }),
+    level: integer().notNull(),
+    createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
+    updatedAt: timestamp({ mode: 'date' })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (userSkill) => ({
+    validLevel: check('valid_userSkill_level', sql`${userSkill.level} >= 0`),
+  }),
+)
 export type UserSkillsInsert = typeof userSkills.$inferInsert
 export type UserSkillsSelect = typeof userSkills.$inferSelect
 
-export const userSkillRelations = relations(userSkills, ({ one }) => ({
+export const userSkillRelations = relations(userSkills, ({ one, many }) => ({
   skill: one(skills, {
     fields: [userSkills.skillId],
     references: [skills.id],
   }),
-}))
-
-export const skillRelations = relations(skills, ({ many }) => ({
-  userSkills: many(userSkills),
+  userSkillVerification: many(userSkillVerification),
+  user: one(users, {
+    fields: [userSkills.userId],
+    references: [users.id],
+  }),
 }))
 
 export const userSkillVerification = pgTable('userSkillVerification', {
@@ -104,12 +125,14 @@ export const userSkillVerification = pgTable('userSkillVerification', {
   verifierId: uuid('userId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  userSkillId: uuid('skillId')
+  userSkillId: uuid('userSkillId')
     .notNull()
     .references(() => userSkills.id, { onDelete: 'cascade' }),
-  status: varchar({ enum: ['pending', 'approved', 'rejected'] }).notNull(),
-  createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow(),
+  createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
+  updatedAt: timestamp({ mode: 'date' })
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 })
 export type UserSkillVerificationInsert =
   typeof userSkillVerification.$inferInsert
@@ -125,22 +148,22 @@ export const userRatings = pgTable('userRatings', {
     .notNull()
     .references(() => users.id),
   ratingType: varchar({ enum: ['friendly', 'reliable'] }).notNull(),
-  createdAt: timestamp().notNull().defaultNow(),
+  createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
 })
 export type UserRatingsInsert = typeof userRatings.$inferInsert
 export type UserRatingsSelect = typeof userRatings.$inferSelect
 
 export const userFollows = pgTable('userFollows', {
   id: uuid().primaryKey().notNull().defaultRandom(),
-  followerId: uuid('userId')
+  followerId: uuid('followerId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  followeeId: uuid('userId')
+  followeeId: uuid('followeeId')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  createdAt: timestamp().notNull().defaultNow(),
+  createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
 })
-export type UserFollowsInsert = typeof userRatings.$inferInsert
+export type UserFollowsInsert = typeof userFollows.$inferInsert
 
 /**
  * This table stores all the projects a user is and was part of.
@@ -153,9 +176,9 @@ export const userProjects = pgTable('userProjects', {
     .notNull()
     .references(() => users.id),
   // for projects from this platform
-  projectId: uuid('projectId')
-    .notNull()
-    .references(() => projects.id, { onDelete: 'cascade' }),
+  projectId: uuid('projectId').references(() => projects.id, {
+    onDelete: 'cascade',
+  }),
   // for projects not from this platform
   projectName: varchar({ length: 255 }),
   projectJoinedDate: date().notNull(),
@@ -163,7 +186,10 @@ export const userProjects = pgTable('userProjects', {
   projectDescription: varchar({ length: 255 }),
   visible: boolean().notNull().default(true),
   createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp()
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 })
 export type UserProjectsInsert = typeof userProjects.$inferInsert
 export type UserProjectsSelect = typeof userProjects.$inferSelect
@@ -181,8 +207,32 @@ export const userProjectSettings = pgTable('userProjectSettings', {
     .notNull()
     .default('email'),
   createdAt: timestamp().notNull().defaultNow(),
-  updatedAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp()
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 })
+
+/**
+ * Skills for a User and a Project. All can have multiple skills
+ */
+
+export const skills = pgTable('skills', {
+  id: uuid().primaryKey().notNull().defaultRandom(),
+  skill: varchar({ length: 255 }).notNull().unique(),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp()
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+})
+export type SkillsInsert = typeof skills.$inferInsert
+export type SkillsSelect = typeof skills.$inferSelect
+
+export const skillRelations = relations(skills, ({ many }) => ({
+  userSkills: many(userSkills),
+  projectSkills: many(projectSkill),
+}))
 
 /**
  * Data specific for one project
@@ -192,6 +242,7 @@ export const projects = pgTable('projects', {
   createdBy: uuid('createdBy').notNull().references(() => users.id, {onDelete: 'cascade'}),
   name: varchar({ length: 255 }).notNull(),
   description: text().notNull(),
+  embedding: vector({ dimensions: VectorSizes.large }).notNull(),
   status: varchar({ enum: ['open', 'closed'] }).notNull(),
   phase: text(),
   isPublic: boolean().notNull().default(true),
@@ -255,7 +306,7 @@ export const projectSkill = pgTable(
       .references(() => projects.id, { onDelete: 'cascade' }),
     skillId: uuid()
       .notNull()
-      .references(() => skill.id, { onDelete: 'cascade' }),
+      .references(() => skills.id, { onDelete: 'cascade' }),
     // TODO This needs to be removed since the name is stored in the skill relation
     name: text().notNull(),
     level: integer().notNull(),
@@ -315,29 +366,6 @@ export const projectResource = pgTable('projectResource', {
 export type ProjectResourceInsert = typeof projectResource.$inferInsert
 export type ProjectResourceSelect = typeof projectResource.$inferSelect
 
-export const userSkill = pgTable(
-  'userSkill',
-  {
-    userId: uuid()
-      .notNull()
-      .references(() => users.id, { onDelete: 'cascade' }),
-    skillId: uuid()
-      .notNull()
-      .references(() => skill.id, { onDelete: 'cascade' }),
-    level: integer().notNull(),
-    createdAt: timestamp({ mode: 'date' }).defaultNow(),
-    updatedAt: timestamp({ mode: 'date' })
-      .defaultNow()
-      .$onUpdate(() => sql`current_timestamp`),
-  },
-  (userSkill) => ({
-    pk: primaryKey({ columns: [userSkill.userId, userSkill.skillId] }), //
-    validLevel: check('valid_userSkill_level', sql`${userSkill.level} >= 0`),
-  }),
-)
-export type UserSkillInsert = typeof userSkill.$inferInsert
-export type UserSkillSelect = typeof userSkill.$inferSelect
-
 /**
  * ProjectIssues for a project. A project can have multiple issues
  */
@@ -348,6 +376,7 @@ export const projectIssue = pgTable('projectIssue', {
     .references(() => projects.id, { onDelete: 'cascade' }), // Fremdschlüssel auf projects.id
   title: varchar({ length: 255 }).notNull(),
   description: text().notNull(),
+  embedding: vector({ dimensions: VectorSizes.large }).notNull(),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
   updatedAt: timestamp({ mode: 'date' })
     .defaultNow()
@@ -418,39 +447,59 @@ export type projectBookmarkSelect = typeof projectBookmarks.$inferSelect
 /**
  * Data for a single brainstorm
  */
-export const brainstorms = pgTable('brainstorm', {
-  id: uuid().primaryKey().notNull().defaultRandom(),
-  title: text('name').notNull(),
-  description: text('description'),
-  createdById: uuid('userId')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
-})
+export const brainstorms = pgTable(
+  'brainstorm',
+  {
+    id: uuid().primaryKey().notNull().defaultRandom(),
+    title: text('name').notNull(),
+    description: text('description'),
+    embedding: vector('embedding', { dimensions: VectorSizes.large }).notNull(),
+    createdById: uuid('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
+  },
+  (table) => ({
+    embeddingIndex: index('brainstormEmbeddingIndex').using(
+      'hnsw',
+      table.embedding.op('vector_cosine_ops'),
+    ),
+  }),
+)
 export type BrainstormInsert = typeof brainstorms.$inferInsert
 export type BrainstormSelect = typeof brainstorms.$inferSelect
 
 /**
  * General comments for brainstorms
  */
-export const brainstormComments = pgTable('brainstorm_comment', {
-  id: uuid().primaryKey().notNull().defaultRandom(),
-  comment: text('comment').notNull(),
-  isPinned: boolean('isPinned').notNull().default(false),
-  brainstormId: uuid('brainstormId')
-    .notNull()
-    .references(() => brainstorms.id, { onDelete: 'cascade' }),
-  parentCommentId: uuid('parentCommentId').references(
-    (): AnyPgColumn => brainstormComments.id,
-    {
-      onDelete: 'cascade',
-    },
-  ),
-  createdById: uuid('userId')
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-  createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
-})
+export const brainstormComments = pgTable(
+  'brainstorm_comment',
+  {
+    id: uuid().primaryKey().notNull().defaultRandom(),
+    comment: text('comment').notNull(),
+    embedding: vector('embedding', { dimensions: VectorSizes.large }).notNull(),
+    isPinned: boolean('isPinned').notNull().default(false),
+    brainstormId: uuid('brainstormId')
+      .notNull()
+      .references(() => brainstorms.id, { onDelete: 'cascade' }),
+    parentCommentId: uuid('parentCommentId').references(
+      (): AnyPgColumn => brainstormComments.id,
+      {
+        onDelete: 'cascade',
+      },
+    ),
+    createdById: uuid('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
+  },
+  (table) => ({
+    embeddingIndex: index('commentEmbeddingIndex').using(
+      'hnsw',
+      table.embedding.op('vector_cosine_ops'),
+    ),
+  }),
+)
 export type BrainstormCommentInsert = typeof brainstormComments.$inferInsert
 export type BrainstormCommentSelect = typeof brainstormComments.$inferSelect
 
@@ -509,10 +558,20 @@ export const brainstormResources = pgTable('brainstorm_resource', {
 export type BrainstormResourceInsert = typeof brainstormResources.$inferInsert
 export type BrainstormResourceSelect = typeof brainstormResources.$inferSelect
 
-export const tags = pgTable('tag', {
-  id: uuid().primaryKey().notNull().defaultRandom(),
-  name: text('name').notNull().unique(),
-})
+export const tags = pgTable(
+  'tag',
+  {
+    id: uuid().primaryKey().notNull().defaultRandom(),
+    name: text('name').notNull().unique(),
+    embedding: vector('embedding', { dimensions: VectorSizes.small }).notNull(),
+  },
+  (table) => ({
+    embeddingIndex: index('tagEmbeddingIndex').using(
+      'hnsw',
+      table.embedding.op('vector_cosine_ops'),
+    ),
+  }),
+)
 export type TagInsert = typeof tags.$inferInsert
 export type TagSelect = typeof tags.$inferSelect
 
@@ -553,6 +612,16 @@ export const uploadedFiles = pgTable('uploaded_file', {
 export type UploadedFileInsert = typeof uploadedFiles.$inferInsert
 export type UploadedFileSelect = typeof uploadedFiles.$inferSelect
 
+export const pushSubscriptions = pgTable('pushSubscriptions', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  userId: uuid('userId').references(() => users.id, { onDelete: 'cascade' }),
+  subscription: json().notNull(),
+})
+
+export type PushSubscriptionInsert = typeof pushSubscriptions.$inferInsert
+export type PushSubscriptionSelect = typeof pushSubscriptions.$inferSelect
+
+//region Technical Tables
 /**
  * Data used for authentication of a user, a user can have multiple accounts (so multiple login methods)
  */
@@ -698,9 +767,9 @@ export const userParticipantsRelation = relations(users, ({ many }) => ({
 
 
 export const projectSkillRelations = relations(projectSkill, ({ one }) => ({
-  skill: one(skill, {
+  skill: one(skills, {
     fields: [projectSkill.skillId],
-    references: [skill.id],
+    references: [skills.id],
   }),
   project: one(projects, {
     fields: [projectSkill.projectId],
@@ -872,4 +941,38 @@ export const uploadedFileRelations = relations(uploadedFiles, ({ one }) => ({
     fields: [uploadedFiles.uploadedById],
     references: [users.id],
   }),
+}))
+export const userProjectRelations = relations(userProjects, ({ one }) => ({
+  project: one(projects, {
+    fields: [userProjects.projectId],
+    references: [projects.id],
+  }),
+}))
+
+export const userSkillVerificationRelations = relations(
+  userSkillVerification,
+  ({ one }) => ({
+    verifier: one(users, {
+      fields: [userSkillVerification.verifierId],
+      references: [users.id],
+    }),
+    userSkill: one(userSkills, {
+      fields: [userSkillVerification.userSkillId],
+      references: [userSkills.id],
+    }),
+  }),
+)
+
+export const userRelations = relations(users, ({ one, many }) => ({
+  skills: many(userSkills),
+  projects: many(userProjects),
+  projectSettings: many(userProjectSettings),
+  authenticators: many(authenticators),
+  ratings: many(userRatings),
+  follows: many(userFollows),
+  image: one(uploadedFiles, {
+    fields: [users.image],
+    references: [uploadedFiles.id],
+  }),
+  userSkillVerification: many(userSkillVerification),
 }))

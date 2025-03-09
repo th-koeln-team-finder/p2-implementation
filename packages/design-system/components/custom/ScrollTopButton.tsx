@@ -1,0 +1,37 @@
+'use client'
+
+import { ChevronUpIcon } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
+import { Button } from '../../components/ui/button'
+import { cn } from '../../lib/utils'
+
+export function ScrollTopButton() {
+  const [showScroll, setShowScroll] = useState(false)
+  useEffect(() => {
+    function checkScrollTop() {
+      setShowScroll(
+        document.body.scrollTop > 20 || document.documentElement.scrollTop > 20,
+      )
+    }
+    window.addEventListener('scroll', checkScrollTop)
+    return () => window.removeEventListener('scroll', checkScrollTop)
+  })
+  const scrollTop = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
+  return (
+    <div className="fixed bottom-0 left-0 p-4">
+      <Button
+        disabled={!showScroll}
+        className={cn(
+          'opacity-0 transition-all disabled:opacity-0',
+          showScroll ? 'opacity-100' : 'pointer-events-none',
+        )}
+        size="icon"
+        onClick={scrollTop}
+      >
+        <ChevronUpIcon className="size-6" />
+      </Button>
+    </div>
+  )
+}

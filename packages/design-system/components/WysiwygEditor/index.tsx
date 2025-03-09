@@ -42,9 +42,7 @@ export type LexicalEditorRef = ReturnType<typeof useLexicalEditorRef>
 
 export function getStringContentFromEditor(editor?: LexicalEditor) {
   return editor
-    ? editor.getEditorState().read(() => {
-        return $getRoot().getTextContent()
-      })
+    ? editor.getEditorState().read(() => $getRoot().getTextContent())
     : ''
 }
 
@@ -103,14 +101,18 @@ export function WysiwygEditor({
   )
 }
 
-export function WysiwygEditorForm(
-  props: Omit<WysiwygEditorProps, 'defaultValue'>,
-) {
+export function WysiwygEditorForm({
+  onChange,
+  ...props
+}: Omit<WysiwygEditorProps, 'defaultValue'>) {
   const field = useFieldContext()
   return (
     <WysiwygEditor
       defaultValue={field.data.value}
-      onChange={(state) => field.handleChange(JSON.stringify(state.toJSON()))}
+      onChange={(state, editor, tags) => {
+        onChange?.(state, editor, tags)
+        field.handleChange(JSON.stringify(state.toJSON()))
+      }}
       {...props}
     />
   )

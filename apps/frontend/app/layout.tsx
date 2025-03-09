@@ -1,6 +1,5 @@
 import '@repo/design-system/styles/globals.css'
 import { QueryClientProvider } from '@/features/general/queryClient'
-import Header from '@/features/header/header'
 import { DesignSystemProvider } from '@repo/design-system'
 import type { Metadata } from 'next'
 import { Rubik, Saira_Condensed } from 'next/font/google'
@@ -46,7 +45,6 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${rubik.variable} ${sairaCondensed.variable} flex min-h-screen flex-col bg-background font-sans text-foreground antialiased`}
       >
-        <Header />
         <QueryClientProvider>
           <NuqsAdapter>
             <DesignSystemProvider>{children}</DesignSystemProvider>

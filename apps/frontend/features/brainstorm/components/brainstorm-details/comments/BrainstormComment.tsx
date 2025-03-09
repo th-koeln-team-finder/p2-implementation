@@ -10,6 +10,7 @@ import {
 import type { OptimisticPayload } from '@/features/brainstorm/brainstormComment.hooks'
 import { RemoveBrainstormCommentButton } from '@/features/brainstorm/components/brainstorm-details/RemoveBrainstormCommentButton'
 import { BrainstormCommentForm } from '@/features/brainstorm/components/brainstorm-details/comments/BrainstormCommentForm'
+import { Link } from '@/features/i18n/routing'
 import { Button } from '@repo/design-system/components/ui/button'
 import { cn } from '@repo/design-system/lib/utils'
 import { HeartIcon, PinIcon, ReplyIcon } from 'lucide-react'
@@ -29,6 +30,7 @@ export function BrainstormComment({
   const [replying, setReplying] = useState(false)
   const formatter = useFormatter()
   const canLike = useSessionPermission('commentBrainstorm', 'like')
+  if (!comment.creator) return null
   return (
     <div
       className={cn(
@@ -36,15 +38,25 @@ export function BrainstormComment({
         comment.isPinned && 'bg-muted/30',
       )}
     >
-      <UserAvatar user={comment.creator} />
+      <Link
+        href={`/profile/${comment.creator.id}`}
+        className="font-medium text-lg"
+      >
+        <UserAvatar user={comment.creator} />
+      </Link>
       <div className="flex w-full flex-col gap-1">
-        <p className="font-medium text-lg">{comment.creator?.name}</p>
+        <Link
+          href={`/profile/${comment.creator.id}`}
+          className="font-medium text-lg hover:underline"
+        >
+          {comment.creator.name}
+        </Link>
         <p className="text-base">{comment.comment}</p>
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
           <p className="text-muted-foreground text-sm">
             {formatter.relativeTime(comment.createdAt, Date.now())}
           </p>
-          <div className="flex flex-row items-start items-center gap-4">
+          <div className="flex flex-row items-center gap-4">
             <CanUserClient
               target="commentBrainstorm"
               action="reply"

@@ -5,6 +5,7 @@ import { hasSessionPermission } from '@/features/auth/auth.utils'
 import { BrainstormCacheTags } from '@/features/brainstorm/brainstorm.constants'
 import { redirect } from '@/features/i18n/routing'
 import { Schema, db } from '@repo/database'
+import { generateTextEmbeddings } from '@repo/semantic-search'
 import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
 import { revalidateTag } from 'next/cache'
@@ -13,13 +14,6 @@ type AddBrainstormPayload = {
   comment: string
   brainstormId: string
   parentCommentId?: string
-}
-
-export async function redirectServer(url: string) {
-  return redirect({
-    href: url,
-    locale: await getLocale(),
-  })
 }
 
 export async function addBrainstormComment(values: AddBrainstormPayload) {
@@ -36,12 +30,14 @@ export async function addBrainstormComment(values: AddBrainstormPayload) {
     })
   }
 
+  const embedding = await generateTextEmbeddings(values.comment)
   await db
     .insert(Schema.brainstormComments)
     .values({
       parentCommentId: values.parentCommentId,
       brainstormId: values.brainstormId,
       comment: values.comment,
+      embedding,
       createdById: session.user.id,
     })
     .catch((err) => {

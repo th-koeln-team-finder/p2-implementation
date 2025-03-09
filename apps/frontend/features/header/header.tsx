@@ -1,34 +1,31 @@
-'use client'
+import { authMiddleware } from '@/auth'
+import { LoginButton } from '@/features/auth/components/LoginButton'
+import { RegisterButton } from '@/features/auth/components/RegisterButton'
+import { UserProfileMenu } from '@/features/auth/components/UserProfileMenu'
 import { ApplicationIcon } from '@/features/general/components/ApplicationIcon'
 import { Link } from '@/features/i18n/routing'
+import { getUserWithImage } from '@/features/users/users.query'
 import { Button } from '@repo/design-system/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@repo/design-system/components/ui/dropdown-menu'
+import { DropdownMenuItem } from '@repo/design-system/components/ui/dropdown-menu'
 import { Input } from '@repo/design-system/components/ui/input'
 import {
   BellIcon,
   BrainCircuitIcon,
   SearchIcon,
   SettingsIcon,
-  User2Icon,
   Users2Icon,
 } from 'lucide-react'
-import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { getTranslations } from 'next-intl/server'
 
-export default function Header() {
-  const [_isDarkMode, setIsDarkMode] = useState(false)
+export default async function Header() {
+  const [translate, session] = await Promise.all([
+    getTranslations('header'),
+    authMiddleware(),
+  ])
 
-  useEffect(() => {
-    const html = document.querySelector('html')
-    if (html?.classList.contains('dark')) {
-      setIsDarkMode(true)
-    }
-  }, [])
+  const user = session?.user
+    ? await getUserWithImage(session?.user.id)
+    : undefined
 
   return (
     <header className="header flex w-full self-stretch px-4 py-2">
@@ -41,7 +38,7 @@ export default function Header() {
           <Input
             className="min-w-72 pl-8"
             type="search"
-            placeholder={'Search everywhere...'}
+            placeholder={translate('placeholderSearchEverywhere')}
           />
           <div className="pointer-events-none absolute top-0 bottom-0 left-2 flex flex-row items-center">
             <SearchIcon className="size-5 text-muted-foreground" />
@@ -54,7 +51,7 @@ export default function Header() {
             variant="link"
             className="h-fit justify-start p-0 font-medium text-foreground text-sm"
           >
-            <Link href="/projects">Find a Project</Link>
+            <Link href="/projects">{translate('linkProjectList')}</Link>
           </Button>
 
           <Button
@@ -62,7 +59,9 @@ export default function Header() {
             variant="link"
             className="h-fit justify-start p-0 font-medium text-foreground text-sm"
           >
-            <Link href="/projects/create">Create a Project</Link>
+            <Link href="/projects/create">
+              {translate('linkProjectCreate')}
+            </Link>
           </Button>
 
           <Button
@@ -70,38 +69,32 @@ export default function Header() {
             variant="link"
             className="h-fit justify-start p-0 font-medium text-foreground text-sm"
           >
-            <Link href="/brainstorm">Brainstorm</Link>
+            <Link href="/brainstorm">{translate('linkBrainstorm')}</Link>
           </Button>
 
-          {/* //TODO Anmelden und Registrieren Buttons & weitere Account etc. verlinken */}
-          <DropdownMenu>
-            <DropdownMenuTrigger className="focus:outline-none focus-visible:outline-none">
-              <Image
-                className="h-8 w-8 rounded-full"
-                src="/images/image-placeholder-square.jpg"
-                height={800}
-                width={1200}
-                alt="placeholder"
-              />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem className="cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary">
-                <User2Icon /> Account
+          {user ? (
+            <UserProfileMenu>
+              <DropdownMenuItem>
+                <Users2Icon /> {translate('settingLinkMyProjects')}
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary">
-                <Users2Icon /> My Projects
+              <DropdownMenuItem>
+                <BrainCircuitIcon /> {translate('settingLinkMyBrainstorms')}
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary">
-                <BrainCircuitIcon /> My Brainstorms
+              <DropdownMenuItem>
+                <BellIcon /> {translate('settingLinkNotifications')}
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary">
-                <BellIcon /> Notifications
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer hover:text-primary focus:bg-transparent focus:text-primary">
-                <SettingsIcon /> Settings
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              <Link href="/edit-profile/profile">
+                <DropdownMenuItem>
+                  <SettingsIcon /> {translate('settingLinkSettings')}
+                </DropdownMenuItem>
+              </Link>
+            </UserProfileMenu>
+          ) : (
+            <>
+              <LoginButton />
+              <RegisterButton />
+            </>
+          )}
         </nav>
       </div>
     </header>

@@ -1,8 +1,13 @@
 'use server'
 
+import type { UserWithImage } from '@/features/users/users.types'
 import { Schema, db } from '@repo/database'
-import { users } from '@repo/database/schema'
-import { eq } from 'drizzle-orm'
+import type {
+  NotificationColumn,
+  NotificationType,
+} from '@repo/database/constants'
+import { type UserSelect, users } from '@repo/database/schema'
+import { and, eq, inArray, or } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/dist/server/web/spec-extension/unstable-cache'
 
 export async function checkUsernameTaken(username: string) {
@@ -13,37 +18,40 @@ export async function checkUsernameTaken(username: string) {
 }
 
 export const getUser = cache(
-  async (id: string) => db.query.users.findFirst({ where: eq(users.id, id) }),
+  async (id: string): Promise<UserSelect | undefined> =>
+    db.query.users.findFirst({
+      where: eq(users.id, id),
+    }),
   ['getUser'],
+  { tags: ['user'] },
 )
 
-// biome-ignore lint/suspicious/useAwait: This is a server action and has to be async
-export async function getUserProjects(
-  _userId: number,
-  limit: number,
-  offset: number,
-) {
-  const previouslyWorkedOn = []
-  for (let i = offset; i < offset + limit; i++) {
-    previouslyWorkedOn.push({
-      name: `Project ${i + 1}`,
-      description: 'This is a project',
-      image: 'https://via.placeholder.com/150',
-      tags: ['tag 1', 'category', 'project', 'title', 'tag'],
-    })
-  }
-  return previouslyWorkedOn
-}
-
-export const getUserSkills = cache(
-  async (userId: string) => {
-    return await db.query.userSkills.findMany({
-      where: eq(Schema.userSkills.userId, userId),
+export const getUserWithImage = cache(
+  async (id: string): Promise<UserWithImage | undefined> =>
+    db.query.users.findFirst({
+      where: eq(users.id, id),
       with: {
-        skill: true,
+        image: true,
       },
+    }),
+  ['getUser'],
+  { tags: ['user'] },
+)
+
+export const usersWhoWantToReceiveNotificationsByType = cache(
+  async (userIds: string[], type: NotificationType) => {
+    const pushColumn: NotificationColumn = `${type}_push`
+    const emailColumn: NotificationColumn = `${type}_push`
+    return await db.query.users.findMany({
+      where: and(
+        inArray(users.id, userIds),
+        or(
+          eq(Schema.users[pushColumn], true),
+          eq(Schema.users[emailColumn], true),
+        ),
+      ),
     })
   },
-  ['getUserSkills'],
-  { tags: ['user-skills'] },
+  ['usersWhoWantToReceiveNotificationsByType'],
+  { tags: ['user'] },
 )

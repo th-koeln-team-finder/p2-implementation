@@ -9,41 +9,56 @@ export const getCommentsForBrainstorm = cache(
     userId?: string,
     sortBy = 'pinned' as 'pinned' | 'liked' | 'newest',
   ) => {
+    const likeCount =
+      sql<string>`(SELECT COUNT(*) FROM "brainstorm_comment_like" likes WHERE likes."commentId" = "brainstormComments"."id")`.as(
+        'likeCount',
+      )
+    const isLiked = !userId
+      ? sql<boolean>`false`.as('isLiked')
+      : sql<boolean>`EXISTS (SELECT id FROM "brainstorm_comment_like" likes WHERE likes."commentId" = "brainstormComments"."id" AND likes."userId" = ${userId})`.as(
+          'isLiked',
+        )
+
     return db.query.brainstormComments
       .findMany({
+        columns: {
+          embedding: false,
+        },
         where: and(
           eq(Schema.brainstormComments.brainstormId, id),
           isNull(Schema.brainstormComments.parentCommentId),
         ),
         extras: {
-          likeCount:
-            sql<string>`(SELECT COUNT(*) FROM "brainstorm_comment_like" likes WHERE likes."commentId" = "brainstormComments"."id")`.as(
-              'likeCount',
-            ),
-          isLiked: !userId
-            ? sql<boolean>`false`.as('isLiked')
-            : sql<boolean>`EXISTS (SELECT id FROM "brainstorm_comment_like" likes WHERE likes."commentId" = "brainstormComments"."id" AND likes."userId" = ${userId})`.as(
-                'isLiked',
-              ),
+          likeCount,
+          isLiked,
         },
         with: {
-          brainstorm: true,
-          creator: true,
+          brainstorm: {
+            columns: {
+              embedding: false,
+            },
+          },
+          creator: {
+            with: {
+              image: true,
+            },
+          },
           childComments: {
             extras: {
-              likeCount:
-                sql<string>`(SELECT COUNT(*) FROM "brainstorm_comment_like" likes WHERE likes."commentId" = "brainstormComments_childComments"."id")`.as(
-                  'likeCount',
-                ),
-              isLiked: !userId
-                ? sql<boolean>`false`.as('isLiked')
-                : sql<boolean>`EXISTS (SELECT id FROM "brainstorm_comment_like" likes WHERE likes."commentId" = "brainstormComments_childComments"."id" AND likes."userId" = ${userId})`.as(
-                    'isLiked',
-                  ),
+              likeCount,
+              isLiked,
             },
             with: {
-              brainstorm: true,
-              creator: true,
+              brainstorm: {
+                columns: {
+                  embedding: false,
+                },
+              },
+              creator: {
+                with: {
+                  image: true,
+                },
+              },
               // Technically not the best idea to load all likes instead of just the likes... but it's fine for now
               likes: {
                 columns: {

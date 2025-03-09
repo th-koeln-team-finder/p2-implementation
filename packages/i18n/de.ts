@@ -9,6 +9,20 @@ export const de: Language = {
     continue: 'Fortfahren',
     add: 'Hinzufügen',
     remove: 'Entfernen',
+    notSupported: 'Nicht unterstützt',
+    confirm: 'Bestätigen',
+    showMore: 'Mehr anzeigen',
+    showLess: 'Weniger anzeigen',
+  },
+  header: {
+    placeholderSearchEverywhere: 'Suche überall...',
+    linkProjectList: 'Projekte',
+    linkProjectCreate: 'Projekt erstellen',
+    linkBrainstorm: 'Brainstorm',
+    settingLinkMyProjects: 'Meine Projekte',
+    settingLinkMyBrainstorms: 'Meine Brainstorms',
+    settingLinkNotifications: 'Benachrichtigungen',
+    settingLinkSettings: 'Einstellungen',
   },
   components: {
     wysiwyg: {
@@ -65,6 +79,7 @@ export const de: Language = {
   },
   projects: {
     title: 'Projekte',
+    pageTitle: 'Projekte',
     location: 'Standort/Treffpunkt',
     join: 'Team beitreten',
     links: 'Links und andere Resourcen',
@@ -72,6 +87,11 @@ export const de: Language = {
     createProjectWarning: 'Sie müssen sich anmelden',
     createProjectWarningDescription:
       'Sie müssen sich anmelden, um ein Projekt zu erstellen',
+    emptyProjects: 'Keine Projekte gefunden',
+
+    searchPlaceholder: 'Suche nach Projekten...',
+    searchNotice:
+      'Sie können auch in ganzen Sätzen suchen, da wir nach der semantischen Bedeutung suchen.',
 
     issueList: {
       showMore: 'mehr anzeigen',
@@ -173,12 +193,18 @@ export const de: Language = {
     },
   },
   brainstorm: {
+    pageTitle: 'Brainstorms',
     makeActionButton: 'Erstelle das Projekt',
     deleteActionButton: 'Löschen',
     headingResources: 'Links & andere Ressourcen',
     emptyResources: 'Keine Links oder Ressourcen verfügbar...',
     createButton: 'Brainstorming starten',
     createFormTitle: 'Brainstorm erstellen',
+    actionShowBookmarks: 'Markierte nach oben',
+    searchPlaceholder: 'Suche nach Brainstorms...',
+    searchNotice:
+      'Du kannst auch in ganzen Sätzen suchen, da wir nach der semantischen Bedeutung suchen.',
+    emptyBrainstorms: 'Keine Brainstorms gefunden',
     createForm: {
       labelTitle: 'Titel',
       placeholderTitle: 'Titel hier eingeben...',
@@ -215,6 +241,10 @@ export const de: Language = {
   },
   tag: {
     createNewTag: "Neu: ''{tagName}''",
+    labelRightNew: 'neu',
+    labelRightUses: '{usage}x verwendet',
+    xMore: '{amount} mehr',
+    otherTags: 'Andere Tags',
   },
   help: {
     title: 'Hilfe',
@@ -244,26 +274,95 @@ export const de: Language = {
     title: 'Profil',
     lastActivity: 'Letzte Aktivität',
     skills: 'Skills',
+    emptySkills: 'Dieser Nutzer hat noch keine Skills hinzugefügt.',
     previouslyWorkedOn: 'Hat zuvor gearbeitet an',
     loadMoreProjects: 'Mehr Projekte laden',
+    noProjectsFound: 'Nutzer hat bisher noch an keinem Projekt gearbeitet',
     follow: 'Folgen',
+    unfollow: 'Entfolgen',
     friendly: 'Freundlich',
     veryFriendly: 'Sehr freundlich',
     ratingText: 'Personen haben die Person als "sehr freundlich" bewertet',
     editProfile: 'Profil bearbeiten',
+    verifySkill: 'Skill bestätigen',
+    unverifySkill: 'Skillbestätigung aufheben',
+    verificationTooltip:
+      'Dieser Skill wurde {verifications} mal von anderen Benutzern bestätigt',
     settings: {
       title: 'Benutzereinstellungen',
       profile: 'Profil',
       account: 'Konto',
-      notifications: 'Benachrichtigungen',
       security: 'Sicherheit',
       dangerZone: 'Gefahrenzone',
       deleteAccount: 'Account löschen',
-      removeSkill: 'Remove skill',
+      skills: {
+        title: 'Skills',
+        add: 'Skill hinzufügen',
+        addEntered: 'Eingegebenen Begriff als Skill hinzufügen',
+        remove: 'Skill entfernen',
+        search: 'Skill suchen',
+        noResults: 'Keine Ergebnisse',
+        updateWarning:
+          'Dieser Skill wurde bereits von anderen Nutzern bestätigt. Wenn er geändert wird werden diese entfernt. Fortfahren?',
+      },
+      projects: {
+        title: 'Projekte',
+        description:
+          'Füge Projekte hinzu, an denen du in der Vergangenheit gearbeitet hast',
+        yourProjects: 'Deine Projekte',
+        projectName: 'Projektname',
+        projectDescription: 'Beschreibung',
+        projectDescriptionPlaceholder:
+          'Beschreiben Sie Ihre Rolle und Verantwortlichkeiten',
+        noProjectsDesc: 'Du hast noch keine Projekte',
+        addProject: 'Projekt hinzufügen',
+        joinedDate: 'Beitrittsdatum',
+        leftDate: 'Austrittsdatum',
+        leftDateValidation:
+          'Austrittsdatum muss nach dem Beitrittsdatum liegen',
+        deleteProject: 'Projekt löschen',
+        hideProject: 'Projekt ausblenden',
+        showProject: 'Projekt anzeigen',
+        present: 'Gegenwart',
+      },
       deleteAreYouSure: 'Are you sure you want to delete your account?',
-      activateNotifications: 'Benachrichtigungen aktivieren',
-      selectNotificationType: 'Benachrichtigungstyp auswählen',
-      searchSkills: 'Skill suchen',
+      bio: 'Bio',
+      bioPlaceholder: 'Erzähl uns etwas über dich',
+      username: 'Nutzername',
+      language: 'Sprache',
+      isPublic: 'Öffentlich sichbar',
+      url: 'URL',
+      urlPlaceholder: 'Wo können Leute mehr über dich erfahren?',
+      occupation: 'Beschäftigung',
+      occupationPlaceholder: 'Was machst du?',
+      location: 'Standort',
+      locationPlaceholder: 'Wo machst du was auch immer du machst?',
+      firstName: 'Vorname',
+      firstNamePlaceholder: 'Wie ist dein Vorname?',
+      lastName: 'Nachname',
+      lastNamePlaceholder: 'Wie ist dein Nachname?',
+      profilePicture: 'Profilbild',
+      email: 'E-Mail',
+      password: 'Passwort',
+      allowInvites: 'Einladungen von neuen Projekten erlauben',
+      notifications: {
+        title: 'Benachrichtigungen',
+        projects: 'Projektbenachrichtigungen',
+        profile: 'Profilbenachrichtigungen',
+        activate: 'Aktivieren',
+        selectType: 'Typ auswählen',
+        projectUpdated:
+          'Ein Projekt, dem ich beigetreten bin, wurde aktualisiert',
+        memberJoinedProject:
+          'Ein neues Mitglied ist einem meiner Projekte beigetreten',
+        memberLeftProject: 'Ein Mitglied hat ein Projekt verlassen',
+        newApplication: 'Eine neue Bewerbung für eines meiner Projekte',
+        bookmarkedProjectUpdated:
+          'Eines der Projekte in meinen Lesezeichen wurde aktualisiert',
+        newFollower: 'Neuer Follower',
+        newInvite: 'Neue Einladung zu einem Projekt',
+        newSkillEvaluation: 'Neue Skill-Bewertung',
+      },
     },
   },
   validation: {
@@ -299,6 +398,16 @@ export const de: Language = {
       friday: 'Fr',
       saturday: 'Sa',
       sunday: 'So',
+    },
+  },
+  notifications: {
+    newSkillEvaluation: {
+      title: 'Jemand hat deinen Skill verifiziert!',
+      message: 'Dein Skill "{skill}" wurde verifiziert.',
+    },
+    newFollower: {
+      title: 'Neuer Follower',
+      message: '{follower} folgt dir jetzt.',
     },
   },
 }
