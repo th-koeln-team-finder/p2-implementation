@@ -68,6 +68,16 @@ export const getProjectItem = cache(
           : sql<boolean>`EXISTS (SELECT id FROM "project_bookmark" bookmark WHERE bookmark."projectId" = "projects"."id" AND bookmark."userId" = ${userId})`.as(
               'isBookmarked',
             ),
+          isStared: !userId
+            ? sql<boolean>`false`.as('isStared')
+            : sql<boolean>`EXISTS (SELECT id FROM "project_star" star WHERE star."projectId" = "projects"."id" AND star."userId" = ${userId})`.as(
+                'isStared',
+              ),
+          starCount: !userId
+            ? sql<string>`0`.as('starCount')
+            : sql<string>`(SELECT COUNT(*) FROM "project_star" star WHERE star."projectId" = "projects"."id")`.as(
+                'starCount',
+              ),
       },
       where: eq(projects.id, id),
       with: {
@@ -88,13 +98,15 @@ export const getProjectItem = cache(
                   users: true,
               }
           },
-          /*
-          projectPictures: true,
 
-          tags: true,
 
-          bookmarks: true,
-           */
+              /*
+              projectPictures: true,
+
+              tags: true,
+
+
+               */
 
 
       },

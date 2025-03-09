@@ -424,6 +424,23 @@ export type ProjectTimetableInsert = typeof projectTimetable.$inferInsert
 export type ProjectTimetableSelect = typeof projectTimetable.$inferSelect
 
 //region Technical Tables
+export const projectStar = pgTable(
+    'project_star',
+    {
+      userId: uuid('userId')
+          .notNull()
+          .references(() => users.id, { onDelete: 'cascade' }),
+      projectId: uuid('projectId')
+          .notNull()
+          .references(() => projects.id, { onDelete: 'cascade' }),
+      createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
+    },
+    (table) => ({
+      pk: primaryKey({ columns: [table.userId, table.projectId] }),
+    }),
+)
+export type ProjectStarInsert = typeof projectStar.$inferInsert
+export type ProjectStarSelect = typeof projectStar.$inferSelect
 
 
 export const projectBookmarks = pgTable(
@@ -710,13 +727,19 @@ export const projectRelations = relations(projects, ({ many }) => ({
   projectSkills: many(projectSkill),
 
   participants: many(participants),
+
+  projectStar: many(projectStar, {
+    relationName: 'projectStar',
+  }),
+  bookmarks: many(projectBookmarks, {
+    relationName: 'projectBookmarks',
+  }),
+
   /*
   tags: many(projectTags,{
     relationName: 'projectTags',
   }),
-  bookmarks: many(projectBookmarks, {
-        relationName: 'projectBookmarks',
-      }),
+
 
 
 */
@@ -883,6 +906,17 @@ export const brainstormCommentRelations = relations(
     }),
     likes: many(brainstormCommentLikes),
   }),
+)
+export const projectStarRelations = relations(projectStar, ({ one }) => ({
+  user:one(users, {
+    fields: [projectStar.userId],
+    references: [users.id],
+  }),
+    project: one(projects, {
+        fields: [projectStar.projectId],
+        references: [projects.id],
+    }),
+}),
 )
 
 export const brainstormCommentLikeRelations = relations(

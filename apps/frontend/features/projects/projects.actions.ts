@@ -246,6 +246,41 @@ export async function joinProject(projectId:string) {
     })
   }
 }
+export async function toggleProjectStar(
+    projectId: string,
+    shouldStar: boolean,
+) {
+  const session = await authMiddleware()
+  const hasPermission = await hasSessionPermission('project', 'like')
+  if (!hasPermission || !session?.user?.id) {
+    const locale = await getLocale()
+    return redirect({
+      href: '/error?error=AccessDenied',
+      locale,
+    })
+  }
+
+  const matchLike = and(
+      eq(Schema.projectStar.projectId, projectId),
+      eq(Schema.projectStar.userId, session.user.id),
+  )
+  const existingLike = await db.query.projectStar.findFirst({
+    where: matchLike,
+  })
+
+  if (shouldStar === !!existingLike) {
+    return
+  }
+  if (!shouldStar) {
+    await db.delete(Schema.projectStar).where(matchLike)
+    return
+  }
+  await db.insert(Schema.projectStar).values({
+    projectId,
+    userId: session.user.id,
+  })
+  await revalidateProjects()
+}
 
 
 export async function revalidateProjects() {

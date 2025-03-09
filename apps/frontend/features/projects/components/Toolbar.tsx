@@ -2,30 +2,42 @@
 
 import {
     joinProject,
-    toggleProjectBookmark,
+    toggleProjectBookmark, toggleProjectStar,
 } from '@/features/projects/projects.actions'
 import { Button } from '@repo/design-system/components/ui/button'
 import { cn } from '@repo/design-system/lib/utils'
-import { BookmarkIcon } from 'lucide-react'
+import {BookmarkIcon, LinkIcon, StarIcon} from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useOptimistic, useTransition } from 'react'
 import {CanUserClient} from "@/features/auth/components/CanUser.client";
 import {authMiddleware} from "@/auth";
+import {useSessionPermission} from "@/features/auth/auth.hooks";
+import type {PopulatedBrainstormComment} from "@/features/brainstorm/brainstorm.types";
+import type {OptimisticPayload} from "@/features/brainstorm/brainstormComment.hooks";
+import {ProjectSelect} from "@repo/database/schema";
+import {CreateProjectFormValues, PopulatedProject} from "@/features/projects/projects.types";
 
 
-type ProjectBookmarkButtonProps = {
-  projectId: string
-  isBookmarked: boolean
+type ProjectProps = {
+    project: PopulatedProject
+    setOptimistic: (payload: OptimisticPayload) => void
 }
 
 export function Toolbar({
-  projectId,
-  isBookmarked
-}: ProjectBookmarkButtonProps) {
+  project,
+  setOptimistic,
+}:ProjectProps) {
   const t = useTranslations('projects')
   const [_, startTransition] = useTransition()
+  const canCreate = useSessionPermission('project', 'create')
   const [optimisticBookmarked, dispatchOptimisticBookmark] = useOptimistic(
-    isBookmarked,
+    project.isBookmarked,
+    (_, payload: boolean) => {
+      return payload
+    },
+  )
+ const [optimisticStared, dispatchOptimisticStar] = useOptimistic(
+    project.isStared,
     (_, payload: boolean) => {
       return payload
     },
@@ -33,7 +45,25 @@ export function Toolbar({
   return (
     <div className="flex flex-row items-center gap-2">
       <div className="flex flex-row items-center gap-1">
-
+          <Button
+              variant="ghost"
+              type="button"
+              disabled={!canCreate}
+              onClick={async (e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                  startTransition(() => dispatchOptimisticStar(!optimisticStared))
+                  await toggleProjectStar(project.id, !optimisticStared)
+              }}
+          >
+              {project.starCount!=0? project.starCount : ""}
+              <StarIcon
+                    className={cn(optimisticStared && 'fill-foreground')}
+              />
+          </Button>
+          <Button variant="ghost" type="button" size="icon">
+              <LinkIcon />
+          </Button>
           <CanUserClient target="project" action="create">
         <Button
           variant="ghost"
@@ -43,7 +73,7 @@ export function Toolbar({
             e.stopPropagation()
             e.preventDefault()
             startTransition(() => dispatchOptimisticBookmark(!optimisticBookmarked))
-            await toggleProjectBookmark(projectId, !optimisticBookmarked)
+            await toggleProjectBookmark(project.id, !optimisticBookmarked)
           }}
         >
           <BookmarkIcon
@@ -59,7 +89,7 @@ export function Toolbar({
         className="ml-2 w-full lg:w-auto"
         onClick={async () => {
 
-            await joinProject(projectId)
+            await joinProject(project.id)
         }}
       >
         {t('join')}

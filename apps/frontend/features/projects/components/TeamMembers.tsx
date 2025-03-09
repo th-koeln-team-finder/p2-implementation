@@ -34,7 +34,7 @@ export default function TeamMembers({
                 <div className="flex items-center justify-center overflow-hidden rounded-full">
 
                     <UserAvatar
-                        user={participants[0].users}
+                        user={ participants[0].users }
                         className="h-6 w-6"
                         fallbackClassName="text-xs"
                     />
