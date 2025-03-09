@@ -1,4 +1,4 @@
- import { ProjectFilterBar } from '@/features/projects/components/FilterBar/ProjectFilterBar'
+import { ProjectFilterBar } from '@/features/projects/components/FilterBar/ProjectFilterBar'
 import type { FilterSearchParams } from '@/features/projects/components/FilterBar/filterbar.constants'
 import { ProjectList } from '@/features/projects/components/ProjectList'
 import { getTranslations } from 'next-intl/server'

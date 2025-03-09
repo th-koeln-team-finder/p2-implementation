@@ -50,7 +50,7 @@ export const Rating = ({
 }: RatingProps) => {
   const [hoverRating, setHoverRating] = useState<number | null>(null)
   const [currentRating, setCurrentRating] = useState(initialRating)
-  const [isHovering, setIsHovering] = useState(false)
+  const [_isHovering, setIsHovering] = useState(false)
 
   const handleMouseEnter = (event: React.MouseEvent<HTMLDivElement>) => {
     if (!disabled) {

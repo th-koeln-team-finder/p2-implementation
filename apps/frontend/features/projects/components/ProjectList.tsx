@@ -1,10 +1,10 @@
 import { revalidateBrainstorms } from '@/features/brainstorm/brainstorm.actions'
 import { LazyLoader } from '@/features/general/components/LazyLoader'
 import type { FilterSearchParams } from '@/features/projects/components/FilterBar/filterbar.constants'
+import { parseFilters } from '@/features/projects/components/FilterBar/filterbar.utils'
 import { ProjectListEntry } from '@/features/projects/components/ProjectListEntry'
 import { getProjectItems } from '@/features/projects/projects.queries'
 import { getTranslations } from 'next-intl/server'
-import { parseFilters } from '@/features/projects/components/FilterBar/filterbar.utils'
 
 type ProjectListProps = {
   search?: string

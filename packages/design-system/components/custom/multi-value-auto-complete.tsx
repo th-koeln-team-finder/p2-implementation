@@ -45,7 +45,7 @@ type AutoCompleteTagInputProps<T extends string> = Omit<
   clearAfterSelect?: boolean
   containerId?: string
   onOpenChange?: (open: boolean) => void
-   enableTagUse?: boolean
+  enableTagUse?: boolean
 }
 
 export function MultiValueAutoComplete<T extends string>({

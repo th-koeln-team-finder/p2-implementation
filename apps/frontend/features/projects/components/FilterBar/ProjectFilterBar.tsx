@@ -4,6 +4,7 @@ import { useDebounceFunction } from '@/features/general/utils.hooks'
 import { ProjectFilterBarSkillSelect } from '@/features/projects/components/FilterBar/ProjectFilterBarSkillSelect'
 import { FilterKeys } from '@/features/projects/components/FilterBar/filterbar.constants'
 import { useFilterBarQueryParams } from '@/features/projects/components/FilterBar/filterbar.hooks'
+import { revalidateProjects } from '@/features/projects/projects.actions'
 import { useForm } from '@formsignals/form-react'
 import { ZodAdapter } from '@formsignals/validation-adapter-zod'
 import { useSignals } from '@preact/signals-react/runtime'
@@ -24,7 +25,6 @@ import { useTranslations } from 'next-intl'
 import { useQueryState } from 'nuqs'
 import { useState } from 'react'
 import { z } from 'zod'
-import { revalidateProjects } from '@/features/projects/projects.actions'
 
 export function ProjectFilterBar() {
   useSignals()

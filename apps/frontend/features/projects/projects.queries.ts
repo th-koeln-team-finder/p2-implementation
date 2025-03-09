@@ -1,10 +1,10 @@
+import { FilterKeys } from '@/features/projects/components/FilterBar/filterbar.constants'
+import type { parseFilters } from '@/features/projects/components/FilterBar/filterbar.utils'
 import { Schema, db } from '@repo/database'
 import { projects } from '@repo/database/schema'
 import { generateTextEmbeddings } from '@repo/semantic-search'
 import { and, cosineDistance, desc, eq, gte, lte, sql } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
-import type { parseFilters } from '@/features/projects/components/FilterBar/filterbar.utils'
-import { FilterKeys } from '@/features/projects/components/FilterBar/filterbar.constants'
 
 export const getProjectItems = cache(
   async (search, filters: ReturnType<typeof parseFilters>, limit: number) => {
