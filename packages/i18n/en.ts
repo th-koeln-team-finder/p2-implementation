@@ -240,6 +240,9 @@ export const en = {
     xMore: '{amount} more',
     otherTags: 'Other Tags',
   },
+  skill: {
+    labelRightUses: '{usage}x used',
+  },
   help: {
     title: 'Help',
   },

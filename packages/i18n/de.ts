@@ -243,6 +243,9 @@ export const de: Language = {
     xMore: '{amount} mehr',
     otherTags: 'Andere Tags',
   },
+  skill: {
+    labelRightUses: '{usage}x verwendet',
+  },
   help: {
     title: 'Hilfe',
   },
