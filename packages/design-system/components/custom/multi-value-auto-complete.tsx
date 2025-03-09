@@ -45,9 +45,10 @@ type AutoCompleteTagInputProps<T extends string> = Omit<
   clearAfterSelect?: boolean
   containerId?: string
   onOpenChange?: (open: boolean) => void
+   enableTagUse?: boolean
 }
 
-export function AutoCompleteTagInput<T extends string>({
+export function MultiValueAutoComplete<T extends string>({
   values,
   onValuesChange,
   searchInput,
@@ -61,6 +62,7 @@ export function AutoCompleteTagInput<T extends string>({
   clearAfterSelect,
   containerId,
   onOpenChange,
+  enableTagUse,
   ...props
 }: AutoCompleteTagInputProps<T>) {
   const [open, setOpen] = useState(false)
@@ -85,36 +87,39 @@ export function AutoCompleteTagInput<T extends string>({
           onOpenChange?.(open)
         }}
       >
-        <Command shouldFilter={false}>
+        <Command shouldFilter={false} className="overflow-visible">
           <PopoverAnchor asChild>
             <div
               className={cn(
-                'relative flex min-h-9 w-full flex-wrap gap-2 rounded-md border border-input py-1 pr-8 pl-3 text-sm ring-offset-primary disabled:cursor-not-allowed disabled:opacity-50 has-[:focus-visible]:outline-none has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-neutral-950 has-[:focus-visible]:ring-offset-2',
+                'relative flex min-h-9 w-full flex-wrap gap-2 rounded-md border border-input py-1 pr-8 pl-3 text-sm disabled:cursor-not-allowed disabled:opacity-50 has-[:focus-visible]:outline-none has-[:focus-visible]:ring-1 has-[:focus-visible]:ring-ring',
                 className,
               )}
             >
               {isLoading && (
                 <Loader2Icon className="absolute top-1 right-2 animate-spin" />
               )}
-              {values.map((option) => (
-                <Badge key={option.value} variant="tag">
-                  {option.label}
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="ml-2 h-3 w-3"
-                    onClick={() => onSelectItem(option)}
-                  >
-                    <XIcon className="w-3" />
-                  </Button>
-                </Badge>
-              ))}
+              {enableTagUse &&
+                values.map((option) => (
+                  <Badge key={option.value} variant="tag">
+                    {option.label}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="ml-2 h-3 w-3"
+                      onClick={() => onSelectItem(option)}
+                    >
+                      <XIcon className="w-3" />
+                    </Button>
+                  </Badge>
+                ))}
               <CommandPrimitive.Input
                 asChild
                 value={searchInput}
                 onValueChange={(e) =>
                   onSearchInputChange(
-                    e.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+                    enableTagUse
+                      ? e.toLowerCase().replace(/[^a-z0-9]/g, '-')
+                      : e,
                   )
                 }
                 onMouseDown={() => {
@@ -182,13 +187,13 @@ export function AutoCompleteTagInput<T extends string>({
                       onMouseDown={(e) => e.preventDefault()}
                       onSelect={() => onSelectItem(option)}
                     >
-                      {option.label}
-                      <p className="ml-auto text-muted-foreground text-sm">
+                      <p className="text-xs md:text-sm">{option.label}</p>
+                      <p className="ml-auto hidden text-muted-foreground text-xs md:block md:text-sm">
                         {option.labelRight}
                       </p>
                       <Check
                         className={cn(
-                          'mr-2 ml-2 h-4 w-4',
+                          'mx-1 size-3 md:mx-2 md:size-4',
                           values.some((o) => o.value === option.value)
                             ? 'opacity-100'
                             : 'opacity-0',
@@ -223,7 +228,7 @@ export function AutoCompleteTagInput<T extends string>({
   )
 }
 
-export function AutoCompleteTagInputForm<T extends string>({
+export function MultiValueAutoCompleteForm<T extends string>({
   className,
   ...props
 }: Omit<AutoCompleteTagInputProps<T>, 'values' | 'onValuesChange'>) {
@@ -237,7 +242,7 @@ export function AutoCompleteTagInputForm<T extends string>({
   const classNames = cn(className, errorClassName.value)
 
   return (
-    <AutoCompleteTagInput
+    <MultiValueAutoComplete
       values={values}
       onValuesChange={field.handleChange}
       className={classNames}
