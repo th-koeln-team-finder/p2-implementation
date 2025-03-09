@@ -1,28 +1,38 @@
 import { revalidateBrainstorms } from '@/features/brainstorm/brainstorm.actions'
 import { LazyLoader } from '@/features/general/components/LazyLoader'
+import type { FilterSearchParams } from '@/features/projects/components/FilterBar/filterbar.constants'
 import { ProjectListEntry } from '@/features/projects/components/ProjectListEntry'
 import { getProjectItems } from '@/features/projects/projects.queries'
 import { getTranslations } from 'next-intl/server'
+import { parseFilters } from '@/features/projects/components/FilterBar/filterbar.utils'
 
 type ProjectListProps = {
   search?: string
   offset?: string
+  filters: FilterSearchParams
 }
 
 const pageSize = 15
 
-export async function ProjectList({ search, offset }: ProjectListProps) {
+export async function ProjectList({
+  search,
+  offset,
+  filters,
+}: ProjectListProps) {
   const translate = await getTranslations('projects')
+
+  const parsedFilters = parseFilters(filters)
+
   const offsetNumber = Number.parseInt(offset ?? '0')
   const limit = pageSize + offsetNumber
-  const projects = await getProjectItems(search, limit)
+  const projects = await getProjectItems(search, parsedFilters, limit)
   const hasMore = limit <= projects.length
 
   return (
     <>
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-1 gap-2 lg:grid-cols-4">
         {!projects.length && (
-          <p className="col-span-3 my-3 text-center text-muted-foreground italic">
+          <p className="col-span-full my-3 text-center text-muted-foreground italic">
             {translate('emptyProjects')}
           </p>
         )}
