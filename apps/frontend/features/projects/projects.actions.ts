@@ -48,7 +48,6 @@ export async function createProject(
     return authCheck as never
   }
 
-  console.log(`${payload.name}\n${descriptionTextValue}`)
   const embedding = await generateTextEmbeddings(
     `${payload.name}\n${descriptionTextValue}`,
   )
@@ -170,7 +169,6 @@ if("resources" in data && data.resources){
     href: resource.href,
     fileUpload: resource.fileUpload,
   }))
-
   if (!resourcesToCreate.length) {
     return
   }

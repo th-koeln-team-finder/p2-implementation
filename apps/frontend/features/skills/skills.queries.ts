@@ -1,21 +1,28 @@
 'use server'
 
-import { db } from '@repo/database'
-import { skills, userSkills } from '@repo/database/schema'
-import { desc, eq, getTableColumns, ilike } from 'drizzle-orm'
-import { count } from 'drizzle-orm/sql/functions/aggregate'
+import { Schema, db } from '@repo/database'
+import { desc, gte, sql } from 'drizzle-orm'
 
-export async function searchSkills(input: string) {
-  return await db
-    .select({
-      ...getTableColumns(skills),
-      usedCount: count(userSkills.id).as('usedCount'),
-    })
-    .from(skills)
-    .leftJoin(userSkills, eq(userSkills.skillId, skills.id))
-    .where(ilike(skills.skill, `%${input}%`))
-    .limit(8)
-    .groupBy(skills.id)
-    .orderBy(({ usedCount }) => desc(usedCount))
-    .execute()
+export async function searchSkills(input: string, limit = 8) {
+  const usedCountUsers = sql<number>`(SELECT COUNT(*) FROM ${Schema.userSkills} uSkill WHERE uSkill."skillId" = ${Schema.skills.id})`
+  const usedCountProject = sql<number>`(SELECT COUNT(*) FROM ${Schema.projectSkill} pSkill WHERE pSkill."skillId" = ${Schema.skills.id})`
+  const usedCount = sql<number>`(${usedCountUsers}) + (${usedCountProject})`
+
+  const similarity = sql<number>`similarity(${input}, ${Schema.skills.skill})`
+  const grossSimilarity = sql<number>`ROUND(CAST(${similarity} AS numeric), 2)`
+
+  return await db.query.skills.findMany({
+    extras: {
+      grossSimilarity: grossSimilarity.as('grossSimilarity'),
+      similarity: similarity.as('similarity'),
+      usedCountUsers: usedCountUsers.as('usedCountUsers'),
+      usedCountProject: usedCountProject.as('usedCountProject'),
+      usedCount: usedCount.as('usedCount'),
+    },
+    where: input ? gte(similarity, 0.4) : undefined,
+    limit,
+    orderBy: [input && desc(grossSimilarity), desc(usedCount)].filter(
+      (e) => !!e,
+    ),
+  })
 }
