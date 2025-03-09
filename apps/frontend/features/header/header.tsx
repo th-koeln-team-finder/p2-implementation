@@ -7,6 +7,7 @@ import { Link } from '@/features/i18n/routing'
 import { getUserWithImage } from '@/features/users/users.query'
 import { Button } from '@repo/design-system/components/ui/button'
 import { DropdownMenuItem } from '@repo/design-system/components/ui/dropdown-menu'
+import { SidebarTrigger } from '@repo/design-system/components/ui/sidebar'
 import {
   BellIcon,
   BrainCircuitIcon,
@@ -14,7 +15,6 @@ import {
   Users2Icon,
 } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
-import { SidebarTrigger } from '@repo/design-system/components/ui/sidebar'
 
 export default async function Header() {
   const [translate, session] = await Promise.all([

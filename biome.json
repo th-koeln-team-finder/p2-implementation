@@ -51,9 +51,7 @@
         "useSortedClasses": {
           "level": "warn",
           "fix": "safe",
-          "options": {
-
-          }
+          "options": {}
         },
         "useValidAutocomplete": "warn"
       },

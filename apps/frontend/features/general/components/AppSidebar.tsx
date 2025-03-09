@@ -1,3 +1,18 @@
+import { authMiddleware } from '@/auth'
+import { LoginButton } from '@/features/auth/components/LoginButton'
+import { RegisterButton } from '@/features/auth/components/RegisterButton'
+import { SignOutMenuItem } from '@/features/auth/components/SignOutMenuItem'
+import { UserAvatar } from '@/features/auth/components/UserAvatar'
+import { ApplicationIcon } from '@/features/general/components/ApplicationIcon'
+import { Link } from '@/features/i18n/routing'
+import { getUserWithImage } from '@/features/users/users.query'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@repo/design-system/components/ui/dropdown-menu'
 import {
   Sidebar,
   SidebarContent,
@@ -9,18 +24,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@repo/design-system/components/ui/sidebar'
-import { Link } from '@/features/i18n/routing'
-import { getTranslations } from 'next-intl/server'
-import { authMiddleware } from '@/auth'
-import { getUserWithImage } from '@/features/users/users.query'
-import { ApplicationIcon } from '@/features/general/components/ApplicationIcon'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@repo/design-system/components/ui/dropdown-menu'
 import {
   BellIcon,
   BrainCircuitIcon,
@@ -28,10 +31,7 @@ import {
   SettingsIcon,
   Users2Icon,
 } from 'lucide-react'
-import { UserAvatar } from '@/features/auth/components/UserAvatar'
-import { SignOutMenuItem } from '@/features/auth/components/SignOutMenuItem'
-import { LoginButton } from '@/features/auth/components/LoginButton'
-import { RegisterButton } from '@/features/auth/components/RegisterButton'
+import { getTranslations } from 'next-intl/server'
 
 export async function AppSidebar() {
   const [translate, session] = await Promise.all([

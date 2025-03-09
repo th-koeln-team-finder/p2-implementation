@@ -1,14 +1,14 @@
+import { AppSidebar } from '@/features/general/components/AppSidebar'
 import Header from '@/features/header/header'
 import { routing } from '@/features/i18n/routing'
-import { SessionProvider } from 'next-auth/react'
-import { NextIntlClientProvider } from 'next-intl'
-import { getMessages } from 'next-intl/server'
-import { notFound } from 'next/navigation'
 import {
   SidebarInset,
   SidebarProvider,
 } from '@repo/design-system/components/ui/sidebar'
-import { AppSidebar } from '@/features/general/components/AppSidebar'
+import { SessionProvider } from 'next-auth/react'
+import { NextIntlClientProvider } from 'next-intl'
+import { getMessages } from 'next-intl/server'
+import { notFound } from 'next/navigation'
 
 export default async function RootLayout({
   children,
