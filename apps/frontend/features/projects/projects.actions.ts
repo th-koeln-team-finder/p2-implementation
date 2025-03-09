@@ -6,7 +6,13 @@ import { redirect } from '@/features/i18n/routing'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
-import {type ProjectPictureInsert, type ProjectResourceInsert, ProjectSelect, Weekdays} from '@repo/database/schema'
+import {
+  type ProjectPictureInsert,
+  type ProjectResourceInsert,
+  ProjectSelect,
+  SkillsSelect,
+  Weekdays
+} from '@repo/database/schema'
 import { generateTextEmbeddings } from '@repo/semantic-search'
 import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
@@ -124,16 +130,16 @@ export async function createProject(
 
   // TODO Apply correct schema and search for skills on create page
   if (skillsToCreate?.length) {
-    const skills: { name: string; id: string }[] = await db
-      .insert(Schema.skill)
-      .values(skillsToCreate.map((skill) => ({ name: skill.name })))
+    const skills: SkillsSelect[] = await db
+      .insert(Schema.skills)
+      .values(skillsToCreate.map((skill)=>({skill:skill.name})))
       .returning()
 
     const projectSkills = skills.map((skill) => ({
       projectId: project.id,
       skillId: skill.id,
-      name: skill.name,
-      level: skillsToCreate.find((s) => s.name === skill.name)?.level || 0,
+      name: skill.skill,
+      level: skillsToCreate.find((skillToCreate) => skillToCreate.name === skill.skill)?.level || 0,
     }))
 
     await db.insert(Schema.projectSkill).values(projectSkills)

@@ -736,6 +736,8 @@ export const projectTagRelations = relations(projectTags, ({ one }) => ({
 }))
 
 
+ */
+
 export const projectBookmarkRelations = relations(
     projectBookmarks,
     ({ one }) => ({
@@ -749,7 +751,7 @@ export const projectBookmarkRelations = relations(
       }),
     }),
 )
-*/
+
 export const participantsRelation = relations(participants, ({ one }) => ({
   users: one(users, {
     fields: [participants.userId],
@@ -777,7 +779,7 @@ export const projectSkillRelations = relations(projectSkill, ({ one }) => ({
   }),
 }))
 
-export const skillProjectRelations = relations(skill, ({ many }) => ({
+export const skillProjectRelations = relations(skills, ({ many }) => ({
   projectSkills: many(projectSkill),
 }))
 
