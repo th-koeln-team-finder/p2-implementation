@@ -1,18 +1,17 @@
 'use server'
 
-import { getSubscription } from '@/features/notifications/notifications.query'
-import { usersWhoWantToReceiveNotificationsByType } from '@/features/users/users.query'
-import { db } from '@repo/database'
-import type { NotificationType } from '@repo/database/constants'
-import {
-  type PushSubscriptionSelect,
-  pushSubscriptions,
-} from '@repo/database/schema'
-import { serverEnv } from '@repo/env/server'
-import { eq } from 'drizzle-orm'
-import type { useTranslations } from 'next-intl'
-import { getTranslations } from 'next-intl/server'
+import {getSubscription} from '@/features/notifications/notifications.query'
+import {usersWhoWantToReceiveNotificationsByType} from '@/features/users/users.query'
+import {db} from '@repo/database'
+import type {NotificationType} from '@repo/database/constants'
+import {pushSubscriptions, type PushSubscriptionSelect, type UserSelect} from '@repo/database/schema'
+import {serverEnv} from '@repo/env/server'
+import {eq} from 'drizzle-orm'
+import type {useTranslations} from 'next-intl'
+import {getTranslations} from 'next-intl/server'
 import webpush from 'web-push'
+import sendEmail from '@repo/transactional'
+import MyEmail from '@repo/transactional/emails/MyEmail'
 
 webpush.setVapidDetails(
   serverEnv.FRONTEND_URL,
@@ -79,8 +78,29 @@ export async function sendNotificationByType(
         }),
       )
     }
+    if (user[`${type}_email`]) {
+      promises.push(
+        sendEmailNotification(user, {
+          ...data,
+          title: translate(...data.title),
+          body: translate(...data.body),
+          lang: user.languagePreference,
+        }),
+      )
+    }
   }
   await Promise.allSettled(promises)
+}
+
+export async function sendEmailNotification(
+  user: UserSelect,
+  data: NotificationData,
+) {
+  await sendEmail(MyEmail({ url: 'http://example.com' }), {
+    to: user.email,
+    from: serverEnv.MAIL_FROM_ADDRESS || 'noreply@collaborize.com',
+    subject: data.title,
+  })
 }
 
 export async function sendPushNotification(
