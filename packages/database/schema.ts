@@ -238,6 +238,9 @@ export const skillRelations = relations(skills, ({ many }) => ({
  */
 export const projects = pgTable('projects', {
   id: uuid().primaryKey().notNull().defaultRandom(),
+  createdById: uuid('createdById')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
   name: varchar({ length: 255 }).notNull(),
   description: text().notNull(),
   embedding: vector({ dimensions: VectorSizes.large }).notNull(),

@@ -128,6 +128,9 @@ export const en = {
     team: {
       title: 'Team Members',
     },
+    myProjects: {
+      pageTitle: 'My Projects',
+    }
   },
   createProjects: {
     fieldRequired: 'This field is required',

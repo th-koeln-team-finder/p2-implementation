@@ -68,9 +68,11 @@ export default async function Header() {
 
           {user ? (
             <UserProfileMenu>
-              <DropdownMenuItem>
-                <Users2Icon/> {translate('settingLinkMyProjects')}
-              </DropdownMenuItem>
+              <Link href="/my-projects">
+                <DropdownMenuItem>
+                  <Users2Icon/> {translate('settingLinkMyProjects')}
+                </DropdownMenuItem>
+              </Link>
               <Link href="/my-brainstorms">
                 <DropdownMenuItem>
                   <BrainCircuitIcon/> {translate('settingLinkMyBrainstorms')}

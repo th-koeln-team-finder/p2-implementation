@@ -132,6 +132,9 @@ export const de: Language = {
     team: {
       title: 'Team-Mitglieder',
     },
+    myProjects: {
+      pageTitle: 'Meine Projekte',
+    }
   },
   createProjects: {
     fieldRequired: 'Diese Eingabe ist erforderlich',
