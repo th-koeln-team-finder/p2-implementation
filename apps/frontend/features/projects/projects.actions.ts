@@ -153,6 +153,10 @@ async function createProjectSkills(
     })
   }
 
+  if (!projectSkillsToInsert.length) {
+    return
+  }
+
   await db.insert(Schema.projectSkill).values(
     projectSkillsToInsert.map((skill) => ({
       projectId,
