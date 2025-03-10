@@ -252,6 +252,9 @@ export const de: Language = {
       sortOptionMostPopular: 'Beliebteste',
       reply: 'Antworten',
     },
+    myBrainstorms: {
+      pageTitle: 'Meine Brainstorms',
+    }
   },
   tag: {
     createNewTag: "Neu: ''{tagName}''",

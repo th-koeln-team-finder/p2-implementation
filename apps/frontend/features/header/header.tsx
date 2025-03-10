@@ -1,21 +1,15 @@
-import { authMiddleware } from '@/auth'
-import { LoginButton } from '@/features/auth/components/LoginButton'
-import { RegisterButton } from '@/features/auth/components/RegisterButton'
-import { UserProfileMenu } from '@/features/auth/components/UserProfileMenu'
-import { ApplicationIcon } from '@/features/general/components/ApplicationIcon'
-import { Link } from '@/features/i18n/routing'
-import { getUserWithImage } from '@/features/users/users.query'
-import { Button } from '@repo/design-system/components/ui/button'
-import { DropdownMenuItem } from '@repo/design-system/components/ui/dropdown-menu'
-import { Input } from '@repo/design-system/components/ui/input'
-import {
-  BellIcon,
-  BrainCircuitIcon,
-  SearchIcon,
-  SettingsIcon,
-  Users2Icon,
-} from 'lucide-react'
-import { getTranslations } from 'next-intl/server'
+import {authMiddleware} from '@/auth'
+import {LoginButton} from '@/features/auth/components/LoginButton'
+import {RegisterButton} from '@/features/auth/components/RegisterButton'
+import {UserProfileMenu} from '@/features/auth/components/UserProfileMenu'
+import {ApplicationIcon} from '@/features/general/components/ApplicationIcon'
+import {Link} from '@/features/i18n/routing'
+import {getUserWithImage} from '@/features/users/users.query'
+import {Button} from '@repo/design-system/components/ui/button'
+import {DropdownMenuItem} from '@repo/design-system/components/ui/dropdown-menu'
+import {Input} from '@repo/design-system/components/ui/input'
+import {BellIcon, BrainCircuitIcon, SearchIcon, SettingsIcon, Users2Icon,} from 'lucide-react'
+import {getTranslations} from 'next-intl/server'
 
 export default async function Header() {
   const [translate, session] = await Promise.all([
@@ -30,7 +24,7 @@ export default async function Header() {
   return (
     <header className="header flex w-full self-stretch px-4 py-2">
       <a href="/">
-        <ApplicationIcon className="size-16" />
+        <ApplicationIcon className="size-16"/>
       </a>
 
       <div className="flex w-full items-center justify-end gap-12 self-stretch">
@@ -41,7 +35,7 @@ export default async function Header() {
             placeholder={translate('placeholderSearchEverywhere')}
           />
           <div className="pointer-events-none absolute top-0 bottom-0 left-2 flex flex-row items-center">
-            <SearchIcon className="size-5 text-muted-foreground" />
+            <SearchIcon className="size-5 text-muted-foreground"/>
           </div>
         </div>
 
@@ -75,24 +69,26 @@ export default async function Header() {
           {user ? (
             <UserProfileMenu>
               <DropdownMenuItem>
-                <Users2Icon /> {translate('settingLinkMyProjects')}
+                <Users2Icon/> {translate('settingLinkMyProjects')}
               </DropdownMenuItem>
+              <Link href="/my-brainstorms">
+                <DropdownMenuItem>
+                  <BrainCircuitIcon/> {translate('settingLinkMyBrainstorms')}
+                </DropdownMenuItem>
+              </Link>
               <DropdownMenuItem>
-                <BrainCircuitIcon /> {translate('settingLinkMyBrainstorms')}
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BellIcon /> {translate('settingLinkNotifications')}
+                <BellIcon/> {translate('settingLinkNotifications')}
               </DropdownMenuItem>
               <Link href="/edit-profile/profile">
                 <DropdownMenuItem>
-                  <SettingsIcon /> {translate('settingLinkSettings')}
+                  <SettingsIcon/> {translate('settingLinkSettings')}
                 </DropdownMenuItem>
               </Link>
             </UserProfileMenu>
           ) : (
             <>
-              <LoginButton />
-              <RegisterButton />
+              <LoginButton/>
+              <RegisterButton/>
             </>
           )}
         </nav>

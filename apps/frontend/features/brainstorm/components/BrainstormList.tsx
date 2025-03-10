@@ -1,6 +1,6 @@
 import { authMiddleware } from '@/auth'
 import { revalidateBrainstorms } from '@/features/brainstorm/brainstorm.actions'
-import { getBrainstorms } from '@/features/brainstorm/brainstorm.queries'
+import {getBrainstorms, getBrainstormsByCreatorID} from '@/features/brainstorm/brainstorm.queries'
 import { BrainstormListEntry } from '@/features/brainstorm/components/BrainstormListEntry'
 import { LazyLoader } from '@/features/general/components/LazyLoader'
 import { Masonry } from '@repo/design-system/components/ui/Masonry'
@@ -12,18 +12,26 @@ export async function BrainstormList({
   search,
   offset,
   bookmarks,
-}: { search: string; offset: string; bookmarks: string }) {
+  createdById
+}: { search: string; offset: string; bookmarks: string, createdById?: string }) {
   const session = await authMiddleware()
   const translate = await getTranslations('brainstorm')
 
   const offsetNumber = Number.parseInt(offset ?? '0')
   const limit = pageSize + offsetNumber
-  const brainstorms = await getBrainstorms(
-    session?.user?.id,
-    search,
-    bookmarks === 'pinned',
-    limit,
-  )
+  let brainstorms = createdById ? await getBrainstormsByCreatorID(
+      createdById,
+      session?.user?.id,
+      search,
+      bookmarks === 'pinned',
+      limit,
+    ) : await getBrainstorms(
+      session?.user?.id,
+      search,
+      bookmarks === 'pinned',
+      limit,
+    )
+
   const hasMore = limit <= brainstorms.length
 
   return (

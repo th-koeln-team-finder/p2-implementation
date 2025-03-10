@@ -249,6 +249,9 @@ export const en = {
       sortOptionMostPopular: 'Most popular',
       reply: 'Reply',
     },
+    myBrainstorms: {
+      pageTitle: 'My Brainstorms',
+    }
   },
   tag: {
     createNewTag: "New: ''{tagName}''",
