@@ -3,6 +3,7 @@
 import { cn } from '@/lib/utils'
 import { Star } from 'lucide-react'
 import React, { useState } from 'react'
+ import { useFieldContext } from '@formsignals/form-react'
 
 const ratingVariants = {
   default: {
@@ -185,5 +186,18 @@ const PartialStar = ({
         })}
       </div>
     </div>
+  )
+}
+
+export function RatingForm(
+  props: Omit<RatingProps, 'rating' | 'onRatingChange'>,
+) {
+  const field = useFieldContext<number, ''>()
+  return (
+    <Rating
+      rating={field.data.value}
+      onRatingChange={(newRating) => field.handleChange(newRating)}
+      {...props}
+    />
   )
 }
