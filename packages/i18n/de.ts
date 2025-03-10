@@ -139,7 +139,7 @@ export const de: Language = {
     location: 'Ort',
     locationPlaceholder: 'Adresse...',
     linksTitle: 'Links & Ressourcen',
-    main:{
+    main: {
       name: 'Projektname',
       namePlaceholder: 'Name des Projekts...',
       phase: 'Projektphase',
@@ -190,10 +190,10 @@ export const de: Language = {
       pleaseSelect: 'Bitte auswählen',
     },
     skills: {
-      skill: 'Benötigte Fähigkeit',
-      skillPlaceholder: 'Name der Fähigkeit...',
-      level: 'Fähigkeitslevel',
-      addSkill: 'Fähigkeit hinzufügen',
+      title: 'Benötigte Fähigkeiten',
+      description:
+        'Welche Fähigkeiten werden für dieses Projekt benötigt? Diese Fähigkeiten helfen anderen Benutzern, zu entscheiden, ob sie zu Ihrem Projekt beitragen können. Sie können Fähigkeiten für alle Rollen hinzufügen, die Sie für Ihr Projekt benötigen.',
+      emptySkills: 'Es wurden noch keine Fähigkeiten hinzugefügt',
     },
     stepper: {
       main: 'Basis',
@@ -264,7 +264,12 @@ export const de: Language = {
     otherTags: 'Andere Tags',
   },
   skill: {
+    createNewSkill: "Neu: ''{skillName}''",
+    labelRightNew: 'neu',
     labelRightUses: '{usage}x verwendet',
+    searchPlaceholder: 'Suche nach einer Fähigkeit...',
+    emptyMessage: 'Keine Fähigkeiten gefunden',
+    loadingMessage: 'Fähigkeiten werden geladen...',
   },
   help: {
     title: 'Hilfe',

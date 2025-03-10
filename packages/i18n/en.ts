@@ -134,7 +134,7 @@ export const en = {
     location: 'Location',
     locationPlaceholder: 'Address...',
     linksTitle: 'Links & Other Resources',
-    main:{
+    main: {
       name: 'Projektname',
       namePlaceholder: 'Title of the project...',
       phase: 'Project Phase',
@@ -185,11 +185,10 @@ export const en = {
       pleaseSelect: 'Please select',
     },
     skills: {
-      skill: 'Skill',
-      skillPlaceholder: 'Title of the skill...',
-      level: 'Skill-Level',
-      levelPlaceholder: 'Level of the skill...',
-      addSkill: 'Add Skill',
+      title: 'Add Skill Requirements',
+      description:
+        'What skills are required for this project? These skills help other users decide whether they can contribute to your project. You can add skills for all roles needed in your project.',
+      emptySkills: 'No skills requirements added yet',
     },
     stepper: {
       main: 'Main',
@@ -260,7 +259,12 @@ export const en = {
     otherTags: 'Other Tags',
   },
   skill: {
+    createNewSkill: "New: ''{skillName}''",
+    labelRightNew: 'new',
     labelRightUses: '{usage}x used',
+    searchPlaceholder: 'Search for a skill...',
+    emptyMessage: 'No skills found',
+    loadingMessage: 'Loading skills...',
   },
   help: {
     title: 'Help',
