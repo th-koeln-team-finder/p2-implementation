@@ -4,25 +4,22 @@ import { ProjectResourcePreview } from '@/features/projects/components/ProjectRe
 import { ProjectTimetable } from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
 import TeamMembers from '@/features/projects/components/TeamMembers'
-import {CarouselItem} from '@/features/projects/components/TeamMembers'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { SkillScale } from '@/features/skills/components/SkillScale'
 import { useFormContext } from '@formsignals/form-react'
 import { useSignals } from '@preact/signals-react/runtime'
-import {participants, UserSelect, Weekdays} from '@repo/database/schema'
+import { type UserSelect, Weekdays } from '@repo/database/schema'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { useTranslations } from 'next-intl'
-import {authMiddleware} from "@/auth";
-import {getUserProfile} from "@/features/projects/projects.actions";
-import {useEffect, useState} from "react";
-
+import { getUserProfile } from '@/features/projects/projects.actions'
+import { useEffect, useState } from 'react'
 
 export function CreateProjectPreview() {
   useSignals()
   const t = useTranslations('projects')
   const form = useFormContext<CreateProjectFormValues>()
   const formValues = form.json.value
-  const [sessionUser, setUser] = useState<UserSelect>();
+  const [sessionUser, setUser] = useState<UserSelect>()
 
   const timetabledata: { description: string; weekdays: string }[] = [
     { description: formValues.ttMon, weekdays: Weekdays.monday },
@@ -36,11 +33,10 @@ export function CreateProjectPreview() {
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-    setUser(await getUserProfile());
-    };
-    fetchUserProfile();
-  }, []);
-
+      setUser(await getUserProfile())
+    }
+    fetchUserProfile()
+  }, [])
 
   const timetable =
     formValues.timetableOutput === 'noTable'
@@ -58,8 +54,14 @@ export function CreateProjectPreview() {
       <div className="grid grid-cols-2 gap-8">
         <ImageCarousel />
         <SkillScale
-          skills={formValues.skills}
           title={t('skillScale.skillTitle')}
+          emptySkillsMessage={t('skillScale.emptySkills')}
+          skills={formValues.skills.map((skill) => ({
+            label: skill.value.startsWith('new:')
+              ? skill.value.replace('new:', '')
+              : skill.label,
+            level: skill.level,
+          }))}
         />
 
         <div className="col-span-2">
@@ -68,7 +70,9 @@ export function CreateProjectPreview() {
           )}
         </div>
 
-        <TeamMembers participants={ sessionUser?[{users:sessionUser!!}]:[]} />
+        <TeamMembers
+          participants={sessionUser ? [{ users: sessionUser }] : []}
+        />
 
         {!!timetable.length && (
           <div className="relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2">

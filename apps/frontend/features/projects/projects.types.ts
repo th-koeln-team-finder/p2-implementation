@@ -1,11 +1,9 @@
-import {type BrainstormSelect, ProjectSelect, UserInsert} from "@repo/database/schema";
-import type {UserWithImage} from "@/features/users/users.types";
-import {PopulatedBrainstormResource} from "@/features/brainstorm/brainstorm.types";
+import Proje{ctSelect, UserInsert} from "@repo/database/schema";
 
 
 export type PopulatedProject =ProjectSelect & {
     isBookmarked: boolean
-    starCount: String
+    starCount: string
     isStared: boolean
 
 }
@@ -26,7 +24,8 @@ export type CreateProjectFormParticipants = {
 
 export type CreateProjectFormSkills = {
   skills: Array<{
-    name: string
+    label: string
+    value: string
     level: number
   }>
 }

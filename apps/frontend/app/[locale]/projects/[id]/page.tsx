@@ -11,7 +11,6 @@ import { SkillScale } from '@/features/skills/components/SkillScale'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { getTranslations } from 'next-intl/server'
 
-
 export default async function Projects({
   params,
 }: Readonly<{
@@ -35,18 +34,24 @@ export default async function Projects({
             project.phase ? `${translations('phase')}: ${project.phase}` : ''
           }
         />
-        <Toolbar project={project}/>
+        <Toolbar project={project} />
       </div>
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         <ImageCarousel />
-        <SkillScale skills={project.projectSkills} />
+        <SkillScale
+          title={translations('skillScale.skillTitle')}
+          emptySkillsMessage={translations('skillScale.emptySkills')}
+          skills={project.projectSkills.map(({ skill, level }) => ({
+            label: skill.skill,
+            level,
+          }))}
+        />
 
         <div className="md:col-span-2">
           {project.description && (
             <WysiwygRenderer value={project.description} />
           )}
         </div>
-
 
         <TeamMembers participants={project.participants} />
 

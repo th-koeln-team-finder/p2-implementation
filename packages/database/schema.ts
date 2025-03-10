@@ -30,7 +30,6 @@ const VectorSizes = {
   large: 1024,
 }
 
-
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
 
 /**
@@ -239,7 +238,9 @@ export const skillRelations = relations(skills, ({ many }) => ({
  */
 export const projects = pgTable('projects', {
   id: uuid().primaryKey().notNull().defaultRandom(),
-  createdBy: uuid('createdBy').notNull().references(() => users.id, {onDelete: 'cascade'}),
+  createdBy: uuid('createdBy')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
   name: varchar({ length: 255 }).notNull(),
   description: text().notNull(),
   embedding: vector({ dimensions: VectorSizes.large }).notNull(),
@@ -256,20 +257,19 @@ export const projects = pgTable('projects', {
 export type ProjectInsert = typeof projects.$inferInsert
 export type ProjectSelect = typeof projects.$inferSelect
 
-
 export const participants = pgTable(
-    'participants',
-    {
+  'participants',
+  {
     userId: uuid('userId')
-        .notNull()
-        .references(() => users.id, { onDelete: 'cascade' }),
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
     projectId: uuid('projectId')
-        .notNull()
-        .references(() => projects.id, { onDelete: 'cascade'})
-
-},(participants) => ({
-  pk: primaryKey({ columns: [participants.userId, participants.projectId] }),
-    })
+      .notNull()
+      .references(() => projects.id, { onDelete: 'cascade' }),
+  },
+  (participants) => ({
+    pk: primaryKey({ columns: [participants.userId, participants.projectId] }),
+  }),
 )
 export type ParticipantsInsert = typeof participants.$inferInsert
 export type ParticipantsSelect = typeof participants.$inferSelect
@@ -307,8 +307,6 @@ export const projectSkill = pgTable(
     skillId: uuid()
       .notNull()
       .references(() => skills.id, { onDelete: 'cascade' }),
-    // TODO This needs to be removed since the name is stored in the skill relation
-    name: text().notNull(),
     level: integer().notNull(),
     createdAt: timestamp({ mode: 'date' }).defaultNow(),
     updatedAt: timestamp({ mode: 'date' })
@@ -332,21 +330,20 @@ export type ProjectSkillSelect = typeof projectSkill.$inferSelect
 
 export const projectPicture = pgTable('projectPicture', {
   id: uuid().primaryKey().notNull().defaultRandom(),
-    projectId: uuid()
-        .notNull()
-        .references(() => projects.id, { onDelete: 'cascade' }),
-    label: text().notNull(),
-    fileUpload: uuid().references(() => uploadedFiles.id, {
-        onDelete: 'cascade',
-    }),
+  projectId: uuid()
+    .notNull()
+    .references(() => projects.id, { onDelete: 'cascade' }),
+  label: text().notNull(),
+  fileUpload: uuid().references(() => uploadedFiles.id, {
+    onDelete: 'cascade',
+  }),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
   updatedAt: timestamp({ mode: 'date' })
-      .defaultNow()
-      .$onUpdate(() => sql`current_timestamp`),
+    .defaultNow()
+    .$onUpdate(() => sql`current_timestamp`),
 })
 export type ProjectPictureInsert = typeof projectPicture.$inferInsert
 export type ProjectPictureSelect = typeof projectPicture.$inferSelect
-
 
 export const projectResource = pgTable('projectResource', {
   id: uuid().primaryKey().notNull().defaultRandom(),
@@ -425,23 +422,22 @@ export type ProjectTimetableSelect = typeof projectTimetable.$inferSelect
 
 //region Technical Tables
 export const projectStar = pgTable(
-    'project_star',
-    {
-      userId: uuid('userId')
-          .notNull()
-          .references(() => users.id, { onDelete: 'cascade' }),
-      projectId: uuid('projectId')
-          .notNull()
-          .references(() => projects.id, { onDelete: 'cascade' }),
-      createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
-    },
-    (table) => ({
-      pk: primaryKey({ columns: [table.userId, table.projectId] }),
-    }),
+  'project_star',
+  {
+    userId: uuid('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    projectId: uuid('projectId')
+      .notNull()
+      .references(() => projects.id, { onDelete: 'cascade' }),
+    createdAt: timestamp('createdAt', { mode: 'date' }).notNull().defaultNow(),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.userId, table.projectId] }),
+  }),
 )
 export type ProjectStarInsert = typeof projectStar.$inferInsert
 export type ProjectStarSelect = typeof projectStar.$inferSelect
-
 
 export const projectBookmarks = pgTable(
   'project_bookmark',
@@ -743,8 +739,6 @@ export const projectRelations = relations(projects, ({ many }) => ({
 
 
 */
-
-
 }))
 /*
 export const projectTagRelations = relations(projectTags, ({ one }) => ({
@@ -762,17 +756,17 @@ export const projectTagRelations = relations(projectTags, ({ one }) => ({
  */
 
 export const projectBookmarkRelations = relations(
-    projectBookmarks,
-    ({ one }) => ({
-      user: one(users, {
-        fields: [projectBookmarks.userId],
-        references: [users.id],
-      }),
-      project: one(projects, {
-        fields: [projectBookmarks.projectId],
-        references: [projects.id],
-      }),
+  projectBookmarks,
+  ({ one }) => ({
+    user: one(users, {
+      fields: [projectBookmarks.userId],
+      references: [users.id],
     }),
+    project: one(projects, {
+      fields: [projectBookmarks.projectId],
+      references: [projects.id],
+    }),
+  }),
 )
 
 export const participantsRelation = relations(participants, ({ one }) => ({
@@ -789,7 +783,6 @@ export const participantsRelation = relations(participants, ({ one }) => ({
 export const userParticipantsRelation = relations(users, ({ many }) => ({
   participants: many(participants),
 }))
-
 
 export const projectSkillRelations = relations(projectSkill, ({ one }) => ({
   skill: one(skills, {
@@ -814,21 +807,18 @@ export const timetableRelations = relations(projectTimetable, ({ one }) => ({
   }),
 }))
 
-export const projectPictureRelations = relations(
-    projectPicture,
-    ({ one }) => ({
-    project: one(projects, {
-        fields: [projectPicture.projectId],
-        references: [projects.id],
-        relationName: 'projectPictures',
-    }),
-    uploadedFile: one(uploadedFiles, {
-        fields: [projectPicture.fileUpload],
-        references: [uploadedFiles.id],
-        relationName: 'projectPictureFileUpload',
-    }),
-  })
-)
+export const projectPictureRelations = relations(projectPicture, ({ one }) => ({
+  project: one(projects, {
+    fields: [projectPicture.projectId],
+    references: [projects.id],
+    relationName: 'projectPictures',
+  }),
+  uploadedFile: one(uploadedFiles, {
+    fields: [projectPicture.fileUpload],
+    references: [uploadedFiles.id],
+    relationName: 'projectPictureFileUpload',
+  }),
+}))
 
 export const projectResourceRelations = relations(
   projectResource,
@@ -852,16 +842,12 @@ export const FileUploadRelations = relations(uploadedFiles, ({ one }) => ({
     references: [projectResource.fileUpload],
     relationName: 'projectResourceFileUpload',
   }),
-    projectPicture: one(projectPicture, {
-        fields: [uploadedFiles.id],
-        references: [projectPicture.fileUpload],
-        relationName: 'projectPictureFileUpload',
-    })
+  projectPicture: one(projectPicture, {
+    fields: [uploadedFiles.id],
+    references: [projectPicture.fileUpload],
+    relationName: 'projectPictureFileUpload',
+  }),
 }))
-
-
-
-
 
 export const issueRelations = relations(projectIssue, ({ one }) => ({
   project: one(projects, {
@@ -908,16 +894,15 @@ export const brainstormCommentRelations = relations(
   }),
 )
 export const projectStarRelations = relations(projectStar, ({ one }) => ({
-  user:one(users, {
+  user: one(users, {
     fields: [projectStar.userId],
     references: [users.id],
   }),
-    project: one(projects, {
-        fields: [projectStar.projectId],
-        references: [projects.id],
-    }),
-}),
-)
+  project: one(projects, {
+    fields: [projectStar.projectId],
+    references: [projects.id],
+  }),
+}))
 
 export const brainstormCommentLikeRelations = relations(
   brainstormCommentLikes,
