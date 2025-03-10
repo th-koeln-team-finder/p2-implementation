@@ -29,7 +29,7 @@ import { z } from 'zod'
 export function ProjectFilterBar() {
   useSignals()
 
-  const translate = useTranslations('projects')
+  const translate = useTranslations('projects.filterbar')
   const translateValidation = useTranslations('validation')
 
   const [filters, setFilters] = useFilterBarQueryParams()
@@ -91,7 +91,7 @@ export function ProjectFilterBar() {
         <CollapsibleTrigger asChild>
           <Toggle variant="outline" className="group h-10 px-4">
             <FilterIcon className="group-data-[state='on']:fill-foreground" />
-            Filter
+            {translate('filterButton')}
           </Toggle>
         </CollapsibleTrigger>
       </div>
@@ -111,7 +111,7 @@ export function ProjectFilterBar() {
           >
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
               <div className="md:col-span-2">
-                <Label>Project Team Size</Label>
+                <Label>{translate('teamSizeLabel')}</Label>
                 <div className="flex flex-col gap-2 md:flex-row md:items-start">
                   <form.FieldProvider
                     name="teamSize.min"
@@ -137,12 +137,12 @@ export function ProjectFilterBar() {
                     <div className="flex-1">
                       <div className="flex flex-1 flex-row items-start">
                         <div className="flex h-9 flex-row items-center rounded-l border border-border bg-muted px-2 text-muted-foreground text-sm">
-                          Min
+                          {translate('teamSizeMinPrefix')}
                         </div>
                         <InputForm
                           useTransformed
                           type="number"
-                          placeholder="Team size..."
+                          placeholder={translate('teamSizeMinPlaceholder')}
                           className="rounded-none rounded-r bg-background"
                         />
                       </div>
@@ -167,11 +167,11 @@ export function ProjectFilterBar() {
                     <div className="flex-1">
                       <div className="flex flex-1 flex-row items-start">
                         <div className="flex h-9 flex-row items-center rounded-l border border-border bg-muted px-2 text-muted-foreground text-sm">
-                          Max
+                          {translate('teamSizeMaxPrefix')}
                         </div>
                         <InputForm
                           useTransformed
-                          placeholder="Team size..."
+                          placeholder={translate('teamSizeMaxPlaceholder')}
                           className="rounded-none rounded-r bg-background"
                         />
                       </div>
@@ -181,7 +181,7 @@ export function ProjectFilterBar() {
                 </div>
               </div>
               <div className="md:col-span-2">
-                <Label>Project Creation Date</Label>
+                <Label>{translate('creationDateLabel')}</Label>
                 <div className="flex flex-col gap-2 md:flex-row md:items-start">
                   <form.FieldProvider
                     name="dateRange.min"
@@ -199,7 +199,7 @@ export function ProjectFilterBar() {
                     <div className="flex-1">
                       <div className="flex flex-1 flex-row items-stretch">
                         <div className="flex flex-row items-center rounded-l border border-border bg-muted px-2 text-muted-foreground text-sm">
-                          Min
+                          {translate('creationDateFromPrefix')}
                         </div>
                         <DatePickerForm
                           className="rounded-none rounded-r bg-background"

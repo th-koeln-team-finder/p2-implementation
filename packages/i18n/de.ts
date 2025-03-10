@@ -89,10 +89,27 @@ export const de: Language = {
       'Sie müssen sich anmelden, um ein Projekt zu erstellen',
     emptyProjects: 'Keine Projekte gefunden',
 
-    searchPlaceholder: 'Suche nach Projekten...',
-    searchNotice:
-      'Sie können auch in ganzen Sätzen suchen, da wir nach der semantischen Bedeutung suchen.',
-
+    filterbar: {
+      searchPlaceholder: 'Suche nach Projekten...',
+      searchNotice:
+        'Sie können auch in ganzen Sätzen suchen, da wir nach der semantischen Bedeutung suchen.',
+      filterButton: 'Filtern',
+      teamSizeLabel: 'Projektteamgröße',
+      teamSizeMinPrefix: 'Min',
+      teamSizeMinPlaceholder: 'Teamgröße...',
+      teamSizeMaxPrefix: 'Max',
+      teamSizeMaxPlaceholder: 'Teamgröße...',
+      creationDateLabel: 'Projekt Erstellungsdatum',
+      creationDateFromPrefix: 'Von',
+      creationDateFromPlaceholder: 'dd.MM.yyyy',
+      creationDateToPrefix: 'Bis',
+      creationDateToPlaceholder: 'dd.MM.yyyy',
+      minStarsLabel: 'Minimum Sterne',
+      minStarsPlaceholder: 'Minimum sterne...',
+      skillRequirementsLabel: 'Fähigkeitsanforderungen',
+      skillRequirementsPlaceholder: 'Suche nach Fähigkeiten...',
+      applyButton: 'Filter anwenden',
+    },
     issueList: {
       showMore: 'mehr anzeigen',
       showLess: 'weniger anzeigen',
