@@ -88,7 +88,7 @@ export function CreateProjectSkills() {
 function CreateProjectSkillsEntry() {
   const field = useFieldContext<CreateProjectFormSkills['skills'][number], ''>()
   return (
-    <div className="flex flex-row items-center gap-2 rounded bg-muted p-2">
+    <div className="flex flex-row items-center rounded bg-muted p-2 text-sm">
       <p>{field.data.value.label.value}</p>
       <field.SubFieldProvider name="level">
         <RatingForm
@@ -103,7 +103,7 @@ function CreateProjectSkillsEntry() {
       <Button
         variant="destructive"
         size="icon"
-        className="h-7 w-7 [&_svg]:size-3"
+        className="mt-2 ml-auto h-6 w-6 md:mt-0 md:ml-4 [&_svg]:size-3"
         onClick={() => field.removeSelfFromArray()}
       >
         <TrashIcon />

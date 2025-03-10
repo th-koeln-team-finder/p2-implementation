@@ -10,7 +10,7 @@ import { useComputed, useSignals } from '@preact/signals-react/runtime'
 import { MultiValueAutoComplete } from '@repo/design-system/components/custom/multi-value-auto-complete'
 import { Rating } from '@repo/design-system/components/custom/rating'
 import { Button } from '@repo/design-system/components/ui/button'
-import { SquircleIcon, XIcon } from 'lucide-react'
+import { SquircleIcon, TrashIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 export function ProjectFilterBarSkillSelect() {
@@ -74,7 +74,7 @@ function ProjectFilterBarSkillSelectEntry() {
     ''
   >()
   return (
-    <div className="flex w-full flex-col rounded border border-border bg-background px-3 py-2 text-sm md:flex-row md:items-center">
+    <div className="flex w-full flex-col rounded bg-background px-3 py-2 text-sm md:flex-row md:items-center">
       <p>{field.data.value.label.value}</p>
       <Rating
         rating={field.data.value.level.value}
@@ -94,7 +94,7 @@ function ProjectFilterBarSkillSelectEntry() {
         className="mt-2 ml-auto h-6 w-6 md:mt-0 md:ml-4 [&_svg]:size-3"
         onClick={() => field.removeSelfFromArray()}
       >
-        <XIcon />
+        <TrashIcon />
       </Button>
     </div>
   )
