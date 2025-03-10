@@ -86,10 +86,27 @@ export const en = {
       'Please login or register to create a project',
     emptyProjects: 'No projects found',
 
-    searchPlaceholder: 'Search for a project...',
-    searchNotice:
-      'You may also search with whole sentences, since we are semantically searching for you.',
-
+    filterbar: {
+      searchPlaceholder: 'Search for a project...',
+      searchNotice:
+        'You may also search with whole sentences, since we are semantically searching for you.',
+      filterButton: 'Filter',
+      teamSizeLabel: 'Project team size',
+      teamSizeMinPrefix: 'Min',
+      teamSizeMinPlaceholder: 'Team size...',
+      teamSizeMaxPrefix: 'Max',
+      teamSizeMaxPlaceholder: 'Team size...',
+      creationDateLabel: 'Project creation date',
+      creationDateFromPrefix: 'From',
+      creationDateFromPlaceholder: 'dd.MM.yyyy',
+      creationDateToPrefix: 'To',
+      creationDateToPlaceholder: 'dd.MM.yyyy',
+      minStarsLabel: 'Minimum stars',
+      minStarsPlaceholder: 'Minimum stars...',
+      skillRequirementsLabel: 'Skill requirements',
+      skillRequirementsPlaceholder: 'Search for a skill...',
+      applyButton: 'Apply filter',
+    },
     issueList: {
       showMore: 'Show more',
       showLess: 'Show less',
