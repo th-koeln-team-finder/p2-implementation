@@ -401,10 +401,16 @@ export const de: Language = {
     newSkillEvaluation: {
       title: 'Jemand hat deinen Skill verifiziert!',
       message: 'Dein Skill "{skill}" wurde verifiziert.',
+      linkText: 'Zu deinem Profil',
     },
     newFollower: {
       title: 'Neuer Follower',
       message: '{follower} folgt dir jetzt.',
+      linkText: 'Zu deinem Profil',
     },
   },
+  email: {
+    buttonFallback: 'Zu Collaborize',
+    footer: 'collaborize.com ・ Diese E-Mail wurde automatisch generiert',
+  }
 }

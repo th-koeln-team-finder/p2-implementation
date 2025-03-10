@@ -18,10 +18,12 @@
   },
   "dependencies": {
     "@react-email/components": "0.0.33",
+    "@repo/env": "workspace:*",
+    "@repo/i18n": "workspace:*",
+    "@repo/design-system": "workspace:*",
     "@types/react": "^18.3.12",
     "nodemailer": "^6.10.0",
     "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106",
-    "@repo/env": "workspace:*"
+    "react-dom": "19.0.0-rc-66855b96-20241106"
   }
 }

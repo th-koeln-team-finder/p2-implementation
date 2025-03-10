@@ -538,9 +538,21 @@ importers:
       '@react-email/components':
         specifier: 0.0.33
         version: 0.0.33(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
+      '@react-email/tailwind':
+        specifier: 1.0.4
+        version: 1.0.4(react@19.0.0-rc-66855b96-20241106)
+      '@repo/design-system':
+        specifier: workspace:*
+        version: link:../design-system
       '@repo/env':
         specifier: workspace:*
         version: link:../env
+      '@repo/i18n':
+        specifier: workspace:*
+        version: link:../i18n
+      '@repo/tailwind-config':
+        specifier: workspace:*
+        version: link:../tailwind-config
       '@types/react':
         specifier: ^18.3.12
         version: 18.3.12

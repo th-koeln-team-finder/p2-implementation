@@ -101,7 +101,7 @@ export async function sendEmailNotification(
   user: UserSelect,
   data: NotificationData,
 ) {
-  await sendEmail(MyEmail({ url: 'http://example.com' }), {
+  await sendEmail(Notification({ user, data }), {
     to: user.email,
     from: serverEnv.MAIL_FROM_ADDRESS || 'noreply@collaborize.com',
     subject: data.title,

@@ -394,12 +394,18 @@ export const en = {
     newSkillEvaluation: {
       title: 'Someone verified a skill of yours!',
       message: 'Your skill "{skill}" was verified.',
+      linkText: 'View your profile',
     },
     newFollower: {
       title: 'You have a new follower!',
       message: '{follower} is now following you.',
+      linkText: 'View your profile',
     },
   },
+  email: {
+    buttonFallback: 'Zu Collaborize',
+    footer: 'Collaborize ・ This is an automated email',
+  }
 }
 
 type PathOf<T> = {
