@@ -12,7 +12,7 @@ export const db = drizzle({
   connection: {
     connectionString: serverEnv.DATABASE_URL,
   },
-  logger: false,
+  logger: true,
 })
 
 export const AuthDrizzleAdapter = DrizzleAdapter(db, {

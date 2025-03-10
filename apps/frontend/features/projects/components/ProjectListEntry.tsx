@@ -17,6 +17,7 @@ export function ProjectListEntry({ project }: FindAProjectListEntryProps) {
     <Link href={`/projects/${project.id}`}>
       <Card>
         <CardHeader>
+          {project.test}
           <div className="-mb-2 flex flex-row flex-wrap gap-1 text-xs">
             {project.totalSimilarity && (
               <span className="rounded bg-muted px-1 text-muted-foreground/80">

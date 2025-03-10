@@ -108,6 +108,7 @@ export const de: Language = {
       minStarsPlaceholder: 'Minimum sterne...',
       skillRequirementsLabel: 'Fähigkeitsanforderungen',
       skillRequirementsPlaceholder: 'Suche nach Fähigkeiten...',
+      resetButton: 'Zurücksetzen',
       applyButton: 'Filter anwenden',
     },
     issueList: {

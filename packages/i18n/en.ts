@@ -105,6 +105,7 @@ export const en = {
       minStarsPlaceholder: 'Minimum stars...',
       skillRequirementsLabel: 'Skill requirements',
       skillRequirementsPlaceholder: 'Search for a skill...',
+      resetButton: 'Reset filter',
       applyButton: 'Apply filter',
     },
     issueList: {
