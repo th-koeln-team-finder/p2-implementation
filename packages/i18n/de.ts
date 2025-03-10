@@ -412,5 +412,5 @@ export const de: Language = {
   email: {
     buttonFallback: 'Zu Collaborize',
     footer: 'collaborize.com ・ Diese E-Mail wurde automatisch generiert',
-  }
+  },
 }

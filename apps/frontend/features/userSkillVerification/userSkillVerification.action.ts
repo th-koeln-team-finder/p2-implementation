@@ -1,10 +1,10 @@
 'use server'
 
-import {sendNotificationByType} from '@/features/notifications/notifications.actions'
-import {db, Schema} from '@repo/database'
-import {and, eq} from 'drizzle-orm'
-import {getPathname} from '@/features/i18n/routing'
-import {getLocale} from 'next-intl/server'
+import { getPathname } from '@/features/i18n/routing'
+import { sendNotificationByType } from '@/features/notifications/notifications.actions'
+import { Schema, db } from '@repo/database'
+import { and, eq } from 'drizzle-orm'
+import { getLocale } from 'next-intl/server'
 
 export async function verifyUserSkill(userId: string, userSkillId: string) {
   await db.insert(Schema.userSkillVerification).values({

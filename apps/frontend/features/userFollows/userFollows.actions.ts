@@ -1,12 +1,12 @@
 'use server'
 
-import {sendNotificationByType} from '@/features/notifications/notifications.actions'
-import {getUser} from '@/features/users/users.query'
-import {db, Schema} from '@repo/database'
-import {and, eq} from 'drizzle-orm'
-import {revalidateTag} from 'next/cache'
-import {getPathname} from "@/features/i18n/routing";
-import {getLocale} from "next-intl/server";
+import { getPathname } from '@/features/i18n/routing'
+import { sendNotificationByType } from '@/features/notifications/notifications.actions'
+import { getUser } from '@/features/users/users.query'
+import { Schema, db } from '@repo/database'
+import { and, eq } from 'drizzle-orm'
+import { getLocale } from 'next-intl/server'
+import { revalidateTag } from 'next/cache'
 
 export async function revalidateFollows() {
   return await revalidateTag('userFollows')

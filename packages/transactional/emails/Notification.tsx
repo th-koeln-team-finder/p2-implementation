@@ -1,8 +1,18 @@
-import {Body, Button, Container, Head, Html, Img, Preview, Section, Tailwind, Text,} from '@react-email/components'
-import * as React from 'react'
-import {LangDict, type LangKey} from '@repo/i18n'
-import {serverEnv} from '@repo/env'
-import {config} from '@repo/tailwind-config/config'
+import {
+  Body,
+  Button,
+  Container,
+  Head,
+  Html,
+  Img,
+  Preview,
+  Section,
+  Tailwind,
+  Text,
+} from '@react-email/components'
+import { serverEnv } from '@repo/env'
+import { LangDict, type LangKey } from '@repo/i18n'
+import { config } from '@repo/tailwind-config/config'
 
 type SupportedLang = keyof typeof LangDict
 
@@ -73,7 +83,7 @@ export const NotificationEmail = ({ user, data }: NotificationEmailProps) => (
             <Text style={text}>{data.body}</Text>
 
             {data.actions && data.actions.length > 0
-              ? data.actions.map((action, index) => (
+              ? data.actions.map((action) => (
                   <Button
                     key={action.action}
                     style={button}
@@ -128,8 +138,8 @@ NotificationEmail.PreviewProps = {
 export default NotificationEmail
 
 const main = {
-  backgroundColor: "hsl(0 0% 100%)",
-  color: "hsl(240 6% 10%)",
+  backgroundColor: 'hsl(0 0% 100%)',
+  color: 'hsl(240 6% 10%)',
   fontFamily:
     '-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"',
 }
@@ -164,15 +174,6 @@ const button = {
   lineHeight: 1.5,
   borderRadius: '0.5em',
   padding: '12px 24px',
-}
-
-const links = {
-  textAlign: 'center' as const,
-}
-
-const link = {
-  color: 'hsl(295 72% 40%)',
-  fontSize: '12px',
 }
 
 const footer = {

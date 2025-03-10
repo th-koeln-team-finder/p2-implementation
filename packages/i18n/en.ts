@@ -405,7 +405,7 @@ export const en = {
   email: {
     buttonFallback: 'Zu Collaborize',
     footer: 'Collaborize ・ This is an automated email',
-  }
+  },
 }
 
 type PathOf<T> = {

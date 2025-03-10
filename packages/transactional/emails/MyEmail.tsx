@@ -1,7 +1,6 @@
 import { Button, Html } from '@react-email/components'
-import * as React from "react";
 
-export const MyEmail = ({url}: {url: string}) => {
+export const MyEmail = ({ url }: { url: string }) => {
   return (
     <Html>
       <Button

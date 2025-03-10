@@ -1,18 +1,22 @@
 'use server'
 
-import {getSubscription} from '@/features/notifications/notifications.query'
-import {usersWhoWantToReceiveNotificationsByType} from '@/features/users/users.query'
-import {db} from '@repo/database'
-import type {NotificationType} from '@repo/database/constants'
-import {pushSubscriptions, type PushSubscriptionSelect, type UserSelect} from '@repo/database/schema'
-import {serverEnv} from '@repo/env/server'
-import {eq} from 'drizzle-orm'
-import type {useTranslations} from 'next-intl'
-import Notification from "@repo/transactional/emails/Notification";
-import {getTranslations} from 'next-intl/server'
-import webpush, {type PushSubscription} from 'web-push'
+import { getSubscription } from '@/features/notifications/notifications.query'
+import { usersWhoWantToReceiveNotificationsByType } from '@/features/users/users.query'
+import { db } from '@repo/database'
+import type { NotificationType } from '@repo/database/constants'
+import {
+  type PushSubscriptionSelect,
+  type UserSelect,
+  pushSubscriptions,
+} from '@repo/database/schema'
+import { serverEnv } from '@repo/env/server'
+import type { LangDict } from '@repo/i18n'
 import sendEmail from '@repo/transactional'
-import type {LangDict} from "@repo/i18n";
+import Notification from '@repo/transactional/emails/Notification'
+import { eq } from 'drizzle-orm'
+import type { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
+import webpush, { type PushSubscription } from 'web-push'
 
 webpush.setVapidDetails(
   serverEnv.FRONTEND_URL,
@@ -43,7 +47,7 @@ export type NotificationData = {
   vibrate?: number[]
   image?: string
   actions?: { action: string; title: string; icon?: string }[]
-  lang?: keyof typeof LangDict,
+  lang?: keyof typeof LangDict
   // biome-ignore lint/suspicious/noExplicitAny: any is needed here because the data can be anything
   data?: { link?: string; linkText?: string; [key: string]: any }
 }
@@ -55,7 +59,7 @@ export type NotificationSettings = {
   vibrate?: number[]
   image?: string
   actions?: { action: string; title: string; icon?: string }[]
-  lang?: keyof typeof LangDict,
+  lang?: keyof typeof LangDict
   // biome-ignore lint/suspicious/noExplicitAny: any is needed here because the data can be anything
   data?: { link?: string; linkText?: TranslationParams; [key: string]: any }
 }
@@ -69,10 +73,10 @@ export async function sendNotificationByType(
   for (const user of users) {
     const translatedData = await fillInNotificationTranslations(data, user)
     if (user[`${type}_push`]) {
-      sendPushNotification(user.id, translatedData).then(r => r)
+      sendPushNotification(user.id, translatedData).then((r) => r)
     }
     if (user[`${type}_email`]) {
-      sendEmailNotification(user, translatedData).then(r => r)
+      sendEmailNotification(user, translatedData).then((r) => r)
     }
   }
 }
@@ -84,7 +88,9 @@ export async function fillInNotificationTranslations(
   const translate = await getTranslations({ locale: user.languagePreference })
   const title = translate(...data.title)
   const body = translate(...data.body)
-  const linkText = data.data?.linkText ? translate(...data.data.linkText) : undefined
+  const linkText = data.data?.linkText
+    ? translate(...data.data.linkText)
+    : undefined
   return {
     ...data,
     title,
@@ -93,7 +99,7 @@ export async function fillInNotificationTranslations(
     data: {
       ...data.data,
       linkText,
-    }
+    },
   }
 }
 
