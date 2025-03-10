@@ -3,7 +3,6 @@ import { Schema, db } from '@repo/database'
 import { generateTextEmbeddings } from '@repo/semantic-search'
 import { cosineDistance, desc, eq, sql } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
-import {PopulatedBrainstorm} from "@/features/brainstorm/brainstorm.types";
 
 export const getBrainstorms = cache(
   async (
@@ -107,8 +106,8 @@ export const getBrainstormsByCreatorID = cache(
     const isBookmarked = !userId
       ? sql<boolean>`(false)`.as('isBookmarked')
       : sql<boolean>`(EXISTS (SELECT id FROM "brainstorm_bookmark" bookmark WHERE bookmark."brainstormId" = "brainstorms"."id" AND bookmark."userId" = ${userId}))`.as(
-        'isBookmarked',
-      )
+          'isBookmarked',
+        )
 
     const where = eq(Schema.brainstorms.createdById, createdById)
 

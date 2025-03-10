@@ -130,7 +130,7 @@ export const en = {
     },
     myProjects: {
       pageTitle: 'My Projects',
-    }
+    },
   },
   createProjects: {
     fieldRequired: 'This field is required',
@@ -254,7 +254,7 @@ export const en = {
     },
     myBrainstorms: {
       pageTitle: 'My Brainstorms',
-    }
+    },
   },
   tag: {
     createNewTag: "New: ''{tagName}''",

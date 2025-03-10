@@ -1,19 +1,17 @@
-import {CanUserServer} from '@/features/auth/components/CanUser.server'
-import {BrainstormList} from '@/features/brainstorm/components/BrainstormList'
-import {BrainstormListLoading} from '@/features/brainstorm/components/loading/BrainstormListLoading'
-import {Link, redirect} from '@/features/i18n/routing'
-import {ScrollTopButton} from '@repo/design-system/components/custom/ScrollTopButton'
-import {Button} from '@repo/design-system/components/ui/button'
-import {BrainIcon} from 'lucide-react'
-import {getLocale, getTranslations} from 'next-intl/server'
-import {Suspense} from 'react'
-import {getSession} from 'next-auth/react'
-import {authMiddleware} from "@/auth";
-import {getUser} from "@/features/users/users.query";
+import { authMiddleware } from '@/auth'
+import { CanUserServer } from '@/features/auth/components/CanUser.server'
+import { BrainstormList } from '@/features/brainstorm/components/BrainstormList'
+import { BrainstormListLoading } from '@/features/brainstorm/components/loading/BrainstormListLoading'
+import { Link, redirect } from '@/features/i18n/routing'
+import { ScrollTopButton } from '@repo/design-system/components/custom/ScrollTopButton'
+import { Button } from '@repo/design-system/components/ui/button'
+import { BrainIcon } from 'lucide-react'
+import { getLocale, getTranslations } from 'next-intl/server'
+import { Suspense } from 'react'
 
 export default async function MyBrainstormsPage({
-                                                  searchParams,
-                                                }: {
+  searchParams,
+}: {
   searchParams: Promise<{
     search: string
     offset: string

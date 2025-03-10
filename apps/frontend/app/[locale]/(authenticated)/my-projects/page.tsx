@@ -1,14 +1,12 @@
-import { ProjectFilterBar } from '@/features/projects/components/FilterBar/ProjectFilterBar'
+import { authMiddleware } from '@/auth'
+import { redirect } from '@/features/i18n/routing'
 import type { FilterSearchParams } from '@/features/projects/components/FilterBar/filterbar.constants'
 import { ProjectList } from '@/features/projects/components/ProjectList'
-import {getLocale, getTranslations} from 'next-intl/server'
-import { getSession } from 'next-auth/react'
-import {authMiddleware} from "@/auth";
-import {redirect} from "@/features/i18n/routing";
+import { getLocale, getTranslations } from 'next-intl/server'
 
 export default async function MyProjectsPage({
-                                               searchParams,
-                                             }: {
+  searchParams,
+}: {
   searchParams: Promise<
     {
       search: string

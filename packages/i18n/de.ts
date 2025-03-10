@@ -134,7 +134,7 @@ export const de: Language = {
     },
     myProjects: {
       pageTitle: 'Meine Projekte',
-    }
+    },
   },
   createProjects: {
     fieldRequired: 'Diese Eingabe ist erforderlich',
@@ -257,7 +257,7 @@ export const de: Language = {
     },
     myBrainstorms: {
       pageTitle: 'Meine Brainstorms',
-    }
+    },
   },
   tag: {
     createNewTag: "Neu: ''{tagName}''",

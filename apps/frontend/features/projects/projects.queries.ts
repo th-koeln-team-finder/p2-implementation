@@ -60,7 +60,12 @@ export const getProjectItems = cache(
 )
 
 export const getProjectItemsByCreatorId = cache(
-  async (createdById: string, search, filters: ReturnType<typeof parseFilters>, limit: number) => {
+  async (
+    createdById: string,
+    search,
+    filters: ReturnType<typeof parseFilters>,
+    limit: number,
+  ) => {
     const searchEmbeddings = await generateTextEmbeddings(search ?? '')
 
     const similarity = sql<number>`(1 - (${cosineDistance(Schema.projects.embedding, searchEmbeddings)}))`
