@@ -7,17 +7,27 @@ import {
   CardHeader,
   CardTitle,
 } from '@repo/design-system/components/ui/card'
+import Image from 'next/image'
+import { Button } from '@repo/design-system/components/ui/button'
+import { BookmarkIcon, StarIcon } from 'lucide-react'
 
 type FindAProjectListEntryProps = {
   project: Awaited<ReturnType<typeof getProjectItems>>[number]
 }
 
 export function ProjectListEntry({ project }: FindAProjectListEntryProps) {
+  const firstPicture = project.pictures?.[0]
   return (
     <Link href={`/projects/${project.id}`}>
-      <Card>
+      <Card className="h-full">
+        <Image
+          className="h-48 w-full rounded-t object-cover"
+          src="/images/image-placeholder.jpg"
+          height={800}
+          width={1200}
+          alt={project.name}
+        />
         <CardHeader>
-          {project.test}
           <div className="-mb-2 flex flex-row flex-wrap gap-1 text-xs">
             {project.totalSimilarity && (
               <span className="rounded bg-muted px-1 text-muted-foreground/80">
@@ -46,9 +56,17 @@ export function ProjectListEntry({ project }: FindAProjectListEntryProps) {
           </div>
           <div className="flex flex-row items-center justify-between gap-2">
             <CardTitle className="text-xl">{project.name}</CardTitle>
+            <div className="flex flex-row items-center gap-1">
+              <Button variant="ghost" size="icon">
+                <StarIcon />
+              </Button>
+              <Button variant="ghost" size="icon">
+                <BookmarkIcon />
+              </Button>
+            </div>
           </div>
 
-          <CardDescription className="max-h-16 overflow-hidden">
+          <CardDescription className="max-h-20 overflow-hidden">
             {project.description && (
               <WysiwygRenderer value={project.description} renderAsString />
             )}

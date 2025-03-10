@@ -74,6 +74,13 @@ export const getProjectItems = cache(
       columns: {
         embedding: false,
       },
+      with: {
+        projectPictures: {
+          with: {
+            uploadedFile: true,
+          },
+        },
+      },
       where: and(
         search ? gte(correctTotalSimilarity, 0.4) : sql`true`,
         eq(Schema.projects.isPublic, true),
