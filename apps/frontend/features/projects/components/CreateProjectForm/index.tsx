@@ -8,7 +8,8 @@ import { CreateProjectPreview } from '@/features/projects/components/CreateProje
 import { CreateProjectSkills } from '@/features/projects/components/CreateProjectForm/CreateProjectSkills'
 import {
   createProject,
-  createProjectUploadedData, getUserProfile,
+  createProjectUploadedData,
+  getUserProfile,
   revalidateProjects,
 } from '@/features/projects/projects.actions'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
@@ -36,10 +37,10 @@ import {
   SelectItem,
 } from '@repo/design-system/components/ui/select'
 import { useTranslations } from 'next-intl'
-import {useEffect, useMemo, useState} from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { z } from 'zod'
-import {CreateProjectPictureList} from "@/features/projects/components/CreateProjectForm/CreateProjectPictureList";
-import {UserSelect} from "@repo/database/schema";
+import { CreateProjectPictureList } from '@/features/projects/components/CreateProjectForm/CreateProjectPictureList'
+import type { UserSelect } from '@repo/database/schema'
 
 const registerAdapter = configureZodAdapter({
   takeFirstError: true,
@@ -51,7 +52,7 @@ export function CreateProjectForm() {
   const router = useRouter()
   const t = useTranslations('createProjects')
   const translateError = useTranslations('validation')
-  const [sessionUser, setUser] = useState<UserSelect>();
+  const [sessionUser, setUser] = useState<UserSelect>()
   //Stepper
   const steps = [
     { id: 'basics', title: t('stepper.main') },
@@ -62,24 +63,23 @@ export function CreateProjectForm() {
   ]
   useEffect(() => {
     const fetchUserProfile = async () => {
-      const profile = await getUserProfile();
-      if(profile) setUser(profile);
-    };
-    fetchUserProfile();
-  }, []);
-
+      const profile = await getUserProfile()
+      if (profile) setUser(profile)
+    }
+    fetchUserProfile()
+  }, [])
 
   //Form Field Provider
   const form = useForm<CreateProjectFormValues, typeof ZodAdapter>({
     validatorAdapter: registerAdapter,
     defaultValues: {
       name: '',
-      createdBy: sessionUser? sessionUser.id : '',
+      createdBy: sessionUser ? sessionUser.id : '',
       description: '',
       phase: '',
       status: 'open',
       skills: [],
-      participants: sessionUser? [{ Users: sessionUser }] : [],
+      participants: sessionUser ? [{ Users: sessionUser }] : [],
       timetableOutput: '',
       ttMon: '',
       ttTue: '',
@@ -92,7 +92,6 @@ export function CreateProjectForm() {
       issues: [],
       resources: [],
       pictures: [],
-
     },
     onSubmit: async (values) => {
       if (!editorRef.current) return null
@@ -134,31 +133,33 @@ export function CreateProjectForm() {
         }),
       )
       const uploadedPictures = await Promise.all(
-          values.pictures.map(async ({ file,label }) => {
-            if(!file.length) {
-              return {
-                projectId,
-                label
-              }
+        values.pictures.map(async ({ file, label }) => {
+          if (!file.length) {
+            return {
+              projectId,
+              label,
             }
-              const fileId = await uploadFile(
-                `${projectId}/pictures`,
-                  label,
-                file[0],
-              )
-              resetFileProgress(file[0].name)
-              return {
-                fileUpload: fileId,
-                label,
-                projectId
-            }
-          })
+          }
+          const fileId = await uploadFile(
+            `${projectId}/pictures`,
+            label,
+            file[0],
+          )
+          resetFileProgress(file[0].name)
+          return {
+            fileUpload: fileId,
+            label,
+            projectId,
+          }
+        }),
       )
 
-
-
-      await createProjectUploadedData(projectId, {resources: uploadedFileResources})
-      await createProjectUploadedData(projectId, {resources: uploadedPictures})
+      await createProjectUploadedData(projectId, {
+        resources: uploadedFileResources,
+      })
+      await createProjectUploadedData(projectId, {
+        resources: uploadedPictures,
+      })
       await revalidateProjects()
       setTimeout(() => {
         router.replace(`/projects/${projectId}`)
@@ -170,7 +171,7 @@ export function CreateProjectForm() {
 
   const basicFieldGroup = useFieldGroup(
     form,
-    ['name', 'phase', 'description','createdBy'],
+    ['name', 'phase', 'description', 'createdBy'],
     {
       onSubmit: () => setCurrentIndex(1),
     },
@@ -272,63 +273,64 @@ export function CreateProjectForm() {
     >
       <ContentItem stepId="basics">
         <form.FormProvider>
-
-
           <div className="flex flex-col justify-between gap-4 md:flex-row">
             <div className="flex w-full max-w-2xl flex-col gap-4">
               <form.FieldProvider
-                  name="name"
-                  validator={z
-                      .string({required_error: translateError('required')})
-                      .min(1, translateError('minLengthX', {amount: 1}))}
-                  validatorOptions={{
-                    validateOnChangeIfTouched: true,
-                  }}
+                name="name"
+                validator={z
+                  .string({ required_error: translateError('required') })
+                  .min(1, translateError('minLengthX', { amount: 1 }))}
+                validatorOptions={{
+                  validateOnChangeIfTouched: true,
+                }}
               >
                 <div>
                   <Label>{t('main.name')}</Label>
-                  <InputForm id="name" placeholder={t('main.namePlaceholder')}/>
+                  <InputForm
+                    id="name"
+                    placeholder={t('main.namePlaceholder')}
+                  />
 
-                  <FieldError/>
+                  <FieldError />
                 </div>
               </form.FieldProvider>
               <form.FieldProvider name="phase">
                 <div>
                   <Label>{t('main.phase')}</Label>
-                  <InputForm id="phase" placeholder={t('main.phasePlaceholder')}/>
-                  <FieldError/>
+                  <InputForm
+                    id="phase"
+                    placeholder={t('main.phasePlaceholder')}
+                  />
+                  <FieldError />
                 </div>
-                </form.FieldProvider>
-
-
-
+              </form.FieldProvider>
             </div>
 
             <form.FieldProvider name="resources">
-                <CreateProjectPictureList
-                  uploadFile={uploadFile}
-                  progressState={progressState}
+              <CreateProjectPictureList
+                uploadFile={uploadFile}
+                progressState={progressState}
               />
             </form.FieldProvider>
           </div>
 
           <form.FieldProvider
-              name="description"
-              validator={() => {
-                if (!editorRef.current) return null
-                return getStringContentFromEditor(editorRef.current).length <= 0
-                    ? translateError('required')
-                    : null
-              }}
+            name="description"
+            validator={() => {
+              if (!editorRef.current) return null
+              return getStringContentFromEditor(editorRef.current).length <= 0
+                ? translateError('required')
+                : null
+            }}
           >
             <div>
               <Label>{t('main.description')}</Label>
               <WysiwygEditorForm
-                  editorRef={editorRef}
-                  placeholder={t('main.descriptionPlaceholder')}
-                  className="min-h-56"
+                editorRef={editorRef}
+                placeholder={t('main.descriptionPlaceholder')}
+                className="min-h-56"
               />
-              <FieldError/>
+              <FieldError />
             </div>
           </form.FieldProvider>
         </form.FormProvider>
@@ -337,7 +339,7 @@ export function CreateProjectForm() {
       <ContentItem stepId="skills">
         <form.FormProvider>
           <form.FieldProvider name="skills">
-            <CreateProjectSkills/>
+            <CreateProjectSkills />
           </form.FieldProvider>
         </form.FormProvider>
       </ContentItem>

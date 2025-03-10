@@ -11,6 +11,7 @@ import { MultiValueAutoComplete } from '@repo/design-system/components/custom/mu
 import { Rating } from '@repo/design-system/components/custom/rating'
 import { Button } from '@repo/design-system/components/ui/button'
 import { SquircleIcon, XIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 export function ProjectFilterBarSkillSelect() {
   useSignals()
@@ -21,6 +22,8 @@ export function ProjectFilterBarSkillSelect() {
   const selectedValues = useComputed(() =>
     unSignalifyValueSubscribed(field.data),
   )
+
+  const translateSkill = useTranslations('skill')
 
   const navigationModal = useNavigationModalContext()
   const { data, isLoading, searchInput, setSearchInput } =
@@ -50,9 +53,9 @@ export function ProjectFilterBarSkillSelect() {
         onSearchInputChange={setSearchInput}
         data={data ?? []}
         isLoading={isLoading}
-        placeholder="Search for skills..."
-        loadingMessage="Loading..."
-        emptyMessage="No skills found"
+        placeholder={translateSkill('searchPlaceholder')}
+        loadingMessage={translateSkill('loadingMessage')}
+        emptyMessage={translateSkill('emptyMessage')}
       />
       <div className="flex flex-row flex-wrap gap-2 pt-2">
         {field.data.value.map((skill, index) => (
