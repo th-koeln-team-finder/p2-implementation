@@ -15,9 +15,11 @@ import {useSignals} from "@preact/signals-react/runtime";
 
 type DatePickerProps = {
   placeholder?: string
+  className?: string
+  containerClassName?: string
 }
 
-export function DatePickerForm({ placeholder }: DatePickerProps) {
+export function DatePickerForm({ placeholder, className, containerClassName }: DatePickerProps) {
   useSignals()
   const field = useFieldContext<Date, '', string>()
 
@@ -32,8 +34,8 @@ export function DatePickerForm({ placeholder }: DatePickerProps) {
 
   return (
     <Popover>
-      <div className="relative min-w-[280px] flex-1">
-        <InputForm useTransformed placeholder="dd.MM.yyyy" />
+      <div className={cn('relative min-w-[280px] flex-1', containerClassName)}>
+        <InputForm useTransformed placeholder={placeholder ?? "dd.MM.yyyy"} className={className} />
         <PopoverTrigger asChild>
           <Button
             variant="outline"
