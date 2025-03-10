@@ -36,9 +36,13 @@ export function BrainstormFilterBar() {
             <Loader2Icon className="absolute top-2 right-3 animate-spin" />
           )}
           <Input
+            type="search"
             autoFocus
             placeholder={translate('searchPlaceholder')}
-            className="h-10 flex-1 pl-11 md:text-md"
+            className={cn(
+              'h-10 flex-1 pl-11 md:text-md',
+              isLoading && '[&::-webkit-search-cancel-button]:hidden',
+            )}
             value={searchInput}
             onChange={(e) => {
               setSearch(e.target.value)
