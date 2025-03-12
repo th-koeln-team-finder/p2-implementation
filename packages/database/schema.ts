@@ -396,8 +396,6 @@ export const projectApplication = pgTable(
     projectId: uuid('projectId')
       .notNull()
       .references(() => projects.id, { onDelete: 'cascade' }),
-    firstName: text().notNull(),
-    lastName: text(),
     mail: text().notNull(),
     phone: text().notNull(),
     file: uuid().references(() => uploadedFiles.id, {

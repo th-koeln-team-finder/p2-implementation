@@ -219,8 +219,6 @@ export async function createApplication(payload: ProjectApplicationInsert) {
       .values({
         userId: payload.userId,
         projectId: payload.projectId,
-        firstName: payload.firstName,
-        lastName: payload.lastName,
         mail: payload.mail,
         phone: payload.phone,
         message: payload.message,

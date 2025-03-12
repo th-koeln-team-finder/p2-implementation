@@ -1,5 +1,6 @@
 'use client'
 
+import { useSessionPermission } from '@/features/auth/auth.hooks'
 import { useRouter } from '@/features/i18n/routing'
 import {
   revalidateProjects,
@@ -37,6 +38,8 @@ export function Toolbar({
   const { data: session } = useSession()
   const router = useRouter()
 
+  const canCreate = useSessionPermission('applyProject', 'create')
+
   const join = () => {
     if (!session?.user?.id) {
       router.push('/login') // TODO Falls nicht eingeloggt, sollen die Anmelden und Registrieren Buttons erscheinen
@@ -72,34 +75,16 @@ export function Toolbar({
           />
         </Button>
       </div>
-      <Button
-        variant="default"
-        size="default"
-        className="ml-2 w-full lg:w-auto"
-        onClick={join}
-      >
-        {t('join')}
-      </Button>
-      {/* TODO: Wenn sich der User bereits für das Projekt beworben hat, soll der Button anders aussehen (bspw. disabled)
-        session?.user?.id === projectApplication?.userId && projectId === projectApplication?.projectId ? (
-          <Button
-              variant="destructive"
-              size="default"
-              className="ml-2 w-full lg:w-auto"
-              onClick={join}
-            >
-                {t('join')}
-            </Button>
-        ) : (
-          <Button
-              variant="default"
-              size="default"
-              className="ml-2 w-full lg:w-auto"
-              onClick={join}
-            >
-                {t('join')}
-            </Button>
-        )*/}
+      {!canCreate && (
+        <Button
+          variant="default"
+          size="default"
+          className="ml-2 w-full lg:w-auto"
+          onClick={join}
+        >
+          {t('join')}
+        </Button>
+      )}
     </div>
   )
 }

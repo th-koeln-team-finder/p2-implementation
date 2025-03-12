@@ -50,6 +50,12 @@ export type Permissions = {
     }
     like: never
   }
+  applyProject: {
+    view: never
+    create: never
+    update: never
+    delete: { createdById: string | null }
+  }
   project: {
     'view.all': never
     'view.detail': never
@@ -108,6 +114,11 @@ export const PERMISSIONS = {
     commentBrainstorm: {
       view: false,
     },
+    applyProject: {
+      view: false,
+      create: false,
+      update: false,
+    },
     project: {
       'view.all': true,
       'view.detail': true,
@@ -135,6 +146,12 @@ export const PERMISSIONS = {
       pin: (_, data) => !data.parentCommentId,
       reply: (_, data) => !data.parentCommentId,
       like: true,
+    },
+    applyProject: {
+      view: true,
+      create: true,
+      update: true,
+      delete: true,
     },
     project: {
       'view.all': true,

@@ -96,8 +96,6 @@ export default function ApplicationDetail({
         const applicationData = {
           projectId,
           userId: session.user.id,
-          firstName: session.user.name,
-          lastName: session.user.lastName,
           mail: values.mail,
           phone: values.phone,
           message: values.message,
