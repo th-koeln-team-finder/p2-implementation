@@ -15,6 +15,7 @@ import { makeUserProjects } from './factory/userProjects.factory'
 import { makeUserSkillVerification } from './factory/userSkillVerification.factory'
 import { makeUserSkills } from './factory/userSkills.factory'
 import * as Schema from './schema'
+import {makeProject} from "./factory/project.factory";
 
 config()
 config({ path: '.env.local', override: true })
@@ -74,6 +75,11 @@ export async function seed() {
 
   console.log("Clearing 'user' table")
   await db.delete(Schema.users).execute()
+
+  console.log("creating 'project' table")
+  const projectData =  makeProject()
+  const projects = await db.insert(Schema.projects).values(projectData).returning()
+  console.log(projects)
 
   console.log('Creating 75 user records')
   const userData = makeMultiple(75, makeUser)

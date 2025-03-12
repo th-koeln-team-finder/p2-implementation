@@ -236,11 +236,12 @@ export const skillRelations = relations(skills, ({ many }) => ({
 /**
  * Data specific for one project
  */
+//TODO: Add embedding for search
 export const projects = pgTable('projects', {
   id: uuid().primaryKey().notNull().defaultRandom(),
   name: varchar({ length: 255 }).notNull(),
   description: text().notNull(),
-  embedding: vector({ dimensions: VectorSizes.large }).notNull(),
+  //embedding: vector({ dimensions: VectorSizes.large }).notNull(),
   status: varchar({ enum: ['open', 'closed'] }).notNull(),
   phase: text(),
   location: text(),
