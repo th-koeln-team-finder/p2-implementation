@@ -2,6 +2,7 @@ import { render } from '@react-email/components'
 import { serverEnv } from '@repo/env/server'
 import nodemailer from 'nodemailer'
 import type SMTPTransport from 'nodemailer/lib/smtp-transport'
+import Mail from "nodemailer/lib/mailer";
 
 export default async function sendEmail(
   template: React.ReactElement,
@@ -21,14 +22,16 @@ export default async function sendEmail(
   })
 
   const emailHtml = await render(template)
+  const emailPlainText = await render(template, {plainText: true})
 
-  const optionsWithRenderedHTML = {
+  const optionsWithRendered: Mail.Options = {
     ...options,
     html: emailHtml,
+    text: emailPlainText,
   }
 
   try {
-    await transporter.sendMail(optionsWithRenderedHTML)
+    await transporter.sendMail(optionsWithRendered)
   } catch (error) {
     console.error(error)
   }
