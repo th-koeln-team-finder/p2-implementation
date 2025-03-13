@@ -10,6 +10,7 @@ import { BookmarkIcon, InfoIcon, Loader2Icon, SearchIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useQueryState } from 'nuqs'
 import { useState } from 'react'
+import { cn } from '@repo/design-system/lib/utils'
 
 export function BrainstormFilterBar() {
   useSignals()
