@@ -1,11 +1,14 @@
 'use server'
 
-import type {UserWithImage} from '@/features/users/users.types'
-import {db, Schema} from '@repo/database'
-import type {NotificationColumn, NotificationType,} from '@repo/database/constants'
-import {users, type UserSelect} from '@repo/database/schema'
-import {and, eq, inArray, or} from 'drizzle-orm'
-import {unstable_cache as cache} from 'next/dist/server/web/spec-extension/unstable-cache'
+import type { UserWithImage } from '@/features/users/users.types'
+import { Schema, db } from '@repo/database'
+import type {
+  NotificationColumn,
+  NotificationType,
+} from '@repo/database/constants'
+import { type UserSelect, users } from '@repo/database/schema'
+import { and, eq, inArray, or } from 'drizzle-orm'
+import { unstable_cache as cache } from 'next/dist/server/web/spec-extension/unstable-cache'
 
 export async function checkUsernameTaken(username: string) {
   const result = await db.query.users.findFirst({
@@ -20,7 +23,7 @@ export const getUser = cache(
       where: eq(users.id, id),
     }),
   ['getUser'],
-  {tags: ['user']},
+  { tags: ['user'] },
 )
 
 export const getUserWithImage = cache(
@@ -32,10 +35,13 @@ export const getUserWithImage = cache(
       },
     }),
   ['getUser'],
-  {tags: ['user']},
+  { tags: ['user'] },
 )
 
-export const usersWhoWantToReceiveNotificationsByType = async (userIds: string[], type: NotificationType) => {
+export const usersWhoWantToReceiveNotificationsByType = async (
+  userIds: string[],
+  type: NotificationType,
+) => {
   const pushColumn: NotificationColumn = `${type}_push`
   const emailColumn: NotificationColumn = `${type}_email`
   return await db.query.users.findMany({
@@ -47,4 +53,4 @@ export const usersWhoWantToReceiveNotificationsByType = async (userIds: string[]
       ),
     ),
   })
-},
+}

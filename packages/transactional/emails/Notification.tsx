@@ -7,7 +7,6 @@ import {
   Img,
   Preview,
   Section,
-  Tailwind,
   Text,
 } from '@react-email/components'
 import { serverEnv } from '@repo/env'
@@ -60,9 +59,7 @@ function translate(lang: SupportedLang, key: LangKey): string {
 export const NotificationEmail = ({ user, data }: NotificationEmailProps) => (
   <Html>
     <Head />
-    <Body
-      style={main}
-    >
+    <Body style={main}>
       <Preview>{data.title}</Preview>
       <Container style={container}>
         <Img
@@ -81,22 +78,18 @@ export const NotificationEmail = ({ user, data }: NotificationEmailProps) => (
 
           {data.actions && data.actions.length > 0
             ? data.actions.map((action) => (
-              <Button
-                key={action.action}
-                style={button}
-                href={action.action}
-              >
-                {action.title}
-              </Button>
-            ))
+                <Button key={action.action} style={button} href={action.action}>
+                  {action.title}
+                </Button>
+              ))
             : data.data?.link && (
-            <Button
-              style={button}
-              href={`${serverEnv.FRONTEND_URL}${data.data.link}`}
-            >
-              {data.data.linkText || 'View your token'}
-            </Button>
-          )}
+                <Button
+                  style={button}
+                  href={`${serverEnv.FRONTEND_URL}${data.data.link}`}
+                >
+                  {data.data.linkText || 'View your token'}
+                </Button>
+              )}
         </Section>
 
         {data.image && (

@@ -73,12 +73,14 @@ export async function sendNotificationByType(
   for (const user of users) {
     const translatedData = await fillInNotificationTranslations(data, user)
     if (user[`${type}_push`]) {
-      sendPushNotification(user.id, translatedData)
-        .catch(r => console.error(r))
+      sendPushNotification(user.id, translatedData).catch((r) =>
+        console.error(r),
+      )
     }
     if (user[`${type}_email`]) {
-      sendEmailNotification(user, translatedData).then((r) => r)
-        .catch(r => console.error(r))
+      sendEmailNotification(user, translatedData)
+        .then((r) => r)
+        .catch((r) => console.error(r))
     }
   }
 }
