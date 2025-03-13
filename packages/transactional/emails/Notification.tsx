@@ -12,7 +12,6 @@ import {
 } from '@react-email/components'
 import { serverEnv } from '@repo/env'
 import { LangDict, type LangKey } from '@repo/i18n'
-import { config } from '@repo/tailwind-config/config'
 
 type SupportedLang = keyof typeof LangDict
 
@@ -61,61 +60,59 @@ function translate(lang: SupportedLang, key: LangKey): string {
 export const NotificationEmail = ({ user, data }: NotificationEmailProps) => (
   <Html>
     <Head />
-    <Tailwind config={config}>
-      <Body
-        style={main}
-      >
-        <Preview>{data.title}</Preview>
-        <Container style={container}>
-          <Img
-            src={`${serverEnv.FRONTEND_URL}/icons/192x192.png`}
-            width="32"
-            height="32"
-            alt="Collaborize logo"
-          />
+    <Body
+      style={main}
+    >
+      <Preview>{data.title}</Preview>
+      <Container style={container}>
+        <Img
+          src={`${serverEnv.FRONTEND_URL}/icons/192x192.png`}
+          width="32"
+          height="32"
+          alt="Collaborize logo"
+        />
 
-          <Text style={title}>
-            <strong>@{user.name}</strong>, {data.title}
-          </Text>
+        <Text style={title}>
+          <strong>@{user.name}</strong>, {data.title}
+        </Text>
 
-          <Section style={section}>
-            <Text style={text}>{data.body}</Text>
+        <Section style={section}>
+          <Text style={text}>{data.body}</Text>
 
-            {data.actions && data.actions.length > 0
-              ? data.actions.map((action) => (
-                  <Button
-                    key={action.action}
-                    style={button}
-                    href={action.action}
-                  >
-                    {action.title}
-                  </Button>
-                ))
-              : data.data?.link && (
-                  <Button
-                    style={button}
-                    href={`${serverEnv.FRONTEND_URL}${data.data.link}`}
-                  >
-                    {data.data.linkText || 'View your token'}
-                  </Button>
-                )}
-          </Section>
-
-          {data.image && (
-            <Img
-              src={`${serverEnv.FRONTEND_URL}${data.image}`}
-              width="100%"
-              height="auto"
-              alt="Collaborize"
-            />
+          {data.actions && data.actions.length > 0
+            ? data.actions.map((action) => (
+              <Button
+                key={action.action}
+                style={button}
+                href={action.action}
+              >
+                {action.title}
+              </Button>
+            ))
+            : data.data?.link && (
+            <Button
+              style={button}
+              href={`${serverEnv.FRONTEND_URL}${data.data.link}`}
+            >
+              {data.data.linkText || 'View your token'}
+            </Button>
           )}
+        </Section>
 
-          <Text style={footer}>
-            {translate(data.lang || 'en', 'email.footer')}{' '}
-          </Text>
-        </Container>
-      </Body>
-    </Tailwind>
+        {data.image && (
+          <Img
+            src={`${serverEnv.FRONTEND_URL}${data.image}`}
+            width="100%"
+            height="auto"
+            alt="Collaborize"
+          />
+        )}
+
+        <Text style={footer}>
+          {translate(data.lang || 'en', 'email.footer')}{' '}
+        </Text>
+      </Container>
+    </Body>
   </Html>
 )
 
