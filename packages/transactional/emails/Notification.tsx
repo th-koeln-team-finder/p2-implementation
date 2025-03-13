@@ -64,7 +64,6 @@ export const NotificationEmail = ({ user, data }: NotificationEmailProps) => (
     <Tailwind config={config}>
       <Body
         style={main}
-        className="bg-background font-sans text-foreground antialiased"
       >
         <Preview>{data.title}</Preview>
         <Container style={container}>
