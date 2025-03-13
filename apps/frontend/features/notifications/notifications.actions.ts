@@ -109,7 +109,7 @@ export async function sendEmailNotification(
 ) {
   await sendEmail(Notification({ user, data }), {
     to: user.email,
-    from: serverEnv.MAIL_FROM_ADDRESS || 'noreply@collaborize.com',
+    from: serverEnv.MAIL_FROM_ADDRESS,
     subject: data.title,
   })
 }

@@ -24,7 +24,7 @@ export const serverEnv = createEnv({
     MAIL_PORT: z.coerce.number().int().min(1),
     MAIL_USERNAME: z.string().min(1),
     MAIL_PASSWORD: z.string(),
-    MAIL_FROM_ADDRESS: z.string().email().nullish()
+    MAIL_FROM_ADDRESS: z.string().email().default("noreply@collaborize.com")
   },
   emptyStringAsUndefined: true,
   isServer: true,
