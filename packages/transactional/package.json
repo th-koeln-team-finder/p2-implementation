@@ -1,0 +1,29 @@
+{
+  "name": "@repo/transactional",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "preview": "email dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/th-koeln-team-finder/p2-implementation.git"
+  },
+  "private": true,
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/nodemailer": "^6.4.17",
+    "react-email": "3.0.7",
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@react-email/components": "0.0.33",
+    "@repo/env": "workspace:*",
+    "@repo/i18n": "workspace:*",
+    "@repo/design-system": "workspace:*",
+    "@types/react": "^18.3.12",
+    "nodemailer": "^6.10.0",
+    "react": "19.0.0-rc-66855b96-20241106",
+    "react-dom": "19.0.0-rc-66855b96-20241106"
+  }
+}

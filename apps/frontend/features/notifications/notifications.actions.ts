@@ -6,13 +6,17 @@ import { db } from '@repo/database'
 import type { NotificationType } from '@repo/database/constants'
 import {
   type PushSubscriptionSelect,
+  type UserSelect,
   pushSubscriptions,
 } from '@repo/database/schema'
 import { serverEnv } from '@repo/env/server'
+import type { LangDict } from '@repo/i18n'
+import sendEmail from '@repo/transactional'
+import Notification from '@repo/transactional/emails/Notification'
 import { eq } from 'drizzle-orm'
 import type { useTranslations } from 'next-intl'
 import { getTranslations } from 'next-intl/server'
-import webpush from 'web-push'
+import webpush, { type PushSubscription } from 'web-push'
 
 webpush.setVapidDetails(
   serverEnv.FRONTEND_URL,
@@ -37,15 +41,15 @@ export async function unsubscribeUser(userId: string) {
 type TranslationParams = Parameters<ReturnType<typeof useTranslations<never>>>
 
 export type NotificationData = {
-  title?: string
-  body?: string
+  title: string
+  body: string
   icon?: string
   vibrate?: number[]
   image?: string
   actions?: { action: string; title: string; icon?: string }[]
-  lang?: string
+  lang?: keyof typeof LangDict
   // biome-ignore lint/suspicious/noExplicitAny: any is needed here because the data can be anything
-  data?: any
+  data?: { link?: string; linkText?: string; [key: string]: any }
 }
 
 export type NotificationSettings = {
@@ -55,9 +59,9 @@ export type NotificationSettings = {
   vibrate?: number[]
   image?: string
   actions?: { action: string; title: string; icon?: string }[]
-  lang?: string
+  lang?: keyof typeof LangDict
   // biome-ignore lint/suspicious/noExplicitAny: any is needed here because the data can be anything
-  data?: any
+  data?: { link?: string; linkText?: TranslationParams; [key: string]: any }
 }
 
 export async function sendNotificationByType(
@@ -66,21 +70,52 @@ export async function sendNotificationByType(
   data: NotificationSettings,
 ) {
   const users = await usersWhoWantToReceiveNotificationsByType(userIds, type)
-  const promises = []
   for (const user of users) {
-    const translate = await getTranslations({ locale: user.languagePreference })
+    const translatedData = await fillInNotificationTranslations(data, user)
     if (user[`${type}_push`]) {
-      promises.push(
-        sendPushNotification(user.id, {
-          ...data,
-          title: translate(...data.title),
-          body: translate(...data.body),
-          lang: user.languagePreference,
-        }),
+      sendPushNotification(user.id, translatedData).catch((r) =>
+        console.error(r),
       )
     }
+    if (user[`${type}_email`]) {
+      sendEmailNotification(user, translatedData)
+        .then((r) => r)
+        .catch((r) => console.error(r))
+    }
   }
-  await Promise.allSettled(promises)
+}
+
+export async function fillInNotificationTranslations(
+  data: NotificationSettings,
+  user: UserSelect,
+): Promise<NotificationData> {
+  const translate = await getTranslations({ locale: user.languagePreference })
+  const title = translate(...data.title)
+  const body = translate(...data.body)
+  const linkText = data.data?.linkText
+    ? translate(...data.data.linkText)
+    : undefined
+  return {
+    ...data,
+    title,
+    body,
+    lang: user.languagePreference,
+    data: {
+      ...data.data,
+      linkText,
+    },
+  }
+}
+
+export async function sendEmailNotification(
+  user: UserSelect,
+  data: NotificationData,
+) {
+  await sendEmail(Notification({ user, data }), {
+    to: user.email,
+    from: serverEnv.MAIL_FROM_ADDRESS,
+    subject: data.title,
+  })
 }
 
 export async function sendPushNotification(
@@ -93,7 +128,7 @@ export async function sendPushNotification(
   if (!subscription) {
     throw new Error('No subscription available')
   }
-  const subscriptionData = subscription.subscription
+  const subscriptionData = subscription.subscription as PushSubscription
 
   try {
     await webpush.sendNotification(
