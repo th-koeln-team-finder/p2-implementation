@@ -15,6 +15,8 @@ import { makeUserProjects } from './factory/userProjects.factory'
 import { makeUserSkillVerification } from './factory/userSkillVerification.factory'
 import { makeUserSkills } from './factory/userSkills.factory'
 import * as Schema from './schema'
+import { demoProject } from './factory/projects.data'
+import { demoApplication } from './factory/projectApplication.data'
 
 config()
 config({ path: '.env.local', override: true })
@@ -79,6 +81,22 @@ export async function seed() {
   const userData = makeMultiple(75, makeUser)
   const users = await db.insert(Schema.users).values(userData).returning()
   const userIds = users.map((e) => e.id)
+
+  console.log('Creating 1 project')
+  const project = await db
+    .insert(Schema.projects)
+    .values(demoProject)
+    .returning()
+
+  const usersToApply = userIds.slice(0, 5)
+  console.log('Creating 5 project application')
+  await db.insert(Schema.projectApplication).values(
+    usersToApply.map((userId) => ({
+      ...demoApplication,
+      userId,
+      projectId: project[0].id,
+    })),
+  )
 
   console.log("Clearing 'tag' table")
   await db.delete(Schema.tags).execute()

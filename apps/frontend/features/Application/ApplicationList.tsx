@@ -3,6 +3,7 @@ import { MailsIcon, PaperclipIcon, PinIcon } from 'lucide-react'
 import { Button } from '@repo/design-system/components/ui/button'
 import { UserAvatar } from '@/features/auth/components/UserAvatar'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
+import { Link } from '@/features/i18n/routing'
 
 type ApplicationListProps = {
   projectId: string
@@ -17,12 +18,14 @@ export async function ApplicationList({ projectId }: ApplicationListProps) {
           key={app.id}
           className="flex w-full flex-row gap-2 border-t-2 border-b-2 px-2 py-4"
         >
-          <div className="w-2/12">
-            <UserAvatar
-              user={app.user}
-              className="h-12 w-12 rounded-full object-cover lg:h-24 lg:w-24"
-            />
-          </div>
+          <Link href={`/projects/${projectId}/overview/${app.id}`}>
+            <div className="w-2/12">
+              <UserAvatar
+                user={app.user}
+                className="h-12 w-12 rounded-full object-cover lg:h-24 lg:w-24"
+              />
+            </div>
+          </Link>
 
           <div className="flex w-9/12 flex-col">
             <div className="mb-2 font-bold text-lg">
