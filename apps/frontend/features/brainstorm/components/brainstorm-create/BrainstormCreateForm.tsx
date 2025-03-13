@@ -25,7 +25,7 @@ import {
   WysiwygEditorForm,
   getStringContentFromEditor,
 } from '@repo/design-system/components/WysiwygEditor'
-import { AutoCompleteTagInputForm } from '@repo/design-system/components/custom/auto-complete-tag-input'
+import { MultiValueAutoCompleteForm } from '@repo/design-system/components/custom/multi-value-auto-complete'
 import { Button } from '@repo/design-system/components/ui/button'
 import { InputForm } from '@repo/design-system/components/ui/input'
 import { Label } from '@repo/design-system/components/ui/label'
@@ -154,7 +154,7 @@ export function BrainstormCreateForm({
         >
           <div>
             <Label>{translate('createForm.labelTags')}</Label>
-            <AutoCompleteTagInputForm
+            <MultiValueAutoCompleteForm
               containerId="popoverref"
               onOpenChange={(open) => {
                 if (!navigationModal) return
@@ -168,6 +168,7 @@ export function BrainstormCreateForm({
               emptyMessage={translate('createForm.emptyTags')}
               loadingMessage={translate('createForm.loadingTags')}
               enableCommaSeparation
+              enableTagUse
             />
             <FieldError />
           </div>

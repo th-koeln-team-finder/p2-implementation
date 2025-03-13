@@ -93,5 +93,5 @@ You can now open the app in your browser at [collaborize.localhost](https://coll
 To migrate the database run
 
 ```bash
-docker run --rm --network p2-implementation_web -v "$(pwd)":/app -w /app node:22-alpine sh -c "npm install -g pnpm && pnpm install && pnpm db:push"
+docker run --rm --platform linux/amd64 --network p2-implementation_web -v "$(pwd)":/app -w /app node:22-slim sh -c "npm install -g pnpm && pnpm install && pnpm db:push"
 ```

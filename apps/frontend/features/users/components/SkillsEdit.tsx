@@ -159,7 +159,7 @@ export default function SkillsEdit({
         .map((userSkill, index) => (
           <div
             key={userSkill.id}
-            className={`grid max-w-sm grid-cols-3 items-center justify-around py-1 ${index % 2 === 0 ? 'bg-accent/30' : ''}`}
+            className={`grid max-w-sm grid-cols-3 items-center justify-around space-x-4 py-1 ${index % 2 === 0 ? 'bg-accent/30' : ''}`}
           >
             <div className="px-2 text-sm">{userSkill.skill?.skill}</div>
             <div className="flex items-center gap-2.5">
