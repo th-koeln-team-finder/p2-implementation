@@ -12,6 +12,7 @@ import {
   primaryKey,
   text,
   timestamp,
+  unique,
   uniqueIndex,
   uuid,
   varchar,
@@ -236,12 +237,11 @@ export const skillRelations = relations(skills, ({ many }) => ({
 /**
  * Data specific for one project
  */
-//TODO: Add embedding for search
 export const projects = pgTable('projects', {
   id: uuid().primaryKey().notNull().defaultRandom(),
   name: varchar({ length: 255 }).notNull(),
   description: text().notNull(),
-  //embedding: vector({ dimensions: VectorSizes.large }).notNull(),
+  embedding: vector({ dimensions: VectorSizes.large }).notNull(),
   status: varchar({ enum: ['open', 'closed'] }).notNull(),
   phase: text(),
   location: text(),
@@ -391,6 +391,7 @@ export type projectBookmarkSelect = typeof projectBookmarks.$inferSelect
 export const projectApplication = pgTable(
   'projectApplication',
   {
+    id: uuid().primaryKey().notNull().defaultRandom(),
     userId: uuid('userId')
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
@@ -399,9 +400,6 @@ export const projectApplication = pgTable(
       .references(() => projects.id, { onDelete: 'cascade' }),
     mail: text().notNull(),
     phone: text().notNull(),
-    file: uuid().references(() => uploadedFiles.id, {
-      onDelete: 'cascade',
-    }),
     message: text().notNull(),
     createdAt: timestamp({ mode: 'date' }).defaultNow(),
     updatedAt: timestamp({ mode: 'date' })
@@ -409,13 +407,33 @@ export const projectApplication = pgTable(
       .$onUpdate(() => sql`current_timestamp`),
   },
   (projectApplication) => ({
-    pk: primaryKey({
-      columns: [projectApplication.projectId, projectApplication.userId],
-    }),
+    projectApplicationUniqueConstraint: unique(
+      'projectApplicationUniqueConstraint',
+    ).on(projectApplication.projectId, projectApplication.userId),
   }),
 )
 export type ProjectApplicationInsert = typeof projectApplication.$inferInsert
 export type ProjectApplicationSelect = typeof projectApplication.$inferSelect
+
+export const projectApplicationFiles = pgTable('projectApplicationFiles', {
+  id: uuid().primaryKey().notNull().defaultRandom(),
+  applicationId: uuid()
+    .notNull()
+    .references(() => projectApplication.id, { onDelete: 'cascade' }),
+  file: uuid()
+    .notNull()
+    .references(() => uploadedFiles.id, {
+      onDelete: 'cascade',
+    }),
+  createdAt: timestamp({ mode: 'date' }).defaultNow(),
+  updatedAt: timestamp({ mode: 'date' })
+    .defaultNow()
+    .$onUpdate(() => sql`current_timestamp`),
+})
+export type ProjectApplicationFilesInsert =
+  typeof projectApplicationFiles.$inferInsert
+export type ProjectApplicationFilesSelect =
+  typeof projectApplicationFiles.$inferSelect
 
 /**
  * Data for a single brainstorm
@@ -735,7 +753,7 @@ export const issueRelations = relations(projectIssue, ({ one }) => ({
 
 export const projectApplicationRelations = relations(
   projectApplication,
-  ({ one }) => ({
+  ({ one, many }) => ({
     project: one(projects, {
       fields: [projectApplication.projectId],
       references: [projects.id],
@@ -743,6 +761,21 @@ export const projectApplicationRelations = relations(
     user: one(users, {
       fields: [projectApplication.userId],
       references: [users.id],
+    }),
+    files: many(projectApplicationFiles),
+  }),
+)
+
+export const projectApplicationFilesRelations = relations(
+  projectApplicationFiles,
+  ({ one }) => ({
+    application: one(projectApplication, {
+      fields: [projectApplicationFiles.applicationId],
+      references: [projectApplication.id],
+    }),
+    file: one(uploadedFiles, {
+      fields: [projectApplicationFiles.file],
+      references: [uploadedFiles.id],
     }),
   }),
 )
