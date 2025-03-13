@@ -225,3 +225,15 @@ export async function createApplication(
   }))
   await db.insert(Schema.projectApplicationFiles).values(filesToInsert)
 }
+
+export async function isUserAppliedToProject(
+  userId: string,
+  projectId: string,
+) {
+  return await db.query.projectApplication.findFirst({
+    where: and(
+      eq(Schema.projectApplication.userId, userId),
+      eq(Schema.projectApplication.projectId, projectId),
+    ),
+  })
+}
