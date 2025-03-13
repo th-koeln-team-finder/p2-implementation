@@ -1,17 +1,16 @@
 'use client'
-
-import { useSessionPermission } from '@/features/auth/auth.hooks'
-import { useRouter } from '@/features/i18n/routing'
-import {
+ import {
   revalidateProjects,
   toggleProjectBookmark,
 } from '@/features/projects/projects.actions'
 import { Button } from '@repo/design-system/components/ui/button'
 import { cn } from '@repo/design-system/lib/utils'
 import { BookmarkIcon, LinkIcon, StarIcon } from 'lucide-react'
-import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useOptimistic, useTransition } from 'react'
+import { CanUserClient } from '@/features/auth/components/CanUser.client'
+import { Link } from '@/features/i18n/routing'
+import { useIsUserAppliedToProject } from '@/features/projects/project.hooks'
 
 type ProjectBookmarkButtonProps = {
   projectId: string
@@ -28,6 +27,8 @@ export function Toolbar({
   stars = stars || 13_000
   const starsString = stars.toLocaleString('en', { notation: 'compact' })
 
+  const [isApplied, isLoadingApplication] = useIsUserAppliedToProject(projectId)
+
   const [_, startTransition] = useTransition()
   const [optimisticBookmarked, dispatchOptimistic] = useOptimistic(
     isBookmarked,
@@ -35,18 +36,6 @@ export function Toolbar({
       return payload
     },
   )
-  const { data: session } = useSession()
-  const router = useRouter()
-
-  const canCreate = useSessionPermission('applyProject', 'create')
-
-  const join = () => {
-    if (!session?.user?.id) {
-      router.push('/login') // TODO Falls nicht eingeloggt, sollen die Anmelden und Registrieren Buttons erscheinen
-    } else {
-      router.push(`/projects/${projectId}/apply`)
-    }
-  }
 
   return (
     <div className="flex flex-row items-center gap-2">
@@ -75,16 +64,18 @@ export function Toolbar({
           />
         </Button>
       </div>
-      {!canCreate && (
-        <Button
-          variant="default"
-          size="default"
-          className="ml-2 w-full lg:w-auto"
-          onClick={join}
-        >
-          {t('join')}
-        </Button>
-      )}
+      <CanUserClient target="applyProject" action="create">
+        <Link href={`/projects/${projectId}/apply`}>
+          <Button
+            disabled={isLoadingApplication || isApplied}
+            variant="default"
+            size="default"
+            className="ml-2 w-full lg:w-auto"
+          >
+            {t('join')}
+          </Button>
+        </Link>
+      </CanUserClient>
     </div>
   )
 }
