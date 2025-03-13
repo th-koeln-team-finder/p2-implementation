@@ -53,7 +53,7 @@ export type Permissions = {
   applyProject: {
     view: never
     create: never
-    update: never
+    update: { createdById: string | null }
     delete: { createdById: string | null }
   }
   project: {
@@ -100,6 +100,11 @@ export const PERMISSIONS = {
       delete: (user, data) => data?.createdById === user?.id,
       update: (user, data) => data?.createdById === user?.id,
     },
+    applyProject: {
+      create: true,
+      update: (user, data) => data.createdById === user?.id,
+      delete: (user, data) => data.createdById === user?.id,
+    },
   },
   guest: {
     test: {
@@ -113,11 +118,6 @@ export const PERMISSIONS = {
     },
     commentBrainstorm: {
       view: false,
-    },
-    applyProject: {
-      view: false,
-      create: false,
-      update: false,
     },
     project: {
       'view.all': true,
