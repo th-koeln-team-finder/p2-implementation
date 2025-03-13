@@ -31,7 +31,7 @@ const VectorSizes = {
 }
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
-
+export const ProjectRoles = pgEnum('project_role', ['admin', 'participant'])
 /**
  * Test data should only demonstrate the usage of the library
  */
@@ -266,6 +266,7 @@ export const participants = pgTable(
     projectId: uuid('projectId')
       .notNull()
       .references(() => projects.id, { onDelete: 'cascade' }),
+    projectRole: ProjectRoles().notNull().default("participant"),
   },
   (participants) => ({
     pk: primaryKey({ columns: [participants.userId, participants.projectId] }),

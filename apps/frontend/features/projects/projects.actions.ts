@@ -60,10 +60,11 @@ export async function createProject(
     })
     .returning()
 
-  if (payload.participants[0].Users.id) {
+if (payload.participants[0].Users.id) {
     await db.insert(Schema.participants).values({
       userId: payload.participants[0].Users.id,
       projectId: project.id,
+      projectRole:"admin"
     })
   }
   const issuesToCreate = await Promise.all(

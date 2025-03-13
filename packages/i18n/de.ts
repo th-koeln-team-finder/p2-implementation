@@ -117,7 +117,7 @@ export const de: Language = {
       issueTitle: 'Issues für Neueinsteiger',
     },
     skillScale: {
-      skillTitle: 'Benötige Fähigkeiten',
+      skillTitle: 'Benötigte Fähigkeiten',
       emptySkills:
         'Für dieses Projekt sind keine speziellen Fähigkeiten erforderlich',
     },
