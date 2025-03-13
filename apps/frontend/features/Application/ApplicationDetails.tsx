@@ -5,7 +5,7 @@ import { useRouter } from '@/features/i18n/routing'
 import { createApplication } from '@/features/projects/projects.actions'
 import { useForm } from '@formsignals/form-react'
 import { ZodAdapter } from '@formsignals/validation-adapter-zod'
-import { useSignals } from '@preact/signals-react/runtime'
+import { useComputed, useSignals } from '@preact/signals-react/runtime'
 import { FieldError } from '@repo/design-system/components/FormErrors'
 import {
   WysiwygEditorForm,
@@ -24,6 +24,7 @@ import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { z } from 'zod'
+import { clientEnv } from '@repo/env/client'
 
 type ApplyFormValues = {
   checkbox: boolean
@@ -31,7 +32,6 @@ type ApplyFormValues = {
   phone: string
   bucketPrefix: string
   file: File[]
-  fileUpload: string
   message: string
 }
 
@@ -44,17 +44,14 @@ export default function ApplicationDetail({
 }: ApplicationDetailProps) {
   useSignals()
 
-  const [alertMessage, setAlertMessage] = useState<string | null>(null)
-
   const { data: session } = useSession()
-  const maxFileSize = 10485760
-
   const router = useRouter()
 
   const t = useTranslations('projects.apply')
   const translateError = useTranslations('validation')
 
-  const [progressState, _uploadFile, _resetFileProgress] = useFileUpload()
+  const [alertMessage, setAlertMessage] = useState<string | null>(null)
+  const [progressState, uploadFile, resetFileProgress] = useFileUpload()
 
   const form = useForm<ApplyFormValues, typeof ZodAdapter>({
     validatorAdapter: ZodAdapter,
@@ -64,64 +61,47 @@ export default function ApplicationDetail({
       phone: '',
       bucketPrefix: 'test',
       file: [] as File[],
-      fileUpload: '',
       message: '',
     },
     onSubmit: async (values) => {
       if (!session?.user?.id) return
-      try {
-        if (!values.file) {
-          return
-        }
 
-        await Promise.all(
-          values.file.map(async (file) => {
-            if (file.size >= maxFileSize) {
-              return
-            }
-            await _uploadFile(values.bucketPrefix, file.name, file)
-          }),
-        )
-        setTimeout(() => {
-          values.file.map((file) => {
-            _resetFileProgress(file.name)
-          })
-          form.reset()
-        }, 1000)
+      const fileIds = await Promise.all(
+        values.file.map((file) =>
+          uploadFile(values.bucketPrefix, file.name, file),
+        ),
+      )
 
-        console.log(`projectId:${projectId}`)
-
-        console.log(`UserId:${session.user.id}`)
-
-        const applicationData = {
+      await createApplication(
+        {
           projectId,
           userId: session.user.id,
           mail: values.mail,
           phone: values.phone,
           message: values.message,
-          file: values.file.map((file) => file.name),
-        }
-        console.log('Bewerbung:', applicationData)
+        },
+        fileIds.filter((e): e is string => !!e),
+      )
 
-        const applicationReturning = await createApplication(applicationData)
-        console.log('Bewerbung erfolgreich erstellt:', applicationReturning)
+      setAlertMessage('Deine Anfrage wurde versendet.')
+      setTimeout(() => {
+        setAlertMessage(null)
+      }, 5000)
 
-        setAlertMessage('Deine Anfrage wurde versendet.')
-
-        setTimeout(() => {
-          setAlertMessage(null)
-        }, 5000)
-
-        router.push(`/projects/${projectId}`)
-      } catch (error) {
-        console.error('Fehler beim Absenden des Formulars:', error)
-      }
+      setTimeout(() => {
+        values.file.map((file) => {
+          resetFileProgress(file.name)
+        })
+        form.reset()
+        router.replace(`/projects/${projectId}`)
+      }, 1000)
     },
+  })
+  const prefersInternalCommunication = useComputed(() => {
+    return form.data.value.checkbox.value
   })
 
   const editorRef = useLexicalEditorRef()
-
-  const [checkboxValue, setCheckboxValue] = useState(false)
 
   return (
     <form.FormProvider>
@@ -160,17 +140,14 @@ export default function ApplicationDetail({
             <form.FieldProvider name="checkbox" validator={z.boolean()}>
               <Label>{t('form.checkbox')}</Label> <br />
               <div className="flex flex-row items-center gap-4">
-                <CheckboxForm
-                  onCheckedChange={(value) => setCheckboxValue(value)}
-                  checked={checkboxValue}
-                />
+                <CheckboxForm />
                 <p>{t('form.checkboxText')}</p>
               </div>
             </form.FieldProvider>
           </div>
         </div>
 
-        {String(checkboxValue) === 'false' && (
+        {!prefersInternalCommunication.value && (
           <div className="mb-6 flex w-full flex-col gap-4 lg:flex-row">
             <div className="w-full lg:mb-4 lg:w-1/2">
               <form.FieldProvider
@@ -193,7 +170,7 @@ export default function ApplicationDetail({
                 name="phone"
                 validator={z
                   .string({ required_error: translateError('required') })
-                  .regex(/^\+[0-9]{2} [0-9]{5,14}$/, translateError('phone'))
+                  .regex(/^\+?[1-9]\d{1,14}$/, translateError('phone'))
                   .min(7, translateError('minLengthX', { amount: 7 }))}
                 validatorOptions={{
                   validateOnChangeIfTouched: true,
@@ -246,7 +223,7 @@ export default function ApplicationDetail({
                 placeholder={
                   <FileInlinePreviewsForm
                     progressState={progressState}
-                    maxFileSize={maxFileSize}
+                    maxFileSize={clientEnv.NEXT_PUBLIC_MAX_FILE_SIZE}
                   />
                 }
               />
@@ -254,7 +231,7 @@ export default function ApplicationDetail({
               <FileListForm
                 className="my-2"
                 progressState={progressState}
-                maxFileSize={maxFileSize}
+                maxFileSize={clientEnv.NEXT_PUBLIC_MAX_FILE_SIZE}
               />
             </form.FieldProvider>
           </div>

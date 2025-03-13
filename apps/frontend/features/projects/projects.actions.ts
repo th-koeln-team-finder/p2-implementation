@@ -206,29 +206,22 @@ export async function revalidateProjects() {
   return await revalidateTag('projects')
 }
 
-export async function createApplication(payload: ProjectApplicationInsert) {
-  try {
-    console.log(
-      'Starte Bewerbungserstellung für Projekt-ID:',
-      payload.projectId,
-    )
-    console.log('Payload für Bewerbung:', payload)
+export async function createApplication(
+  payload: ProjectApplicationInsert,
+  fileIds: string[],
+) {
+  const [application] = await db
+    .insert(Schema.projectApplication)
+    .values(payload)
+    .returning()
 
-    const [application] = await db
-      .insert(Schema.projectApplication)
-      .values({
-        userId: payload.userId,
-        projectId: payload.projectId,
-        mail: payload.mail,
-        phone: payload.phone,
-        message: payload.message,
-      })
-      .returning()
-
-    console.log('Bewerbung erfolgreich gespeichert:', application)
-    return application
-  } catch (error) {
-    console.error('Fehler bei der Bewerbungserstellung:', error)
-    throw error
+  if (!fileIds.length) {
+    return
   }
+
+  const filesToInsert = fileIds.map((file) => ({
+    applicationId: application.id,
+    file,
+  }))
+  await db.insert(Schema.projectApplicationFiles).values(filesToInsert)
 }
