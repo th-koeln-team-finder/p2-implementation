@@ -139,10 +139,12 @@ export const getProjectItem = cache(
             users: true,
           },
         },
-
-        /*
-              projectPictures: true,
-
+          projectPictures: {
+            with:{
+                uploadedFile: true,
+            }
+          },
+/*
               tags: true,
 
 
