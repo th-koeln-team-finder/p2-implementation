@@ -6,9 +6,9 @@ import { redirect } from '@/features/i18n/routing'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
-import type {
+import {
   ProjectPictureInsert,
-  ProjectResourceInsert,
+  ProjectResourceInsert, Weekdays,
 } from '@repo/database/schema'
 import { generateTextEmbeddings } from '@repo/semantic-search'
 import { and, eq } from 'drizzle-orm'
@@ -185,8 +185,10 @@ export async function createProjectUploadedData(
   if (authCheck) {
     return authCheck
   }
+
   //checks, if data is a resource or picture and creates the respective data
   if ('resources' in data && data.resources) {
+
     const resourcesToCreate = data.resources.map((resource) => ({
       projectId,
       label: resource.label,
@@ -199,15 +201,17 @@ export async function createProjectUploadedData(
     await db.insert(Schema.projectResource).values(resourcesToCreate)
   }
   //TODO: Add Check for picture DataType for upload
-  if ('resources' in data && data.pictures) {
-    const picturesToCreate = data.pictures.map((picture) => ({
+  if ('pictures' in data && data.pictures) {
+
+    const picturesToCreate = data.pictures.map((picture,index) => ({
       projectId,
-      label: picture.label,
+      label: "picture"+index,
       file: picture.fileUpload,
     }))
     if (!picturesToCreate.length) {
       return
     }
+    console.log("pictures"+picturesToCreate.map((picture) => picture.file))
     await db.insert(Schema.projectPicture).values(picturesToCreate)
   }
 }

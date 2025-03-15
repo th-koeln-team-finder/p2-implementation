@@ -101,11 +101,14 @@ export function CreateProjectForm() {
           ...r,
           file: [],
         })),
-        pictures: values.pictures.map((r) => ({
-          ...r,
+        pictures: values.pictures.map((p) => ({
+          ...p,
           file: [],
         })),
       }
+      console.log(serverActionData.resources+"-- ServerActionData - Resources")
+      console.log(serverActionData.pictures+"-- ServerActionData - Pictures")
+
       const projectId = await createProject(
         serverActionData,
         getStringContentFromEditor(editorRef.current),
@@ -146,6 +149,7 @@ export function CreateProjectForm() {
             file[0],
           )
           resetFileProgress(file[0].name)
+
           return {
             fileUpload: fileId,
             label,
@@ -158,20 +162,22 @@ export function CreateProjectForm() {
         resources: uploadedFileResources,
       })
       await createProjectUploadedData(projectId, {
-        resources: uploadedPictures,
+        pictures: uploadedPictures,
       })
       await revalidateProjects()
       setTimeout(() => {
         router.replace(`/projects/${projectId}`)
       }, 0)
     },
+
   })
+
 
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const basicFieldGroup = useFieldGroup(
     form,
-    ['name', 'phase', 'description', 'createdBy'],
+    ['name', 'phase', 'description', 'createdBy','pictures'],
     {
       onSubmit: () => setCurrentIndex(1),
     },
@@ -207,7 +213,19 @@ export function CreateProjectForm() {
 
   const stepperChecks = useMemo(
     () => [
-      async () => await basicFieldGroup.handleSubmit(),
+      async () => {
+        const projectFields = form.fields
+            .peek()
+            .filter((field) => field.name.startsWith('pictures'))
+        await Promise.all(
+            projectFields.map((field) => field.validateForEvent('onSubmit')),
+        )
+        const isResourceFieldInvalid = projectFields.some(
+            (field) => !field.isValid.peek(),
+        )
+        if (isResourceFieldInvalid) return
+      return await basicFieldGroup.handleSubmit()},
+
       async () => {
         const skillFields = form.fields
           .peek()
@@ -306,9 +324,8 @@ export function CreateProjectForm() {
               </form.FieldProvider>
             </div>
 
-            <form.FieldProvider name="resources">
+            <form.FieldProvider name="pictures">
               <CreateProjectPictureList
-                uploadFile={uploadFile}
                 progressState={progressState}
               />
             </form.FieldProvider>

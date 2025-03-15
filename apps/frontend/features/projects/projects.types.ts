@@ -1,4 +1,4 @@
-import Proje{ctSelect, UserInsert} from "@repo/database/schema";
+import {ProjectSelect, UserInsert} from "@repo/database/schema";
 
 
 export type PopulatedProject =ProjectSelect & {
@@ -53,6 +53,7 @@ export type CreateProjectFormLinks = {
     href: string
     file: File[]
   }>
+
 }
 export type CreateProjectFormPictures = {
     pictures: Array<{
