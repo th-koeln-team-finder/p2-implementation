@@ -1,4 +1,4 @@
-import type { Language } from './en'
+import type {Language} from './en'
 
 export const de: Language = {
   general: {
@@ -150,6 +150,13 @@ export const de: Language = {
         placeholderMessage: 'Gib deine Nachricht ein...',
         submit: 'Anfrage senden',
       },
+    },
+    overview: {
+      title: 'Projektübersicht',
+      notFound: 'Projekt nicht gefunden',
+      impressionsCount: '{count} Impressionen',
+      applicationsCount: '{count} Bewerbungen',
+      likesCount: '{count} Likes',
     },
   },
   createProjects: {

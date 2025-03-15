@@ -147,6 +147,13 @@ export const en = {
         submit: 'Send Request',
       },
     },
+    overview: {
+      title: 'Project Overview',
+      notFound: 'Project not found',
+      impressionsCount: '{count} Impressions',
+      applicationsCount: '{count} Applications',
+      likesCount: '{count} Likes',
+    }
   },
   createProjects: {
     fieldRequired: 'This field is required',
