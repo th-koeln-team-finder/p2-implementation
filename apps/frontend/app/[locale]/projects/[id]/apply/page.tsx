@@ -1,4 +1,4 @@
-import ApplicationDetail from '@/features/Application/ApplicationDetails'
+import ApplicationDetail from '@/features/Application/components/ApplicationDetails'
 import { getLocale } from 'next-intl/server'
 import { redirect } from '@/features/i18n/routing'
 import { hasSessionPermission } from '@/features/auth/auth.utils'

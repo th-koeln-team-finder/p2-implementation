@@ -12,7 +12,7 @@ import Image from 'next/image'
 import { getApplicationsForProject } from '@/features/Application/applications.queries'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { getProjectItem } from '@/features/projects/projects.queries'
-import { ApplicationList } from '@/features/Application/ApplicationList'
+import { ApplicationList } from '@/features/Application/components/ApplicationList'
 
 type ApplicationDetailProps = {
   projectId: string
