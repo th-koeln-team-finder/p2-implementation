@@ -8,7 +8,7 @@ import { CreateProjectPreview } from '@/features/projects/components/CreateProje
 import { CreateProjectSkills } from '@/features/projects/components/CreateProjectForm/CreateProjectSkills'
 import {
   createProject,
-  createProjectUploadedData,
+  createProjectAttachments,
   getUserProfile,
   revalidateProjects,
 } from '@/features/projects/projects.actions'
@@ -39,8 +39,10 @@ import {
 import { useTranslations } from 'next-intl'
 import { useEffect, useMemo, useState } from 'react'
 import { z } from 'zod'
-import { CreateProjectPictureList } from '@/features/projects/components/CreateProjectForm/CreateProjectPictureList'
 import type { UserSelect } from '@repo/database/schema'
+import { FileUploadForm } from '@repo/design-system/components/custom/file-upload'
+import { clientEnv } from '@repo/env/client'
+import { ProjectPicturesInlinePreview } from '@/features/projects/components/CreateProjectForm/ProjectPicturesInlinePreview'
 
 const registerAdapter = configureZodAdapter({
   takeFirstError: true,
@@ -93,91 +95,65 @@ export function CreateProjectForm() {
       resources: [],
       pictures: [],
     },
-    onSubmit: async (values) => {
+    onSubmit: async ({ resources, pictures, ...values }) => {
       if (!editorRef.current) return null
-      const serverActionData = {
-        ...values,
-        resources: values.resources.map((r) => ({
-          ...r,
-          file: [],
-        })),
-        pictures: values.pictures.map((p) => ({
-          ...p,
-          file: [],
-        })),
-      }
-      console.log(serverActionData.resources+"-- ServerActionData - Resources")
-      console.log(serverActionData.pictures+"-- ServerActionData - Pictures")
 
       const projectId = await createProject(
-        serverActionData,
+        values,
         getStringContentFromEditor(editorRef.current),
       )
-      const uploadedFileResources = await Promise.all(
-        values.resources.map(async ({ file, label, href }) => {
-          if (!file.length) {
-            return {
-              label,
-              href,
-              projectId,
-            }
-          }
-          const fileId = await uploadFile(
-            `${projectId}/resources`,
-            label,
-            file[0],
-          )
-          resetFileProgress(file[0].name)
-          return {
-            label,
-            fileUpload: fileId,
-            projectId,
-          }
-        }),
+
+      const processedResources = await Promise.all(
+        resources.map(
+          async ({
+            file,
+            ...resource
+          }): Promise<
+            [
+              Omit<CreateProjectFormValues['resources'][number], 'file'>,
+              string | undefined | null,
+            ]
+          > => {
+            if (!file.length) return [resource, null]
+            return [
+              resource,
+              await uploadFile(
+                `${projectId}/resources`,
+                resource.label,
+                file[0],
+              ),
+            ]
+          },
+        ),
       )
       const uploadedPictures = await Promise.all(
-        values.pictures.map(async ({ file, label }) => {
-          if (!file.length) {
-            return {
-              projectId,
-              label,
-            }
-          }
-          const fileId = await uploadFile(
-            `${projectId}/pictures`,
-            label,
-            file[0],
-          )
-          resetFileProgress(file[0].name)
-
-          return {
-            fileUpload: fileId,
-            label,
-            projectId,
-          }
-        }),
+        pictures.map(
+          async (p): Promise<[string, string | undefined | null]> => [
+            p.name,
+            await uploadFile(`${projectId}/pictures`, p.name, p),
+          ],
+        ),
+      )
+      await createProjectAttachments(
+        projectId,
+        processedResources,
+        uploadedPictures,
       )
 
-      await createProjectUploadedData(projectId, {
-        resources: uploadedFileResources,
-      })
-      await createProjectUploadedData(projectId, {
-        pictures: uploadedPictures,
-      })
+      resetFileProgress()
+
       await revalidateProjects()
       setTimeout(() => {
         router.replace(`/projects/${projectId}`)
       }, 0)
     },
-
   })
-
 
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const basicFieldGroup = useFieldGroup(
     form,
-    ['name', 'phase', 'description', 'createdBy','pictures'],
+    ['name', 'phase', 'description', 'createdBy', 'pictures'],
     {
       onSubmit: () => setCurrentIndex(1),
     },
@@ -215,16 +191,17 @@ export function CreateProjectForm() {
     () => [
       async () => {
         const projectFields = form.fields
-            .peek()
-            .filter((field) => field.name.startsWith('pictures'))
+          .peek()
+          .filter((field) => field.name.startsWith('pictures'))
         await Promise.all(
-            projectFields.map((field) => field.validateForEvent('onSubmit')),
+          projectFields.map((field) => field.validateForEvent('onSubmit')),
         )
         const isResourceFieldInvalid = projectFields.some(
-            (field) => !field.isValid.peek(),
+          (field) => !field.isValid.peek(),
         )
         if (isResourceFieldInvalid) return
-      return await basicFieldGroup.handleSubmit()},
+        return await basicFieldGroup.handleSubmit()
+      },
 
       async () => {
         const skillFields = form.fields
@@ -324,10 +301,29 @@ export function CreateProjectForm() {
               </form.FieldProvider>
             </div>
 
-            <form.FieldProvider name="pictures">
-              <CreateProjectPictureList
-                progressState={progressState}
-              />
+            <form.FieldProvider
+              name="pictures"
+              validator={(files) => {
+                if (!files.length) return translateError('required')
+                if (files.length > 5)
+                  return translateError('maxFiles', { amount: 5 })
+                return null
+              }}
+            >
+              <div className="w-full">
+                <Label>{t('resources.fileUpload')}</Label>
+                <FileUploadForm
+                  accepts="image/jpeg,image/jpg,image/png"
+                  multiple
+                  placeholder={
+                    <ProjectPicturesInlinePreview
+                      progressState={progressState}
+                      maxFileSize={clientEnv.NEXT_PUBLIC_MAX_FILE_SIZE}
+                    />
+                  }
+                />
+                <FieldError />
+              </div>
             </form.FieldProvider>
           </div>
 
@@ -509,7 +505,7 @@ export function CreateProjectForm() {
 
       <ContentItem stepId="review">
         <form.FormProvider>
-          <CreateProjectPreview />
+          <CreateProjectPreview progressState={progressState} />
         </form.FormProvider>
       </ContentItem>
     </StepperComponent>

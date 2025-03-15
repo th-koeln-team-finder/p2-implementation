@@ -36,8 +36,8 @@ export default async function Projects({
         />
         <Toolbar project={project} />
       </div>
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        <ImageCarousel images={project.projectPictures?project.projectPictures:{}}/>
+      <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
+        <ImageCarousel images={project.projectPictures ?? []} />
         <SkillScale
           title={translations('skillScale.skillTitle')}
           emptySkillsMessage={translations('skillScale.emptySkills')}

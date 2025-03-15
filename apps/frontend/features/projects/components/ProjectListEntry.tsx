@@ -8,25 +8,34 @@ import {
   CardTitle,
 } from '@repo/design-system/components/ui/card'
 import Image from 'next/image'
-import { Button } from '@repo/design-system/components/ui/button'
-import { BookmarkIcon, StarIcon } from 'lucide-react'
+import { FilePreview } from '@/features/file-upload/components/FilePreview'
+import { ProjectListEntryToolbar } from '@/features/projects/components/ProjectListEntryToolbar'
 
 type FindAProjectListEntryProps = {
   project: Awaited<ReturnType<typeof getProjectItems>>[number]
 }
 
 export function ProjectListEntry({ project }: FindAProjectListEntryProps) {
-  const firstPicture = project.pictures?.[0]
+  const firstImage = project.projectPictures?.[0]
   return (
     <Link href={`/projects/${project.id}`}>
       <Card className="h-full">
-        <Image
-          className="h-48 w-full rounded-t object-cover"
-          src="/images/image-placeholder.jpg"
-          height={800}
-          width={1200}
-          alt={project.name}
-        />
+        {firstImage?.uploadedFile ? (
+          <FilePreview
+            file={firstImage.uploadedFile}
+            className="h-48 w-full rounded-t object-cover"
+            height={800}
+            width={1200}
+          />
+        ) : (
+          <Image
+            className="h-48 w-full rounded-t object-cover"
+            src="/images/image-placeholder.jpg"
+            height={800}
+            width={1200}
+            alt={project.name}
+          />
+        )}
         <CardHeader>
           <div className="-mb-2 flex flex-row flex-wrap gap-1 text-xs">
             {project.totalSimilarity && (
@@ -56,14 +65,12 @@ export function ProjectListEntry({ project }: FindAProjectListEntryProps) {
           </div>
           <div className="flex flex-row items-center justify-between gap-2">
             <CardTitle className="text-xl">{project.name}</CardTitle>
-            <div className="flex flex-row items-center gap-1">
-              <Button variant="ghost" size="icon">
-                <StarIcon />
-              </Button>
-              <Button variant="ghost" size="icon">
-                <BookmarkIcon />
-              </Button>
-            </div>
+            <ProjectListEntryToolbar
+              projectId={project.id}
+              isStared={project.isStared}
+              projectStars={project.projectStars}
+              isBookmarked={project.isBookmarked}
+            />
           </div>
 
           <CardDescription className="max-h-20 overflow-hidden">

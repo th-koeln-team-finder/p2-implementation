@@ -7,7 +7,12 @@ import { and, cosineDistance, desc, eq, gte, lte, sql } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
 
 export const getProjectItems = cache(
-  async (search, filters: ReturnType<typeof parseFilters>, limit: number) => {
+  async (
+    search,
+    filters: ReturnType<typeof parseFilters>,
+    limit: number,
+    userId?: string,
+  ) => {
     const searchEmbeddings = await generateTextEmbeddings(search ?? '')
 
     const similarity = sql<number>`(1 - (${cosineDistance(Schema.projects.embedding, searchEmbeddings)}))`
@@ -30,7 +35,7 @@ export const getProjectItems = cache(
         : sql`true`
     const membersFilter = and(minMembersFilter, maxMembersFilter)
 
-    const projectStars = sql`(SELECT COUNT(*) FROM "project_star" star WHERE star."projectId" = "projects"."id")`
+    const projectStars = sql<number>`(SELECT COUNT(*) FROM "project_star" star WHERE star."projectId" = "projects"."id")`
 
     const minStarsFilterValue = filters[FilterKeys.minStars]
     const minStarsFilter =
@@ -59,6 +64,16 @@ export const getProjectItems = cache(
 
     return db.query.projects.findMany({
       extras: {
+        isBookmarked: !userId
+          ? sql<boolean>`false`.as('isBookmarked')
+          : sql<boolean>`EXISTS (SELECT id FROM "project_bookmark" bookmark WHERE bookmark."projectId" = "projects"."id" AND bookmark."userId" = ${userId})`.as(
+              'isBookmarked',
+            ),
+        isStared: !userId
+          ? sql<boolean>`false`.as('isStared')
+          : sql<boolean>`EXISTS (SELECT id FROM "project_star" star WHERE star."projectId" = "projects"."id" AND star."userId" = ${userId})`.as(
+              'isStared',
+            ),
         participantCount: participantCount.as('participantCount'),
         projectStars: projectStars.as('projectStars'),
         totalSimilarity: search
@@ -139,12 +154,12 @@ export const getProjectItem = cache(
             users: true,
           },
         },
-          projectPictures: {
-            with:{
-                uploadedFile: true,
-            }
+        projectPictures: {
+          with: {
+            uploadedFile: true,
           },
-/*
+        },
+        /*
               tags: true,
 
 

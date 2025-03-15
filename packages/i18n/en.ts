@@ -34,6 +34,7 @@ export const en = {
     },
     fileUpload: {
       placeholderText: 'Drag and drop a file here or click to browse',
+      placeholderTextMultiple: 'Drag and drop files here or click to browse',
       selectedFileHeader: 'Selected files',
       noFilesSelected: 'No files selected',
       finishedText: 'Finished',
@@ -383,6 +384,8 @@ export const en = {
     },
   },
   validation: {
+    maxFiles:
+      'You can only upload {amount, plural, =1 {one file} other {# files}}',
     inProgress: 'Validating...',
     required: 'This field is required',
     email: 'This field must be a valid email',

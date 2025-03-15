@@ -1,11 +1,9 @@
-import {ProjectSelect, UserInsert} from "@repo/database/schema";
+import type { ProjectSelect, UserInsert } from '@repo/database/schema'
 
-
-export type PopulatedProject =ProjectSelect & {
-    isBookmarked: boolean
-    starCount: string
-    isStared: boolean
-
+export type PopulatedProject = ProjectSelect & {
+  isBookmarked: boolean
+  starCount: string
+  isStared: boolean
 }
 
 export type CreateProjectFormBasic = {
@@ -17,9 +15,9 @@ export type CreateProjectFormBasic = {
 }
 
 export type CreateProjectFormParticipants = {
-    participants: Array<{
-        Users: UserInsert
-    }>
+  participants: Array<{
+    Users: UserInsert
+  }>
 }
 
 export type CreateProjectFormSkills = {
@@ -53,13 +51,9 @@ export type CreateProjectFormLinks = {
     href: string
     file: File[]
   }>
-
 }
 export type CreateProjectFormPictures = {
-    pictures: Array<{
-    label:string
-    file: File[]
-    }>
+  pictures: File[]
 }
 
 export type CreateProjectFormValues = CreateProjectFormBasic &

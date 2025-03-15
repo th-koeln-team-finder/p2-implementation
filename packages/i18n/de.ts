@@ -37,6 +37,8 @@ export const de: Language = {
     fileUpload: {
       placeholderText:
         'Ziehen Sie eine Datei hierher oder klicken Sie, um zu durchsuchen',
+      placeholderTextMultiple:
+        'Ziehen Sie Dateien hierher oder klicken Sie, um Dateien hochzuladen',
       selectedFileHeader: 'Ausgewählte Dateien',
       noFilesSelected: 'Keine Dateien ausgewählt',
       finishedText: 'Fertig',
@@ -392,6 +394,7 @@ export const de: Language = {
     },
   },
   validation: {
+    maxFiles: 'Maximal {amount, plural, =1 {eine Datei} other {# Dateien}}',
     inProgress: 'Validiere...',
     required: 'Dieses Feld ist erforderlich',
     email: 'Dieses Feld muss eine gültige E-Mail-Adresse sein',

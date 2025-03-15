@@ -6,10 +6,7 @@ import { redirect } from '@/features/i18n/routing'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
-import {
-  ProjectPictureInsert,
-  ProjectResourceInsert, Weekdays,
-} from '@repo/database/schema'
+import { Weekdays } from '@repo/database/schema'
 import { generateTextEmbeddings } from '@repo/semantic-search'
 import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
@@ -36,7 +33,7 @@ async function authCheckCreateProject() {
 }
 
 export async function createProject(
-  payload: CreateProjectFormValues,
+  payload: Omit<CreateProjectFormValues, 'resources' | 'pictures'>,
   descriptionTextValue: string,
 ) {
   const authCheck = await authCheckCreateProject()
@@ -60,11 +57,11 @@ export async function createProject(
     })
     .returning()
 
-if (payload.participants[0].Users.id) {
+  if (payload.participants[0].Users.id) {
     await db.insert(Schema.participants).values({
       userId: payload.participants[0].Users.id,
       projectId: project.id,
-      projectRole:"admin"
+      projectRole: 'admin',
     })
   }
   const issuesToCreate = await Promise.all(
@@ -122,6 +119,41 @@ if (payload.participants[0].Users.id) {
   return project.id
 }
 
+export async function createProjectAttachments(
+  projectId: string,
+  processedResources: [
+    Omit<CreateProjectFormValues['resources'][number], 'file'>,
+    string | undefined | null,
+  ][],
+  uploadedPictures: [string, string | undefined | null][],
+) {
+  const authCheck = await authCheckCreateProject()
+  if (authCheck) {
+    return authCheck as never
+  }
+
+  if (uploadedPictures.length) {
+    await db.insert(Schema.projectPicture).values(
+      uploadedPictures.map(([label, pictureId]) => ({
+        projectId: projectId,
+        label,
+        fileUpload: pictureId,
+      })),
+    )
+  }
+
+  if (processedResources.length) {
+    await db.insert(Schema.projectResource).values(
+      processedResources.map(([resource, fileId]) => ({
+        projectId: projectId,
+        label: resource.label,
+        href: resource.href,
+        fileUpload: fileId,
+      })),
+    )
+  }
+}
+
 async function createProjectSkills(
   projectId: string,
   skills: CreateProjectFormValues['skills'],
@@ -172,49 +204,6 @@ export async function getUserProfile() {
   return session?.user
 }
 
-export async function createProjectUploadedData(
-  projectId: string,
-  data:
-    | { resources: ProjectResourceInsert[]; pictures?: never }
-    | {
-        pictures: ProjectPictureInsert[]
-        resources?: never
-      },
-) {
-  const authCheck = await authCheckCreateProject()
-  if (authCheck) {
-    return authCheck
-  }
-
-  //checks, if data is a resource or picture and creates the respective data
-  if ('resources' in data && data.resources) {
-
-    const resourcesToCreate = data.resources.map((resource) => ({
-      projectId,
-      label: resource.label,
-      href: resource.href,
-      fileUpload: resource.fileUpload,
-    }))
-    if (!resourcesToCreate.length) {
-      return
-    }
-    await db.insert(Schema.projectResource).values(resourcesToCreate)
-  }
-  //TODO: Add Check for picture DataType for upload
-  if ('pictures' in data && data.pictures) {
-
-    const picturesToCreate = data.pictures.map((picture,index) => ({
-      projectId,
-      label: "picture"+index,
-      file: picture.fileUpload,
-    }))
-    if (!picturesToCreate.length) {
-      return
-    }
-    console.log("pictures"+picturesToCreate.map((picture) => picture.file))
-    await db.insert(Schema.projectPicture).values(picturesToCreate)
-  }
-}
 export async function toggleProjectBookmark(
   id: string,
   shouldBookmark: boolean,

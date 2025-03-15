@@ -5,6 +5,7 @@ import { parseFilters } from '@/features/projects/components/FilterBar/filterbar
 import { ProjectListEntry } from '@/features/projects/components/ProjectListEntry'
 import { getProjectItems } from '@/features/projects/projects.queries'
 import { getTranslations } from 'next-intl/server'
+import { authMiddleware } from '@/auth'
 
 type ProjectListProps = {
   search?: string
@@ -19,13 +20,19 @@ export async function ProjectList({
   offset,
   filters,
 }: ProjectListProps) {
+  const session = await authMiddleware()
   const translate = await getTranslations('projects')
 
   const parsedFilters = parseFilters(filters)
 
   const offsetNumber = Number.parseInt(offset ?? '0')
   const limit = pageSize + offsetNumber
-  const projects = await getProjectItems(search, parsedFilters, limit)
+  const projects = await getProjectItems(
+    search,
+    parsedFilters,
+    limit,
+    session?.user?.id,
+  )
   const hasMore = limit <= projects.length
 
   return (

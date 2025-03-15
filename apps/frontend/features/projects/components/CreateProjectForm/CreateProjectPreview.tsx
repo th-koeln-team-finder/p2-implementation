@@ -1,4 +1,3 @@
-import ImageCarousel from '@/features/projects/components/ImageCarousel'
 import { ProjectIssuesList } from '@/features/projects/components/ProjectIssuesList'
 import { ProjectResourcePreview } from '@/features/projects/components/ProjectResourcePreview'
 import { ProjectTimetable } from '@/features/projects/components/ProjectTimetable'
@@ -13,8 +12,12 @@ import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/Wy
 import { useTranslations } from 'next-intl'
 import { getUserProfile } from '@/features/projects/projects.actions'
 import { useEffect, useState } from 'react'
+import { useSignalEffect } from '@preact/signals-react'
+import CreateProjectPicturePreviewCarousel from '@/features/projects/components/CreateProjectForm/CreateProjectPicturePreviewCarousel'
 
-export function CreateProjectPreview() {
+export function CreateProjectPreview({
+  progressState,
+}: { progressState: Record<string, number> }) {
   useSignals()
   const t = useTranslations('projects')
   const form = useFormContext<CreateProjectFormValues>()
@@ -47,12 +50,28 @@ export function CreateProjectPreview() {
             if (entry.description !== '') return entry
           })
           .filter((entry) => entry !== undefined)
+
+  const [fieldPreviews, setFieldPreviews] = useState<string[]>([])
+  useSignalEffect(() => {
+    const fieldPreviews = form.data.value.pictures.value.map((file) => {
+      return URL.createObjectURL(file.data.value)
+    })
+    setFieldPreviews(fieldPreviews)
+    return () => {
+      for (const [_, url] of fieldPreviews) {
+        URL.revokeObjectURL(url)
+      }
+    }
+  })
   return (
     <div className="inline-flex flex-col items-start justify-start gap-8 self-stretch">
       <ProjectTitle title={formValues.name} subtitle={formValues.phase} />
 
-      <div className="grid grid-cols-2 gap-8">
-        <ImageCarousel />
+      <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
+        <CreateProjectPicturePreviewCarousel
+          images={fieldPreviews}
+          progressState={progressState}
+        />
         <SkillScale
           title={t('skillScale.skillTitle')}
           emptySkillsMessage={t('skillScale.emptySkills')}
