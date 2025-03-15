@@ -9,6 +9,7 @@ self.addEventListener('push', (event) => {
       data: {
         dateOfArrival: Date.now(),
         primaryKey: '2',
+        ...data.data,
       },
       image: data.image,
       actions: data.actions,
@@ -20,6 +21,7 @@ self.addEventListener('push', (event) => {
 
 self.addEventListener('notificationclick', (event) => {
   console.log('Notification click received.')
+  const link = event.data?.link
   event.notification.close()
-  event.waitUntil(clients.openWindow(process.env.FRONTEND_URL))
+  event.waitUntil(clients.openWindow(link || process.env.FRONTEND_URL))
 })

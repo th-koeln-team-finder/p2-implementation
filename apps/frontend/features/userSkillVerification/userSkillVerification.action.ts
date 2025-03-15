@@ -1,8 +1,10 @@
 'use server'
 
+import { getPathname } from '@/features/i18n/routing'
 import { sendNotificationByType } from '@/features/notifications/notifications.actions'
 import { Schema, db } from '@repo/database'
 import { and, eq } from 'drizzle-orm'
+import { getLocale } from 'next-intl/server'
 
 export async function verifyUserSkill(userId: string, userSkillId: string) {
   await db.insert(Schema.userSkillVerification).values({
@@ -25,6 +27,10 @@ export async function verifyUserSkill(userId: string, userSkillId: string) {
         'notifications.newSkillEvaluation.message',
         { skill: userSkill.skill.skill },
       ],
+      data: {
+        link: getPathname({ href: '/profile', locale: await getLocale() }),
+        linkText: ['notifications.newSkillEvaluation.linkText'],
+      },
     })
   }
 }
