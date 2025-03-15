@@ -38,20 +38,19 @@ export const getUserWithImage = cache(
   { tags: ['user'] },
 )
 
-export const usersWhoWantToReceiveNotificationsByType = cache(
-  async (userIds: string[], type: NotificationType) => {
-    const pushColumn: NotificationColumn = `${type}_push`
-    const emailColumn: NotificationColumn = `${type}_push`
-    return await db.query.users.findMany({
-      where: and(
-        inArray(users.id, userIds),
-        or(
-          eq(Schema.users[pushColumn], true),
-          eq(Schema.users[emailColumn], true),
-        ),
+export const usersWhoWantToReceiveNotificationsByType = async (
+  userIds: string[],
+  type: NotificationType,
+) => {
+  const pushColumn: NotificationColumn = `${type}_push`
+  const emailColumn: NotificationColumn = `${type}_email`
+  return await db.query.users.findMany({
+    where: and(
+      inArray(users.id, userIds),
+      or(
+        eq(Schema.users[pushColumn], true),
+        eq(Schema.users[emailColumn], true),
       ),
-    })
-  },
-  ['usersWhoWantToReceiveNotificationsByType'],
-  { tags: ['user'] },
-)
+    ),
+  })
+}
