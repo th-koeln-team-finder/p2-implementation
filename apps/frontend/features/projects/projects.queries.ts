@@ -20,6 +20,7 @@ export const getProjectItems = cache(
     const totalSimilarity = sql<number>`(${similarity} * 2 + ${issueSimilarity}) / 3`
     const totalSimilarityNoIssue = sql<number>`${similarity}`
     const correctTotalSimilarity = sql<number>`CASE WHEN ${issueSimilarity} IS NULL THEN ${totalSimilarityNoIssue} ELSE ${totalSimilarity} END`
+    const grossSimilarity = sql<number>`ROUND(CAST(${correctTotalSimilarity} AS numeric), 2)`
 
     const participantCount = sql<number>`(SELECT COUNT(*) FROM participants WHERE "participants"."projectId" = "projects"."id")`
 
@@ -35,7 +36,7 @@ export const getProjectItems = cache(
         : sql`true`
     const membersFilter = and(minMembersFilter, maxMembersFilter)
 
-    const projectStars = sql<number>`(SELECT COUNT(*) FROM "project_star" star WHERE star."projectId" = "projects"."id")`
+    const projectStars = sql<string>`(SELECT COUNT(*) FROM "project_star" star WHERE star."projectId" = "projects"."id")`
 
     const minStarsFilterValue = filters[FilterKeys.minStars]
     const minStarsFilter =
@@ -62,8 +63,17 @@ export const getProjectItems = cache(
     )
     const skillFilter = skillFilters.length ? and(...skillFilters) : sql`true`
 
+    const baseProjectSkillMatchScore = 10
+    const levelAboveWeight = 2
+    const levelBelowWeight = -5
+    const projectSkillMatchScoreRaw = sql<number>`(SELECT SUM(${baseProjectSkillMatchScore} + GREATEST((us.level - ps.level) * ${levelAboveWeight}, ${levelBelowWeight} * (ps.level - us.level))) FROM "projectSkill" ps JOIN "userSkills" us ON ps."skillId" = us."skillId" WHERE us."userId" = ${userId} AND ps."projectId" = "projects"."id")`
+    const projectSkillMatchScore = sql<number>`CASE WHEN ${projectSkillMatchScoreRaw} IS NULL THEN 0 ELSE ${projectSkillMatchScoreRaw} END`
+
     return db.query.projects.findMany({
       extras: {
+        projectSkillMatchScore: userId
+          ? projectSkillMatchScore.as('projectSkillMatchScore')
+          : sql<number>`NULL`.as('projectSkillMatchScore'),
         isBookmarked: !userId
           ? sql<boolean>`false`.as('isBookmarked')
           : sql<boolean>`EXISTS (SELECT id FROM "project_bookmark" bookmark WHERE bookmark."projectId" = "projects"."id" AND bookmark."userId" = ${userId})`.as(
@@ -106,8 +116,9 @@ export const getProjectItems = cache(
       ),
       limit,
       orderBy: [
-        search && desc(correctTotalSimilarity),
-        desc(Schema.projects.createdAt),
+        search && desc(grossSimilarity),
+        desc(projectSkillMatchScore),
+        desc(projectStars),
       ].filter(Boolean),
     })
   },

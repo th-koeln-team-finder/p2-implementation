@@ -38,6 +38,14 @@ export function ProjectListEntry({ project }: FindAProjectListEntryProps) {
         )}
         <CardHeader>
           <div className="-mb-2 flex flex-row flex-wrap gap-1 text-xs">
+            {project.projectSkillMatchScore && (
+              <span className="rounded bg-muted px-1 text-muted-foreground/80">
+                projectSkillMatchScore:{' '}
+                <span className="text-muted-foreground">
+                  {project.projectSkillMatchScore}
+                </span>
+              </span>
+            )}
             {project.totalSimilarity && (
               <span className="rounded bg-muted px-1 text-muted-foreground/80">
                 similarity:{' '}
