@@ -1,18 +1,9 @@
-import { Button } from '@repo/design-system/components/ui/button'
-import {
-  EyeIcon,
-  MailsIcon,
-  PaperclipIcon,
-  PinIcon,
-  StarIcon,
-  TextIcon,
-} from 'lucide-react'
-import Image from 'next/image'
+import {EyeIcon, StarIcon, TextIcon,} from 'lucide-react'
 
-import { getApplicationsForProject } from '@/features/Application/applications.queries'
-import { getLocale, getTranslations } from 'next-intl/server'
-import { getProjectItem } from '@/features/projects/projects.queries'
-import { ApplicationList } from '@/features/Application/components/ApplicationList'
+import {getApplicationsForProject} from '@/features/Application/applications.queries'
+import {getLocale, getTranslations} from 'next-intl/server'
+import {getProjectItem} from '@/features/projects/projects.queries'
+import {ApplicationList} from '@/features/Application/components/ApplicationList'
 
 type ApplicationDetailProps = {
   projectId: string

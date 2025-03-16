@@ -153,6 +153,7 @@ export const en = {
       impressionsCount: '{count} Impressions',
       applicationsCount: '{count} Applications',
       likesCount: '{count} Likes',
+      filesAttached: '{count} files attached',
     }
   },
   createProjects: {

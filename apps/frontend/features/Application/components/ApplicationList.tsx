@@ -1,22 +1,29 @@
-import { getApplicationsForProject } from '@/features/Application/applications.queries'
-import { MailsIcon, PaperclipIcon, PinIcon } from 'lucide-react'
-import { Button } from '@repo/design-system/components/ui/button'
-import { UserAvatar } from '@/features/auth/components/UserAvatar'
-import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
-import { Link } from '@/features/i18n/routing'
+import {getApplicationsForProject} from '@/features/Application/applications.queries'
+import {MailsIcon, PaperclipIcon, PinIcon} from 'lucide-react'
+import {Button} from '@repo/design-system/components/ui/button'
+import {UserAvatar} from '@/features/auth/components/UserAvatar'
+import {WysiwygRenderer} from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
+import {Link} from '@/features/i18n/routing'
+import {authMiddleware} from "@/auth";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@repo/design-system/components/ui/tooltip";
+import {getTranslations} from "next-intl/server";
+import ApplicationListPin from "@/features/Application/components/ApplicationListPin";
 
 type ApplicationListProps = {
   projectId: string
 }
 
 export async function ApplicationList({ projectId }: ApplicationListProps) {
-  const application = await getApplicationsForProject(projectId)
+  const translate = await getTranslations('projects.overview')
+  const session = await authMiddleware()
+  const application = await getApplicationsForProject(projectId, session?.user?.id)
+
   return (
     <div>
-      {application.map((app) => (
+      {application?.map((app) => (
         <div
           key={app.id}
-          className="flex w-full flex-row gap-2 border-t-2 border-b-2 px-2 py-4"
+          className="flex w-full flex-row gap-4 border-t-2 border-b-2 px-2 py-4"
         >
           <Link href={`/projects/${projectId}/overview/${app.id}`}>
             <div className="w-2/12">
@@ -47,16 +54,23 @@ export async function ApplicationList({ projectId }: ApplicationListProps) {
           </div>
 
           <div className="flex w-1/12 flex-col gap-2 lg:flex-row">
-            <div
-              className={
-                'inline-flex h-9 items-center p-0 [&_svg]:size-4 [&_svg]:shrink-0'
-              }
-            >
-              <PaperclipIcon />
-            </div>
-            <Button variant="ghost" className="w-full p-0">
-              <PinIcon size={24} />
-            </Button>
+            {app.attachmentCount > 0 && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger
+                    className={
+                      'inline-flex h-9 items-center p-0 [&_svg]:size-4 [&_svg]:shrink-0'
+                    }
+                  >
+                    <PaperclipIcon />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    {translate('filesAttached', { count: app.attachmentCount })}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+            <ApplicationListPin application={app} />
             <Button variant="ghost" className="w-full p-0">
               <MailsIcon size={24} />
             </Button>

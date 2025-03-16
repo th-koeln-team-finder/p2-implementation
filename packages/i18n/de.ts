@@ -157,6 +157,7 @@ export const de: Language = {
       impressionsCount: '{count} Impressionen',
       applicationsCount: '{count} Bewerbungen',
       likesCount: '{count} Likes',
+      filesAttached: '{count} Dateien angehängt',
     },
   },
   createProjects: {

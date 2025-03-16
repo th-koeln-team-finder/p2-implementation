@@ -401,10 +401,11 @@ export const projectApplication = pgTable(
     mail: text().notNull(),
     phone: text().notNull(),
     message: text().notNull(),
+    isPinned: boolean('isPinned').notNull().default(false),
     createdAt: timestamp({ mode: 'date' }).defaultNow(),
     updatedAt: timestamp({ mode: 'date' })
       .defaultNow()
-      .$onUpdate(() => sql`current_timestamp`),
+      .$onUpdate(() => new Date()),
   },
   (projectApplication) => ({
     projectApplicationUniqueConstraint: unique(
@@ -415,7 +416,7 @@ export const projectApplication = pgTable(
 export type ProjectApplicationInsert = typeof projectApplication.$inferInsert
 export type ProjectApplicationSelect = typeof projectApplication.$inferSelect
 
-export const projectApplicationFiles = pgTable('projectApplicationFiles', {
+export const projectApplicationFiles = pgTable('project_application_files', {
   id: uuid().primaryKey().notNull().defaultRandom(),
   applicationId: uuid()
     .notNull()
