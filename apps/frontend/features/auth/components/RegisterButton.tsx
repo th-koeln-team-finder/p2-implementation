@@ -1,8 +1,8 @@
 'use client'
 import { Link } from '@/features/i18n/routing'
 import { Button } from '@repo/design-system/components/ui/button'
-import { useTranslations } from 'next-intl'
 import { useSidebar } from '@repo/design-system/components/ui/sidebar'
+import { useTranslations } from 'next-intl'
 
 export function RegisterButton() {
   const { setOpenMobile } = useSidebar()
