@@ -33,7 +33,7 @@ export default async function Header() {
       </a>
 
       <div className="flex w-full items-center md:hidden">
-        <SidebarTrigger className="ml-auto" />
+        <SidebarTrigger className="ml-auto [&_svg]:size-7" />
       </div>
       <div className="hidden w-full items-center justify-end gap-12 self-stretch md:flex">
         <nav className="nav flex items-center gap-6">
