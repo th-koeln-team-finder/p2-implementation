@@ -3,7 +3,6 @@ import { LoginButton } from '@/features/auth/components/LoginButton'
 import { RegisterButton } from '@/features/auth/components/RegisterButton'
 import { SignOutMenuItem } from '@/features/auth/components/SignOutMenuItem'
 import { UserAvatar } from '@/features/auth/components/UserAvatar'
-import { ApplicationIcon } from '@/features/general/components/ApplicationIcon'
 import { Link } from '@/features/i18n/routing'
 import { getUserWithImage } from '@/features/users/users.query'
 import {
@@ -32,6 +31,7 @@ import {
   Users2Icon,
 } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
+import { ApplicationIconText } from '@/features/general/components/ApplicationIconText'
 
 export async function AppSidebar() {
   const [translate, session] = await Promise.all([
@@ -46,8 +46,7 @@ export async function AppSidebar() {
   return (
     <Sidebar side="right" hideOnDesktop>
       <SidebarHeader className="flex flex-row items-center gap-2 pt-4">
-        <ApplicationIcon className="size-10" />
-        <h1 className="text-2xl">Collaborize</h1>
+        <ApplicationIconText className="h-16" />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
