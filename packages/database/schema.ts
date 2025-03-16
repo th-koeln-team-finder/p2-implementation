@@ -275,7 +275,7 @@ export const participants = pgTable(
 export type ParticipantsInsert = typeof participants.$inferInsert
 export type ParticipantsSelect = typeof participants.$inferSelect
 
-/*
+
 export const projectTags = pgTable(
     'project_tag',
     {
@@ -294,7 +294,7 @@ export type projectTagInsert = typeof projectTags.$inferInsert
 export type projectTagSelect = typeof projectTags.$inferSelect
 
 
- */
+
 
 /**
  * Skills for a project, referencing Project and Skill
@@ -606,6 +606,8 @@ export const brainstormTags = pgTable(
 export type BrainstormTagInsert = typeof brainstormTags.$inferInsert
 export type BrainstormTagSelect = typeof brainstormTags.$inferSelect
 
+
+
 export const uploadStatusEnum = pgEnum('upload_status', [
   'pending', // Someone requested a presigned URL (if there are pending uploads older than 30 minutes, then the presigend url is expired and we have to check if the file was uploaded)
   'uploaded', // Callback after upload was successful
@@ -731,17 +733,15 @@ export const projectRelations = relations(projects, ({ many }) => ({
   bookmarks: many(projectBookmarks, {
     relationName: 'projectBookmarks',
   }),
-
-  /*
   tags: many(projectTags,{
     relationName: 'projectTags',
   }),
 
 
 
-*/
+
 }))
-/*
+
 export const projectTagRelations = relations(projectTags, ({ one }) => ({
   project: one(projects, {
     fields: [projectTags.projectId],
@@ -754,7 +754,7 @@ export const projectTagRelations = relations(projectTags, ({ one }) => ({
 }))
 
 
- */
+
 
 export const projectBookmarkRelations = relations(
   projectBookmarks,

@@ -6,7 +6,7 @@ import { redirect } from '@/features/i18n/routing'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
-import { Weekdays } from '@repo/database/schema'
+import {type TagSelect, Weekdays} from '@repo/database/schema'
 import { generateTextEmbeddings } from '@repo/semantic-search'
 import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
@@ -56,6 +56,41 @@ export async function createProject(
       phase: payload.phase,
     })
     .returning()
+
+  const newTags = await Promise.all(
+      payload.tags
+          .filter((tag) => tag.value.startsWith('new:'))
+          .map(async (tag) => {
+            const name = tag.value.replace('new:', '')
+            const embedding = await generateTextEmbeddings(name, 'small')
+            return {
+              name,
+              embedding,
+            }
+          }),
+  )
+    let createdTags = [] as TagSelect[]
+    if (newTags.length > 0) {
+        createdTags = await db.insert(Schema.tags).values(newTags).returning()
+    }
+  const projectTags = payload.tags
+      .map((tag) => {
+        const tagId = tag.value.startsWith('new:')
+            ? createdTags.find((t) => t.name === tag.value.replace('new:', ''))?.id
+            : tag.value
+        if (!tagId) {
+          console.error('Error creating tag', tag)
+          return null
+        }
+        return {
+          projectId: project.id,
+          tagId,
+        }
+      })
+      .filter((e) => !!e)
+  await db.insert(Schema.projectTags).values(projectTags).returning()
+
+
 
   if (payload.participants[0].Users.id) {
     await db.insert(Schema.participants).values({

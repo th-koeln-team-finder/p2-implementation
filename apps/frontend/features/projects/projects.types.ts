@@ -4,6 +4,8 @@ export type PopulatedProject = ProjectSelect & {
   isBookmarked: boolean
   starCount: string
   isStared: boolean
+  tags: { tag: { id:string; name:string } }[]
+  //  tagSimilarity: number //is this necessary?
 }
 
 export type CreateProjectFormBasic = {
@@ -51,6 +53,7 @@ export type CreateProjectFormLinks = {
     href: string
     file: File[]
   }>
+  tags:{label:string; value:string}[],
 }
 export type CreateProjectFormPictures = {
   pictures: File[]
