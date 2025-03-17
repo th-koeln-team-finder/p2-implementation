@@ -46,6 +46,7 @@ export default async function ApplicationOverview({
         <div className="flex w-1/3 flex-col items-center">
           <EyeIcon className="mb-8 h-12 w-12 text-primary lg:h-24 lg:w-24" />
           <div className="text-center font-bold text-md lg:text-lg">
+            {/*TODO: add functionality */}
             {translate('projects.overview.impressionsCount', { count: 182 })}
           </div>
         </div>
@@ -60,6 +61,7 @@ export default async function ApplicationOverview({
         <div className="flex w-1/3 flex-col items-center">
           <StarIcon className="mb-8 h-12 w-12 text-primary lg:h-24 lg:w-24" />
           <div className="text-center font-bold text-md lg:text-lg">
+            {/*TODO: add functionality */}
             {translate('projects.overview.likesCount', { count: 1045 })}
           </div>
         </div>
