@@ -4,7 +4,6 @@ import { unstable_cache as cache } from 'next/cache'
 
 export const getApplicationsForProject = cache(
   async (id: string, userId?: string) => {
-    console.log('getApplicationsForProject', id, userId)
     const attachmentCount =
       sql<number>`(SELECT COUNT(*) FROM "project_application_files" WHERE project_application_files."applicationId" = "projectApplication".id)`.as(
         'attachmentCount',
