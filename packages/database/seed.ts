@@ -87,7 +87,7 @@ export async function seed() {
     .insert(Schema.projects)
     .values({
       ...demoProject,
-      createdBy: faker.helpers.arrayElement(userIds)
+      createdBy: faker.helpers.arrayElement(userIds),
     })
     .returning()
 
