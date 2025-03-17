@@ -85,7 +85,10 @@ export async function seed() {
   console.log('Creating 1 project')
   const project = await db
     .insert(Schema.projects)
-    .values(demoProject)
+    .values({
+      ...demoProject,
+      createdBy: faker.helpers.arrayElement(userIds)
+    })
     .returning()
 
   const usersToApply = userIds.slice(0, 5)
