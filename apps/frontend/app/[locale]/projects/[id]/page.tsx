@@ -10,6 +10,7 @@ import { getProjectItem } from '@/features/projects/projects.queries'
 import { SkillScale } from '@/features/skills/components/SkillScale'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { getTranslations } from 'next-intl/server'
+import {BrainstormTagList} from "@/features/brainstorm/components/brainstorm-details/BrainstormTagList";
 
 export default async function Projects({
   params,
@@ -26,7 +27,7 @@ export default async function Projects({
   }
 
   return (
-    <div className="mx-auto inline-flex w-full max-w-screen-xl flex-col items-center justify-start gap-12 p-4">
+    <div className="mx-auto inline-flex w-full max-w-screen-xl flex-col items-center justify-start gap-4 p-4">
       <div className="inline-flex items-start justify-between self-stretch">
         <ProjectTitle
           title={project.name}
@@ -36,6 +37,10 @@ export default async function Projects({
         />
         <Toolbar project={project} />
       </div>
+        <div className='flex flex-col w-full pr-3'>
+            <BrainstormTagList tags={project.tags} />
+
+        </div>
       <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
         <ImageCarousel images={project.projectPictures ?? []} />
         <SkillScale

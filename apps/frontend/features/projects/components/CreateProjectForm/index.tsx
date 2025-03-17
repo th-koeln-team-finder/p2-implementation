@@ -43,9 +43,9 @@ import type { UserSelect } from '@repo/database/schema'
 import { FileUploadForm } from '@repo/design-system/components/custom/file-upload'
 import { clientEnv } from '@repo/env/client'
 import { ProjectPicturesInlinePreview } from '@/features/projects/components/CreateProjectForm/ProjectPicturesInlinePreview'
-import {useTagSearch} from "@/features/tag/tag.hook";
-import {MultiValueAutoCompleteForm} from "@repo/design-system/components/custom/multi-value-auto-complete";
-import {useNavigationModalContext} from "@/features/general/components/NavigationModal";
+import { useTagSearch } from '@/features/tag/tag.hook'
+import { MultiValueAutoCompleteForm } from '@repo/design-system/components/custom/multi-value-auto-complete'
+import { useNavigationModalContext } from '@/features/general/components/NavigationModal'
 
 const registerAdapter = configureZodAdapter({
   takeFirstError: true,
@@ -57,7 +57,7 @@ export function CreateProjectForm() {
   const router = useRouter()
 
   const t = useTranslations('createProjects')
-  const TagTranslations= useTranslations('tag')
+  const TagTranslations = useTranslations('tag')
   const translateError = useTranslations('validation')
 
   const navigationModal = useNavigationModalContext()
@@ -92,7 +92,7 @@ export function CreateProjectForm() {
       status: 'open',
       skills: [],
       participants: sessionUser ? [{ Users: sessionUser }] : [],
-      tags:[],
+      tags: [],
       timetableOutput: '',
       ttMon: '',
       ttTue: '',
@@ -315,7 +315,7 @@ export function CreateProjectForm() {
             <form.FieldProvider
               name="pictures"
               validator={(files) => {
-                if (!files.length) return translateError('required')
+                if (!files.length) return null
                 if (files.length > 5)
                   return translateError('maxFiles', { amount: 5 })
                 return null
@@ -494,22 +494,21 @@ export function CreateProjectForm() {
       </ContentItem>
 
       <ContentItem stepId="links">
-
         <form.FieldProvider
-            name="tags"
-            validator={z
-                .array(
-                    z.object({
-                      label: z.string(),
-                      value: z.string(),
-                    }),
-                )
-                .min(1, translateError('required'))}
+          name="tags"
+          validator={z
+            .array(
+              z.object({
+                label: z.string(),
+                value: z.string(),
+              }),
+            )
+            .min(1, translateError('required'))}
         >
           <div className="flex w-full flex-col ">
             <Label>{TagTranslations('labelTags')}</Label>
             <div className="flex flex-col gap-4 py-2">
-            <MultiValueAutoCompleteForm
+              <MultiValueAutoCompleteForm
                 containerId="popoverref"
                 onOpenChange={(open) => {
                   if (!navigationModal) return
@@ -524,8 +523,8 @@ export function CreateProjectForm() {
                 loadingMessage={TagTranslations('loadingTags')}
                 enableCommaSeparation
                 enableTagUse
-            />
-            <FieldError/>
+              />
+              <FieldError />
             </div>
           </div>
         </form.FieldProvider>
@@ -533,7 +532,7 @@ export function CreateProjectForm() {
           <div className="flex w-full flex-col">
             <Label>{t('issues.sectionTitle')}</Label>
             <form.FieldProvider name="issues">
-              <CreateProjectIssueList/>
+              <CreateProjectIssueList />
             </form.FieldProvider>
           </div>
           <div className="flex w-full flex-col gap-4 lg:flex-row">
@@ -541,7 +540,7 @@ export function CreateProjectForm() {
               <Label>{t('linksTitle')}</Label>
               <div>
                 <form.FieldProvider name="resources">
-                  <CreateProjectLinksList progressState={progressState}/>
+                  <CreateProjectLinksList progressState={progressState} />
                 </form.FieldProvider>
               </div>
             </div>
@@ -551,7 +550,7 @@ export function CreateProjectForm() {
 
       <ContentItem stepId="review">
         <form.FormProvider>
-          <CreateProjectPreview progressState={progressState}/>
+          <CreateProjectPreview progressState={progressState} />
         </form.FormProvider>
       </ContentItem>
     </StepperComponent>

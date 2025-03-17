@@ -14,6 +14,7 @@ import { getUserProfile } from '@/features/projects/projects.actions'
 import { useEffect, useState } from 'react'
 import { useSignalEffect } from '@preact/signals-react'
 import CreateProjectPicturePreviewCarousel from '@/features/projects/components/CreateProjectForm/CreateProjectPicturePreviewCarousel'
+import {BrainstormTagList} from "@/features/brainstorm/components/brainstorm-details/BrainstormTagList";
 
 export function CreateProjectPreview({
   progressState,
@@ -63,10 +64,20 @@ export function CreateProjectPreview({
       }
     }
   })
+  console.log(formValues.tags+"tags")
+  const tagList=formValues.tags.map(tag => ({
+      tag: {
+        id: tag.value, // oder eine geeignete ID, falls `value` nicht eindeutig ist
+        name: tag.label
+      }
+    }))
   return (
-    <div className="inline-flex flex-col items-start justify-start gap-8 self-stretch">
+    <div className="inline-flex flex-col items-start justify-start gap-4 self-stretch">
       <ProjectTitle title={formValues.name} subtitle={formValues.phase} />
+  <div className='flex flex-col w-full pr-3'>
+    <BrainstormTagList tags={tagList } />
 
+  </div>
       <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
         <CreateProjectPicturePreviewCarousel
           images={fieldPreviews}

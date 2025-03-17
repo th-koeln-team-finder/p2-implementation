@@ -105,6 +105,15 @@ export const getProjectItems = cache(
             uploadedFile: true,
           },
         },
+        tags: {
+          with: {
+            tag: {
+              columns: {
+                embedding: false,
+              },
+            },
+          },
+        },
       },
       where: and(
         search ? gte(correctTotalSimilarity, 0.4) : sql`true`,
@@ -155,6 +164,15 @@ export const getProjectItem = cache(
             uploadedFile: true,
           },
         },
+        tags: {
+          with: {
+            tag: {
+              columns: {
+                embedding: false,
+              },
+            },
+          },
+        },
         projectSkills: {
           with: {
             skill: true,
@@ -170,11 +188,6 @@ export const getProjectItem = cache(
             uploadedFile: true,
           },
         },
-        /*
-              tags: true,
-
-
-               */
       },
     }),
   ['getProjectItem'],
