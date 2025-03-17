@@ -20,6 +20,12 @@ export async function ApplicationList({projectId}: ApplicationListProps) {
 
   return (
     <div>
+      {application.length === 0 && (
+        <div className="border-t-2 px-2 py-4 text-muted-foreground italic">
+          {translate('noApplications')}
+        </div>
+      )}
+
       {application?.map((app) => (
         <div
           key={app.id}
@@ -75,7 +81,7 @@ export async function ApplicationList({projectId}: ApplicationListProps) {
             )}
             <ApplicationListPin application={app}/>
             <Button variant="ghost" className="w-full p-0">
-              <MailsIcon size={24} />
+              <MailsIcon size={24}/>
             </Button>
           </div>
         </div>

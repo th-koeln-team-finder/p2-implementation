@@ -158,6 +158,7 @@ export const de: Language = {
       applicationsCount: '{count} Bewerbungen',
       likesCount: '{count} Likes',
       filesAttached: '{count} Dateien angehängt',
+      noApplications: 'Bis jetzt hat sich noch niemand für das Projekt beworben.'
     },
     application: {
       title: 'Bewerbung von {name}',
