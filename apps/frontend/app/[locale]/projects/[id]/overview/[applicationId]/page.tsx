@@ -53,7 +53,7 @@ export default async function Overview({
   return (
     <NavigationModal>
       <DialogTitle>{title}</DialogTitle>
-      <DialogContent className="flex h-full min-w-full flex-col gap-4 sm:max-h-[80vh] sm:min-w-0 sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
+      <DialogContent className="flex min-w-full flex-col gap-4 sm:min-w-0 sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
         <div className="flex w-full flex-row gap-4 border-b-2 px-2 py-4">
           <Link href={`/profile/${app.user.id}`}>
             <div className="w-2/12">
