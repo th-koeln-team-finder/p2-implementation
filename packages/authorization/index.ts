@@ -58,6 +58,7 @@ export type Permissions = {
     delete?: { createdById: string | null }
     update?: { createdById: string | null }
     like: never
+    bookmark: never
   }
 }
 
@@ -96,6 +97,7 @@ export const PERMISSIONS = {
       delete: (user, data) => data?.createdById === user?.id,
       update: (user, data) => data?.createdById === user?.id,
       like: true,
+      bookmark: true,
     },
   },
   guest: {
@@ -146,6 +148,7 @@ export const PERMISSIONS = {
       delete: true,
       update: true,
       like: true,
+      bookmark: true,
     },
   },
 } as const satisfies RolesWithPermissions

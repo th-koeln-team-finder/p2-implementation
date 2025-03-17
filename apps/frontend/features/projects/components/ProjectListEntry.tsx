@@ -3,6 +3,7 @@ import type { getProjectItems } from '@/features/projects/projects.queries'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import {
   Card,
+  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -10,6 +11,7 @@ import {
 import Image from 'next/image'
 import { FilePreview } from '@/features/file-upload/components/FilePreview'
 import { ProjectListEntryToolbar } from '@/features/projects/components/ProjectListEntryToolbar'
+import { TagList } from '@/features/tag/components/TagList'
 
 type FindAProjectListEntryProps = {
   project: Awaited<ReturnType<typeof getProjectItems>>[number]
@@ -87,7 +89,9 @@ export function ProjectListEntry({ project }: FindAProjectListEntryProps) {
             )}
           </CardDescription>
         </CardHeader>
-        {/* TODO Add tags to projects */}
+        <CardContent>
+          <TagList tags={project.tags} splitUp={4} />
+        </CardContent>
       </Card>
     </Link>
   )

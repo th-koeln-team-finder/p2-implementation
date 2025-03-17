@@ -14,6 +14,7 @@ import {
   toggleProjectBookmark,
   toggleProjectStar,
 } from '@/features/projects/projects.actions'
+import { CanUserClient } from '@/features/auth/components/CanUser.client'
 
 type FindAProjectListEntryProps = {
   projectId: string
@@ -84,15 +85,19 @@ export function ProjectListEntryToolbar({
   )
   return (
     <div className="flex flex-row items-center gap-1">
-      <Button variant="ghost" size="sm" onClick={handleStar}>
-        {optimisticStarCount}
-        <StarIcon className={cn(optimisticStared && 'fill-foreground')} />
-      </Button>
-      <Button variant="ghost" size="icon" onClick={handleBookmark}>
-        <BookmarkIcon
-          className={cn(optimisticBookmarked && 'fill-foreground')}
-        />
-      </Button>
+      <CanUserClient target="project" action="like">
+        <Button variant="ghost" size="sm" onClick={handleStar}>
+          {optimisticStarCount}
+          <StarIcon className={cn(optimisticStared && 'fill-foreground')} />
+        </Button>
+      </CanUserClient>
+      <CanUserClient target="project" action="bookmark">
+        <Button variant="ghost" size="icon" onClick={handleBookmark}>
+          <BookmarkIcon
+            className={cn(optimisticBookmarked && 'fill-foreground')}
+          />
+        </Button>
+      </CanUserClient>
     </div>
   )
 }
