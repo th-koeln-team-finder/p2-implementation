@@ -6,7 +6,7 @@ import { makeBrainstorm } from './factory/brainstorm.factory'
 import { makeBrainstormComment } from './factory/brainstormComment.factory'
 import { makeBrainstormCommentLike } from './factory/brainstormCommentLike.factory'
 import { makeBrainstormResource } from './factory/brainstormResource.factory'
-import {makeProjectSkill, makeSkill} from './factory/skill.factory'
+import { makeSkill } from './factory/skill.factory'
 import { makeTag } from './factory/tag.factory'
 import { makeTest } from './factory/test.factory'
 import { makeUser } from './factory/user.factory'
@@ -15,9 +15,12 @@ import { makeUserProjects } from './factory/userProjects.factory'
 import { makeUserSkillVerification } from './factory/userSkillVerification.factory'
 import { makeUserSkills } from './factory/userSkills.factory'
 import * as Schema from './schema'
-import {projectsData, uniqueProjectSkills} from './factory/projects.data'
-import { demoApplication } from './factory/projectApplication.data'
-import {makeProject} from "./factory/projects.factory";
+import {
+  projectsData,
+  uniqueProjectSkills,
+  uniqueProjectTags,
+} from './factory/projects.data'
+import { makeProject } from './factory/projects.factory'
 
 config()
 config({ path: '.env.local', override: true })
@@ -90,40 +93,51 @@ export async function seed() {
   const projectsToInsert = []
   for (const project of projectsData) {
     projectsToInsert.push(
-        await makeProject(
-            project.name,
-            JSON.stringify(project.description),
-            project.descriptionText,
-            project.status,
-        ),
+      await makeProject(
+        project.name,
+        JSON.stringify(project.description),
+        project.descriptionText,
+        project.status,
+        userIds,
+      ),
     )
   }
   const projects = await db
-      .insert(Schema.projects)
-      .values(projectsToInsert)
-      .returning()
-  const projectIds = Object.fromEntries(
-      projects.map((e) => [e.name, e.id]),
-  )
+    .insert(Schema.projects)
+    .values(projectsToInsert)
+    .returning()
+  const projectIds = Object.fromEntries(projects.map((e) => [e.name, e.id]))
 
+  const projectDataWithIds = projectsData.map((project) => ({
+    ...project,
+    id: projectIds[project.name],
+  }))
 
   console.log("Clearing 'skill' table")
   await db.delete(Schema.skills).execute()
 
   console.log(`Creating ${uniqueProjectSkills.length} skill records`)
-  const uniqueSkills = new Set<string>()
-  const projectSkillData = []
-  const skill = await db.insert(Schema.skills)
-  for (const technicalSkill of uniqueProjectSkills) {
-    const projectId = projectIds[technicalSkill.skill];
-    const tag = await makeProjectSkill(projectId, [technicalSkill], uniqueSkills)
-    if (tag) {
-      projectSkillData.push(tag)
-    }
-  }
-  const pSkills = await db.insert(Schema.skills).values(projectSkillData).returning()
-  const skillIds = Object.fromEntries(pSkills.map((e) => [e.skill, e.id]))
+  const insertedSkills = await db
+    .insert(Schema.skills)
+    .values(uniqueProjectSkills.map((skill) => ({ skill: skill.skill })))
+    .returning()
 
+  for (const project of projectDataWithIds) {
+    const projectSkills = project.skills
+      .map((skill) => {
+        const insertedSkill = insertedSkills.find(
+          (it) => it.skill === skill.skill,
+        )
+        if (!insertedSkill) return null
+        return {
+          projectId: project.id,
+          skillId: insertedSkill.id,
+          level: skill.level,
+        }
+      })
+      .filter((e) => !!e)
+    await db.insert(Schema.projectSkill).values(projectSkills).execute()
+  }
 
   /*const usersToApply = userIds.slice(0, 5)
   console.log('Creating 5 project application')
@@ -137,11 +151,14 @@ export async function seed() {
 
   console.log("Clearing 'tag' table")
   await db.delete(Schema.tags).execute()
+  const combinedTags = Array.from(
+    new Set([...uniqueBrainstormTags, ...uniqueProjectTags]),
+  )
 
-  console.log(`Creating ${uniqueBrainstormTags.length} tag records`)
+  console.log(`Creating ${combinedTags.length} tag records`)
   const uniqueTags = new Set<string>()
   const tagData = []
-  for (const technicalTag of uniqueBrainstormTags) {
+  for (const technicalTag of combinedTags) {
     const tag = await makeTag([technicalTag], uniqueTags)
     if (tag) {
       tagData.push(tag)
