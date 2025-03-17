@@ -8,7 +8,7 @@ import {getTranslations} from "next-intl/server";
 import ApplicationListPin from "@/features/Application/components/ApplicationListPin";
 import FileInlineListCards from "@repo/design-system/components/custom/file-inline-list-cards";
 import {getPublicFileUrl} from "@/features/file-upload/file-upload.actions";
-import AcceptApplicationButton from "@/features/Application/components/AcceptApplicationButton";
+import ManageApplicationButton from "@/features/Application/components/ManageApplicationButton";
 
 export default async function Overview({
                                          params,
@@ -65,7 +65,7 @@ export default async function Overview({
           </div>
           <div className="flex gap-4">
             <ApplicationListPin application={app}/>
-            <AcceptApplicationButton project={app.project} applicationId={app.id} />
+            <ManageApplicationButton project={app.project} applicationId={app.id} />
           </div>
         </div>
         <div className="">

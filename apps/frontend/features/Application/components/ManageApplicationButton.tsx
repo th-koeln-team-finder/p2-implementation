@@ -3,17 +3,23 @@
 import {CheckIcon} from "lucide-react";
 import {Button} from "@repo/design-system/components/ui/button";
 import {useTranslations} from "next-intl";
-import {acceptApplication} from "@/features/Application/applications.actions";
+import {acceptApplication, rejectApplication} from "@/features/Application/applications.actions";
 import {useRouter} from "@/features/i18n/routing";
 import {CanUserClient} from "@/features/auth/components/CanUser.client";
 import {ProjectSelect} from "@repo/database/schema";
+import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon";
 
-export default function AcceptApplicationButton({project, applicationId}: {
+export default function ManageApplicationButton({project, applicationId}: {
   project: ProjectSelect,
   applicationId: string
 }) {
   const translate = useTranslations('projects.application')
   const router = useRouter()
+
+  const handleReject = async () => {
+    await rejectApplication(applicationId)
+    router.push(`/projects/${project.id}/overview`)
+  }
 
   const handleAccept = async () => {
     await acceptApplication(applicationId)
@@ -21,7 +27,10 @@ export default function AcceptApplicationButton({project, applicationId}: {
   }
 
   return (
-    <CanUserClient target="projectApplication" action="accept" data={{createdById: project.createdBy}}>
+    <CanUserClient target="projectApplication" action="manage" data={{createdById: project.createdBy}}>
+      <Button size="sm" variant="destructive" onClick={handleReject}>
+        <CloseIcon /> {translate('rejectApplication')}
+      </Button>
       <Button size="sm" onClick={handleAccept}>
         <CheckIcon/> {translate('acceptApplication')}
       </Button>

@@ -22,7 +22,7 @@ export const notificationTypesByCategory: {
   projects: [
     'projectUpdated',
     'memberJoinedProject',
-    'membershipAccepted',
+    'applicationStatusChanged',
     'memberLeftProject',
     'newApplication',
     'bookmarkedProjectUpdated',
@@ -32,7 +32,7 @@ export const notificationTypesByCategory: {
   projects: [
     'projectUpdated',
     'memberJoinedProject',
-    'membershipAccepted',
+    'applicationStatusChanged',
     'memberLeftProject',
     'newApplication',
     'bookmarkedProjectUpdated',

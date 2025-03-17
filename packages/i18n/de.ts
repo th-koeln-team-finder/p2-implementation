@@ -164,6 +164,7 @@ export const de: Language = {
     application: {
       title: 'Bewerbung von {name}',
       acceptApplication: 'Annehmen',
+      rejectApplication: 'Ablehnen',
     }
   },
   createProjects: {
@@ -403,7 +404,7 @@ export const de: Language = {
         selectType: 'Typ auswählen',
         projectUpdated:
           'Ein Projekt, dem ich beigetreten bin, wurde aktualisiert',
-        membershipAccepted: 'Meine Mitgliedschaft in einem Projekt wurde akzeptiert',
+        applicationStatusChanged: 'Mein Mitgliedschaftsantrag wurde angenommen/abgelehnt',
         memberJoinedProject:
           'Ein neues Mitglied ist einem meiner Projekte beigetreten',
         memberLeftProject: 'Ein Mitglied hat ein Projekt verlassen',
@@ -464,6 +465,10 @@ export const de: Language = {
     membershipAccepted: {
       title: 'Mitgliedschaft in {project} akzeptiert',
       message: 'Deine Mitgliedschaft in {project} wurde akzeptiert. Viel Erfolg!',
+    },
+    membershipRejected: {
+      title: 'Mitgliedschaft in {project} abgelehnt',
+      message: 'Deine Mitgliedschaft in {project} wurde abgelehnt.',
     },
     memberJoinedProject: {
       title: 'Neues Mitglied im Projekt {project}',

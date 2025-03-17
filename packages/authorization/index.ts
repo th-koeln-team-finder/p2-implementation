@@ -65,7 +65,7 @@ export type Permissions = {
   }
   projectApplication: {
     view: { createdById: string | null }
-    accept: { createdById: string | null }
+    manage: { createdById: string | null }
   }
 }
 
@@ -111,7 +111,7 @@ export const PERMISSIONS = {
     },
     projectApplication: {
       view: (user, data) => data.createdById === user?.id,
-      accept: (user, data) => data.createdById === user?.id,
+      manage: (user, data) => data.createdById === user?.id,
     },
   },
   guest: {
@@ -170,7 +170,7 @@ export const PERMISSIONS = {
     },
     projectApplication: {
       view: true,
-      accept: true,
+      manage: true,
     },
   },
 } as const satisfies RolesWithPermissions

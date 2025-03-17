@@ -46,7 +46,7 @@ export async function acceptApplication(applicationId: string) {
   await revalidateApplications()
 
   // send "membershipAccepted" notification
-  await sendNotificationByType([application.userId], 'membershipAccepted', {
+  await sendNotificationByType([application.userId], 'applicationStatusChanged', {
     title: ['notifications.membershipAccepted.title', { project: application.project.name }],
     body: ['notifications.membershipAccepted.message', { project: application.project.name }],
   })
@@ -58,5 +58,27 @@ export async function acceptApplication(applicationId: string) {
   await sendNotificationByType(projectMemberIds, 'memberJoinedProject', {
     title: ['notifications.memberJoinedProject.title', { project: application.project.name }],
     body: ['notifications.memberJoinedProject.message', { user: application.user.name }],
+  })
+}
+
+export async function rejectApplication(applicationId: string) {
+  const application = await db.query.projectApplication.findFirst({
+    where: eq(Schema.projectApplication.id, applicationId),
+    with: {
+      project: true,
+    }
+  })
+  if (!application) {
+    throw new Error('Application not found')
+  }
+
+  // Remove the application
+  await db.delete(Schema.projectApplication).where(eq(Schema.projectApplication.id, applicationId))
+  await revalidateApplications()
+
+  // send "membershipRejected" notification
+  await sendNotificationByType([application.userId], 'applicationStatusChanged', {
+    title: ['notifications.membershipRejected.title', { project: application.project.name }],
+    body: ['notifications.membershipRejected.message', { project: application.project.name }],
   })
 }

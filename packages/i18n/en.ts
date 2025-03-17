@@ -160,6 +160,7 @@ export const en = {
     application: {
       title: 'Application by {name}',
       acceptApplication: 'Accept',
+      rejectApplication: 'Reject',
     }
   },
   createProjects: {
@@ -398,7 +399,7 @@ export const en = {
         profile: 'Profile notifications',
         selectType: 'Select notification type',
         projectUpdated: 'One of my projects was updated',
-        membershipAccepted: 'My membership request was accepted',
+        applicationStatusChanged: 'My membership request was accepted/rejected',
         memberJoinedProject: 'New member joined one of my projects',
         memberLeftProject: 'Member left one of my projects',
         newApplication: 'New application for one of my projects',
@@ -457,6 +458,10 @@ export const en = {
     membershipAccepted: {
       title: 'Membership request for {project} was accepted',
       message: 'Your membership in {project} was accepted. Have fun!',
+    },
+    membershipRejected: {
+      title: 'Membership request for {project} was rejected',
+      message: 'Your membership in {project} was rejected.',
     },
     memberJoinedProject: {
       title: 'New member joined project {project}',
