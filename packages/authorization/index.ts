@@ -52,7 +52,7 @@ export type Permissions = {
   }
   applyProject: {
     view: never
-    create: never
+    create: { createdById: string | null }
     update: { createdById: string | null }
     delete: { createdById: string | null }
   }
@@ -105,7 +105,7 @@ export const PERMISSIONS = {
       update: (user, data) => data?.createdById === user?.id,
     },
     applyProject: {
-      create: true,
+      create: (user, data) => data.createdById === user?.id,
       update: (user, data) => data.createdById === user?.id,
       delete: (user, data) => data.createdById === user?.id,
     },

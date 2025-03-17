@@ -10,24 +10,27 @@ import { useTranslations } from 'next-intl'
 import { useOptimistic, useTransition } from 'react'
 import { CanUserClient } from '@/features/auth/components/CanUser.client'
 import { Link } from '@/features/i18n/routing'
-import { useIsUserAppliedToProject } from '@/features/projects/project.hooks'
+import {useIsUserAppliedToProject, useIsUserMemberOfProject} from '@/features/projects/project.hooks'
 
 type ProjectBookmarkButtonProps = {
   projectId: string
   isBookmarked: boolean
-  stars?: number
+  stars?: number,
+  createdById: string,
 }
 
 export function Toolbar({
   stars,
   projectId,
   isBookmarked,
+  createdById,
 }: ProjectBookmarkButtonProps) {
   const t = useTranslations('projects')
   stars = stars || 13_000
   const starsString = stars.toLocaleString('en', { notation: 'compact' })
 
   const [isApplied, isLoadingApplication] = useIsUserAppliedToProject(projectId)
+  const [isMember, isLoadingMemberships] = useIsUserMemberOfProject(projectId)
 
   const [_, startTransition] = useTransition()
   const [optimisticBookmarked, dispatchOptimistic] = useOptimistic(
@@ -64,7 +67,7 @@ export function Toolbar({
           />
         </Button>
       </div>
-      <CanUserClient target="applyProject" action="create">
+      <CanUserClient target="applyProject" action="create" data={{createdById}}>
         <Link href={`/projects/${projectId}/apply`}>
           <Button
             disabled={isLoadingApplication || isApplied}

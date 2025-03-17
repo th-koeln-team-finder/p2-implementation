@@ -1,6 +1,6 @@
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
-import { isUserAppliedToProject } from '@/features/projects/projects.actions'
+import {isUserAppliedToProject, isUserMemberOfProject} from '@/features/projects/projects.actions'
 
 export function useIsUserAppliedToProject(projectId: string) {
   const { data: session } = useSession()
@@ -20,4 +20,23 @@ export function useIsUserAppliedToProject(projectId: string) {
       })
   })
   return [isApplied, loading] as const
+}
+
+export function useIsUserMemberOfProject(projectId: string) {
+  const { data: session } = useSession()
+  const [isMember, setIsUserMemberOfProject] = useState(false)
+  const [loading, setLoading] = useState(true)
+  useEffect(() => {
+    if (!session?.user?.id) {
+      return
+    }
+    isUserMemberOfProject(session?.user?.id, projectId)
+      .then((isUserMemberOfProject) => {
+        setIsUserMemberOfProject(isUserMemberOfProject)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  })
+  return [isMember, loading] as const
 }

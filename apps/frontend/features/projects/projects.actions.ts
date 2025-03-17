@@ -236,3 +236,15 @@ export async function isUserAppliedToProject(
     ),
   })
 }
+
+export async function isUserMemberOfProject(
+  userId: string,
+  projectId: string,
+) {
+  return !!await db.query.projectMemberships.findFirst({
+    where: and(
+      eq(Schema.projectMemberships.userId, userId),
+      eq(Schema.projectMemberships.projectId, projectId),
+    ),
+  })
+}
