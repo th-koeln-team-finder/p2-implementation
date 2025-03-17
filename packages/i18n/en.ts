@@ -154,6 +154,10 @@ export const en = {
       applicationsCount: '{count} Applications',
       likesCount: '{count} Likes',
       filesAttached: '{count} files attached',
+    },
+    application: {
+      title: 'Application by {name}',
+      acceptApplication: 'Accept',
     }
   },
   createProjects: {
@@ -392,6 +396,7 @@ export const en = {
         profile: 'Profile notifications',
         selectType: 'Select notification type',
         projectUpdated: 'One of my projects was updated',
+        membershipAccepted: 'My membership request was accepted',
         memberJoinedProject: 'New member joined one of my projects',
         memberLeftProject: 'Member left one of my projects',
         newApplication: 'New application for one of my projects',
@@ -446,6 +451,14 @@ export const en = {
     newFollower: {
       title: 'You have a new follower!',
       message: '{follower} is now following you.',
+    },
+    membershipAccepted: {
+      title: 'Membership request for {project} was accepted',
+      message: 'Your membership in {project} was accepted. Have fun!',
+    },
+    memberJoinedProject: {
+      title: 'New member joined project {project}',
+      message: '{user} is now part of the crew!',
     },
   },
 }

@@ -170,7 +170,7 @@ export type UserFollowsInsert = typeof userFollows.$inferInsert
  * They may also add other projects to their timeline that they worked on
  * but did not use this platform.
  */
-export const userProjects = pgTable('userProjects', {
+export const projectMemberships = pgTable('projectMemberships', {
   id: uuid().primaryKey().notNull().defaultRandom(),
   userId: uuid('userId')
     .notNull()
@@ -191,9 +191,10 @@ export const userProjects = pgTable('userProjects', {
     .defaultNow()
     .$onUpdate(() => new Date()),
 })
-export type UserProjectsInsert = typeof userProjects.$inferInsert
-export type UserProjectsSelect = typeof userProjects.$inferSelect
+export type ProjectMembershipsInsert = typeof projectMemberships.$inferInsert
+export type ProjectMembershipsSelect = typeof projectMemberships.$inferSelect
 
+// TODO can be removed?
 export const userProjectSettings = pgTable('userProjectSettings', {
   id: uuid().primaryKey().notNull().defaultRandom(),
   userId: uuid('userId')
@@ -239,6 +240,9 @@ export const skillRelations = relations(skills, ({ many }) => ({
  */
 export const projects = pgTable('projects', {
   id: uuid().primaryKey().notNull().defaultRandom(),
+  createdBy: uuid('createdBy')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
   name: varchar({ length: 255 }).notNull(),
   description: text().notNull(),
   embedding: vector({ dimensions: VectorSizes.large }).notNull(),
@@ -699,6 +703,7 @@ export const projectRelations = relations(projects, ({ many }) => ({
   application: many(projectApplication, {
     relationName: 'projectApplication',
   }),
+  projectMemberships: many(projectMemberships),
 }))
 
 export const projectSkillRelations = relations(projectSkill, ({ one }) => ({
@@ -876,9 +881,9 @@ export const uploadedFileRelations = relations(uploadedFiles, ({ one }) => ({
     references: [users.id],
   }),
 }))
-export const userProjectRelations = relations(userProjects, ({ one }) => ({
+export const projectMembershipsRelations = relations(projectMemberships, ({ one }) => ({
   project: one(projects, {
-    fields: [userProjects.projectId],
+    fields: [projectMemberships.projectId],
     references: [projects.id],
   }),
 }))
@@ -899,7 +904,7 @@ export const userSkillVerificationRelations = relations(
 
 export const userRelations = relations(users, ({ one, many }) => ({
   skills: many(userSkills),
-  projects: many(userProjects),
+  projects: many(projectMemberships),
   projectSettings: many(userProjectSettings),
   authenticators: many(authenticators),
   ratings: many(userRatings),

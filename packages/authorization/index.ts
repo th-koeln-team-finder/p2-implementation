@@ -63,6 +63,10 @@ export type Permissions = {
     delete?: { createdById: string | null }
     update?: { createdById: string | null }
   }
+  projectApplication: {
+    view: { createdById: string | null }
+    accept: { createdById: string | null }
+  }
 }
 
 export const PERMISSIONS = {
@@ -104,6 +108,10 @@ export const PERMISSIONS = {
       create: true,
       update: (user, data) => data.createdById === user?.id,
       delete: (user, data) => data.createdById === user?.id,
+    },
+    projectApplication: {
+      view: (user, data) => data.createdById === user?.id,
+      accept: (user, data) => data.createdById === user?.id,
     },
   },
   guest: {
@@ -159,6 +167,10 @@ export const PERMISSIONS = {
       create: true,
       delete: true,
       update: true,
+    },
+    projectApplication: {
+      view: true,
+      accept: true,
     },
   },
 } as const satisfies RolesWithPermissions

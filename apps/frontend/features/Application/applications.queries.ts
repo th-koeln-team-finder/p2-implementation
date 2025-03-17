@@ -37,7 +37,11 @@ export const getApplication = cache(
       where: eq(Schema.projectApplication.id, id),
       with: {
         project: true,
-        files: true,
+        files: {
+          with: {
+            file: true,
+          },
+        },
         user: {
           with: {
             image: true,

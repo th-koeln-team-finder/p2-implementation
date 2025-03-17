@@ -1,4 +1,4 @@
-import type { ProjectSelect, UserProjectsSelect } from '@repo/database/schema'
+import type { ProjectSelect, ProjectMembershipsSelect } from '@repo/database/schema'
 import { useOptimistic, useTransition } from 'react'
 
 export type OptimisticPayload =
@@ -26,15 +26,15 @@ export type OptimisticPayload =
       }
     }
 
-export function useOptimisticUserProjects(
-  userProjects: (UserProjectsSelect & {
+export function useOptimisticProjectMemberships(
+  projectMemberships: (ProjectMembershipsSelect & {
     id: string
     project?: ProjectSelect | null
   })[],
 ) {
   const [_, startTransition] = useTransition()
   const [optimisticUpdates, dispatchOptimistic] = useOptimistic(
-    userProjects,
+    projectMemberships,
     (state, payload: OptimisticPayload) => {
       switch (payload.action) {
         case 'add': {

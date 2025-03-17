@@ -11,7 +11,7 @@ import { makeTag } from './factory/tag.factory'
 import { makeTest } from './factory/test.factory'
 import { makeUser } from './factory/user.factory'
 import { makeUserFollows } from './factory/userFollows.factory'
-import { makeUserProjects } from './factory/userProjects.factory'
+import { makeProjectMemberships } from './factory/projectMemberships.factory'
 import { makeUserSkillVerification } from './factory/userSkillVerification.factory'
 import { makeUserSkills } from './factory/userSkills.factory'
 import * as Schema from './schema'
@@ -67,9 +67,9 @@ export async function seed() {
   await db.delete(Schema.projectIssue).execute()
   await db.delete(Schema.projectTimetable).execute()
   console.log(
-    "Clearing 'userProjects', 'userSkills', 'userFollows' and 'userSkillVerification' table",
+    "Clearing 'projectMemberships', 'userSkills', 'userFollows' and 'userSkillVerification' table",
   )
-  await db.delete(Schema.userProjects).execute()
+  await db.delete(Schema.projectMemberships).execute()
   await db.delete(Schema.userSkills).execute()
   await db.delete(Schema.userFollows).execute()
   await db.delete(Schema.userSkillVerification).execute()
@@ -229,10 +229,10 @@ export async function seed() {
 
   console.log('Creating 100 userProject records')
   const uniqueUserProjects = new Set<string>()
-  const userProjectData = makeMultiple(100, () =>
-    makeUserProjects(userIds, [undefined] as never, uniqueUserProjects),
+  const projectMembershipData = makeMultiple(100, () =>
+    makeProjectMemberships(userIds, [undefined] as never, uniqueUserProjects),
   ).filter((e) => !!e)
-  await db.insert(Schema.userProjects).values(userProjectData).execute()
+  await db.insert(Schema.projectMemberships).values(projectMembershipData).execute()
 
   console.log('Creating 50 userFollow records')
   const userFollowData = makeMultiple(50, () =>

@@ -2,7 +2,7 @@
 
 import { ProjectCard } from '@/features/projects/components/ProjectCard'
 import { loadMoreProjects } from '@/features/users/users.actions'
-import type { UserProjectsSelect } from '@repo/database/schema'
+import type { ProjectMembershipsSelect } from '@repo/database/schema'
 import { Button } from '@repo/design-system/components/ui/button'
 import { ChevronDown, LoaderCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
@@ -10,7 +10,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
   const [previouslyWorkedOn, setPreviouslyWorkedOn] = useState<
-    UserProjectsSelect[]
+    ProjectMembershipsSelect[]
   >([])
   const [loading, setLoading] = useState(false)
   const [allLoaded, setAllLoaded] = useState(false)
@@ -18,11 +18,11 @@ export default function PreviouslyWorkedOn({ userId }: { userId: string }) {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: setting all variables in here causes infinite loading issues since `loading` and `previouslyWorkedOn` are set by this function and thereby would re-trigger it
   const loadMore = useCallback(
-    (count = 10, previouslyWorkedOn: UserProjectsSelect[] = []) => {
+    (count = 10, previouslyWorkedOn: ProjectMembershipsSelect[] = []) => {
       if (loading) return
       setLoading(true)
       loadMoreProjects(userId, count, previouslyWorkedOn.length).then(
-        (projects: UserProjectsSelect[]) => {
+        (projects: ProjectMembershipsSelect[]) => {
           setLoading(false)
           setPreviouslyWorkedOn([...previouslyWorkedOn, ...projects])
           if (projects.length < count) {

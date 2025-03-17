@@ -159,6 +159,10 @@ export const de: Language = {
       likesCount: '{count} Likes',
       filesAttached: '{count} Dateien angehängt',
     },
+    application: {
+      title: 'Bewerbung von {name}',
+      acceptApplication: 'Annehmen',
+    }
   },
   createProjects: {
     fieldRequired: 'Diese Eingabe ist erforderlich',
@@ -397,6 +401,7 @@ export const de: Language = {
         selectType: 'Typ auswählen',
         projectUpdated:
           'Ein Projekt, dem ich beigetreten bin, wurde aktualisiert',
+        membershipAccepted: 'Meine Mitgliedschaft in einem Projekt wurde akzeptiert',
         memberJoinedProject:
           'Ein neues Mitglied ist einem meiner Projekte beigetreten',
         memberLeftProject: 'Ein Mitglied hat ein Projekt verlassen',
@@ -453,6 +458,14 @@ export const de: Language = {
     newFollower: {
       title: 'Neuer Follower',
       message: '{follower} folgt dir jetzt.',
+    },
+    membershipAccepted: {
+      title: 'Mitgliedschaft in {project} akzeptiert',
+      message: 'Deine Mitgliedschaft in {project} wurde akzeptiert. Viel Erfolg!',
+    },
+    memberJoinedProject: {
+      title: 'Neues Mitglied im Projekt {project}',
+      message: '{user} ist jetzt Teil der Crew!',
     },
   },
 }

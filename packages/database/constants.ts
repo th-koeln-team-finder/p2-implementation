@@ -22,6 +22,7 @@ export const notificationTypesByCategory: {
   projects: [
     'projectUpdated',
     'memberJoinedProject',
+    'membershipAccepted',
     'memberLeftProject',
     'newApplication',
     'bookmarkedProjectUpdated',
@@ -31,6 +32,7 @@ export const notificationTypesByCategory: {
   projects: [
     'projectUpdated',
     'memberJoinedProject',
+    'membershipAccepted',
     'memberLeftProject',
     'newApplication',
     'bookmarkedProjectUpdated',
@@ -53,7 +55,7 @@ export const notificationColumns = [
   (acc, type) => {
     for (const channel of notificationChannels) {
       const columnName: NotificationColumn = `${type}_${channel}`
-      acc[columnName] = boolean(columnName)
+      acc[columnName] = boolean(columnName).default(true)
     }
     return acc
   },
