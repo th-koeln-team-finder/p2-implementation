@@ -19,8 +19,8 @@ export default function ApplicationListPin({
   }
 
   return (
-    <Button variant="ghost" className="w-full p-0" onClick={togglePin}>
-      {isPinned ? <PinOffIcon size={24} /> : <PinIcon size={24} />}
+    <Button variant="ghost" size="icon" className="min-w-9" onClick={togglePin}>
+      {isPinned ? <PinOffIcon className='fill-foreground' size={24} /> : <PinIcon size={24} />}
     </Button>
   )
 }

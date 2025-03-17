@@ -52,10 +52,10 @@ export async function ApplicationList({ projectId }: ApplicationListProps) {
             className="flex grow flex-col"
             href={`/projects/${projectId}/overview/${app.id}`}
           >
-            <div className="mb-2 font-bold text-lg">
+            <div className="mb-2 font-bold text-lg text-muted-foreground">
               {app.user.firstName} {app.user.lastName}
               {!!app.user.firstName || !!app.user.lastName ? (
-                <span className="ml-4 text-muted-foreground text-sm">
+                <span className="ml-4 text-sm">
                   {app.user.name}
                 </span>
               ) : (
@@ -88,9 +88,6 @@ export async function ApplicationList({ projectId }: ApplicationListProps) {
               </TooltipProvider>
             )}
             <ApplicationListPin application={app} />
-            <Button variant="ghost" className="w-full p-0">
-              <MailsIcon size={24} />
-            </Button>
           </div>
         </div>
       ))}
