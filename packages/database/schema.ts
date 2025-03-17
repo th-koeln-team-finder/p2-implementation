@@ -276,23 +276,6 @@ export type ParticipantsInsert = typeof participants.$inferInsert
 export type ParticipantsSelect = typeof participants.$inferSelect
 
 
-export const projectTags = pgTable(
-    'project_tag',
-    {
-      projectId: uuid('projectId')
-          .notNull()
-          .references(() => projects.id, { onDelete: 'cascade' }),
-      tagId: uuid('tagId')
-          .notNull()
-          .references(() => tags.id, { onDelete: 'cascade' }),
-    },
-    (projectTags) => ({
-      pk: primaryKey({ columns: [projectTags.projectId, projectTags.tagId] }),
-    }),
-)
-export type projectTagInsert = typeof projectTags.$inferInsert
-export type projectTagSelect = typeof projectTags.$inferSelect
-
 
 
 
@@ -589,6 +572,25 @@ export const tags = pgTable(
 export type TagInsert = typeof tags.$inferInsert
 export type TagSelect = typeof tags.$inferSelect
 
+export const projectTags = pgTable(
+    'project_tag',
+    {
+        projectId: uuid('projectId')
+            .notNull()
+            .references(() => projects.id, { onDelete: 'cascade' }),
+        tagId: uuid('tagId')
+            .notNull()
+            .references(() => tags.id, { onDelete: 'cascade' }),
+    },
+    (projectTags) => ({
+        pk: primaryKey({ columns: [projectTags.projectId, projectTags.tagId] }),
+    }),
+)
+export type projectTagInsert = typeof projectTags.$inferInsert
+export type projectTagSelect = typeof projectTags.$inferSelect
+
+
+
 export const brainstormTags = pgTable(
   'brainstorm_tag',
   {
@@ -733,9 +735,7 @@ export const projectRelations = relations(projects, ({ many }) => ({
   bookmarks: many(projectBookmarks, {
     relationName: 'projectBookmarks',
   }),
-  tags: many(projectTags,{
-    relationName: 'projectTags',
-  }),
+  tags: many(projectTags),
 
 
 
