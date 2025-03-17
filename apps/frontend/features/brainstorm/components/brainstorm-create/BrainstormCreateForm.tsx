@@ -42,6 +42,7 @@ export function BrainstormCreateForm({
 }: BrainstormCreateFormProps) {
   useSignals()
   const translateValidation = useTranslations('validation')
+  const TagTranslations= useTranslations('tag')
   const translate = useTranslations('brainstorm')
 
   const navigationModal = useNavigationModalContext()
@@ -153,7 +154,7 @@ export function BrainstormCreateForm({
             .min(1, translateValidation('required'))}
         >
           <div>
-            <Label>{translate('createForm.labelTags')}</Label>
+            <Label>{TagTranslations('labelTags')}</Label>
             <MultiValueAutoCompleteForm
               containerId="popoverref"
               onOpenChange={(open) => {
@@ -164,9 +165,9 @@ export function BrainstormCreateForm({
               onSearchInputChange={setSearchInput}
               data={data ?? []}
               isLoading={isLoading}
-              placeholder={translate('createForm.placeholderTags')}
-              emptyMessage={translate('createForm.emptyTags')}
-              loadingMessage={translate('createForm.loadingTags')}
+              placeholder={TagTranslations('placeholderTags')}
+              emptyMessage={TagTranslations('emptyTags')}
+              loadingMessage={TagTranslations('loadingTags')}
               enableCommaSeparation
               enableTagUse
             />

@@ -230,10 +230,6 @@ export const de: Language = {
       placeholderTitle: 'Titel hier eingeben...',
       labelDescription: 'Beschreibung',
       placeholderDescription: 'Beschreibung hier eingeben...',
-      labelTags: 'Tags',
-      placeholderTags: 'Tags hinzufügen...',
-      loadingTags: 'Tags werden geladen...',
-      emptyTags: 'Keine Tags gefunden',
       addResourceButton: 'Ressource hinzufügen',
       resourceTypeSelectLink: 'https://',
       resourceTypeSelectFile: 'Datei',
@@ -260,6 +256,11 @@ export const de: Language = {
     },
   },
   tag: {
+
+    labelTags: 'Tags',
+    placeholderTags: 'Tags hinzufügen...',
+    loadingTags: 'Tags werden geladen...',
+    emptyTags: 'Keine Tags gefunden',
     createNewTag: "Neu: ''{tagName}''",
     labelRightNew: 'neu',
     labelRightUses: '{usage}x verwendet',
