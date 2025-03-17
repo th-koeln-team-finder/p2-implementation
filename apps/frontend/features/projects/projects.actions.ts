@@ -58,6 +58,7 @@ export async function createProject(
       status: payload.status,
       phase: payload.phase,
       location: payload.address,
+      createdBy: (await authMiddleware())?.user.id || '',
     })
     .returning()
 
