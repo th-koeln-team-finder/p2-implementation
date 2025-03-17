@@ -134,14 +134,6 @@ export async function createProject(
     await db.insert(Schema.projectSkill).values(projectSkills)
   }
 
-  // Insert project resources that are no files since they do not need a file upload
-  /* await createProjectResources(
-        project.id,
-        payload.resources
-            .filter((r) => !r.file?.[0])
-            .map((r) => ({ label: r.label, href: r.href, projectId: project.id })),
-    )*/
-
   return project.id
 }
 
