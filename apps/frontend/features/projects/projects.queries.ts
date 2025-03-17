@@ -63,17 +63,21 @@ export const getProjectItems = cache(
     )
     const skillFilter = skillFilters.length ? and(...skillFilters) : sql`true`
 
-    const baseProjectSkillMatchScore = 10
-    const levelAboveWeight = 2
-    const levelBelowWeight = -5
-    const projectSkillMatchScoreRaw = sql<number>`(SELECT SUM(${baseProjectSkillMatchScore} + GREATEST((us.level - ps.level) * ${levelAboveWeight}, ${levelBelowWeight} * (ps.level - us.level))) FROM "projectSkill" ps JOIN "userSkills" us ON ps."skillId" = us."skillId" WHERE us."userId" = ${userId} AND ps."projectId" = "projects"."id")`
-    const projectSkillMatchScore = sql<number>`CASE WHEN ${projectSkillMatchScoreRaw} IS NULL THEN 0 ELSE ${projectSkillMatchScoreRaw} END`
+    const projectSkillMatchScore = sql<number>`(SELECT COALESCE(MAX((CASE us.level <= ps.level WHEN TRUE THEN (4 - (ps.level - us.level))^4/4^4 ELSE (4 - (us.level - ps.level))^1.4/4^1.4 END)), 0) FROM "projectSkill" ps JOIN "userSkills" us ON ps."skillId" = us."skillId" WHERE us."userId" = ${userId} AND ps."projectId" = "projects"."id")`
+
+    // const projectTagMatchScoreBrainstormBookmarks = sql<number>`(SELECT COALESCE(SUM(brainstorm_tags.count), 0) FROM project_tag pt JOIN (SELECT tag."tagId", count(*) * 1.0 / SUM(COUNT(*)) OVER () as "count" FROM brainstorm_bookmark bookmark JOIN brainstorm_tag tag ON bookmark."brainstormId" = tag."brainstormId" WHERE bookmark."userId" = ${userId} GROUP BY tag."tagId") brainstorm_tags ON pt."tagId" = brainstorm_tags."tagId" WHERE pt."projectId" = "projects"."id")`
+    // const projectTagMatchScoreProjectBookmarks = sql<number>`(SELECT COALESCE(SUM(project_tags.count), 0) FROM project_tag pt JOIN (SELECT tag."tagId", count(*) * 1.0 / SUM(COUNT(*)) OVER () as "count" FROM project_bookmark bookmark JOIN project_tag tag ON bookmark."projectId" = tag."projectId" WHERE bookmark."userId" = ${userId} GROUP BY tag."tagId") project_tags ON pt."tagId" = project_tags."tagId" WHERE pt."projectId" = "projects"."id")`
+    // const projectTagMatchScoreProjectStars = sql<number>`(SELECT COALESCE(SUM(project_tags.count), 0) FROM project_tag pt JOIN (SELECT tag."tagId", count(*) * 1.0 / SUM(COUNT(*)) OVER () as "count" FROM project_star star JOIN project_tag tag ON star."projectId" = tag."projectId" WHERE star."userId" = ${userId} GROUP BY tag."tagId") project_tags ON pt."tagId" = project_tags."tagId" WHERE pt."projectId" = "projects"."id")`
+    // const projectTagMatchScore = sql<number>`COALESCE(${projectTagMatchScoreBrainstormBookmarks} + ${projectTagMatchScoreProjectBookmarks} + ${projectTagMatchScoreProjectStars}, 0)`
+    const projectTagMatchScore = sql<number>`((SELECT COUNT(DISTINCT tag) * 1.0 FROM (SELECT tag."tagId" as tag FROM brainstorm_bookmark bookmark JOIN brainstorm_tag tag ON bookmark."brainstormId" = tag."brainstormId" WHERE bookmark."userId" = ${userId} UNION ALL SELECT tag."tagId" as tag FROM project_bookmark bookmark JOIN project_tag tag ON bookmark."projectId" = tag."projectId" WHERE bookmark."userId" = ${userId} UNION ALL SELECT tag."tagId" as tag FROM project_star star JOIN project_tag tag ON star."projectId" = tag."projectId" WHERE star."userId" = ${userId}) as tags WHERE tags.tag IN (SELECT "tagId" FROM project_tag WHERE "projectId" = "projects"."id")) / (SELECT GREATEST(COUNT(DISTINCT pt."tagId") * 1.0, 1.0) FROM project_tag pt WHERE pt."projectId" = "projects"."id"))`
+
+    const projectTotalMatchScore = sql<number>`ROUND(CAST((${projectSkillMatchScore} + ${projectTagMatchScore}) as numeric), 2)`
 
     return db.query.projects.findMany({
       extras: {
-        projectSkillMatchScore: userId
-          ? projectSkillMatchScore.as('projectSkillMatchScore')
-          : sql<number>`NULL`.as('projectSkillMatchScore'),
+        projectTotalMatchScore: userId
+          ? projectTotalMatchScore.as('projectTotalMatchScore')
+          : sql<number>`NULL`.as('projectTotalMatchScore'),
         isBookmarked: !userId
           ? sql<boolean>`false`.as('isBookmarked')
           : sql<boolean>`EXISTS (SELECT id FROM "project_bookmark" bookmark WHERE bookmark."projectId" = "projects"."id" AND bookmark."userId" = ${userId})`.as(
@@ -126,7 +130,7 @@ export const getProjectItems = cache(
       limit,
       orderBy: [
         search && desc(grossSimilarity),
-        desc(projectSkillMatchScore),
+        userId && desc(projectTotalMatchScore),
         desc(projectStars),
       ].filter(Boolean),
     })

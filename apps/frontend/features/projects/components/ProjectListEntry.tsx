@@ -40,11 +40,11 @@ export function ProjectListEntry({ project }: FindAProjectListEntryProps) {
         )}
         <CardHeader>
           <div className="-mb-2 flex flex-row flex-wrap gap-1 text-xs">
-            {project.projectSkillMatchScore && (
+            {project.projectTotalMatchScore && (
               <span className="rounded bg-muted px-1 text-muted-foreground/80">
-                projectSkillMatchScore:{' '}
+                projectTotalMatchScore:{' '}
                 <span className="text-muted-foreground">
-                  {project.projectSkillMatchScore}
+                  {project.projectTotalMatchScore}
                 </span>
               </span>
             )}

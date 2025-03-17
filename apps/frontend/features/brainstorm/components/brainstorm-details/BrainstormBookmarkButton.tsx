@@ -30,6 +30,7 @@ export function BrainstormBookmarkButton({
       variant="ghost"
       size="icon"
       type="button"
+      className="min-h-9 min-w-9"
       onClick={async (e) => {
         e.stopPropagation()
         e.preventDefault()
