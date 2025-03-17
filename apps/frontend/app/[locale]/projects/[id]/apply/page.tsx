@@ -1,9 +1,9 @@
+import { authMiddleware } from '@/auth'
 import ApplicationDetail from '@/features/Application/components/ApplicationDetails'
-import { getLocale } from 'next-intl/server'
-import { redirect } from '@/features/i18n/routing'
 import { hasSessionPermission } from '@/features/auth/auth.utils'
-import {authMiddleware} from "@/auth";
-import {getProjectItem} from "@/features/projects/projects.queries";
+import { redirect } from '@/features/i18n/routing'
+import { getProjectItem } from '@/features/projects/projects.queries'
+import { getLocale } from 'next-intl/server'
 
 export default async function Application({
   params,
@@ -21,7 +21,7 @@ export default async function Application({
   const canCreateApplication = await hasSessionPermission(
     'applyProject',
     'create',
-    {createdById: project.createdBy}
+    { createdById: project.createdBy },
   )
   if (!canCreateApplication) {
     return redirect({

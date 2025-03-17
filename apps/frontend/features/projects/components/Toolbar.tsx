@@ -1,5 +1,11 @@
 'use client'
- import {
+import { CanUserClient } from '@/features/auth/components/CanUser.client'
+import { Link } from '@/features/i18n/routing'
+import {
+  useIsUserAppliedToProject,
+  useIsUserMemberOfProject,
+} from '@/features/projects/project.hooks'
+import {
   revalidateProjects,
   toggleProjectBookmark,
 } from '@/features/projects/projects.actions'
@@ -8,15 +14,12 @@ import { cn } from '@repo/design-system/lib/utils'
 import { BookmarkIcon, LinkIcon, StarIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useOptimistic, useTransition } from 'react'
-import { CanUserClient } from '@/features/auth/components/CanUser.client'
-import { Link } from '@/features/i18n/routing'
-import {useIsUserAppliedToProject, useIsUserMemberOfProject} from '@/features/projects/project.hooks'
 
 type ProjectBookmarkButtonProps = {
   projectId: string
   isBookmarked: boolean
-  stars?: number,
-  createdById: string,
+  stars?: number
+  createdById: string
 }
 
 export function Toolbar({
@@ -30,7 +33,7 @@ export function Toolbar({
   const starsString = stars.toLocaleString('en', { notation: 'compact' })
 
   const [isApplied, isLoadingApplication] = useIsUserAppliedToProject(projectId)
-  const [isMember, isLoadingMemberships] = useIsUserMemberOfProject(projectId)
+  const [isMember, _isLoadingMemberships] = useIsUserMemberOfProject(projectId)
 
   const [_, startTransition] = useTransition()
   const [optimisticBookmarked, dispatchOptimistic] = useOptimistic(
@@ -67,8 +70,12 @@ export function Toolbar({
           />
         </Button>
       </div>
-      {!isMember &&
-        <CanUserClient target="applyProject" action="create" data={{createdById}}>
+      {!isMember && (
+        <CanUserClient
+          target="applyProject"
+          action="create"
+          data={{ createdById }}
+        >
           <Link href={`/projects/${projectId}/apply`}>
             <Button
               disabled={isLoadingApplication || isApplied}
@@ -80,8 +87,12 @@ export function Toolbar({
             </Button>
           </Link>
         </CanUserClient>
-      }
-      <CanUserClient target="projectApplication" action="view" data={{createdById}}>
+      )}
+      <CanUserClient
+        target="projectApplication"
+        action="view"
+        data={{ createdById }}
+      >
         <Link href={`/projects/${projectId}/overview`}>
           <Button
             variant="default"

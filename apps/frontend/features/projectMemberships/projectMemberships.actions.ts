@@ -9,7 +9,9 @@ export async function revalidateProjectMemberships() {
   return await revalidateTag('project-memberships')
 }
 
-export async function addProjectMembership(projectMembership: ProjectMembershipsInsert) {
+export async function addProjectMembership(
+  projectMembership: ProjectMembershipsInsert,
+) {
   await db.insert(Schema.projectMemberships).values(projectMembership).execute()
 }
 

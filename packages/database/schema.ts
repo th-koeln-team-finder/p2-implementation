@@ -881,12 +881,15 @@ export const uploadedFileRelations = relations(uploadedFiles, ({ one }) => ({
     references: [users.id],
   }),
 }))
-export const projectMembershipsRelations = relations(projectMemberships, ({ one }) => ({
-  project: one(projects, {
-    fields: [projectMemberships.projectId],
-    references: [projects.id],
+export const projectMembershipsRelations = relations(
+  projectMemberships,
+  ({ one }) => ({
+    project: one(projects, {
+      fields: [projectMemberships.projectId],
+      references: [projects.id],
+    }),
   }),
-}))
+)
 
 export const userSkillVerificationRelations = relations(
   userSkillVerification,

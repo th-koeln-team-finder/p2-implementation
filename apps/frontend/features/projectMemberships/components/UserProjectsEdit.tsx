@@ -3,13 +3,18 @@
 import ProjectList from '@/features/projectMemberships/components/ProjectList'
 import UserProjectCreate from '@/features/projectMemberships/components/UserProjectCreate'
 import { useOptimisticProjectMemberships } from '@/features/projectMemberships/projectMemberships.hooks'
-import type { ProjectSelect, ProjectMembershipsSelect } from '@repo/database/schema'
+import type {
+  ProjectMembershipsSelect,
+  ProjectSelect,
+} from '@repo/database/schema'
 
 export default function UserProjectsEdit({
   userProjects,
   userId,
 }: {
-  userProjects: (ProjectMembershipsSelect & { project?: ProjectSelect | null })[]
+  userProjects: (ProjectMembershipsSelect & {
+    project?: ProjectSelect | null
+  })[]
   userId: string
 }) {
   const [projectsOptimistic, setProjectsOptimistic] =

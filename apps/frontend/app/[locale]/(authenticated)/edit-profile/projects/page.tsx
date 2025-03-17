@@ -11,7 +11,7 @@ export default async function EditProjects() {
   if (!session?.user?.id) {
     return redirect({ href: '/', locale: await getLocale() })
   }
-  const user = await getUser(session.user.id)
+  const _user = await getUser(session.user.id)
 
   const projects = await getProjectMemberships(session.user.id)
   return (

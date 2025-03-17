@@ -1,26 +1,26 @@
 'use client'
 
-import {PinIcon, PinOffIcon} from "lucide-react";
-import {Button} from "@repo/design-system/components/ui/button";
-import type {ProjectApplicationSelect} from "@repo/database/schema";
-import {pinApplication} from "@/features/Application/applications.actions";
-import {useState} from "react";
+import { pinApplication } from '@/features/Application/applications.actions'
+import type { ProjectApplicationSelect } from '@repo/database/schema'
+import { Button } from '@repo/design-system/components/ui/button'
+import { PinIcon, PinOffIcon } from 'lucide-react'
+import { useState } from 'react'
 
-export default function ApplicationListPin({application}: {application: ProjectApplicationSelect}) {
+export default function ApplicationListPin({
+  application,
+}: { application: ProjectApplicationSelect }) {
   const [isPinned, setIsPinned] = useState(application.isPinned)
   const togglePin = () => {
     setIsPinned(!isPinned)
-    pinApplication(application.id, !isPinned)
-      .catch(reason => {
-        setIsPinned(!isPinned)
-        console.error(reason)
-      })
+    pinApplication(application.id, !isPinned).catch((reason) => {
+      setIsPinned(!isPinned)
+      console.error(reason)
+    })
   }
-
 
   return (
     <Button variant="ghost" className="w-full p-0" onClick={togglePin}>
-      {isPinned ? <PinOffIcon size={24}  />: <PinIcon size={24} />}
+      {isPinned ? <PinOffIcon size={24} /> : <PinIcon size={24} />}
     </Button>
   )
 }

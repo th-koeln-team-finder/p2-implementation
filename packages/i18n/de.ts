@@ -1,4 +1,4 @@
-import type {Language} from './en'
+import type { Language } from './en'
 
 export const de: Language = {
   general: {
@@ -159,13 +159,14 @@ export const de: Language = {
       applicationsCount: '{count} Bewerbungen',
       likesCount: '{count} Likes',
       filesAttached: '{count} Dateien angehängt',
-      noApplications: 'Bis jetzt hat sich noch niemand für das Projekt beworben.'
+      noApplications:
+        'Bis jetzt hat sich noch niemand für das Projekt beworben.',
     },
     application: {
       title: 'Bewerbung von {name}',
       acceptApplication: 'Annehmen',
       rejectApplication: 'Ablehnen',
-    }
+    },
   },
   createProjects: {
     fieldRequired: 'Diese Eingabe ist erforderlich',
@@ -404,7 +405,8 @@ export const de: Language = {
         selectType: 'Typ auswählen',
         projectUpdated:
           'Ein Projekt, dem ich beigetreten bin, wurde aktualisiert',
-        applicationStatusChanged: 'Mein Mitgliedschaftsantrag wurde angenommen/abgelehnt',
+        applicationStatusChanged:
+          'Mein Mitgliedschaftsantrag wurde angenommen/abgelehnt',
         memberJoinedProject:
           'Ein neues Mitglied ist einem meiner Projekte beigetreten',
         memberLeftProject: 'Ein Mitglied hat ein Projekt verlassen',
@@ -464,7 +466,8 @@ export const de: Language = {
     },
     membershipAccepted: {
       title: 'Mitgliedschaft in {project} akzeptiert',
-      message: 'Deine Mitgliedschaft in {project} wurde akzeptiert. Viel Erfolg!',
+      message:
+        'Deine Mitgliedschaft in {project} wurde akzeptiert. Viel Erfolg!',
     },
     membershipRejected: {
       title: 'Mitgliedschaft in {project} abgelehnt',

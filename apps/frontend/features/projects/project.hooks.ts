@@ -1,6 +1,9 @@
+import {
+  isUserAppliedToProject,
+  isUserMemberOfProject,
+} from '@/features/projects/projects.actions'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
-import {isUserAppliedToProject, isUserMemberOfProject} from '@/features/projects/projects.actions'
 
 export function useIsUserAppliedToProject(projectId: string) {
   const { data: session } = useSession()

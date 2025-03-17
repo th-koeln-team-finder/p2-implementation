@@ -6,17 +6,17 @@ import { makeBrainstorm } from './factory/brainstorm.factory'
 import { makeBrainstormComment } from './factory/brainstormComment.factory'
 import { makeBrainstormCommentLike } from './factory/brainstormCommentLike.factory'
 import { makeBrainstormResource } from './factory/brainstormResource.factory'
+import { demoApplication } from './factory/projectApplication.data'
+import { makeProjectMemberships } from './factory/projectMemberships.factory'
+import { demoProject } from './factory/projects.data'
 import { makeSkill } from './factory/skill.factory'
 import { makeTag } from './factory/tag.factory'
 import { makeTest } from './factory/test.factory'
 import { makeUser } from './factory/user.factory'
 import { makeUserFollows } from './factory/userFollows.factory'
-import { makeProjectMemberships } from './factory/projectMemberships.factory'
 import { makeUserSkillVerification } from './factory/userSkillVerification.factory'
 import { makeUserSkills } from './factory/userSkills.factory'
 import * as Schema from './schema'
-import { demoProject } from './factory/projects.data'
-import { demoApplication } from './factory/projectApplication.data'
 
 config()
 config({ path: '.env.local', override: true })
@@ -232,7 +232,10 @@ export async function seed() {
   const projectMembershipData = makeMultiple(100, () =>
     makeProjectMemberships(userIds, [undefined] as never, uniqueUserProjects),
   ).filter((e) => !!e)
-  await db.insert(Schema.projectMemberships).values(projectMembershipData).execute()
+  await db
+    .insert(Schema.projectMemberships)
+    .values(projectMembershipData)
+    .execute()
 
   console.log('Creating 50 userFollow records')
   const userFollowData = makeMultiple(50, () =>

@@ -6,7 +6,10 @@ import {
   updateProjectMemberships,
 } from '@/features/projectMemberships/projectMemberships.actions'
 import type { OptimisticPayload } from '@/features/projectMemberships/projectMemberships.hooks'
-import type { ProjectSelect, ProjectMembershipsSelect } from '@repo/database/schema'
+import type {
+  ProjectMembershipsSelect,
+  ProjectSelect,
+} from '@repo/database/schema'
 import { Button } from '@repo/design-system/components/ui/button'
 import {
   Card,
@@ -25,7 +28,9 @@ export default function ProjectList({
   userProjects,
   setProjectsOptimistic,
 }: {
-  userProjects: (ProjectMembershipsSelect & { project?: ProjectSelect | null })[]
+  userProjects: (ProjectMembershipsSelect & {
+    project?: ProjectSelect | null
+  })[]
   setProjectsOptimistic: (payload: OptimisticPayload) => void
 }) {
   const t = useTranslations()

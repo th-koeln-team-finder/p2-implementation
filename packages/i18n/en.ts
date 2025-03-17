@@ -155,13 +155,13 @@ export const en = {
       applicationsCount: '{count} Applications',
       likesCount: '{count} Likes',
       filesAttached: '{count} files attached',
-      noApplications: 'No one applied to join this project yet.'
+      noApplications: 'No one applied to join this project yet.',
     },
     application: {
       title: 'Application by {name}',
       acceptApplication: 'Accept',
       rejectApplication: 'Reject',
-    }
+    },
   },
   createProjects: {
     fieldRequired: 'This field is required',

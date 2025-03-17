@@ -19,12 +19,12 @@ import { Button } from '@repo/design-system/components/ui/button'
 import { CheckboxForm } from '@repo/design-system/components/ui/checkbox'
 import { InputForm } from '@repo/design-system/components/ui/input'
 import { Label } from '@repo/design-system/components/ui/label'
+import { clientEnv } from '@repo/env/client'
 import { UserPlusIcon } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { z } from 'zod'
-import { clientEnv } from '@repo/env/client'
 
 type ApplyFormValues = {
   checkbox: boolean
