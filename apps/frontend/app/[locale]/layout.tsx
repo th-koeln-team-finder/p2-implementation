@@ -1,5 +1,10 @@
+import { AppSidebar } from '@/features/general/components/AppSidebar'
 import Header from '@/features/header/header'
 import { routing } from '@/features/i18n/routing'
+import {
+  SidebarInset,
+  SidebarProvider,
+} from '@repo/design-system/components/ui/sidebar'
 import { SessionProvider } from 'next-auth/react'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
@@ -22,8 +27,15 @@ export default async function RootLayout({
   return (
     <SessionProvider>
       <NextIntlClientProvider messages={messages}>
-        <Header />
-        {children}
+        <SidebarProvider>
+          <SidebarInset>
+            <main className="flex min-h-screen w-full flex-col">
+              <Header />
+              {children}
+            </main>
+          </SidebarInset>
+          <AppSidebar />
+        </SidebarProvider>
       </NextIntlClientProvider>
     </SessionProvider>
   )
