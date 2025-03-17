@@ -21,7 +21,7 @@ export default async function Projects({
   const project = await getProjectItem(id, session?.user?.id)
   const translations = await getTranslations('projects')
   if (!project) {
-    return <div>Project not found</div>
+    return <div>{translations('notFound')}</div>
   }
 
   return (

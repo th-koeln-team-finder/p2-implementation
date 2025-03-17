@@ -4,21 +4,21 @@ import ManageApplicationButton from '@/features/Application/components/ManageApp
 import { UserAvatar } from '@/features/auth/components/UserAvatar'
 import { getPublicFileUrl } from '@/features/file-upload/file-upload.actions'
 import { NavigationModal } from '@/features/general/components/NavigationModal'
-import { Link } from '@/features/i18n/routing'
+import {Link, redirect} from '@/features/i18n/routing'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import FileInlineListCards from '@repo/design-system/components/custom/file-inline-list-cards'
 import {
   DialogContent,
   DialogTitle,
 } from '@repo/design-system/components/ui/dialog'
-import { getTranslations } from 'next-intl/server'
+import {getLocale, getTranslations} from 'next-intl/server'
 
 export default async function Overview({
   params,
 }: {
   params: Promise<{ id: string; applicationId: string }>
 }) {
-  const { applicationId } = await params
+  const { id, applicationId } = await params
   const app = await getApplication(applicationId)
   if (!app) {
     return null
@@ -44,7 +44,11 @@ export default async function Overview({
   })
 
   if (!app) {
-    return <div>Application not found</div>
+    const locale = await getLocale()
+    return redirect({
+      href: `/project/${id}/overview`,
+      locale,
+    })
   }
   return (
     <NavigationModal>

@@ -89,6 +89,7 @@ export const de: Language = {
     createProjectWarningDescription:
       'Sie müssen sich anmelden, um ein Projekt zu erstellen',
     emptyProjects: 'Keine Projekte gefunden',
+    notFound: 'Projekt nicht gefunden',
 
     filterbar: {
       searchPlaceholder: 'Suche nach Projekten...',

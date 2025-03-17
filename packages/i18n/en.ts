@@ -86,6 +86,7 @@ export const en = {
     createProjectWarningDescription:
       'Please login or register to create a project',
     emptyProjects: 'No projects found',
+    notFound: 'Project not found',
 
     filterbar: {
       searchPlaceholder: 'Search for a project...',

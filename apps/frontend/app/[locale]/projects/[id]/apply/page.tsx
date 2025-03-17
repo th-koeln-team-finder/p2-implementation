@@ -15,7 +15,10 @@ export default async function Application({
   const session = await authMiddleware()
   const project = await getProjectItem(id, session?.user?.id)
   if (!project) {
-    return <div>Project not found</div>
+    return redirect({
+      href: `/project/${id}`,
+      locale,
+    })
   }
 
   const canCreateApplication = await hasSessionPermission(
