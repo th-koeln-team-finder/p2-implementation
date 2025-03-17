@@ -152,10 +152,13 @@ export const en = {
     overview: {
       title: 'Project Overview',
       notFound: 'Project not found',
-      impressionsCount: '{count, plural, =1 {One impression} other {# impressions}}',
-      applicationsCount: '{count, plural, =1 {One application} other {# applications}}',
+      impressionsCount:
+        '{count, plural, =1 {One impression} other {# impressions}}',
+      applicationsCount:
+        '{count, plural, =1 {One application} other {# applications}}',
       likesCount: '{count, plural, =1 {One like} other {# likes}} ',
-      filesAttached: '{count, plural, =1 {One file attached} other {# files attached}}',
+      filesAttached:
+        '{count, plural, =1 {One file attached} other {# files attached}}',
       noApplications: 'No one applied to join this project yet.',
     },
     application: {

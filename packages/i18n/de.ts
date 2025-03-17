@@ -156,10 +156,13 @@ export const de: Language = {
     overview: {
       title: 'Projektübersicht',
       notFound: 'Projekt nicht gefunden',
-      impressionsCount: '{count, plural, =1 {Eine Impression} other {# Impressionen}} ',
-      applicationsCount: '{count, plural, =1 {Eine Bewerbung} other {# Bewerbungen}}',
+      impressionsCount:
+        '{count, plural, =1 {Eine Impression} other {# Impressionen}} ',
+      applicationsCount:
+        '{count, plural, =1 {Eine Bewerbung} other {# Bewerbungen}}',
       likesCount: '{count, plural, =1 {Ein Like} other {# Likes}}',
-      filesAttached: '{count, plural, =1 {Eine Datei angehängt} other {# Dateien angehängt}} ',
+      filesAttached:
+        '{count, plural, =1 {Eine Datei angehängt} other {# Dateien angehängt}} ',
       noApplications:
         'Bis jetzt hat sich noch niemand für das Projekt beworben.',
     },

@@ -4,14 +4,14 @@ import ManageApplicationButton from '@/features/Application/components/ManageApp
 import { UserAvatar } from '@/features/auth/components/UserAvatar'
 import { getPublicFileUrl } from '@/features/file-upload/file-upload.actions'
 import { NavigationModal } from '@/features/general/components/NavigationModal'
-import {Link, redirect} from '@/features/i18n/routing'
+import { Link, redirect } from '@/features/i18n/routing'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import FileInlineListCards from '@repo/design-system/components/custom/file-inline-list-cards'
 import {
   DialogContent,
   DialogTitle,
 } from '@repo/design-system/components/ui/dialog'
-import {getLocale, getTranslations} from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 export default async function Overview({
   params,

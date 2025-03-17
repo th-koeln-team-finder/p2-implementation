@@ -4,14 +4,13 @@ import ApplicationListPin from '@/features/Application/components/ApplicationLis
 import { UserAvatar } from '@/features/auth/components/UserAvatar'
 import { Link } from '@/features/i18n/routing'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
-import { Button } from '@repo/design-system/components/ui/button'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@repo/design-system/components/ui/tooltip'
-import { MailsIcon, PaperclipIcon } from 'lucide-react'
+import { PaperclipIcon } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 type ApplicationListProps = {
@@ -55,9 +54,7 @@ export async function ApplicationList({ projectId }: ApplicationListProps) {
             <div className="mb-2 font-bold text-lg text-muted-foreground">
               {app.user.firstName} {app.user.lastName}
               {!!app.user.firstName || !!app.user.lastName ? (
-                <span className="ml-4 text-sm">
-                  {app.user.name}
-                </span>
+                <span className="ml-4 text-sm">{app.user.name}</span>
               ) : (
                 app.user.name
               )}
