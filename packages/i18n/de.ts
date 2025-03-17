@@ -82,6 +82,7 @@ export const de: Language = {
     pageTitle: 'Projekte',
     location: 'Standort/Treffpunkt',
     join: 'Team beitreten',
+    goToOverview: 'Zur Projektübersicht',
     links: 'Links und andere Resourcen',
     phase: 'Phase',
     createProjectWarning: 'Sie müssen sich anmelden',

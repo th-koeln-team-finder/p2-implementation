@@ -67,15 +67,28 @@ export function Toolbar({
           />
         </Button>
       </div>
-      <CanUserClient target="applyProject" action="create" data={{createdById}}>
-        <Link href={`/projects/${projectId}/apply`}>
+      {!isMember &&
+        <CanUserClient target="applyProject" action="create" data={{createdById}}>
+          <Link href={`/projects/${projectId}/apply`}>
+            <Button
+              disabled={isLoadingApplication || isApplied}
+              variant="default"
+              size="default"
+              className="ml-2 w-full lg:w-auto"
+            >
+              {t('join')}
+            </Button>
+          </Link>
+        </CanUserClient>
+      }
+      <CanUserClient target="projectApplication" action="view" data={{createdById}}>
+        <Link href={`/projects/${projectId}/overview`}>
           <Button
-            disabled={isLoadingApplication || isApplied}
             variant="default"
             size="default"
             className="ml-2 w-full lg:w-auto"
           >
-            {t('join')}
+            {t('goToOverview')}
           </Button>
         </Link>
       </CanUserClient>

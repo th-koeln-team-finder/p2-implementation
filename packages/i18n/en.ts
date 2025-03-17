@@ -79,6 +79,7 @@ export const en = {
     pageTitle: 'Projects',
     location: 'Location',
     join: 'Join the team',
+    goToOverview: 'Go to project overview',
     links: 'Links and other resources',
     phase: 'phase',
     createProjectWarning: 'You need to login',

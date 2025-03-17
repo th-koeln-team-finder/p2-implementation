@@ -33,7 +33,7 @@ export default async function Projects({
             project.phase ? `${translations('phase')}: ${project.phase}` : ''
           }
         />
-        <Toolbar projectId={project.id} isBookmarked={project.isBookmarked} createdById={project.createdById} />
+        <Toolbar projectId={project.id} isBookmarked={project.isBookmarked} createdById={project.createdBy} />
       </div>
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         <ImageCarousel />

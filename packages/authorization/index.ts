@@ -105,7 +105,7 @@ export const PERMISSIONS = {
       update: (user, data) => data?.createdById === user?.id,
     },
     applyProject: {
-      create: (user, data) => data.createdById === user?.id,
+      create: (user, data) => data.createdById !== user?.id,
       update: (user, data) => data.createdById === user?.id,
       delete: (user, data) => data.createdById === user?.id,
     },
