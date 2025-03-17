@@ -6,7 +6,7 @@ import { makeBrainstorm } from './factory/brainstorm.factory'
 import { makeBrainstormComment } from './factory/brainstormComment.factory'
 import { makeBrainstormCommentLike } from './factory/brainstormCommentLike.factory'
 import { makeBrainstormResource } from './factory/brainstormResource.factory'
-import { makeSkill } from './factory/skill.factory'
+import {makeProjectSkill, makeSkill} from './factory/skill.factory'
 import { makeTag } from './factory/tag.factory'
 import { makeTest } from './factory/test.factory'
 import { makeUser } from './factory/user.factory'
@@ -15,6 +15,9 @@ import { makeUserProjects } from './factory/userProjects.factory'
 import { makeUserSkillVerification } from './factory/userSkillVerification.factory'
 import { makeUserSkills } from './factory/userSkills.factory'
 import * as Schema from './schema'
+import {projectsData, uniqueProjectSkills} from './factory/projects.data'
+import { demoApplication } from './factory/projectApplication.data'
+import {makeProject} from "./factory/projects.factory";
 
 config()
 config({ path: '.env.local', override: true })
@@ -79,6 +82,58 @@ export async function seed() {
   const userData = makeMultiple(75, makeUser)
   const users = await db.insert(Schema.users).values(userData).returning()
   const userIds = users.map((e) => e.id)
+
+  console.log("Clearing 'projects' table")
+  await db.delete(Schema.projects).execute()
+
+  console.log(`Creating ${projectsData.length} projects`)
+  const projectsToInsert = []
+  for (const project of projectsData) {
+    projectsToInsert.push(
+        await makeProject(
+            project.name,
+            JSON.stringify(project.description),
+            project.descriptionText,
+            project.status,
+        ),
+    )
+  }
+  const projects = await db
+      .insert(Schema.projects)
+      .values(projectsToInsert)
+      .returning()
+  const projectIds = Object.fromEntries(
+      projects.map((e) => [e.name, e.id]),
+  )
+
+
+  console.log("Clearing 'skill' table")
+  await db.delete(Schema.skills).execute()
+
+  console.log(`Creating ${uniqueProjectSkills.length} skill records`)
+  const uniqueSkills = new Set<string>()
+  const projectSkillData = []
+  const skill = await db.insert(Schema.skills)
+  for (const technicalSkill of uniqueProjectSkills) {
+    const projectId = projectIds[technicalSkill.skill];
+    const tag = await makeProjectSkill(projectId, [technicalSkill], uniqueSkills)
+    if (tag) {
+      projectSkillData.push(tag)
+    }
+  }
+  const pSkills = await db.insert(Schema.skills).values(projectSkillData).returning()
+  const skillIds = Object.fromEntries(pSkills.map((e) => [e.skill, e.id]))
+
+
+  /*const usersToApply = userIds.slice(0, 5)
+  console.log('Creating 5 project application')
+  await db.insert(Schema.projectApplication).values(
+    usersToApply.map((userId) => ({
+      ...demoApplication,
+      userId,
+      projectId: project[0].id,
+    })),
+  )*/
 
   console.log("Clearing 'tag' table")
   await db.delete(Schema.tags).execute()

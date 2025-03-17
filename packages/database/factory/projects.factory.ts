@@ -1,14 +1,19 @@
 import { faker } from '@faker-js/faker/locale/de'
 import type { ProjectInsert } from '../schema'
+import {generateTextEmbeddings} from "@repo/semantic-search";
 
-export function makeProject(): ProjectInsert {
+export async function makeProject(
+    name: string,
+    description: string,
+    descriptionText: string,
+    status: "open",
+): Promise<ProjectInsert> {
+  const embedding = await generateTextEmbeddings(`${name}\n${descriptionText}`)
   return {
-    name: faker.internet.username(),
-    description: faker.lorem.sentence(),
-    status: faker.helpers.arrayElement(['open', 'closed']),
-    phase: faker.lorem.word(),
-    location: faker.location.city(),
-    isPublic: faker.datatype.boolean(),
-    allowApplications: faker.datatype.boolean(),
+    name,
+    description,
+    embedding,
+    status,
+    createdAt: faker.date.past(),
   }
 }
