@@ -65,7 +65,7 @@ export default async function Overview({
           </div>
           <div className="flex gap-4">
             <ApplicationListPin application={app}/>
-            <AcceptApplicationButton projectId={app.projectId} applicationId={app.id} />
+            <AcceptApplicationButton project={app.project} applicationId={app.id} />
           </div>
         </div>
         <div className="">
