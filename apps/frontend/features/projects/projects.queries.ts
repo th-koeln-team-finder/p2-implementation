@@ -35,7 +35,7 @@ export const getProjectItems = cache(
         : sql`true`
     const membersFilter = and(minMembersFilter, maxMembersFilter)
 
-    const projectStars = sql<number>`(SELECT COUNT(*) FROM "project_star" star WHERE star."projectId" = "projects"."id")`
+    const projectStars = sql<string>`(SELECT COUNT(*) FROM "project_star" star WHERE star."projectId" = "projects"."id")`
 
     const minStarsFilterValue = filters[FilterKeys.minStars]
     const minStarsFilter =

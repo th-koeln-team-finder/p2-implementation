@@ -5,7 +5,7 @@ import { getSingleBrainstorm } from '@/features/brainstorm/brainstorm.queries'
 import { getCommentsForBrainstorm } from '@/features/brainstorm/brainstormComment.queries'
 import { BrainstormBookmarkButton } from '@/features/brainstorm/components/brainstorm-details/BrainstormBookmarkButton'
 import { BrainstormLinksResources } from '@/features/brainstorm/components/brainstorm-details/BrainstormLinksResources'
-import { BrainstormTagList } from '@/features/brainstorm/components/brainstorm-details/BrainstormTagList'
+import { TagList } from '@/features/tag/components/TagList'
 import { DeleteBrainstormButton } from '@/features/brainstorm/components/brainstorm-details/DeleteBrainstormButton'
 import { BrainstormCommentList } from '@/features/brainstorm/components/brainstorm-details/comments/BrainstormCommentList'
 import { Link, redirect } from '@/features/i18n/routing'
@@ -137,7 +137,7 @@ export async function BrainstormDetails({
           </div>
         </nav>
       )}
-      <BrainstormTagList tags={brainstorm.tags} />
+      <TagList tags={brainstorm.tags} />
       {brainstorm.description && (
         <WysiwygRenderer value={brainstorm.description} />
       )}

@@ -14,10 +14,7 @@ type BrainstormTagListProps = {
   splitUp?: number
 }
 
-export function BrainstormTagList({
-  tags,
-  splitUp = 0,
-}: BrainstormTagListProps) {
+export function TagList({ tags, splitUp = 0 }: BrainstormTagListProps) {
   const translate = useTranslations('tag')
   const tagsToShow = tags.slice(0, splitUp)
   const otherTags = tags.slice(splitUp)
