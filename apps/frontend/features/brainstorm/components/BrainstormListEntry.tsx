@@ -1,5 +1,6 @@
 'use client'
 import { CanUserClient } from '@/features/auth/components/CanUser.client'
+import type { getBrainstorms } from '@/features/brainstorm/brainstorm.queries'
 import { BrainstormBookmarkButton } from '@/features/brainstorm/components/brainstorm-details/BrainstormBookmarkButton'
 import { Link } from '@/features/i18n/routing'
 import { TagList } from '@/features/tag/components/TagList'
@@ -18,7 +19,6 @@ import {
   TooltipTrigger,
 } from '@repo/design-system/components/ui/tooltip'
 import { ShellIcon } from 'lucide-react'
-import type { getBrainstorms } from '@/features/brainstorm/brainstorm.queries'
 import { useTranslations } from 'next-intl'
 
 type BrainstormListEntryProps = {
