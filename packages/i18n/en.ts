@@ -87,6 +87,15 @@ export const en = {
       'Please login or register to create a project',
     emptyProjects: 'No projects found',
 
+    matching: {
+      tooltipTitle: 'Matching score',
+      tooltipDescription:
+        'The matching score is calculated based on your skills and interests. It is a number between 0 and 100.',
+      skillMatchingScore: 'Skills',
+      interestMatchingScore: 'Interests',
+      totalMatchingScore: 'Total',
+    },
+
     filterbar: {
       searchPlaceholder: 'Search for a project...',
       searchNotice:

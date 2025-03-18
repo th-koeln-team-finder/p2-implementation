@@ -18,13 +18,17 @@ import {
   TooltipTrigger,
 } from '@repo/design-system/components/ui/tooltip'
 import { ShellIcon } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import Image from 'next/image'
 
 type FindAProjectListEntryProps = {
   project: Awaited<ReturnType<typeof getProjectItems>>[number]
 }
 
-export function ProjectListEntry({ project }: FindAProjectListEntryProps) {
+export async function ProjectListEntry({
+  project,
+}: FindAProjectListEntryProps) {
+  const matchingTranslate = await getTranslations('projects.matching')
   const firstImage = project.projectPictures?.[0]
   return (
     <Link href={`/projects/${project.id}`}>
@@ -39,28 +43,33 @@ export function ProjectListEntry({ project }: FindAProjectListEntryProps) {
                 </TooltipTrigger>
                 <TooltipContent>
                   <h6 className="font-semibold text-lg">
-                    Project Matching Score
+                    {matchingTranslate('tooltipTitle')}
                   </h6>
                   <p className="mb-2 max-w-xs text-muted-foreground">
-                    Your matching score is calculated based on your skills and
-                    interests. It is a number between 0 and 100.
+                    {matchingTranslate('tooltipDescription')}
                   </p>
                   <table className="text-left" cellSpacing="0">
                     <tbody>
                       <tr className="bg-card">
-                        <th className="p-1">Skill Matching Score</th>
+                        <th className="p-1">
+                          {matchingTranslate('skillMatchingScore')}
+                        </th>
                         <td className="min-w-12 p-1 text-right">
                           {(project.projectSkillMatchScore * 100).toFixed(0)}
                         </td>
                       </tr>
                       <tr className="bg-card/40">
-                        <th className="p-1">Interest Matching Score</th>
+                        <th className="p-1">
+                          {matchingTranslate('interestMatchingScore')}
+                        </th>
                         <td className="min-w-12 p-1 text-right">
                           {(project.projectTagMatchScore * 100).toFixed(0)}
                         </td>
                       </tr>
                       <tr className="border-border border-t bg-card">
-                        <th className="p-1">Total Matching Score</th>
+                        <th className="p-1">
+                          {matchingTranslate('totalMatchingScore')}
+                        </th>
                         <td className="min-w-12 p-1 text-right">
                           {(project.projectTotalMatchScore * 100).toFixed(0)}
                         </td>
