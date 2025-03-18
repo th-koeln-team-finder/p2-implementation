@@ -6,7 +6,7 @@ import { ProjectTimetable } from '@/features/projects/components/ProjectTimetabl
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
 import TeamMembers from '@/features/projects/components/TeamMembers'
 import { Toolbar } from '@/features/projects/components/Toolbar'
-import { getProjectItem } from '@/features/projects/projects.queries'
+import {addProjectImpression, getProjectItem} from '@/features/projects/projects.queries'
 import { SkillScale } from '@/features/skills/components/SkillScale'
 import { TagList } from '@/features/tag/components/TagList'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
@@ -25,6 +25,8 @@ export default async function Projects({
   if (!project) {
     return <div>{translations('notFound')}</div>
   }
+
+  await addProjectImpression(id)
 
   return (
     <div className="mx-auto inline-flex w-full max-w-screen-xl flex-col items-center justify-start gap-4 p-4">

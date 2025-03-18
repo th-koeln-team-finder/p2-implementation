@@ -489,6 +489,13 @@ export type ProjectApplicationFilesInsert =
 export type ProjectApplicationFilesSelect =
   typeof projectApplicationFiles.$inferSelect
 
+export const projectImpressions = pgTable('project_impressions', {
+  projectId: uuid('projectId')
+    .notNull()
+    .references(() => projects.id, { onDelete: 'cascade' }),
+  createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
+})
+
 /**
  * Data for a single brainstorm
  */
@@ -785,6 +792,7 @@ export const projectRelations = relations(projects, ({ many }) => ({
     relationName: 'projectBookmarks',
   }),
   tags: many(projectTags),
+  impressions: many(projectImpressions),
 }))
 
 export const projectTagRelations = relations(projectTags, ({ one }) => ({
