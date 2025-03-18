@@ -1,4 +1,5 @@
 'use client'
+import { useSessionPermission } from '@/features/auth/auth.hooks'
 import { CanUserClient } from '@/features/auth/components/CanUser.client'
 import { Link } from '@/features/i18n/routing'
 import {
@@ -6,7 +7,6 @@ import {
   useIsUserMemberOfProject,
 } from '@/features/projects/project.hooks'
 import {
-  joinProject,
   toggleProjectBookmark,
   toggleProjectStar,
 } from '@/features/projects/projects.actions'
@@ -16,7 +16,6 @@ import { cn } from '@repo/design-system/lib/utils'
 import { BookmarkIcon, LinkIcon, StarIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useOptimistic, useTransition } from 'react'
-import {useSessionPermission} from "@/features/auth/auth.hooks";
 
 type ProjectProps = {
   project: PopulatedProject

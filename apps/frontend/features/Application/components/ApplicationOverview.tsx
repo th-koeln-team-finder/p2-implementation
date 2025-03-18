@@ -46,7 +46,9 @@ export default async function ApplicationOverview({
         <div className="flex w-1/3 flex-col items-center">
           <EyeIcon className="mb-8 h-12 w-12 text-primary lg:h-24 lg:w-24" />
           <div className="text-center font-bold text-md lg:text-lg">
-            {translate('projects.overview.impressionsCount', { count: project.impressionCount })}
+            {translate('projects.overview.impressionsCount', {
+              count: project.impressionCount,
+            })}
           </div>
         </div>
         <div className="flex w-1/3 flex-col items-center">
@@ -60,7 +62,9 @@ export default async function ApplicationOverview({
         <div className="flex w-1/3 flex-col items-center">
           <StarIcon className="mb-8 h-12 w-12 text-primary lg:h-24 lg:w-24" />
           <div className="text-center font-bold text-md lg:text-lg">
-            {translate('projects.overview.likesCount', { count: project.starCount })}
+            {translate('projects.overview.likesCount', {
+              count: project.starCount,
+            })}
           </div>
         </div>
       </div>

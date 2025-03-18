@@ -6,7 +6,10 @@ import { ProjectTimetable } from '@/features/projects/components/ProjectTimetabl
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
 import TeamMembers from '@/features/projects/components/TeamMembers'
 import { Toolbar } from '@/features/projects/components/Toolbar'
-import {addProjectImpression, getProjectItem} from '@/features/projects/projects.queries'
+import {
+  addProjectImpression,
+  getProjectItem,
+} from '@/features/projects/projects.queries'
 import { SkillScale } from '@/features/skills/components/SkillScale'
 import { TagList } from '@/features/tag/components/TagList'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
@@ -37,9 +40,7 @@ export default async function Projects({
             project.phase ? `${translations('phase')}: ${project.phase}` : ''
           }
         />
-        <Toolbar
-          project={project}
-        />
+        <Toolbar project={project} />
       </div>
       <div className="flex w-full flex-col pr-3">
         <TagList tags={project.tags} />

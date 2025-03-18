@@ -279,7 +279,7 @@ export async function toggleProjectBookmark(
 }
 
 export async function joinProject(projectId: string, userId: string) {
-  const session = await authMiddleware()
+  const _session = await authMiddleware()
   if (
     await db.query.participants.findFirst({
       where:

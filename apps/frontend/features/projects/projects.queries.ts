@@ -139,9 +139,10 @@ export const getProjectItem = cache(
           : sql<string>`(SELECT COUNT(*) FROM "project_star" star WHERE star."projectId" = "projects"."id")`.as(
               'starCount',
             ),
-        impressionCount: sql<number>`(SELECT COUNT(*) FROM "project_impressions" impression WHERE impression."projectId" = "projects"."id")`.as(
-          'impressionCount',
-        ),
+        impressionCount:
+          sql<number>`(SELECT COUNT(*) FROM "project_impressions" impression WHERE impression."projectId" = "projects"."id")`.as(
+            'impressionCount',
+          ),
       },
       where: eq(projects.id, id),
       with: {

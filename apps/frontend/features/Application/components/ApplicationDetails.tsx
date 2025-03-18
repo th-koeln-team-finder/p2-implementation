@@ -16,15 +16,12 @@ import { FileInlinePreviewsForm } from '@repo/design-system/components/custom/fi
 import { FileListForm } from '@repo/design-system/components/custom/file-list-form'
 import { FileUploadForm } from '@repo/design-system/components/custom/file-upload'
 import { Button } from '@repo/design-system/components/ui/button'
-import { CheckboxForm } from '@repo/design-system/components/ui/checkbox'
-import { InputForm } from '@repo/design-system/components/ui/input'
 import { Label } from '@repo/design-system/components/ui/label'
 import { clientEnv } from '@repo/env/client'
 import { UserPlusIcon } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
-import { z } from 'zod'
 
 type ApplyFormValues = {
   bucketPrefix: string
@@ -87,7 +84,7 @@ export default function ApplicationDetail({
       }, 1000)
     },
   })
-  const prefersInternalCommunication = useComputed(() => {
+  const _prefersInternalCommunication = useComputed(() => {
     return form.data.value.checkbox.value
   })
 

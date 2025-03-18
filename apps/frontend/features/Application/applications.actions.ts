@@ -2,10 +2,13 @@
 
 import { sendNotificationByType } from '@/features/notifications/notifications.actions'
 import { addProjectMembership } from '@/features/projectMemberships/projectMemberships.actions'
+import {
+  isUserMemberOfProject,
+  joinProject,
+} from '@/features/projects/projects.actions'
 import { Schema, db } from '@repo/database'
 import { eq } from 'drizzle-orm'
 import { revalidateTag } from 'next/cache'
-import {isUserAppliedToProject, isUserMemberOfProject, joinProject} from "@/features/projects/projects.actions";
 
 export const pinApplication = async (applicationId: string, pin: boolean) => {
   await db
