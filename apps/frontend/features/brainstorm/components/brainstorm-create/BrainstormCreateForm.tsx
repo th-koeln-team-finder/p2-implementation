@@ -42,7 +42,7 @@ export function BrainstormCreateForm({
 }: BrainstormCreateFormProps) {
   useSignals()
   const translateValidation = useTranslations('validation')
-  const TagTranslations= useTranslations('tag')
+  const TagTranslations = useTranslations('tag')
   const translate = useTranslations('brainstorm')
 
   const navigationModal = useNavigationModalContext()

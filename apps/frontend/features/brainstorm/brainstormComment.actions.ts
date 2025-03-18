@@ -80,12 +80,15 @@ export async function toggleCommentLike(
   shouldLike: boolean,
 ) {
   const session = await authMiddleware()
-  const hasPermission = await async function toggleCommentLike(
-      commentId: string,
-      shouldLike: boolean,
+  const hasPermission = await (async function toggleCommentLike(
+    commentId: string,
+    shouldLike: boolean,
   ) {
     const session = await authMiddleware()
-    const hasPermission = await hasSessionPermission('commentBrainstorm', 'like')
+    const hasPermission = await hasSessionPermission(
+      'commentBrainstorm',
+      'like',
+    )
     if (!hasPermission || !session?.user?.id) {
       const locale = await getLocale()
       return redirect({
@@ -95,8 +98,8 @@ export async function toggleCommentLike(
     }
 
     const matchLike = and(
-        eq(Schema.brainstormCommentLikes.commentId, commentId),
-        eq(Schema.brainstormCommentLikes.userId, session.user.id),
+      eq(Schema.brainstormCommentLikes.commentId, commentId),
+      eq(Schema.brainstormCommentLikes.userId, session.user.id),
     )
     const existingLike = await db.query.brainstormCommentLikes.findFirst({
       where: matchLike,
@@ -113,7 +116,7 @@ export async function toggleCommentLike(
       commentId,
       userId: session.user.id,
     })
-  }('commentBrainstorm', 'like')
+  })('commentBrainstorm', 'like')
   if (!hasPermission || !session?.user?.id) {
     const locale = await getLocale()
     return redirect({

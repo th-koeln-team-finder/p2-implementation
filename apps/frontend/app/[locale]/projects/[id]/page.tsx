@@ -8,9 +8,9 @@ import TeamMembers from '@/features/projects/components/TeamMembers'
 import { Toolbar } from '@/features/projects/components/Toolbar'
 import { getProjectItem } from '@/features/projects/projects.queries'
 import { SkillScale } from '@/features/skills/components/SkillScale'
+import { TagList } from '@/features/tag/components/TagList'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { getTranslations } from 'next-intl/server'
-import { TagList } from '@/features/tag/components/TagList'
 
 export default async function Projects({
   params,
@@ -44,7 +44,6 @@ export default async function Projects({
         <ImageCarousel images={project.projectPictures ?? []} />
         <SkillScale
           title={translations('skillScale.skillTitle')}
-          emptySkillsMessage={translations('skillScale.emptySkills')}
           skills={project.projectSkills.map(({ skill, level }) => ({
             label: skill.skill,
             level,

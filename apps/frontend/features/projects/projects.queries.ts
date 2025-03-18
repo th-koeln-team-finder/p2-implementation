@@ -169,7 +169,11 @@ export const getProjectItem = cache(
         },
         participants: {
           with: {
-            users: true,
+            users: {
+              with: {
+                image: true,
+              },
+            },
           },
         },
         projectPictures: {

@@ -2,8 +2,8 @@
 import { CanUserClient } from '@/features/auth/components/CanUser.client'
 import type { PopulatedBrainstorm } from '@/features/brainstorm/brainstorm.types'
 import { BrainstormBookmarkButton } from '@/features/brainstorm/components/brainstorm-details/BrainstormBookmarkButton'
-import { TagList } from '@/features/tag/components/TagList'
 import { Link } from '@/features/i18n/routing'
+import { TagList } from '@/features/tag/components/TagList'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import {
   Card,

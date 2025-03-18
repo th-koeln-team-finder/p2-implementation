@@ -1,20 +1,20 @@
 'use client'
 
+import { useNavigationModalContext } from '@/features/general/components/NavigationModal'
 import type { CreateProjectFormSkills } from '@/features/projects/projects.types'
+import { useSkillSearch } from '@/features/skills/skills.hooks'
 import {
   unSignalifyValueSubscribed,
   useFieldContext,
 } from '@formsignals/form-react'
 import type { ZodAdapter } from '@formsignals/validation-adapter-zod'
 import { useSignals } from '@preact/signals-react/runtime'
-import { useTranslations } from 'next-intl'
-import { MultiValueAutoComplete } from '@repo/design-system/components/custom/multi-value-auto-complete'
-import { useSkillSearch } from '@/features/skills/skills.hooks'
-import { useNavigationModalContext } from '@/features/general/components/NavigationModal'
 import { useComputed } from '@preact/signals-react/runtime'
+import { MultiValueAutoComplete } from '@repo/design-system/components/custom/multi-value-auto-complete'
 import { RatingForm } from '@repo/design-system/components/custom/rating'
-import { SquircleIcon, TrashIcon } from 'lucide-react'
 import { Button } from '@repo/design-system/components/ui/button'
+import { SquircleIcon, TrashIcon } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 export function CreateProjectSkills() {
   useSignals()

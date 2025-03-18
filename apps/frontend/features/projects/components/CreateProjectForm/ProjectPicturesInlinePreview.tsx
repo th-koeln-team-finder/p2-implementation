@@ -1,11 +1,11 @@
 import type { SignalifiedData } from '@formsignals/form-core'
 import { useFieldContext } from '@formsignals/form-react'
 import { useSignalEffect } from '@preact/signals-react/runtime'
+import { Button } from '@repo/design-system/components/ui/button'
+import { Progress } from '@repo/design-system/components/ui/progress'
 import { FileIcon, FileWarningIcon, TrashIcon } from 'lucide-react'
 import { useFormatter, useTranslations } from 'next-intl'
 import { useState } from 'react'
-import { Button } from '@repo/design-system/components/ui/button'
-import { Progress } from '@repo/design-system/components/ui/progress'
 
 type FilePreviewsProps = {
   progressState?: Record<string, number>
