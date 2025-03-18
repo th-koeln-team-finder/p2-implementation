@@ -10,10 +10,7 @@ import { BrainstormCommentList } from '@/features/brainstorm/components/brainsto
 import { Link, redirect } from '@/features/i18n/routing'
 import { TagList } from '@/features/tag/components/TagList'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
-import {
-  Button,
-  buttonVariants,
-} from '@repo/design-system/components/ui/button'
+import { buttonVariants } from '@repo/design-system/components/ui/button'
 import {
   DialogHeader,
   DialogTitle,
@@ -21,7 +18,7 @@ import {
 import { Label } from '@repo/design-system/components/ui/label'
 import { SyncedWhiteboard } from '@repo/design-system/components/whiteboard'
 import { cn } from '@repo/design-system/lib/utils'
-import { ChevronLeftIcon, FolderPlusIcon } from 'lucide-react'
+import { ChevronLeftIcon } from 'lucide-react'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 type BrainstormDetailsProps = {
@@ -36,7 +33,6 @@ export async function BrainstormDialogHeader({
 }: { brainstormId: string }) {
   const session = await authMiddleware()
   const brainstorm = await getSingleBrainstorm(brainstormId, session?.user?.id)
-  const translate = await getTranslations('brainstorm')
   if (!brainstorm) return null
   return (
     <DialogHeader className="pr-4">
@@ -49,10 +45,6 @@ export async function BrainstormDialogHeader({
             brainstormId={brainstorm.id}
             isBookmarked={brainstorm.isBookmarked}
           />
-          <Button type="button" size="sm">
-            <FolderPlusIcon />
-            {translate('makeActionButton')}
-          </Button>
           <CanUserServer target="brainstorm" action="delete" data={brainstorm}>
             <DeleteBrainstormButton brainstormId={brainstorm.id} />
           </CanUserServer>
@@ -123,10 +115,6 @@ export async function BrainstormDetails({
               brainstormId={brainstorm.id}
               isBookmarked={brainstorm.isBookmarked}
             />
-            <Button type="button" size="sm">
-              <FolderPlusIcon />
-              {translate('makeActionButton')}
-            </Button>
             <CanUserServer
               target="brainstorm"
               action="delete"
