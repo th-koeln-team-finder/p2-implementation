@@ -50,8 +50,8 @@ export const getCommentsForBrainstorm = cache(
             with: {
               image: {
                 columns: {
-                  bucketPath: true
-                }
+                  bucketPath: true,
+                },
               },
             },
           },
@@ -72,8 +72,8 @@ export const getCommentsForBrainstorm = cache(
                 with: {
                   image: {
                     columns: {
-                      bucketPath: true
-                    }
+                      bucketPath: true,
+                    },
                   },
                 },
               },
