@@ -1,9 +1,11 @@
 'use server'
 
+import { getPathname } from '@/features/i18n/routing'
 import { sendNotificationByType } from '@/features/notifications/notifications.actions'
 import { getUser } from '@/features/users/users.query'
 import { Schema, db } from '@repo/database'
 import { and, eq } from 'drizzle-orm'
+import { getLocale } from 'next-intl/server'
 import { revalidateTag } from 'next/cache'
 
 export async function revalidateFollows() {
@@ -41,6 +43,10 @@ export async function setFollows(followerId: string, followeeId: string) {
     await sendNotificationByType([followeeId], 'newFollower', {
       title: ['notifications.newFollower.title'],
       body: ['notifications.newFollower.message', { follower: followerName }],
+      data: {
+        link: getPathname({ href: '/profile', locale: await getLocale() }),
+        linkText: ['notifications.newFollower.linkText'],
+      },
     })
   }
 }

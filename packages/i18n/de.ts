@@ -37,6 +37,8 @@ export const de: Language = {
     fileUpload: {
       placeholderText:
         'Ziehen Sie eine Datei hierher oder klicken Sie, um zu durchsuchen',
+      placeholderTextMultiple:
+        'Ziehen Sie Dateien hierher oder klicken Sie, um Dateien hochzuladen',
       selectedFileHeader: 'Ausgewählte Dateien',
       noFilesSelected: 'Keine Dateien ausgewählt',
       finishedText: 'Fertig',
@@ -91,6 +93,15 @@ export const de: Language = {
     emptyProjects: 'Keine Projekte gefunden',
     notFound: 'Projekt nicht gefunden',
 
+    matching: {
+      tooltipTitle: 'Übereinstimmung',
+      tooltipDescription:
+        'Die Übereinstimmung zeigt, wie gut deine Fähigkeiten und Interessen mit den Anforderungen des Projekts übereinstimmen. Es ist ein Wert zwischen 0 und 100.',
+      skillMatchingScore: 'Fähigkeiten',
+      interestMatchingScore: 'Interessen',
+      totalMatchingScore: 'Gesamt',
+    },
+
     filterbar: {
       searchPlaceholder: 'Suche nach Projekten...',
       searchNotice:
@@ -110,6 +121,7 @@ export const de: Language = {
       minStarsPlaceholder: 'Minimum sterne...',
       skillRequirementsLabel: 'Fähigkeitsanforderungen',
       skillRequirementsPlaceholder: 'Suche nach Fähigkeiten...',
+      resetButton: 'Zurücksetzen',
       applyButton: 'Filter anwenden',
     },
     issueList: {
@@ -118,7 +130,7 @@ export const de: Language = {
       issueTitle: 'Issues für Neueinsteiger',
     },
     skillScale: {
-      skillTitle: 'Benötige Fähigkeiten',
+      skillTitle: 'Benötigte Fähigkeiten',
       emptySkills:
         'Für dieses Projekt sind keine speziellen Fähigkeiten erforderlich',
     },
@@ -174,16 +186,19 @@ export const de: Language = {
   },
   createProjects: {
     fieldRequired: 'Diese Eingabe ist erforderlich',
-    name: 'Projektname',
-    namePlaceholder: 'Name des Projekts...',
-    phase: 'Projektphase',
-    phasePlaceholder: 'Phase des Projekts...',
-    images: 'Bilder',
-    description: 'Projektbeschreibung',
-    descriptionPlaceholder: 'Beschreibung des Projekts...',
+
     location: 'Ort',
     locationPlaceholder: 'Adresse...',
     linksTitle: 'Links & Ressourcen',
+    main: {
+      name: 'Projektname',
+      namePlaceholder: 'Name des Projekts...',
+      phase: 'Projektphase',
+      phasePlaceholder: 'Phase des Projekts...',
+      addImages: 'Bilder Hinzufügen',
+      description: 'Projektbeschreibung',
+      descriptionPlaceholder: 'Beschreibung des Projekts...',
+    },
     timetable: {
       title: 'Zeitplan',
       table: 'Tabelle',
@@ -226,10 +241,10 @@ export const de: Language = {
       pleaseSelect: 'Bitte auswählen',
     },
     skills: {
-      skill: 'Benötigte Fähigkeit',
-      skillPlaceholder: 'Name der Fähigkeit...',
-      level: 'Fähigkeitslevel',
-      addSkill: 'Fähigkeit hinzufügen',
+      title: 'Benötigte Fähigkeiten',
+      description:
+        'Welche Fähigkeiten werden für dieses Projekt benötigt? Diese Fähigkeiten helfen anderen Benutzern, zu entscheiden, ob sie zu Ihrem Projekt beitragen können. Sie können Fähigkeiten für alle Rollen hinzufügen, die Sie für Ihr Projekt benötigen.',
+      emptySkills: 'Es wurden noch keine Fähigkeiten hinzugefügt',
     },
     stepper: {
       main: 'Basis',
@@ -263,10 +278,6 @@ export const de: Language = {
       placeholderTitle: 'Titel hier eingeben...',
       labelDescription: 'Beschreibung',
       placeholderDescription: 'Beschreibung hier eingeben...',
-      labelTags: 'Tags',
-      placeholderTags: 'Tags hinzufügen...',
-      loadingTags: 'Tags werden geladen...',
-      emptyTags: 'Keine Tags gefunden',
       addResourceButton: 'Ressource hinzufügen',
       resourceTypeSelectLink: 'https://',
       resourceTypeSelectFile: 'Datei',
@@ -293,6 +304,10 @@ export const de: Language = {
     },
   },
   tag: {
+    labelTags: 'Tags',
+    placeholderTags: 'Tags hinzufügen...',
+    loadingTags: 'Tags werden geladen...',
+    emptyTags: 'Keine Tags gefunden',
     createNewTag: "Neu: ''{tagName}''",
     labelRightNew: 'neu',
     labelRightUses: '{usage}x verwendet',
@@ -300,7 +315,12 @@ export const de: Language = {
     otherTags: 'Andere Tags',
   },
   skill: {
+    createNewSkill: "Neu: ''{skillName}''",
+    labelRightNew: 'neu',
     labelRightUses: '{usage}x verwendet',
+    searchPlaceholder: 'Suche nach einer Fähigkeit...',
+    emptyMessage: 'Keine Fähigkeiten gefunden',
+    loadingMessage: 'Fähigkeiten werden geladen...',
   },
   help: {
     title: 'Hilfe',
@@ -424,6 +444,7 @@ export const de: Language = {
     },
   },
   validation: {
+    maxFiles: 'Maximal {amount, plural, =1 {eine Datei} other {# Dateien}}',
     inProgress: 'Validiere...',
     required: 'Dieses Feld ist erforderlich',
     email: 'Dieses Feld muss eine gültige E-Mail-Adresse sein',
@@ -463,10 +484,12 @@ export const de: Language = {
     newSkillEvaluation: {
       title: 'Jemand hat deinen Skill verifiziert!',
       message: 'Dein Skill "{skill}" wurde verifiziert.',
+      linkText: 'Zu deinem Profil',
     },
     newFollower: {
       title: 'Neuer Follower',
       message: '{follower} folgt dir jetzt.',
+      linkText: 'Zu deinem Profil',
     },
     membershipAccepted: {
       title: 'Mitgliedschaft in {project} akzeptiert',
@@ -481,5 +504,9 @@ export const de: Language = {
       title: 'Neues Mitglied im Projekt {project}',
       message: '{user} ist jetzt Teil der Crew!',
     },
+  },
+  email: {
+    buttonFallback: 'Zu Collaborize',
+    footer: 'collaborize.com ・ Diese E-Mail wurde automatisch generiert',
   },
 }

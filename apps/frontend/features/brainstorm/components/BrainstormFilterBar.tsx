@@ -6,6 +6,7 @@ import { useDebounceFunction } from '@/features/general/utils.hooks'
 import { useSignals } from '@preact/signals-react/runtime'
 import { Input } from '@repo/design-system/components/ui/input'
 import { Toggle } from '@repo/design-system/components/ui/toggle'
+import { cn } from '@repo/design-system/lib/utils'
 import { BookmarkIcon, InfoIcon, Loader2Icon, SearchIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useQueryState } from 'nuqs'
@@ -36,9 +37,13 @@ export function BrainstormFilterBar() {
             <Loader2Icon className="absolute top-2 right-3 animate-spin" />
           )}
           <Input
+            type="search"
             autoFocus
             placeholder={translate('searchPlaceholder')}
-            className="h-10 flex-1 pl-11 md:text-md"
+            className={cn(
+              'h-10 flex-1 pl-11 md:text-md',
+              isLoading && '[&::-webkit-search-cancel-button]:hidden',
+            )}
             value={searchInput}
             onChange={(e) => {
               setSearch(e.target.value)

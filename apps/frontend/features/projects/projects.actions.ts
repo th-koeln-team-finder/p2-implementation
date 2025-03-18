@@ -8,7 +8,7 @@ import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
 import {
   type ProjectApplicationInsert,
-  type ProjectResourceInsert,
+  type TagSelect,
   Weekdays,
 } from '@repo/database/schema'
 import { generateTextEmbeddings } from '@repo/semantic-search'
@@ -37,7 +37,7 @@ async function authCheckCreateProject() {
 }
 
 export async function createProject(
-  payload: CreateProjectFormValues,
+  payload: Omit<CreateProjectFormValues, 'resources' | 'pictures'>,
   descriptionTextValue: string,
 ) {
   const authCheck = await authCheckCreateProject()
@@ -48,10 +48,10 @@ export async function createProject(
   const embedding = await generateTextEmbeddings(
     `${payload.name}\n${descriptionTextValue}`,
   )
-
   const [project] = await db
     .insert(Schema.projects)
     .values({
+      createdBy: payload.createdBy,
       name: payload.name,
       description: payload.description,
       embedding,
@@ -62,6 +62,48 @@ export async function createProject(
     })
     .returning()
 
+  const newTags = await Promise.all(
+    payload.tags
+      .filter((tag) => tag.value.startsWith('new:'))
+      .map(async (tag) => {
+        const name = tag.value.replace('new:', '')
+        const embedding = await generateTextEmbeddings(name, 'small')
+        return {
+          name,
+          embedding,
+        }
+      }),
+  )
+  let createdTags = [] as TagSelect[]
+  if (newTags.length > 0) {
+    createdTags = await db.insert(Schema.tags).values(newTags).returning()
+  }
+  const projectTags = payload.tags
+    .map((tag) => {
+      const tagId = tag.value.startsWith('new:')
+        ? createdTags.find((t) => t.name === tag.value.replace('new:', ''))?.id
+        : tag.value
+      if (!tagId) {
+        console.error('Error creating tag', tag)
+        return null
+      }
+      return {
+        projectId: project.id,
+        tagId,
+      }
+    })
+    .filter((e) => !!e)
+  if (projectTags.length) {
+    await db.insert(Schema.projectTags).values(projectTags).returning()
+  }
+
+  if (payload.participants[0].Users.id) {
+    await db.insert(Schema.participants).values({
+      userId: payload.participants[0].Users.id,
+      projectId: project.id,
+      projectRole: 'admin',
+    })
+  }
   const issuesToCreate = await Promise.all(
     payload.issues.map(async (issue) => ({
       projectId: project.id,
@@ -112,51 +154,94 @@ export async function createProject(
     await db.insert(Schema.projectTimetable).values(timetableToCreate)
   }
 
-  const skillsToCreate = payload.skills.map((skill) => ({
-    name: skill.name,
-    level: skill.level,
-  }))
-
-  // TODO Apply correct schema and search for skills on create page
-  if (skillsToCreate?.length) {
-    const skills: { name: string; id: string }[] = await db
-      .insert(Schema.skill)
-      .values(skillsToCreate.map((skill) => ({ name: skill.name })))
-      .returning()
-
-    const projectSkills = skills.map((skill) => ({
-      projectId: project.id,
-      skillId: skill.id,
-      name: skill.name,
-      level: skillsToCreate.find((s) => s.name === skill.name)?.level || 0,
-    }))
-
-    await db.insert(Schema.projectSkill).values(projectSkills)
-  }
+  await createProjectSkills(project.id, payload.skills)
 
   return project.id
 }
 
-export async function createProjectResources(
+export async function createProjectAttachments(
   projectId: string,
-  resources: ProjectResourceInsert[],
+  processedResources: [
+    Omit<CreateProjectFormValues['resources'][number], 'file'>,
+    string | undefined | null,
+  ][],
+  uploadedPictures: [string, string | undefined | null][],
 ) {
   const authCheck = await authCheckCreateProject()
   if (authCheck) {
-    return authCheck
+    return authCheck as never
   }
 
-  const resourcesToCreate = resources.map((resource) => ({
-    projectId,
-    label: resource.label,
-    href: resource.href,
-    fileUpload: resource.fileUpload,
-  }))
-  if (!resourcesToCreate.length) {
+  if (uploadedPictures.length) {
+    await db.insert(Schema.projectPicture).values(
+      uploadedPictures.map(([label, pictureId]) => ({
+        projectId: projectId,
+        label,
+        fileUpload: pictureId,
+      })),
+    )
+  }
+
+  if (processedResources.length) {
+    await db.insert(Schema.projectResource).values(
+      processedResources.map(([resource, fileId]) => ({
+        projectId: projectId,
+        label: resource.label,
+        href: resource.href,
+        fileUpload: fileId,
+      })),
+    )
+  }
+}
+
+async function createProjectSkills(
+  projectId: string,
+  skills: CreateProjectFormValues['skills'],
+) {
+  let projectSkillsToInsert = skills
+
+  const skillsToCreate = skills.filter((skill) =>
+    skill.value.startsWith('new:'),
+  )
+  if (skillsToCreate.length) {
+    const newSkills = await db
+      .insert(Schema.skills)
+      .values(
+        skillsToCreate.map((skill) => ({
+          skill: skill.value.replace('new:', ''),
+        })),
+      )
+      .returning()
+    projectSkillsToInsert = skills.map((skill) => {
+      if (!skill.value.startsWith('new:')) {
+        return skill
+      }
+      const newSkill = newSkills.find(
+        (newSkill) => newSkill.skill === skill.value.replace('new:', ''),
+      )
+      if (newSkill) {
+        skill.value = newSkill.id
+      }
+      return skill
+    })
+  }
+
+  if (!projectSkillsToInsert.length) {
     return
   }
 
-  await db.insert(Schema.projectResource).values(resourcesToCreate)
+  await db.insert(Schema.projectSkill).values(
+    projectSkillsToInsert.map((skill) => ({
+      projectId,
+      skillId: skill.value,
+      level: skill.level,
+    })),
+  )
+}
+
+export async function getUserProfile() {
+  const session = await authMiddleware()
+  return session?.user
 }
 
 export async function toggleProjectBookmark(
@@ -164,7 +249,8 @@ export async function toggleProjectBookmark(
   shouldBookmark: boolean,
 ) {
   const session = await authMiddleware()
-  if (!session?.user?.id) {
+  const canUserBookmark = await hasSessionPermission('project', 'bookmark')
+  if (!session?.user?.id || !canUserBookmark) {
     const locale = await getLocale()
     return redirect({
       href: '/error?error=AccessDenied',
@@ -191,6 +277,66 @@ export async function toggleProjectBookmark(
     projectId: id,
     userId: session.user.id,
   })
+}
+
+export async function joinProject(projectId: string) {
+  const session = await authMiddleware()
+  if (!session?.user?.id) {
+    const locale = await getLocale()
+    return redirect({
+      href: '/error?error=AccessDenied',
+      locale,
+    })
+  }
+
+  if (
+    await db.query.participants.findFirst({
+      where:
+        eq(Schema.participants.projectId, projectId) &&
+        eq(Schema.participants.userId, session.user.id),
+    })
+  ) {
+  } else {
+    await db.insert(Schema.participants).values({
+      projectId,
+      userId: session.user.id,
+    })
+  }
+}
+export async function toggleProjectStar(
+  projectId: string,
+  shouldStar: boolean,
+) {
+  const session = await authMiddleware()
+  const hasPermission = await hasSessionPermission('project', 'like')
+  if (!hasPermission || !session?.user?.id) {
+    const locale = await getLocale()
+    return redirect({
+      href: '/error?error=AccessDenied',
+      locale,
+    })
+  }
+
+  const matchLike = and(
+    eq(Schema.projectStar.projectId, projectId),
+    eq(Schema.projectStar.userId, session.user.id),
+  )
+  const existingLike = await db.query.projectStar.findFirst({
+    where: matchLike,
+  })
+
+  if (shouldStar === !!existingLike) {
+    return
+  }
+  if (!shouldStar) {
+    await db.delete(Schema.projectStar).where(matchLike)
+    return
+  }
+  await db.insert(Schema.projectStar).values({
+    projectId,
+    userId: session.user.id,
+  })
+  await revalidateProjects()
 }
 
 export async function revalidateProjects() {

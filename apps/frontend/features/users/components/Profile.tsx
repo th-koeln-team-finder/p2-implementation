@@ -102,7 +102,11 @@ export default async function Profile({ user }: { user: UserWithImage }) {
       <div className="mt-8">
         <SkillScale
           title={translate('users.skills')}
-          skills={skills}
+          emptySkillsMessage={translate('users.emptySkills')}
+          skills={skills.map((skill) => ({
+            label: skill.name,
+            level: skill.level,
+          }))}
           showVerificationControl={!isOwnProfile}
           loggedInUserId={loggedInUser?.id}
         />

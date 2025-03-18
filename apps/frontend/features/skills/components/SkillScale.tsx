@@ -16,12 +16,12 @@ import { BadgeCheck, ChevronDownIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 type ProjectSkill = {
-  name: string
+  label: string
   level: number
 }
 
 export type UserSkill = {
-  name: string
+  label: string
   level: number
   verifications: number
   id: string
@@ -135,8 +135,8 @@ function SkillPointList(
     <div className="flex flex-col gap-1">
       {isUserSkillList(props)
         ? props.list.map((skill) => (
-            <div key={skill.name} className="flex flex-row justify-between">
-              <p>{skill.name}</p>
+            <div key={skill.label} className="flex flex-row justify-between">
+              <p>{skill.label}</p>
               <div className="flex items-center gap-4">
                 <SkillPoints currentLevel={skill.level} />
 
@@ -173,8 +173,8 @@ function SkillPointList(
             </div>
           ))
         : props.list.map((skill) => (
-            <div key={skill.name} className="flex flex-row justify-between">
-              <p>{skill.name}</p>
+            <div key={skill.label} className="flex flex-row justify-between">
+              <p>{skill.label}</p>
               <SkillPoints currentLevel={skill.level} />
             </div>
           ))}
