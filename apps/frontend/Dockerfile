@@ -2,9 +2,8 @@ FROM node:22-slim AS base
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN npm install --global corepack@latest
-RUN corepack use pnpm@latest-9
 RUN corepack enable
+RUN corepack prepare pnpm@9.12.3 --activate
 
 WORKDIR /app
 COPY . .
