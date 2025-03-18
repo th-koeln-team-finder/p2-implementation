@@ -91,6 +91,15 @@ export const de: Language = {
       'Sie müssen sich anmelden, um ein Projekt zu erstellen',
     emptyProjects: 'Keine Projekte gefunden',
 
+    matching: {
+      tooltipTitle: 'Übereinstimmung',
+      tooltipDescription:
+        'Die Übereinstimmung zeigt, wie gut deine Fähigkeiten und Interessen mit den Anforderungen des Projekts übereinstimmen. Es ist ein Wert zwischen 0 und 100.',
+      skillMatchingScore: 'Fähigkeiten',
+      interestMatchingScore: 'Interessen',
+      totalMatchingScore: 'Gesamt',
+    },
+
     filterbar: {
       searchPlaceholder: 'Suche nach Projekten...',
       searchNotice:

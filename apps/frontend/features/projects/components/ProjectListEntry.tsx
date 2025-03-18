@@ -11,17 +11,76 @@ import {
   CardHeader,
   CardTitle,
 } from '@repo/design-system/components/ui/card'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@repo/design-system/components/ui/tooltip'
+import { ShellIcon } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import Image from 'next/image'
 
 type FindAProjectListEntryProps = {
   project: Awaited<ReturnType<typeof getProjectItems>>[number]
 }
 
-export function ProjectListEntry({ project }: FindAProjectListEntryProps) {
+export async function ProjectListEntry({
+  project,
+}: FindAProjectListEntryProps) {
+  const matchingTranslate = await getTranslations('projects.matching')
   const firstImage = project.projectPictures?.[0]
   return (
     <Link href={`/projects/${project.id}`}>
-      <Card className="h-full">
+      <Card className="relative h-full">
+        {project.projectTotalMatchScore &&
+          +project.projectTotalMatchScore > 0 && (
+            <TooltipProvider>
+              <Tooltip delayDuration={100}>
+                <TooltipTrigger className="absolute top-1 left-1 flex flex-row items-center gap-1 rounded bg-muted px-2 py-1 text-foreground text-xs">
+                  <ShellIcon className="size-3" />
+                  {(project.projectTotalMatchScore * 100).toFixed(0)}
+                </TooltipTrigger>
+                <TooltipContent>
+                  <h6 className="font-semibold text-lg">
+                    {matchingTranslate('tooltipTitle')}
+                  </h6>
+                  <p className="mb-2 max-w-xs text-muted-foreground">
+                    {matchingTranslate('tooltipDescription')}
+                  </p>
+                  <table className="text-left" cellSpacing="0">
+                    <tbody>
+                      <tr className="bg-card">
+                        <th className="p-1">
+                          {matchingTranslate('skillMatchingScore')}
+                        </th>
+                        <td className="min-w-12 p-1 text-right">
+                          {(project.projectSkillMatchScore * 100).toFixed(0)}
+                        </td>
+                      </tr>
+                      <tr className="bg-card/40">
+                        <th className="p-1">
+                          {matchingTranslate('interestMatchingScore')}
+                        </th>
+                        <td className="min-w-12 p-1 text-right">
+                          {(project.projectTagMatchScore * 100).toFixed(0)}
+                        </td>
+                      </tr>
+                      <tr className="border-border border-t bg-card">
+                        <th className="p-1">
+                          {matchingTranslate('totalMatchingScore')}
+                        </th>
+                        <td className="min-w-12 p-1 text-right">
+                          {(project.projectTotalMatchScore * 100).toFixed(0)}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+
         {firstImage?.uploadedFile ? (
           <FilePreview
             file={firstImage.uploadedFile}
@@ -38,6 +97,7 @@ export function ProjectListEntry({ project }: FindAProjectListEntryProps) {
             alt={project.name}
           />
         )}
+
         <CardHeader>
           <div className="-mb-2 flex flex-row flex-wrap gap-1 text-xs">
             {project.totalSimilarity && (
