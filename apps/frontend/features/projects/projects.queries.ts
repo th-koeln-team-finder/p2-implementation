@@ -33,7 +33,11 @@ export const getProjectItems = cache(
       grossSimilarity,
     } = getSimilarityScores(searchEmbeddings)
 
-    const projectTotalMatchScore = getMatchScores(userId)
+    const {
+      projectTotalMatchScore,
+      projectTagMatchScore,
+      projectSkillMatchScore,
+    } = getMatchScores(userId)
 
     const {
       participantCount,
@@ -49,6 +53,12 @@ export const getProjectItems = cache(
         projectTotalMatchScore: userId
           ? projectTotalMatchScore.as('projectTotalMatchScore')
           : sql<number>`NULL`.as('projectTotalMatchScore'),
+        projectTagMatchScore: userId
+          ? projectTagMatchScore.as('projectTagMatchScore')
+          : sql<number>`NULL`.as('projectTagMatchScore'),
+        projectSkillMatchScore: userId
+          ? projectSkillMatchScore.as('projectSkillMatchScore')
+          : sql<number>`NULL`.as('projectSkillMatchScore'),
         isBookmarked: !userId
           ? sql<boolean>`false`.as('isBookmarked')
           : sql<boolean>`EXISTS (SELECT id FROM "project_bookmark" bookmark WHERE bookmark."projectId" = "projects"."id" AND bookmark."userId" = ${userId})`.as(
@@ -191,7 +201,12 @@ function getSimilarityScores(searchEmbeddings: number[]) {
 function getMatchScores(userId: string | undefined) {
   const projectSkillMatchScore = sql<number>`(SELECT COALESCE(MAX((CASE us.level <= ps.level WHEN TRUE THEN (4 - (ps.level - us.level))^4/4^4 ELSE (4 - (us.level - ps.level))^1.4/4^1.4 END)), 0) FROM "projectSkill" ps JOIN "userSkills" us ON ps."skillId" = us."skillId" WHERE us."userId" = ${userId} AND ps."projectId" = "projects"."id")`
   const projectTagMatchScore = sql<number>`((SELECT COUNT(DISTINCT tag) * 1.0 FROM (SELECT tag."tagId" as tag FROM brainstorm_bookmark bookmark JOIN brainstorm_tag tag ON bookmark."brainstormId" = tag."brainstormId" WHERE bookmark."userId" = ${userId} UNION ALL SELECT tag."tagId" as tag FROM project_bookmark bookmark JOIN project_tag tag ON bookmark."projectId" = tag."projectId" WHERE bookmark."userId" = ${userId} UNION ALL SELECT tag."tagId" as tag FROM project_star star JOIN project_tag tag ON star."projectId" = tag."projectId" WHERE star."userId" = ${userId}) as tags WHERE tags.tag IN (SELECT "tagId" FROM project_tag WHERE "projectId" = "projects"."id")) / (SELECT GREATEST(COUNT(DISTINCT pt."tagId") * 1.0, 1.0) FROM project_tag pt WHERE pt."projectId" = "projects"."id"))`
-  return sql<number>`ROUND(CAST((${projectSkillMatchScore} + ${projectTagMatchScore}) as numeric), 2)`
+  const projectTotalMatchScore = sql<number>`ROUND(CAST((${projectSkillMatchScore} + ${projectTagMatchScore}) / 2 as numeric), 2)`
+  return {
+    projectSkillMatchScore,
+    projectTagMatchScore,
+    projectTotalMatchScore,
+  }
 }
 
 function getProjectFilters(filters: FilterParams) {

@@ -12,6 +12,13 @@ import {
   CardTitle,
 } from '@repo/design-system/components/ui/card'
 import Image from 'next/image'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@repo/design-system/components/ui/tooltip'
+import { ShellIcon } from 'lucide-react'
 
 type FindAProjectListEntryProps = {
   project: Awaited<ReturnType<typeof getProjectItems>>[number]
@@ -21,7 +28,50 @@ export function ProjectListEntry({ project }: FindAProjectListEntryProps) {
   const firstImage = project.projectPictures?.[0]
   return (
     <Link href={`/projects/${project.id}`}>
-      <Card className="h-full">
+      <Card className="relative h-full">
+        {project.projectTotalMatchScore &&
+          +project.projectTotalMatchScore > 0 && (
+            <TooltipProvider>
+              <Tooltip delayDuration={100}>
+                <TooltipTrigger className="absolute top-1 right-1 flex flex-row items-center gap-1 rounded bg-primary px-2 py-1 text-primary-foreground text-sm">
+                  <ShellIcon className="size-4" />
+                  {(project.projectTotalMatchScore * 100).toFixed(0)}
+                </TooltipTrigger>
+                <TooltipContent>
+                  <h6 className="font-semibold text-lg">
+                    Project Matching Score
+                  </h6>
+                  <p className="mb-2 max-w-xs text-muted-foreground">
+                    Your matching score is calculated based on your skills and
+                    interests. It is a number between 0 and 100.
+                  </p>
+                  <table className="text-left" cellSpacing="0">
+                    <tbody>
+                      <tr className="bg-card">
+                        <th className="p-1">Skill Matching Score</th>
+                        <td className="min-w-12 p-1 text-right">
+                          {(project.projectSkillMatchScore * 100).toFixed(0)}
+                        </td>
+                      </tr>
+                      <tr className="bg-card/40">
+                        <th className="p-1">Interest Matching Score</th>
+                        <td className="min-w-12 p-1 text-right">
+                          {(project.projectTagMatchScore * 100).toFixed(0)}
+                        </td>
+                      </tr>
+                      <tr className="border-border border-t bg-card">
+                        <th className="p-1">Total Matching Score</th>
+                        <td className="min-w-12 p-1 text-right">
+                          {(project.projectTotalMatchScore * 100).toFixed(0)}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+
         {firstImage?.uploadedFile ? (
           <FilePreview
             file={firstImage.uploadedFile}
@@ -38,16 +88,9 @@ export function ProjectListEntry({ project }: FindAProjectListEntryProps) {
             alt={project.name}
           />
         )}
+
         <CardHeader>
           <div className="-mb-2 flex flex-row flex-wrap gap-1 text-xs">
-            {project.projectTotalMatchScore && (
-              <span className="rounded bg-muted px-1 text-muted-foreground/80">
-                projectTotalMatchScore:{' '}
-                <span className="text-muted-foreground">
-                  {project.projectTotalMatchScore}
-                </span>
-              </span>
-            )}
             {project.totalSimilarity && (
               <span className="rounded bg-muted px-1 text-muted-foreground/80">
                 similarity:{' '}
