@@ -37,8 +37,8 @@ export async function ProjectListEntry({
           +project.projectTotalMatchScore > 0 && (
             <TooltipProvider>
               <Tooltip delayDuration={100}>
-                <TooltipTrigger className="absolute top-1 right-1 flex flex-row items-center gap-1 rounded bg-primary px-2 py-1 text-primary-foreground text-sm">
-                  <ShellIcon className="size-4" />
+                <TooltipTrigger className="absolute top-1 left-1 flex flex-row items-center gap-1 rounded bg-muted px-2 py-1 text-foreground text-xs">
+                  <ShellIcon className="size-3" />
                   {(project.projectTotalMatchScore * 100).toFixed(0)}
                 </TooltipTrigger>
                 <TooltipContent>
