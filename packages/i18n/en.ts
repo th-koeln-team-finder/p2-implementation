@@ -34,6 +34,7 @@ export const en = {
     },
     fileUpload: {
       placeholderText: 'Drag and drop a file here or click to browse',
+      placeholderTextMultiple: 'Drag and drop files here or click to browse',
       selectedFileHeader: 'Selected files',
       noFilesSelected: 'No files selected',
       finishedText: 'Finished',
@@ -86,6 +87,15 @@ export const en = {
       'Please login or register to create a project',
     emptyProjects: 'No projects found',
 
+    matching: {
+      tooltipTitle: 'Matching score',
+      tooltipDescription:
+        'The matching score is calculated based on your skills and interests. It is a number between 0 and 100.',
+      skillMatchingScore: 'Skills',
+      interestMatchingScore: 'Interests',
+      totalMatchingScore: 'Total',
+    },
+
     filterbar: {
       searchPlaceholder: 'Search for a project...',
       searchNotice:
@@ -105,6 +115,7 @@ export const en = {
       minStarsPlaceholder: 'Minimum stars...',
       skillRequirementsLabel: 'Skill requirements',
       skillRequirementsPlaceholder: 'Search for a skill...',
+      resetButton: 'Reset filter',
       applyButton: 'Apply filter',
     },
     issueList: {
@@ -134,16 +145,18 @@ export const en = {
   },
   createProjects: {
     fieldRequired: 'This field is required',
-    name: 'Projektname',
-    namePlaceholder: 'Title of the project...',
-    phase: 'Project Phase',
-    phasePlaceholder: 'Phase of the project...',
-    images: 'Images',
-    description: 'Project description',
-    descriptionPlaceholder: 'Description of the project...',
     location: 'Location',
     locationPlaceholder: 'Address...',
     linksTitle: 'Links & Other Resources',
+    main: {
+      name: 'Projektname',
+      namePlaceholder: 'Title of the project...',
+      phase: 'Project Phase',
+      phasePlaceholder: 'Phase of the project...',
+      addImages: 'Add images',
+      description: 'Project description',
+      descriptionPlaceholder: 'Description of the project...',
+    },
     timetable: {
       title: 'Timetable ',
       table: 'Table',
@@ -186,11 +199,10 @@ export const en = {
       pleaseSelect: 'Please select',
     },
     skills: {
-      skill: 'Skill',
-      skillPlaceholder: 'Title of the skill...',
-      level: 'Skill-Level',
-      levelPlaceholder: 'Level of the skill...',
-      addSkill: 'Add Skill',
+      title: 'Add Skill Requirements',
+      description:
+        'What skills are required for this project? These skills help other users decide whether they can contribute to your project. You can add skills for all roles needed in your project.',
+      emptySkills: 'No skills requirements added yet',
     },
     stepper: {
       main: 'Main',
@@ -224,10 +236,6 @@ export const en = {
       placeholderTitle: 'Write title here...',
       labelDescription: 'Description',
       placeholderDescription: 'Write description here...',
-      labelTags: 'Tags',
-      placeholderTags: 'Add tags...',
-      loadingTags: 'Loading tags...',
-      emptyTags: 'No tags found',
       addResourceButton: 'Add Resource',
       resourceTypeSelectLink: 'https://',
       resourceTypeSelectFile: 'File',
@@ -257,6 +265,10 @@ export const en = {
     },
   },
   tag: {
+    labelTags: 'Tags',
+    placeholderTags: 'Add tags...',
+    loadingTags: 'Loading tags...',
+    emptyTags: 'No tags found',
     createNewTag: "New: ''{tagName}''",
     labelRightNew: 'new',
     labelRightUses: '{usage}x used',
@@ -264,7 +276,12 @@ export const en = {
     otherTags: 'Other Tags',
   },
   skill: {
+    createNewSkill: "New: ''{skillName}''",
+    labelRightNew: 'new',
     labelRightUses: '{usage}x used',
+    searchPlaceholder: 'Search for a skill...',
+    emptyMessage: 'No skills found',
+    loadingMessage: 'Loading skills...',
   },
   help: {
     title: 'Help',
@@ -382,6 +399,8 @@ export const en = {
     },
   },
   validation: {
+    maxFiles:
+      'You can only upload {amount, plural, =1 {one file} other {# files}}',
     inProgress: 'Validating...',
     required: 'This field is required',
     email: 'This field must be a valid email',

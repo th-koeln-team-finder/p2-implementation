@@ -1,22 +1,29 @@
-import ImageCarousel from '@/features/projects/components/ImageCarousel'
+import CreateProjectPicturePreviewCarousel from '@/features/projects/components/CreateProjectForm/CreateProjectPicturePreviewCarousel'
 import { ProjectIssuesList } from '@/features/projects/components/ProjectIssuesList'
 import { ProjectResourcePreview } from '@/features/projects/components/ProjectResourcePreview'
 import { ProjectTimetable } from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
 import TeamMembers from '@/features/projects/components/TeamMembers'
+import { getUserProfile } from '@/features/projects/projects.actions'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { SkillScale } from '@/features/skills/components/SkillScale'
+import { TagList } from '@/features/tag/components/TagList'
 import { useFormContext } from '@formsignals/form-react'
+import { useSignalEffect } from '@preact/signals-react'
 import { useSignals } from '@preact/signals-react/runtime'
-import { Weekdays } from '@repo/database/schema'
+import { type UserSelect, Weekdays } from '@repo/database/schema'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { useTranslations } from 'next-intl'
+import { useEffect, useState } from 'react'
 
-export function CreateProjectPreview() {
+export function CreateProjectPreview({
+  progressState,
+}: { progressState: Record<string, number> }) {
   useSignals()
   const t = useTranslations('projects')
   const form = useFormContext<CreateProjectFormValues>()
   const formValues = form.json.value
+  const [sessionUser, setUser] = useState<UserSelect>()
 
   const timetabledata: { description: string; weekdays: string }[] = [
     { description: formValues.ttMon, weekdays: Weekdays.monday },
@@ -28,6 +35,13 @@ export function CreateProjectPreview() {
     { description: formValues.ttSun, weekdays: Weekdays.sunday },
   ]
 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      setUser(await getUserProfile())
+    }
+    fetchUserProfile()
+  }, [])
+
   const timetable =
     formValues.timetableOutput === 'noTable'
       ? []
@@ -37,15 +51,45 @@ export function CreateProjectPreview() {
             if (entry.description !== '') return entry
           })
           .filter((entry) => entry !== undefined)
-  return (
-    <div className="inline-flex flex-col items-start justify-start gap-8 self-stretch">
-      <ProjectTitle title={formValues.name} subtitle={formValues.phase} />
 
-      <div className="grid grid-cols-2 gap-8">
-        <ImageCarousel />
+  const [fieldPreviews, setFieldPreviews] = useState<string[]>([])
+  useSignalEffect(() => {
+    const fieldPreviews = form.data.value.pictures.value.map((file) => {
+      return URL.createObjectURL(file.data.value)
+    })
+    setFieldPreviews(fieldPreviews)
+    return () => {
+      for (const [_, url] of fieldPreviews) {
+        URL.revokeObjectURL(url)
+      }
+    }
+  })
+  const tagList = formValues.tags.map((tag) => ({
+    tag: {
+      id: tag.value, // oder eine geeignete ID, falls `value` nicht eindeutig ist
+      name: tag.label,
+    },
+  }))
+  return (
+    <div className="inline-flex flex-col items-start justify-start gap-4 self-stretch">
+      <ProjectTitle title={formValues.name} subtitle={formValues.phase} />
+      <div className="flex w-full flex-col pr-3">
+        <TagList tags={tagList} />
+      </div>
+      <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
+        <CreateProjectPicturePreviewCarousel
+          images={fieldPreviews}
+          progressState={progressState}
+        />
         <SkillScale
-          skills={formValues.skills}
           title={t('skillScale.skillTitle')}
+          emptySkillsMessage={t('skillScale.emptySkills')}
+          skills={formValues.skills.map((skill) => ({
+            label: skill.value.startsWith('new:')
+              ? skill.value.replace('new:', '')
+              : skill.label,
+            level: skill.level,
+          }))}
         />
 
         <div className="col-span-2">
@@ -54,7 +98,9 @@ export function CreateProjectPreview() {
           )}
         </div>
 
-        <TeamMembers />
+        <TeamMembers
+          participants={sessionUser ? [{ users: sessionUser }] : []}
+        />
 
         {!!timetable.length && (
           <div className="relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2">

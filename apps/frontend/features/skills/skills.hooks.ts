@@ -6,7 +6,10 @@ import { useState } from 'react'
 
 type UsageType = 'project' | 'user' | 'total'
 
-export function useSkillSearch(usage: UsageType = 'total') {
+export function useSkillSearch(
+  usage: UsageType = 'total',
+  enableNewSkillCreation = false,
+) {
   const translate = useTranslations('skill')
   const [searchInput, setSearchInput] = useState<string>('')
   const [debouncedSearchInput, isDebouncing] = useDebouncedValue(searchInput)
@@ -17,7 +20,7 @@ export function useSkillSearch(usage: UsageType = 'total') {
     queryFn: async () => {
       const skills = await searchSkills(debouncedSearchInput, 25)
       if (!skills) return []
-      return skills.map((skill) => {
+      const mappedSkills = skills.map((skill) => {
         let usageNum = skill.usedCount
         if (usage === 'user') usageNum = skill.usedCountUsers
         if (usage === 'project') usageNum = skill.usedCountProject
@@ -27,6 +30,23 @@ export function useSkillSearch(usage: UsageType = 'total') {
           labelRight: translate('labelRightUses', { usage: usageNum }),
         }
       })
+      if (
+        enableNewSkillCreation &&
+        debouncedSearchInput &&
+        !skills.some(
+          (skill) =>
+            skill.skill.toLowerCase() === debouncedSearchInput.toLowerCase(),
+        )
+      ) {
+        mappedSkills.unshift({
+          label: translate('createNewSkill', {
+            skillName: debouncedSearchInput,
+          }),
+          value: `new:${debouncedSearchInput}`,
+          labelRight: translate('labelRightNew'),
+        })
+      }
+      return mappedSkills
     },
     queryKey: ['skill-search', debouncedSearchInput],
   })

@@ -28,6 +28,7 @@ import { Label } from '@repo/design-system/components/ui/label'
 import { BadgeCheck, Trash } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { type MutableRefObject, useCallback, useRef, useState } from 'react'
+import { revalidateProjects } from '@/features/projects/projects.actions'
 
 export default function SkillsEdit({
   userSkills,
@@ -145,6 +146,7 @@ export default function SkillsEdit({
       await updateUserSkillLevel(selectedSkill.skillId, selectedSkill.level)
       await resetVerification(selectedSkill.skillId)
       await revalidateUserSkills()
+      await revalidateProjects()
     }
   }
 

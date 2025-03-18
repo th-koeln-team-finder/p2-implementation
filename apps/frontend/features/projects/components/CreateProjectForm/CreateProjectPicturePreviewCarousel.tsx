@@ -1,5 +1,3 @@
-import { FilePreview } from '@/features/file-upload/components/FilePreview'
-import type { UploadedFileSelect } from '@repo/database/schema'
 import {
   Carousel,
   CarouselContent,
@@ -9,15 +7,11 @@ import {
 import { Card, CardContent } from '@repo/design-system/components/ui/card'
 import Image from 'next/image'
 
-export type ImageCarouselPicture = {
-  uploadedFile?: UploadedFileSelect | null
-  id: string
-}
-
-export default function ImageCarousel({
+export default function CreateProjectPicturePreviewCarousel({
   images,
 }: {
-  images: ImageCarouselPicture[]
+  images: string[]
+  progressState?: Record<string, number>
 }) {
   return (
     <Carousel
@@ -27,22 +21,21 @@ export default function ImageCarousel({
       opts={{ align: 'start', loop: true }}
     >
       <CarouselContent>
-        {images
-          .filter((i) => i.uploadedFile)
-          .map((image) => (
-            <CarouselItem key={image.id}>
-              <Card>
-                <CardContent className="flex aspect-auto h-64 items-center justify-center overflow-hidden rounded-lg bg-muted p-0">
-                  <FilePreview
-                    file={image.uploadedFile as UploadedFileSelect}
-                    className="h-full w-full object-contain"
-                    height={800}
-                    width={1200}
-                  />
-                </CardContent>
-              </Card>
-            </CarouselItem>
-          ))}
+        {images.map((image) => (
+          <CarouselItem key={image}>
+            <Card>
+              <CardContent className="flex aspect-auto h-64 items-center justify-center overflow-hidden rounded-lg bg-muted p-0">
+                <Image
+                  className="h-full w-full object-contain"
+                  src={image}
+                  height={800}
+                  width={1200}
+                  alt="palm-trees"
+                />
+              </CardContent>
+            </Card>
+          </CarouselItem>
+        ))}
         {!images.length && (
           <CarouselItem>
             <Card>

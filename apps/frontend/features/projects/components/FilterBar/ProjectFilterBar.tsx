@@ -19,6 +19,7 @@ import { DatePickerForm } from '@repo/design-system/components/ui/datepicker'
 import { Input, InputForm } from '@repo/design-system/components/ui/input'
 import { Label } from '@repo/design-system/components/ui/label'
 import { Toggle } from '@repo/design-system/components/ui/toggle'
+import { cn } from '@repo/design-system/lib/utils'
 import { format, parse } from 'date-fns'
 import { FilterIcon, InfoIcon, Loader2Icon, SearchIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
@@ -78,9 +79,13 @@ export function ProjectFilterBar() {
             <Loader2Icon className="absolute top-2 right-3 animate-spin" />
           )}
           <Input
+            type="search"
             autoFocus
             placeholder={translate('searchPlaceholder')}
-            className="h-10 flex-1 pl-11 md:text-md"
+            className={cn(
+              'h-10 flex-1 pl-11 md:text-md',
+              isLoading && '[&::-webkit-search-cancel-button]:hidden',
+            )}
             value={searchInput}
             onChange={(e) => {
               setSearch(e.target.value)
@@ -90,7 +95,7 @@ export function ProjectFilterBar() {
         </div>
         <CollapsibleTrigger asChild>
           <Toggle variant="outline" className="group h-10 px-4">
-            <FilterIcon className="group-data-[state='on']:fill-foreground" />
+            <FilterIcon className="group-data-[state='open']:fill-foreground" />
             {translate('filterButton')}
           </Toggle>
         </CollapsibleTrigger>
@@ -163,6 +168,12 @@ export function ProjectFilterBar() {
                         ? (value?.toString() ?? '')
                         : (buffer ?? '')
                     }}
+                    validator={z
+                      .number({
+                        invalid_type_error: translateValidation('number'),
+                      })
+                      .positive(translateValidation('positive'))
+                      .nullable()}
                   >
                     <div className="flex-1">
                       <div className="flex flex-1 flex-row items-start">
@@ -171,6 +182,7 @@ export function ProjectFilterBar() {
                         </div>
                         <InputForm
                           useTransformed
+                          type="number"
                           placeholder={translate('teamSizeMaxPlaceholder')}
                           className="rounded-none rounded-r bg-background"
                         />
@@ -225,7 +237,7 @@ export function ProjectFilterBar() {
                     <div className="flex-1">
                       <div className="flex flex-1 flex-row items-stretch">
                         <div className="flex flex-row items-center rounded-l border border-border bg-muted px-2 text-muted-foreground text-sm">
-                          Max
+                          {translate('creationDateToPrefix')}
                         </div>
                         <DatePickerForm
                           className="rounded-none rounded-r bg-background"
@@ -261,19 +273,40 @@ export function ProjectFilterBar() {
                   <InputForm
                     useTransformed
                     type="number"
-                    placeholder="Minimum amount of stars..."
+                    placeholder={translate('minStarsPlaceholder')}
                     className=" bg-background"
                   />
+                  <FieldError />
                 </form.FieldProvider>
               </div>
               <div className="md:col-span-3">
-                <Label>Skill Requirements</Label>
+                <Label>{translate('skillRequirementsLabel')}</Label>
                 <form.FieldProvider name="skillRequirements">
                   <ProjectFilterBarSkillSelect />
                 </form.FieldProvider>
               </div>
             </div>
-            <Button className="ml-auto">Apply Filter</Button>
+            <div className="ml-auto flex flex-row gap-2">
+              <Button
+                variant="ghost"
+                type="button"
+                onClick={async () => {
+                  await setFilters({
+                    [FilterKeys.minTeamSize]: null,
+                    [FilterKeys.maxTeamSize]: null,
+                    [FilterKeys.minCreationDate]: null,
+                    [FilterKeys.maxCreationDate]: null,
+                    [FilterKeys.minStars]: null,
+                    [FilterKeys.skillRequirements]: null,
+                  })
+                  form.reset()
+                  await revalidateProjects()
+                }}
+              >
+                {translate('resetButton')}
+              </Button>
+              <Button>{translate('applyButton')}</Button>
+            </div>
           </form>
         </form.FormProvider>
       </CollapsibleContent>

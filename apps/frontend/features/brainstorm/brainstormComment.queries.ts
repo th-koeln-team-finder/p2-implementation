@@ -18,6 +18,15 @@ export const getCommentsForBrainstorm = cache(
       : sql<boolean>`EXISTS (SELECT id FROM "brainstorm_comment_like" likes WHERE likes."commentId" = "brainstormComments"."id" AND likes."userId" = ${userId})`.as(
           'isLiked',
         )
+    const likeCountChild =
+      sql<string>`(SELECT COUNT(*) FROM "brainstorm_comment_like" likes WHERE likes."commentId" = "brainstormComments_childComments"."id")`.as(
+        'likeCount',
+      )
+    const isLikedChild = !userId
+      ? sql<boolean>`false`.as('isLiked')
+      : sql<boolean>`EXISTS (SELECT id FROM "brainstorm_comment_like" likes WHERE likes."commentId" = "brainstormComments_childComments"."id" AND likes."userId" = ${userId})`.as(
+          'isLiked',
+        )
 
     return db.query.brainstormComments
       .findMany({
@@ -33,36 +42,39 @@ export const getCommentsForBrainstorm = cache(
           isLiked,
         },
         with: {
-          brainstorm: {
-            columns: {
-              embedding: false,
-            },
-          },
           creator: {
+            columns: {
+              id: true,
+              name: true,
+            },
             with: {
-              image: true,
+              image: {
+                columns: {
+                  bucketPath: true,
+                },
+              },
             },
           },
           childComments: {
+            columns: {
+              embedding: false,
+            },
             extras: {
-              likeCount,
-              isLiked,
+              likeCount: likeCountChild,
+              isLiked: isLikedChild,
             },
             with: {
-              brainstorm: {
-                columns: {
-                  embedding: false,
-                },
-              },
               creator: {
-                with: {
-                  image: true,
-                },
-              },
-              // Technically not the best idea to load all likes instead of just the likes... but it's fine for now
-              likes: {
                 columns: {
-                  userId: true,
+                  id: true,
+                  name: true,
+                },
+                with: {
+                  image: {
+                    columns: {
+                      bucketPath: true,
+                    },
+                  },
                 },
               },
             },

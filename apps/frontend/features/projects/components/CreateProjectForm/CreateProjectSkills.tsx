@@ -1,16 +1,20 @@
 'use client'
 
+import { useNavigationModalContext } from '@/features/general/components/NavigationModal'
 import type { CreateProjectFormSkills } from '@/features/projects/projects.types'
-import { useFieldContext } from '@formsignals/form-react'
+import { useSkillSearch } from '@/features/skills/skills.hooks'
+import {
+  unSignalifyValueSubscribed,
+  useFieldContext,
+} from '@formsignals/form-react'
 import type { ZodAdapter } from '@formsignals/validation-adapter-zod'
 import { useSignals } from '@preact/signals-react/runtime'
-import { FieldError } from '@repo/design-system/components/FormErrors'
+import { useComputed } from '@preact/signals-react/runtime'
+import { MultiValueAutoComplete } from '@repo/design-system/components/custom/multi-value-auto-complete'
+import { RatingForm } from '@repo/design-system/components/custom/rating'
 import { Button } from '@repo/design-system/components/ui/button'
-import { InputForm } from '@repo/design-system/components/ui/input'
-import { Label } from '@repo/design-system/components/ui/label'
-import { MinusIcon, PlusIcon } from 'lucide-react'
+import { SquircleIcon, TrashIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { z } from 'zod'
 
 export function CreateProjectSkills() {
   useSignals()
@@ -21,80 +25,89 @@ export function CreateProjectSkills() {
     typeof ZodAdapter,
     typeof ZodAdapter
   >()
+  const selectedValues = useComputed(() =>
+    unSignalifyValueSubscribed(field.data),
+  )
 
-  const t = useTranslations('createProjects')
-  const translateError = useTranslations('validation')
+  const t = useTranslations('createProjects.skills')
+  const translateSkill = useTranslations('skill')
+
+  const navigationModal = useNavigationModalContext()
+  const { data, isLoading, searchInput, setSearchInput } = useSkillSearch(
+    'project',
+    true,
+  )
 
   return (
-    <>
-      {field.data.value.map((skill, index) => (
-        <div key={skill.key} className="flex flex-col gap-4 lg:flex-row">
-          <div className="w-full lg:w-1/2">
-            <field.SubFieldProvider
-              name={`${index}.name`}
-              validator={z
-                .string({ required_error: translateError('required') })
-                .min(1, translateError('minLengthX', { amount: 1 }))}
-            >
-              <Label>{t('skills.skill')}</Label>
-              <InputForm placeholder={t('skills.skillPlaceholder')} />
-              <FieldError />
-            </field.SubFieldProvider>
-          </div>
-          <div className="flex w-full flex-col justify-between lg:w-1/2 lg:flex-row">
-            <div className="w-full lg:w-5/6">
-              <field.SubFieldProvider
-                name={`${index}.level`}
-                transformFromBinding={(value: string) => {
-                  const parsedValue = Number.parseInt(value)
-                  if (Number.isNaN(parsedValue))
-                    return [0, 'This must be a valid number']
-                  return parsedValue
-                }}
-                transformToBinding={(value, isValid, buffer) => {
-                  return isValid ? value.toString() : (buffer ?? '')
-                }}
-                validator={z.number().min(1).max(5)}
-              >
-                <Label>{t('skills.level')}</Label>
-                <InputForm useTransformed type="number" placeholder="1-5" />
-                <FieldError />
-              </field.SubFieldProvider>
-            </div>
-            <div className="mt-4 flex gap-2 lg:mt-0">
-              <Button
-                onClick={() => field.removeValueFromArray(index)}
-                variant="outline"
-                className="mt-auto rounded-full p-2"
-                size="icon"
-              >
-                <MinusIcon />
-              </Button>
-              <Button
-                onClick={() =>
-                  field.pushValueToArray({
-                    name: '',
-                    level: 0,
-                  })
-                }
-                className="mt-auto rounded-full "
-                size="icon"
-              >
-                <PlusIcon />
-              </Button>
-            </div>
-          </div>
-        </div>
-      ))}
-      {field.data.value.length === 0 && (
-        <Button
-          onClick={() => field.pushValueToArray({ name: '', level: 0 })}
-          className="my-3"
-          style={{ width: 'fit-content' }}
-        >
-          {t('skills.addSkill')}
-        </Button>
-      )}
-    </>
+    <div>
+      <h2 className="font-semibold text-2xl">{t('title')}</h2>
+      <p className="mb-4 text-muted-foreground text-sm">{t('description')}</p>
+      <div id="popoverref" />
+      <MultiValueAutoComplete
+        values={selectedValues.value}
+        onValuesChange={(
+          values: Array<{ label: string; value: string; level?: number }>,
+        ) => {
+          field.handleChange(
+            values.map((v) => {
+              v.level ??= 1
+              return v as { label: string; value: string; level: number }
+            }),
+          )
+        }}
+        containerId="popoverref"
+        onOpenChange={(open) => {
+          if (!navigationModal) return
+          navigationModal.setBlockBackNavigation(open)
+        }}
+        searchInput={searchInput}
+        onSearchInputChange={setSearchInput}
+        data={data ?? []}
+        isLoading={isLoading}
+        clearAfterSelect
+        placeholder={translateSkill('searchPlaceholder')}
+        loadingMessage={translateSkill('loadingMessage')}
+        emptyMessage={translateSkill('emptyMessage')}
+      />
+      <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {!field.data.value.length && (
+          <p className="col-span-full p-2 text-center text-muted-foreground text-sm italic">
+            {t('emptySkills')}
+          </p>
+        )}
+        {field.data.value.map((skill, index) => (
+          <field.SubFieldProvider key={skill.key} name={`${index}`}>
+            <CreateProjectSkillsEntry />
+          </field.SubFieldProvider>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function CreateProjectSkillsEntry() {
+  const field = useFieldContext<CreateProjectFormSkills['skills'][number], ''>()
+  return (
+    <div className="flex flex-row items-center rounded bg-muted p-2 text-sm">
+      <p>{field.data.value.label.value}</p>
+      <field.SubFieldProvider name="level">
+        <RatingForm
+          totalStars={5}
+          showText={false}
+          Icon={<SquircleIcon />}
+          className="ml-auto"
+          rowClassName="gap-0.5"
+          starClassName="size-4"
+        />
+      </field.SubFieldProvider>
+      <Button
+        variant="destructive"
+        size="icon"
+        className="mt-2 ml-auto h-6 w-6 md:mt-0 md:ml-4 [&_svg]:size-3"
+        onClick={() => field.removeSelfFromArray()}
+      >
+        <TrashIcon />
+      </Button>
+    </div>
   )
 }

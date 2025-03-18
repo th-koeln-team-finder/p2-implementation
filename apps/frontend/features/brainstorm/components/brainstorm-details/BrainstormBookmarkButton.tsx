@@ -12,11 +12,13 @@ import { useOptimistic, useTransition } from 'react'
 type BrainstormBookmarkButtonProps = {
   brainstormId: string
   isBookmarked: boolean
+  className?: string
 }
 
 export function BrainstormBookmarkButton({
   brainstormId,
   isBookmarked,
+  className,
 }: BrainstormBookmarkButtonProps) {
   const [_, startTransition] = useTransition()
   const [optimisticBookmarked, dispatchOptimistic] = useOptimistic(
@@ -30,6 +32,7 @@ export function BrainstormBookmarkButton({
       variant="ghost"
       size="icon"
       type="button"
+      className={cn('min-h-9 min-w-9', className)}
       onClick={async (e) => {
         e.stopPropagation()
         e.preventDefault()

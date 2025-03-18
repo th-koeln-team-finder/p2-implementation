@@ -1,3 +1,4 @@
+import { authMiddleware } from '@/auth'
 import { revalidateBrainstorms } from '@/features/brainstorm/brainstorm.actions'
 import { LazyLoader } from '@/features/general/components/LazyLoader'
 import type { FilterSearchParams } from '@/features/projects/components/FilterBar/filterbar.constants'
@@ -24,6 +25,7 @@ export async function ProjectList({
   filters,
   createdById,
 }: ProjectListProps) {
+  const session = await authMiddleware()
   const translate = await getTranslations('projects')
 
   const parsedFilters = parseFilters(filters)
@@ -37,12 +39,17 @@ export async function ProjectList({
         parsedFilters,
         limit,
       )
-    : await getProjectItems(search, parsedFilters, limit)
+    : await getProjectItems(
+    search,
+    parsedFilters,
+    limit,
+    session?.user?.id,
+  )
   const hasMore = limit <= projects.length
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
         {!projects.length && (
           <p className="col-span-full my-3 text-center text-muted-foreground italic">
             {translate('emptyProjects')}

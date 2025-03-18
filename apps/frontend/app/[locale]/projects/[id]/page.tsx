@@ -8,6 +8,7 @@ import TeamMembers from '@/features/projects/components/TeamMembers'
 import { Toolbar } from '@/features/projects/components/Toolbar'
 import { getProjectItem } from '@/features/projects/projects.queries'
 import { SkillScale } from '@/features/skills/components/SkillScale'
+import { TagList } from '@/features/tag/components/TagList'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { getTranslations } from 'next-intl/server'
 
@@ -20,12 +21,13 @@ export default async function Projects({
   const session = await authMiddleware()
   const project = await getProjectItem(id, session?.user?.id)
   const translations = await getTranslations('projects')
+
   if (!project) {
     return <div>Project not found</div>
   }
 
   return (
-    <div className="mx-auto inline-flex w-full max-w-screen-xl flex-col items-center justify-start gap-12 p-4">
+    <div className="mx-auto inline-flex w-full max-w-screen-xl flex-col items-center justify-start gap-4 p-4">
       <div className="inline-flex items-start justify-between self-stretch">
         <ProjectTitle
           title={project.name}
@@ -33,11 +35,20 @@ export default async function Projects({
             project.phase ? `${translations('phase')}: ${project.phase}` : ''
           }
         />
-        <Toolbar projectId={project.id} isBookmarked={project.isBookmarked} />
+        <Toolbar project={project} />
       </div>
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        <ImageCarousel />
-        <SkillScale skills={project.projectSkills} />
+      <div className="flex w-full flex-col pr-3">
+        <TagList tags={project.tags} />
+      </div>
+      <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
+        <ImageCarousel images={project.projectPictures ?? []} />
+        <SkillScale
+          title={translations('skillScale.skillTitle')}
+          skills={project.projectSkills.map(({ skill, level }) => ({
+            label: skill.skill,
+            level,
+          }))}
+        />
 
         <div className="md:col-span-2">
           {project.description && (
@@ -45,7 +56,7 @@ export default async function Projects({
           )}
         </div>
 
-        <TeamMembers />
+        <TeamMembers participants={project.participants} />
 
         {!!project.timetable.length && (
           <ProjectTimetable timetable={project.timetable} />
