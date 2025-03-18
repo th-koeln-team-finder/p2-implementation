@@ -2,10 +2,7 @@ FROM node:22-slim AS base
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
-
-# WORKAROUND HERE:
-RUN corepack prepare pnpm@10.0.0 --activate
+RUN corepack enable && npm install -g corepack@latest
 
 WORKDIR /app
 COPY . .
