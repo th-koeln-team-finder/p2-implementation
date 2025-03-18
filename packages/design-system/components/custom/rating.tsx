@@ -1,6 +1,6 @@
 'use client'
 
-import { cn } from '@/lib/utils'
+import { cn } from '../../lib/utils'
 import { useFieldContext } from '@formsignals/form-react'
 import { Star } from 'lucide-react'
 import React, { useState } from 'react'
