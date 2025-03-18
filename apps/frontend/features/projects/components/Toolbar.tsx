@@ -24,10 +24,10 @@ type ProjectProps = {
 
 export function Toolbar({ project }: ProjectProps) {
   const t = useTranslations('projects')
-  const stars = project.stars || 13_000
+  const stars = project.starCount || 13_000
   const projectId = project.id
   const starsString = stars.toLocaleString('en', { notation: 'compact' })
-  const createdById = project.id
+  const createdById = project.createdBy
 
   const [isApplied, isLoadingApplication] = useIsUserAppliedToProject(projectId)
   const [isMember, _isLoadingMemberships] = useIsUserMemberOfProject(projectId)
@@ -60,7 +60,7 @@ export function Toolbar({ project }: ProjectProps) {
             await toggleProjectStar(project.id, !optimisticStared)
           }}
         >
-          {project.starCount !== 0 ? project.starCount : ''}
+          {starsString}
           <StarIcon className={cn(optimisticStared && 'fill-foreground')} />
         </Button>
         <Button variant="ghost" type="button" size="icon">

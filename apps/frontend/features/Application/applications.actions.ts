@@ -5,6 +5,7 @@ import { addProjectMembership } from '@/features/projectMemberships/projectMembe
 import { Schema, db } from '@repo/database'
 import { eq } from 'drizzle-orm'
 import { revalidateTag } from 'next/cache'
+import {isUserAppliedToProject, isUserMemberOfProject, joinProject} from "@/features/projects/projects.actions";
 
 export const pinApplication = async (applicationId: string, pin: boolean) => {
   await db
@@ -25,7 +26,7 @@ export async function acceptApplication(applicationId: string) {
     with: {
       project: {
         with: {
-          projectMemberships: true,
+          participants: true,
         },
       },
       user: true,
@@ -34,6 +35,10 @@ export async function acceptApplication(applicationId: string) {
   if (!application) {
     throw new Error('Application not found')
   }
+  if (await isUserMemberOfProject(application.userId, application.projectId)) {
+    throw new Error('User is already member of project')
+  }
+  await joinProject(application.projectId, application.userId)
   await addProjectMembership({
     projectId: application.projectId,
     userId: application.userId,
@@ -62,8 +67,8 @@ export async function acceptApplication(applicationId: string) {
   )
 
   // send "memberJoinedProject" notification
-  const projectMemberIds = application.project.projectMemberships
-    .map((pm) => pm.userId)
+  const projectMemberIds = application.project.participants
+    .map((participants) => participants.userId)
     .filter(
       (id) => id !== application.userId && id !== application.project.createdBy,
     )

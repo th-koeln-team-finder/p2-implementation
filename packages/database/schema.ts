@@ -453,8 +453,6 @@ export const projectApplication = pgTable(
     projectId: uuid('projectId')
       .notNull()
       .references(() => projects.id, { onDelete: 'cascade' }),
-    mail: text().notNull(),
-    phone: text().notNull(),
     message: text().notNull(),
     isPinned: boolean('isPinned').notNull().default(false),
     createdAt: timestamp({ mode: 'date' }).defaultNow(),

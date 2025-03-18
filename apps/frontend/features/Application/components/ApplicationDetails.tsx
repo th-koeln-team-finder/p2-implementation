@@ -27,9 +27,6 @@ import { useState } from 'react'
 import { z } from 'zod'
 
 type ApplyFormValues = {
-  checkbox: boolean
-  mail: string
-  phone: string
   bucketPrefix: string
   file: File[]
   message: string
@@ -56,9 +53,6 @@ export default function ApplicationDetail({
   const form = useForm<ApplyFormValues, typeof ZodAdapter>({
     validatorAdapter: ZodAdapter,
     defaultValues: {
-      checkbox: false,
-      mail: '',
-      phone: '',
       bucketPrefix: 'test',
       file: [] as File[],
       message: '',
@@ -76,8 +70,6 @@ export default function ApplicationDetail({
         {
           projectId,
           userId: session.user.id,
-          mail: values.mail,
-          phone: values.phone,
           message: values.message,
         },
         fileIds.filter((e): e is string => !!e),
@@ -89,9 +81,7 @@ export default function ApplicationDetail({
       }, 5000)
 
       setTimeout(() => {
-        values.file.map((file) => {
-          resetFileProgress(file.name)
-        })
+        resetFileProgress()
         form.reset()
         router.replace(`/projects/${projectId}`)
       }, 1000)
@@ -134,58 +124,6 @@ export default function ApplicationDetail({
             )}
           </div>
         </div>
-
-        <div className="mb-6 flex w-full flex-col gap-4 lg:flex-row">
-          <div className="w-full lg:mb-4 lg:w-1/2">
-            <form.FieldProvider name="checkbox" validator={z.boolean()}>
-              <Label>{t('form.checkbox')}</Label> <br />
-              <div className="flex flex-row items-center gap-4">
-                <CheckboxForm />
-                <p>{t('form.checkboxText')}</p>
-              </div>
-            </form.FieldProvider>
-          </div>
-        </div>
-
-        {!prefersInternalCommunication.value && (
-          <div className="mb-6 flex w-full flex-col gap-4 lg:flex-row">
-            <div className="w-full lg:mb-4 lg:w-1/2">
-              <form.FieldProvider
-                name="mail"
-                validator={z
-                  .string()
-                  .email({ message: translateError('email') })
-                  .min(4, translateError('minLengthX', { amount: 4 }))}
-                validatorOptions={{
-                  validateOnChangeIfTouched: true,
-                }}
-              >
-                <Label>{t('form.mail')}</Label>
-                <InputForm placeholder={t('form.placeholderMail')} />
-                <FieldError />
-              </form.FieldProvider>
-            </div>
-            <div className="w-full lg:mb-4 lg:w-1/2">
-              <form.FieldProvider
-                name="phone"
-                validator={z
-                  .string({ required_error: translateError('required') })
-                  .regex(/^\+?[1-9]\d{1,14}$/, translateError('phone'))
-                  .min(7, translateError('minLengthX', { amount: 7 }))}
-                validatorOptions={{
-                  validateOnChangeIfTouched: true,
-                }}
-              >
-                <Label>{t('form.phone')}</Label>
-                <InputForm
-                  type="tel"
-                  placeholder={t('form.placeholderPhone')}
-                />
-                <FieldError />
-              </form.FieldProvider>
-            </div>
-          </div>
-        )}
 
         <div className="text-lg">{t('messageTitle')}</div>
         <div className="mb-6 flex w-full flex-col gap-4 lg:flex-row">

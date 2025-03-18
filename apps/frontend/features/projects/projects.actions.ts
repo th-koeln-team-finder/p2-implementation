@@ -58,7 +58,6 @@ export async function createProject(
       status: payload.status,
       phase: payload.phase,
       location: payload.address,
-      createdBy: (await authMiddleware())?.user.id || '',
     })
     .returning()
 
@@ -279,27 +278,19 @@ export async function toggleProjectBookmark(
   })
 }
 
-export async function joinProject(projectId: string) {
+export async function joinProject(projectId: string, userId: string) {
   const session = await authMiddleware()
-  if (!session?.user?.id) {
-    const locale = await getLocale()
-    return redirect({
-      href: '/error?error=AccessDenied',
-      locale,
-    })
-  }
-
   if (
     await db.query.participants.findFirst({
       where:
         eq(Schema.participants.projectId, projectId) &&
-        eq(Schema.participants.userId, session.user.id),
+        eq(Schema.participants.userId, userId),
     })
   ) {
   } else {
     await db.insert(Schema.participants).values({
       projectId,
-      userId: session.user.id,
+      userId: userId,
     })
   }
 }
@@ -376,7 +367,7 @@ export async function isUserAppliedToProject(
 }
 
 export async function isUserMemberOfProject(userId: string, projectId: string) {
-  return !!(await db.query.projectMemberships.findFirst({
+  return !!(await db.query.participants.findFirst({
     where: and(
       eq(Schema.projectMemberships.userId, userId),
       eq(Schema.projectMemberships.projectId, projectId),
