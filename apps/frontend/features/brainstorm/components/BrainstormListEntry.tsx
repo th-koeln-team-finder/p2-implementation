@@ -100,7 +100,7 @@ export function BrainstormListEntry({ brainstorm }: BrainstormListEntryProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <TagList tags={brainstorm.tags} />
+          <TagList tags={brainstorm.tags} splitUp={5} />
         </CardContent>
       </Card>
     </Link>
