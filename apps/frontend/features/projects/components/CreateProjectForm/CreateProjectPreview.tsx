@@ -36,10 +36,9 @@ export function CreateProjectPreview({
   ]
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
+    (async () => {
       setUser(await getUserProfile())
-    }
-    fetchUserProfile()
+    })()
   }, [])
 
   const timetable =
