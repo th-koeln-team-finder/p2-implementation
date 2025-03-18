@@ -1,20 +1,20 @@
+import CreateProjectPicturePreviewCarousel from '@/features/projects/components/CreateProjectForm/CreateProjectPicturePreviewCarousel'
 import { ProjectIssuesList } from '@/features/projects/components/ProjectIssuesList'
 import { ProjectResourcePreview } from '@/features/projects/components/ProjectResourcePreview'
 import { ProjectTimetable } from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
 import TeamMembers from '@/features/projects/components/TeamMembers'
+import { getUserProfile } from '@/features/projects/projects.actions'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { SkillScale } from '@/features/skills/components/SkillScale'
+import { TagList } from '@/features/tag/components/TagList'
 import { useFormContext } from '@formsignals/form-react'
+import { useSignalEffect } from '@preact/signals-react'
 import { useSignals } from '@preact/signals-react/runtime'
 import { type UserSelect, Weekdays } from '@repo/database/schema'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { useTranslations } from 'next-intl'
-import { getUserProfile } from '@/features/projects/projects.actions'
 import { useEffect, useState } from 'react'
-import { useSignalEffect } from '@preact/signals-react'
-import CreateProjectPicturePreviewCarousel from '@/features/projects/components/CreateProjectForm/CreateProjectPicturePreviewCarousel'
-import { TagList } from '@/features/tag/components/TagList'
 
 export function CreateProjectPreview({
   progressState,
@@ -64,7 +64,7 @@ export function CreateProjectPreview({
       }
     }
   })
-  console.log(formValues.tags + 'tags')
+  console.log(`${formValues.tags}tags`)
   const tagList = formValues.tags.map((tag) => ({
     tag: {
       id: tag.value, // oder eine geeignete ID, falls `value` nicht eindeutig ist

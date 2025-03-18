@@ -6,11 +6,11 @@ import { useDebounceFunction } from '@/features/general/utils.hooks'
 import { useSignals } from '@preact/signals-react/runtime'
 import { Input } from '@repo/design-system/components/ui/input'
 import { Toggle } from '@repo/design-system/components/ui/toggle'
+import { cn } from '@repo/design-system/lib/utils'
 import { BookmarkIcon, InfoIcon, Loader2Icon, SearchIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useQueryState } from 'nuqs'
 import { useState } from 'react'
-import { cn } from '@repo/design-system/lib/utils'
 
 export function BrainstormFilterBar() {
   useSignals()

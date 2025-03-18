@@ -1,3 +1,4 @@
+import { authMiddleware } from '@/auth'
 import { revalidateBrainstorms } from '@/features/brainstorm/brainstorm.actions'
 import { LazyLoader } from '@/features/general/components/LazyLoader'
 import type { FilterSearchParams } from '@/features/projects/components/FilterBar/filterbar.constants'
@@ -5,7 +6,6 @@ import { parseFilters } from '@/features/projects/components/FilterBar/filterbar
 import { ProjectListEntry } from '@/features/projects/components/ProjectListEntry'
 import { getProjectItems } from '@/features/projects/projects.queries'
 import { getTranslations } from 'next-intl/server'
-import { authMiddleware } from '@/auth'
 
 type ProjectListProps = {
   search?: string

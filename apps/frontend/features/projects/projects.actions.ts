@@ -44,7 +44,7 @@ export async function createProject(
   const embedding = await generateTextEmbeddings(
     `${payload.name}\n${descriptionTextValue}`,
   )
-  console.log('payload' + payload.createdBy)
+  console.log(`payload${payload.createdBy}`)
   const [project] = await db
     .insert(Schema.projects)
     .values({

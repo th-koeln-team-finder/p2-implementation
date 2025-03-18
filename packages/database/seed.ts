@@ -6,6 +6,12 @@ import { makeBrainstorm } from './factory/brainstorm.factory'
 import { makeBrainstormComment } from './factory/brainstormComment.factory'
 import { makeBrainstormCommentLike } from './factory/brainstormCommentLike.factory'
 import { makeBrainstormResource } from './factory/brainstormResource.factory'
+import {
+  projectsData,
+  uniqueProjectSkills,
+  uniqueProjectTags,
+} from './factory/projects.data'
+import { makeProject } from './factory/projects.factory'
 import { makeSkill } from './factory/skill.factory'
 import { makeTag } from './factory/tag.factory'
 import { makeTest } from './factory/test.factory'
@@ -15,12 +21,6 @@ import { makeUserProjects } from './factory/userProjects.factory'
 import { makeUserSkillVerification } from './factory/userSkillVerification.factory'
 import { makeUserSkills } from './factory/userSkills.factory'
 import * as Schema from './schema'
-import {
-  projectsData,
-  uniqueProjectSkills,
-  uniqueProjectTags,
-} from './factory/projects.data'
-import { makeProject } from './factory/projects.factory'
 
 config()
 config({ path: '.env.local', override: true })
