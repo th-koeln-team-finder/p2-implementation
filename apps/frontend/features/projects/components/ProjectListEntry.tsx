@@ -11,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@repo/design-system/components/ui/card'
-import Image from 'next/image'
 import {
   Tooltip,
   TooltipContent,
@@ -19,6 +18,7 @@ import {
   TooltipTrigger,
 } from '@repo/design-system/components/ui/tooltip'
 import { ShellIcon } from 'lucide-react'
+import Image from 'next/image'
 
 type FindAProjectListEntryProps = {
   project: Awaited<ReturnType<typeof getProjectItems>>[number]
