@@ -27,7 +27,7 @@ import {
 
 const VectorSizes = {
   small: 384,
-  large: 1024,
+  large: 384,
 }
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
