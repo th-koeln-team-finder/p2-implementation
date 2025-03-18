@@ -76,7 +76,7 @@ const StepperComponent = ({
 
       <div className="mb-20 w-full">{stepContent}</div>
 
-      <div className="fixed bottom-0 z-99 flex w-full justify-between bg-background py-6">
+      <div className="fixed bottom-0 z-[99] flex w-full justify-between bg-background py-6">
         <div className="relative left-4 flex justify-center text-muted-foreground text-sm">
           {translate('createProjects.stepper.step')} {currentIndex + 1}{' '}
           {translate('createProjects.stepper.of')} {steps.length}

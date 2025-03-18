@@ -1,29 +1,36 @@
 'use client'
 
 import { useFileUpload } from '@/features/file-upload/file-upload.hooks'
+import { useNavigationModalContext } from '@/features/general/components/NavigationModal'
 import { useRouter } from '@/features/i18n/routing'
 import { CreateProjectIssueList } from '@/features/projects/components/CreateProjectForm/CreateProjectIssueList'
 import { CreateProjectLinksList } from '@/features/projects/components/CreateProjectForm/CreateProjectLinksList'
 import { CreateProjectPreview } from '@/features/projects/components/CreateProjectForm/CreateProjectPreview'
 import { CreateProjectSkills } from '@/features/projects/components/CreateProjectForm/CreateProjectSkills'
+import { ProjectPicturesInlinePreview } from '@/features/projects/components/CreateProjectForm/ProjectPicturesInlinePreview'
 import {
   createProject,
-  createProjectResources,
+  createProjectAttachments,
+  getUserProfile,
   revalidateProjects,
 } from '@/features/projects/projects.actions'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
+import { useTagSearch } from '@/features/tag/tag.hook'
 import { useFieldGroup, useForm } from '@formsignals/form-react'
 import {
   type ZodAdapter,
   configureZodAdapter,
 } from '@formsignals/validation-adapter-zod'
 import { useSignals } from '@preact/signals-react/runtime'
+import type { UserSelect } from '@repo/database/schema'
 import { FieldError } from '@repo/design-system/components/FormErrors'
 import {
   WysiwygEditorForm,
   getStringContentFromEditor,
   useLexicalEditorRef,
 } from '@repo/design-system/components/WysiwygEditor'
+import { FileUploadForm } from '@repo/design-system/components/custom/file-upload'
+import { MultiValueAutoCompleteForm } from '@repo/design-system/components/custom/multi-value-auto-complete'
 import {
   ContentItem,
   StepperComponent,
@@ -35,8 +42,9 @@ import {
   SelectForm,
   SelectItem,
 } from '@repo/design-system/components/ui/select'
+import { clientEnv } from '@repo/env/client'
 import { useTranslations } from 'next-intl'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { z } from 'zod'
 
 const registerAdapter = configureZodAdapter({
@@ -47,8 +55,15 @@ export function CreateProjectForm() {
   useSignals()
   const [progressState, uploadFile, resetFileProgress] = useFileUpload()
   const router = useRouter()
+
   const t = useTranslations('createProjects')
+  const TagTranslations = useTranslations('tag')
   const translateError = useTranslations('validation')
+
+  const navigationModal = useNavigationModalContext()
+
+  const [sessionUser, setUser] = useState<UserSelect>()
+  const { data, isLoading, searchInput, setSearchInput } = useTagSearch()
 
   //Stepper
   const steps = [
@@ -58,16 +73,26 @@ export function CreateProjectForm() {
     { id: 'links', title: t('stepper.details') },
     { id: 'review', title: t('stepper.preview') },
   ]
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const profile = await getUserProfile()
+      if (profile) setUser(profile)
+    }
+    fetchUserProfile()
+  }, [])
 
   //Form Field Provider
   const form = useForm<CreateProjectFormValues, typeof ZodAdapter>({
     validatorAdapter: registerAdapter,
     defaultValues: {
       name: '',
+      createdBy: sessionUser ? sessionUser.id : '',
       description: '',
       phase: '',
       status: 'open',
       skills: [],
+      participants: sessionUser ? [{ Users: sessionUser }] : [],
+      tags: [],
       timetableOutput: '',
       ttMon: '',
       ttTue: '',
@@ -79,44 +104,55 @@ export function CreateProjectForm() {
       timetableCustom: '',
       issues: [],
       resources: [],
+      pictures: [],
     },
-    onSubmit: async (values) => {
+    onSubmit: async ({ resources, pictures, ...values }) => {
       if (!editorRef.current) return null
-      const serverActionData = {
-        ...values,
-        resources: values.resources.map((r) => ({
-          ...r,
-          file: [],
-        })),
-      }
+
       const projectId = await createProject(
-        serverActionData,
+        values,
         getStringContentFromEditor(editorRef.current),
       )
-      const uploadedFileResources = await Promise.all(
-        values.resources.map(async ({ file, label, href }) => {
-          if (!file.length) {
-            return {
-              label,
-              href,
-              projectId,
-            }
-          }
-          const fileId = await uploadFile(
-            `${projectId}/resources`,
-            label,
-            file[0],
-          )
-          resetFileProgress(file[0].name)
-          return {
-            label,
-            fileUpload: fileId,
-            projectId,
-          }
-        }),
+
+      const processedResources = await Promise.all(
+        resources.map(
+          async ({
+            file,
+            ...resource
+          }): Promise<
+            [
+              Omit<CreateProjectFormValues['resources'][number], 'file'>,
+              string | undefined | null,
+            ]
+          > => {
+            if (!file.length) return [resource, null]
+            return [
+              resource,
+              await uploadFile(
+                `${projectId}/resources`,
+                resource.label,
+                file[0],
+              ),
+            ]
+          },
+        ),
+      )
+      const uploadedPictures = await Promise.all(
+        pictures.map(
+          async (p): Promise<[string, string | undefined | null]> => [
+            p.name,
+            await uploadFile(`${projectId}/pictures`, p.name, p),
+          ],
+        ),
+      )
+      await createProjectAttachments(
+        projectId,
+        processedResources,
+        uploadedPictures,
       )
 
-      await createProjectResources(projectId, uploadedFileResources)
+      resetFileProgress()
+
       await revalidateProjects()
       setTimeout(() => {
         router.replace(`/projects/${projectId}`)
@@ -128,7 +164,7 @@ export function CreateProjectForm() {
 
   const basicFieldGroup = useFieldGroup(
     form,
-    ['name', 'phase', 'description'],
+    ['name', 'phase', 'description', 'createdBy', 'pictures'],
     {
       onSubmit: () => setCurrentIndex(1),
     },
@@ -164,7 +200,20 @@ export function CreateProjectForm() {
 
   const stepperChecks = useMemo(
     () => [
-      async () => await basicFieldGroup.handleSubmit(),
+      async () => {
+        const projectFields = form.fields
+          .peek()
+          .filter((field) => field.name.startsWith('pictures'))
+        await Promise.all(
+          projectFields.map((field) => field.validateForEvent('onSubmit')),
+        )
+        const isResourceFieldInvalid = projectFields.some(
+          (field) => !field.isValid.peek(),
+        )
+        if (isResourceFieldInvalid) return
+        return await basicFieldGroup.handleSubmit()
+      },
+
       async () => {
         const skillFields = form.fields
           .peek()
@@ -242,24 +291,51 @@ export function CreateProjectForm() {
                 }}
               >
                 <div>
-                  <Label>{t('name')}</Label>
-                  <InputForm id="name" placeholder={t('namePlaceholder')} />
+                  <Label>{t('main.name')}</Label>
+                  <InputForm
+                    id="name"
+                    placeholder={t('main.namePlaceholder')}
+                  />
+
                   <FieldError />
                 </div>
               </form.FieldProvider>
               <form.FieldProvider name="phase">
                 <div>
-                  <Label>{t('phase')}</Label>
-                  <InputForm id="phase" placeholder={t('phasePlaceholder')} />
+                  <Label>{t('main.phase')}</Label>
+                  <InputForm
+                    id="phase"
+                    placeholder={t('main.phasePlaceholder')}
+                  />
                   <FieldError />
                 </div>
               </form.FieldProvider>
             </div>
 
-            <div className="min-w-72 rounded border border-border p-4">
-              <Label>{t('images')}</Label>
-              <p>FileUpload für Images</p>
-            </div>
+            <form.FieldProvider
+              name="pictures"
+              validator={(files) => {
+                if (!files.length) return null
+                if (files.length > 5)
+                  return translateError('maxFiles', { amount: 5 })
+                return null
+              }}
+            >
+              <div className="w-full">
+                <Label>{t('resources.fileUpload')}</Label>
+                <FileUploadForm
+                  accepts="image/jpeg,image/jpg,image/png"
+                  multiple
+                  placeholder={
+                    <ProjectPicturesInlinePreview
+                      progressState={progressState}
+                      maxFileSize={clientEnv.NEXT_PUBLIC_MAX_FILE_SIZE}
+                    />
+                  }
+                />
+                <FieldError />
+              </div>
+            </form.FieldProvider>
           </div>
 
           <form.FieldProvider
@@ -272,10 +348,10 @@ export function CreateProjectForm() {
             }}
           >
             <div>
-              <Label>{t('description')}</Label>
+              <Label>{t('main.description')}</Label>
               <WysiwygEditorForm
                 editorRef={editorRef}
-                placeholder={t('descriptionPlaceholder')}
+                placeholder={t('main.descriptionPlaceholder')}
                 className="min-h-56"
               />
               <FieldError />
@@ -418,6 +494,40 @@ export function CreateProjectForm() {
       </ContentItem>
 
       <ContentItem stepId="links">
+        <form.FieldProvider
+          name="tags"
+          validator={z
+            .array(
+              z.object({
+                label: z.string(),
+                value: z.string(),
+              }),
+            )
+            .min(1, translateError('required'))}
+        >
+          <div className="flex w-full flex-col ">
+            <Label>{TagTranslations('labelTags')}</Label>
+            <div className="flex flex-col gap-4 py-2">
+              <MultiValueAutoCompleteForm
+                containerId="popoverref"
+                onOpenChange={(open) => {
+                  if (!navigationModal) return
+                  navigationModal.setBlockBackNavigation(open)
+                }}
+                searchInput={searchInput}
+                onSearchInputChange={setSearchInput}
+                data={data ?? []}
+                isLoading={isLoading}
+                placeholder={TagTranslations('placeholderTags')}
+                emptyMessage={TagTranslations('emptyTags')}
+                loadingMessage={TagTranslations('loadingTags')}
+                enableCommaSeparation
+                enableTagUse
+              />
+              <FieldError />
+            </div>
+          </div>
+        </form.FieldProvider>
         <form.FormProvider>
           <div className="flex w-full flex-col">
             <Label>{t('issues.sectionTitle')}</Label>
@@ -440,7 +550,7 @@ export function CreateProjectForm() {
 
       <ContentItem stepId="review">
         <form.FormProvider>
-          <CreateProjectPreview />
+          <CreateProjectPreview progressState={progressState} />
         </form.FormProvider>
       </ContentItem>
     </StepperComponent>

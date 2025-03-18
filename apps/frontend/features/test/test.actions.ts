@@ -14,21 +14,6 @@ import { revalidatePath, revalidateTag } from 'next/cache'
 export async function findSimilarTags(input: string) {
   const embeddings = await generateTextEmbeddings(input, 'small')
   const similarity = sql<number>`1 - (${cosineDistance(Schema.tags.embedding, embeddings)})`
-  console.log(
-    input,
-    await db
-      .select({
-        name: Schema.tags.name,
-        similarity,
-        text_similarity:
-          sql<number>`similarity(${Schema.tags.name}, ${input})`.as(
-            'text_similarity',
-          ),
-      })
-      .from(Schema.tags)
-      .orderBy(desc(similarity))
-      .limit(15),
-  )
   return await db
     .select({
       name: Schema.tags.name,

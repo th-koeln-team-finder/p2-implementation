@@ -31,7 +31,7 @@ export function UserAvatar({
         setUserAvatarUrl(response[0])
       })
     }
-  })
+  }, [user?.image?.bucketPath])
 
   return (
     <Avatar className={cn('h-8 w-8', className)}>
