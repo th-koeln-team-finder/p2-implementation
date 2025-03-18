@@ -266,7 +266,7 @@ export const participants = pgTable(
     projectId: uuid('projectId')
       .notNull()
       .references(() => projects.id, { onDelete: 'cascade' }),
-    projectRole: ProjectRoles().notNull().default("participant"),
+    projectRole: ProjectRoles().notNull().default('participant'),
   },
   (participants) => ({
     pk: primaryKey({ columns: [participants.userId, participants.projectId] }),
@@ -274,10 +274,6 @@ export const participants = pgTable(
 )
 export type ParticipantsInsert = typeof participants.$inferInsert
 export type ParticipantsSelect = typeof participants.$inferSelect
-
-
-
-
 
 /**
  * Skills for a project, referencing Project and Skill
@@ -573,23 +569,21 @@ export type TagInsert = typeof tags.$inferInsert
 export type TagSelect = typeof tags.$inferSelect
 
 export const projectTags = pgTable(
-    'project_tag',
-    {
-        projectId: uuid('projectId')
-            .notNull()
-            .references(() => projects.id, { onDelete: 'cascade' }),
-        tagId: uuid('tagId')
-            .notNull()
-            .references(() => tags.id, { onDelete: 'cascade' }),
-    },
-    (projectTags) => ({
-        pk: primaryKey({ columns: [projectTags.projectId, projectTags.tagId] }),
-    }),
+  'project_tag',
+  {
+    projectId: uuid('projectId')
+      .notNull()
+      .references(() => projects.id, { onDelete: 'cascade' }),
+    tagId: uuid('tagId')
+      .notNull()
+      .references(() => tags.id, { onDelete: 'cascade' }),
+  },
+  (projectTags) => ({
+    pk: primaryKey({ columns: [projectTags.projectId, projectTags.tagId] }),
+  }),
 )
 export type projectTagInsert = typeof projectTags.$inferInsert
 export type projectTagSelect = typeof projectTags.$inferSelect
-
-
 
 export const brainstormTags = pgTable(
   'brainstorm_tag',
@@ -607,8 +601,6 @@ export const brainstormTags = pgTable(
 )
 export type BrainstormTagInsert = typeof brainstormTags.$inferInsert
 export type BrainstormTagSelect = typeof brainstormTags.$inferSelect
-
-
 
 export const uploadStatusEnum = pgEnum('upload_status', [
   'pending', // Someone requested a presigned URL (if there are pending uploads older than 30 minutes, then the presigend url is expired and we have to check if the file was uploaded)
@@ -736,10 +728,6 @@ export const projectRelations = relations(projects, ({ many }) => ({
     relationName: 'projectBookmarks',
   }),
   tags: many(projectTags),
-
-
-
-
 }))
 
 export const projectTagRelations = relations(projectTags, ({ one }) => ({
@@ -752,9 +740,6 @@ export const projectTagRelations = relations(projectTags, ({ one }) => ({
     references: [tags.id],
   }),
 }))
-
-
-
 
 export const projectBookmarkRelations = relations(
   projectBookmarks,

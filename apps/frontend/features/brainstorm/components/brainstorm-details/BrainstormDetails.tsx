@@ -5,10 +5,10 @@ import { getSingleBrainstorm } from '@/features/brainstorm/brainstorm.queries'
 import { getCommentsForBrainstorm } from '@/features/brainstorm/brainstormComment.queries'
 import { BrainstormBookmarkButton } from '@/features/brainstorm/components/brainstorm-details/BrainstormBookmarkButton'
 import { BrainstormLinksResources } from '@/features/brainstorm/components/brainstorm-details/BrainstormLinksResources'
-import { TagList } from '@/features/tag/components/TagList'
 import { DeleteBrainstormButton } from '@/features/brainstorm/components/brainstorm-details/DeleteBrainstormButton'
 import { BrainstormCommentList } from '@/features/brainstorm/components/brainstorm-details/comments/BrainstormCommentList'
 import { Link, redirect } from '@/features/i18n/routing'
+import { TagList } from '@/features/tag/components/TagList'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import {
   Button,

@@ -1,11 +1,13 @@
 'use client'
 
 import { useFileUpload } from '@/features/file-upload/file-upload.hooks'
+import { useNavigationModalContext } from '@/features/general/components/NavigationModal'
 import { useRouter } from '@/features/i18n/routing'
 import { CreateProjectIssueList } from '@/features/projects/components/CreateProjectForm/CreateProjectIssueList'
 import { CreateProjectLinksList } from '@/features/projects/components/CreateProjectForm/CreateProjectLinksList'
 import { CreateProjectPreview } from '@/features/projects/components/CreateProjectForm/CreateProjectPreview'
 import { CreateProjectSkills } from '@/features/projects/components/CreateProjectForm/CreateProjectSkills'
+import { ProjectPicturesInlinePreview } from '@/features/projects/components/CreateProjectForm/ProjectPicturesInlinePreview'
 import {
   createProject,
   createProjectAttachments,
@@ -13,18 +15,22 @@ import {
   revalidateProjects,
 } from '@/features/projects/projects.actions'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
+import { useTagSearch } from '@/features/tag/tag.hook'
 import { useFieldGroup, useForm } from '@formsignals/form-react'
 import {
   type ZodAdapter,
   configureZodAdapter,
 } from '@formsignals/validation-adapter-zod'
 import { useSignals } from '@preact/signals-react/runtime'
+import type { UserSelect } from '@repo/database/schema'
 import { FieldError } from '@repo/design-system/components/FormErrors'
 import {
   WysiwygEditorForm,
   getStringContentFromEditor,
   useLexicalEditorRef,
 } from '@repo/design-system/components/WysiwygEditor'
+import { FileUploadForm } from '@repo/design-system/components/custom/file-upload'
+import { MultiValueAutoCompleteForm } from '@repo/design-system/components/custom/multi-value-auto-complete'
 import {
   ContentItem,
   StepperComponent,
@@ -36,16 +42,10 @@ import {
   SelectForm,
   SelectItem,
 } from '@repo/design-system/components/ui/select'
+import { clientEnv } from '@repo/env/client'
 import { useTranslations } from 'next-intl'
 import { useEffect, useMemo, useState } from 'react'
 import { z } from 'zod'
-import type { UserSelect } from '@repo/database/schema'
-import { FileUploadForm } from '@repo/design-system/components/custom/file-upload'
-import { clientEnv } from '@repo/env/client'
-import { ProjectPicturesInlinePreview } from '@/features/projects/components/CreateProjectForm/ProjectPicturesInlinePreview'
-import { useTagSearch } from '@/features/tag/tag.hook'
-import { MultiValueAutoCompleteForm } from '@repo/design-system/components/custom/multi-value-auto-complete'
-import { useNavigationModalContext } from '@/features/general/components/NavigationModal'
 
 const registerAdapter = configureZodAdapter({
   takeFirstError: true,

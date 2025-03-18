@@ -256,7 +256,6 @@ export const de: Language = {
     },
   },
   tag: {
-
     labelTags: 'Tags',
     placeholderTags: 'Tags hinzufügen...',
     loadingTags: 'Tags werden geladen...',

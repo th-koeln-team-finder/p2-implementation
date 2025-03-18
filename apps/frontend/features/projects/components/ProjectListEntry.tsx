@@ -1,5 +1,8 @@
+import { FilePreview } from '@/features/file-upload/components/FilePreview'
 import { Link } from '@/features/i18n/routing'
+import { ProjectListEntryToolbar } from '@/features/projects/components/ProjectListEntryToolbar'
 import type { getProjectItems } from '@/features/projects/projects.queries'
+import { TagList } from '@/features/tag/components/TagList'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import {
   Card,
@@ -9,9 +12,6 @@ import {
   CardTitle,
 } from '@repo/design-system/components/ui/card'
 import Image from 'next/image'
-import { FilePreview } from '@/features/file-upload/components/FilePreview'
-import { ProjectListEntryToolbar } from '@/features/projects/components/ProjectListEntryToolbar'
-import { TagList } from '@/features/tag/components/TagList'
 
 type FindAProjectListEntryProps = {
   project: Awaited<ReturnType<typeof getProjectItems>>[number]

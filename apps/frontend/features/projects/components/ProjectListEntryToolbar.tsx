@@ -1,20 +1,20 @@
 'use client'
 
+import { CanUserClient } from '@/features/auth/components/CanUser.client'
+import {
+  revalidateProjects,
+  toggleProjectBookmark,
+  toggleProjectStar,
+} from '@/features/projects/projects.actions'
 import { Button } from '@repo/design-system/components/ui/button'
-import { BookmarkIcon, StarIcon } from 'lucide-react'
 import { cn } from '@repo/design-system/lib/utils'
+import { BookmarkIcon, StarIcon } from 'lucide-react'
 import {
   type MouseEventHandler,
   useCallback,
   useOptimistic,
   useTransition,
 } from 'react'
-import {
-  revalidateProjects,
-  toggleProjectBookmark,
-  toggleProjectStar,
-} from '@/features/projects/projects.actions'
-import { CanUserClient } from '@/features/auth/components/CanUser.client'
 
 type FindAProjectListEntryProps = {
   projectId: string
