@@ -65,7 +65,7 @@ export function BrainstormListEntry({ brainstorm }: BrainstormListEntryProps) {
               </span>
             )}
           </div>
-          <div className="flex flex-row items-center justify-between gap-2">
+          <div className="flex flex-row items-center gap-2">
             {brainstorm.totalMatchScore && +brainstorm.totalMatchScore > 0 && (
               <TooltipProvider>
                 <Tooltip delayDuration={100}>
@@ -86,6 +86,7 @@ export function BrainstormListEntry({ brainstorm }: BrainstormListEntryProps) {
             )}
             <CanUserClient target="commentBrainstorm" action="create">
               <BrainstormBookmarkButton
+                className="ml-auto"
                 brainstormId={brainstorm.id}
                 isBookmarked={brainstorm.isBookmarked}
               />
@@ -99,7 +100,7 @@ export function BrainstormListEntry({ brainstorm }: BrainstormListEntryProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <TagList tags={brainstorm.tags} splitUp={3} />
+          <TagList tags={brainstorm.tags} />
         </CardContent>
       </Card>
     </Link>

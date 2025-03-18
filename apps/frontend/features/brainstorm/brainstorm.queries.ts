@@ -146,7 +146,28 @@ function getSimilarities(
 }
 
 function getMatchScores(userId: string | undefined) {
-  const totalMatchScore = sql<number>`((SELECT COUNT(DISTINCT tag) * 1.0 FROM (SELECT tag."tagId" as tag FROM brainstorm_bookmark bookmark JOIN brainstorm_tag tag ON bookmark."brainstormId" = tag."brainstormId" WHERE bookmark."userId" = ${userId} UNION ALL SELECT tag."tagId" as tag FROM project_bookmark bookmark JOIN project_tag tag ON bookmark."projectId" = tag."projectId" WHERE bookmark."userId" = ${userId} UNION ALL SELECT tag."tagId" as tag FROM project_star star JOIN project_tag tag ON star."projectId" = tag."projectId" WHERE star."userId" = ${userId}) as tags WHERE tags.tag IN (SELECT "tagId" FROM brainstorm_tag bt WHERE bt."brainstormId" = "brainstorms"."id")) / (SELECT GREATEST(COUNT(DISTINCT bt."tagId") * 1.0, 1.0) FROM brainstorm_tag bt WHERE bt."brainstormId" = "brainstorms"."id"))`
+  const totalMatchScore = sql<number>`COALESCE(((SELECT SUM(filtered_tags.count)
+         FROM (SELECT COUNT(DISTINCT tag) * 1.0 as count
+               FROM (SELECT tag."tagId" as tag
+                     FROM brainstorm_bookmark bookmark
+                              JOIN brainstorm_tag tag ON bookmark."brainstormId" = tag."brainstormId"
+                     WHERE bookmark."userId" = ${userId}
+                     UNION ALL
+                     SELECT tag."tagId" as tag
+                     FROM project_bookmark bookmark
+                              JOIN project_tag tag ON bookmark."projectId" = tag."projectId"
+                     WHERE bookmark."userId" = ${userId}
+                     UNION ALL
+                     SELECT tag."tagId" as tag
+                     FROM project_star star
+                              JOIN project_tag tag ON star."projectId" = tag."projectId"
+                     WHERE star."userId" = ${userId}) as tags
+               WHERE tags.tag IN (SELECT "tagId" FROM brainstorm_tag bt WHERE bt."brainstormId" = "brainstorms"."id")
+               GROUP BY tags.tag
+               HAVING count(tags.tag) > 2) filtered_tags) /
+        (SELECT GREATEST(COUNT(DISTINCT bt."tagId") * 1.0, 1.0)
+         FROM brainstorm_tag bt
+         WHERE bt."brainstormId" = "brainstorms"."id")), 0)`
   return {
     totalMatchScore,
   }
