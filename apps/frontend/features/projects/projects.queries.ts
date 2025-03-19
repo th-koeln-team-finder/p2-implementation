@@ -25,7 +25,7 @@ export const getProjectItems = cache(
     limit: number,
     userId?: string,
   ) => {
-    const searchEmbeddings = await generateTextEmbeddings(search ?? '')
+    const searchEmbeddings = await generateTextEmbeddings(search ?? '', 'large')
 
     const {
       similarity,
@@ -210,7 +210,11 @@ export const getProjectItem = cache(
         },
         participants: {
           with: {
-            users: true,
+            users: {
+              with: {
+                image: true,
+              },
+            },
           },
         },
         projectPictures: {

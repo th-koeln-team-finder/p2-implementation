@@ -64,7 +64,6 @@ export function CreateProjectPreview({
       }
     }
   })
-  console.log(`${formValues.tags}tags`)
   const tagList = formValues.tags.map((tag) => ({
     tag: {
       id: tag.value, // oder eine geeignete ID, falls `value` nicht eindeutig ist

@@ -26,7 +26,8 @@ export function ProjectFilterBarSkillSelect() {
   const translateSkill = useTranslations('skill')
 
   const navigationModal = useNavigationModalContext()
-  const { data, isLoading, searchInput, setSearchInput } = useSkillSearch()
+  const { data, isLoading, searchInput, setSearchInput } =
+    useSkillSearch('project')
 
   return (
     <div>

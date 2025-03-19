@@ -49,7 +49,6 @@ export default async function Projects({
         <ImageCarousel images={project.projectPictures ?? []} />
         <SkillScale
           title={translations('skillScale.skillTitle')}
-          emptySkillsMessage={translations('skillScale.emptySkills')}
           skills={project.projectSkills.map(({ skill, level }) => ({
             label: skill.skill,
             level,

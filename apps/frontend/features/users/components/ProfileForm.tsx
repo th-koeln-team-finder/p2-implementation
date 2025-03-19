@@ -263,7 +263,7 @@ export default function ProfileForm({ user }: { user: UserWithImage }) {
               <UserAvatar user={user} className="h-40 w-40" />
               <div>
                 <FileUploadForm
-                  accepts="image/*,application/pdf"
+                  accepts="image/jpeg,image/jpg,image/png"
                   placeholder={
                     <FileInlinePreviewsForm
                       progressState={progressState}
