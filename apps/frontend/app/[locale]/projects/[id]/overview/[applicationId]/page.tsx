@@ -11,7 +11,7 @@ import {
   DialogContent,
   DialogTitle,
 } from '@repo/design-system/components/ui/dialog'
-import { getLocale, getTranslations } from 'next-intl/server'
+import { getFormatter, getLocale, getTranslations } from 'next-intl/server'
 
 export default async function Overview({
   params,
@@ -23,6 +23,8 @@ export default async function Overview({
   if (!app) {
     return null
   }
+
+  const format = await getFormatter()
 
   const translate = await getTranslations('projects.application')
   const files = await Promise.all(
@@ -52,7 +54,6 @@ export default async function Overview({
   }
   return (
     <NavigationModal>
-      <DialogTitle>{title}</DialogTitle>
       <DialogContent className="flex min-w-full flex-col gap-4 sm:min-w-0 sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl">
         <div className="flex w-full flex-row gap-4 border-b-2 px-2 py-4">
           <Link href={`/profile/${app.user.id}`}>
@@ -66,11 +67,11 @@ export default async function Overview({
           <div className="flex w-9/12 flex-col gap-1">
             {app.createdAt && (
               <div className="text-muted-foreground text-xs">
-                {new Date(app.createdAt).toLocaleDateString()}
+                {format.dateTime(app.createdAt, { dateStyle: 'long' })}
               </div>
             )}
-            <div className="font-bold text-xl">{title}</div>
-            <div>{app.user.email}</div>
+            <DialogTitle>{title}</DialogTitle>
+            <div className="text-muted-foreground">{app.user.email}</div>
           </div>
           <div className="flex gap-4">
             <ApplicationListPin application={app} />
