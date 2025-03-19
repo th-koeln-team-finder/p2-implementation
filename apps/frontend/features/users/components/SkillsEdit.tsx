@@ -1,6 +1,7 @@
 'use client'
 
 import { debounce } from '@/features/general/utils'
+import { revalidateProjects } from '@/features/projects/projects.actions'
 import { addSkill } from '@/features/skills/skills.actions'
 import { searchSkills } from '@/features/skills/skills.queries'
 import { resetVerification } from '@/features/userSkillVerification/userSkillVerification.action'
@@ -28,7 +29,6 @@ import { Label } from '@repo/design-system/components/ui/label'
 import { BadgeCheck, Trash } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { type MutableRefObject, useCallback, useRef, useState } from 'react'
-import { revalidateProjects } from '@/features/projects/projects.actions'
 
 export default function SkillsEdit({
   userSkills,

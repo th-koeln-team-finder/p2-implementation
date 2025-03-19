@@ -50,6 +50,12 @@ export type Permissions = {
     }
     like: never
   }
+  applyProject: {
+    view: never
+    create: { createdById: string | null }
+    update: { createdById: string | null }
+    delete: { createdById: string | null }
+  }
   project: {
     'view.all': never
     'view.detail': never
@@ -59,6 +65,10 @@ export type Permissions = {
     update?: { createdById: string | null }
     like: never
     bookmark: never
+  }
+  projectApplication: {
+    view: { createdById: string | null }
+    manage: { createdById: string | null }
   }
 }
 
@@ -98,6 +108,15 @@ export const PERMISSIONS = {
       update: (user, data) => data?.createdById === user?.id,
       like: true,
       bookmark: true,
+    },
+    applyProject: {
+      create: (user, data) => data.createdById !== user?.id,
+      update: (user, data) => data.createdById === user?.id,
+      delete: (user, data) => data.createdById === user?.id,
+    },
+    projectApplication: {
+      view: (user, data) => data.createdById === user?.id,
+      manage: (user, data) => data.createdById === user?.id,
     },
   },
   guest: {
@@ -141,6 +160,12 @@ export const PERMISSIONS = {
       reply: (_, data) => !data.parentCommentId,
       like: true,
     },
+    applyProject: {
+      view: true,
+      create: true,
+      update: true,
+      delete: true,
+    },
     project: {
       'view.all': true,
       'view.detail': true,
@@ -149,6 +174,10 @@ export const PERMISSIONS = {
       update: true,
       like: true,
       bookmark: true,
+    },
+    projectApplication: {
+      view: true,
+      manage: true,
     },
   },
 } as const satisfies RolesWithPermissions

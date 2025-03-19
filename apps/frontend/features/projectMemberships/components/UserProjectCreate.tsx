@@ -1,10 +1,10 @@
 'use client'
 
 import {
-  addUserProject,
-  revalidateUserProjects,
-} from '@/features/userProjects/userProjects.actions'
-import type { OptimisticPayload } from '@/features/userProjects/userProjects.hooks'
+  addProjectMembership,
+  revalidateProjectMemberships,
+} from '@/features/projectMemberships/projectMemberships.actions'
+import type { OptimisticPayload } from '@/features/projectMemberships/projectMemberships.hooks'
 import { useForm } from '@formsignals/form-react'
 import { ZodAdapter } from '@formsignals/validation-adapter-zod'
 import { useSignals } from '@preact/signals-react/runtime'
@@ -65,9 +65,9 @@ export default function UserProjectCreate({
         action: 'add',
         values: mappedValues,
       })
-      await addUserProject(mappedValues)
+      await addProjectMembership(mappedValues)
       form.reset()
-      await revalidateUserProjects()
+      await revalidateProjectMemberships()
     },
   })
 

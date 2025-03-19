@@ -6,12 +6,14 @@ import { makeBrainstorm } from './factory/brainstorm.factory'
 import { makeBrainstormComment } from './factory/brainstormComment.factory'
 import { makeBrainstormCommentLike } from './factory/brainstormCommentLike.factory'
 import { makeBrainstormResource } from './factory/brainstormResource.factory'
+import { demoApplication } from './factory/projectApplication.data'
+import { makeProjectMemberships } from './factory/projectMemberships.factory'
+import { demoProject } from './factory/projects.data'
 import { makeSkill } from './factory/skill.factory'
 import { makeTag } from './factory/tag.factory'
 import { makeTest } from './factory/test.factory'
 import { makeUser } from './factory/user.factory'
 import { makeUserFollows } from './factory/userFollows.factory'
-import { makeUserProjects } from './factory/userProjects.factory'
 import { makeUserSkillVerification } from './factory/userSkillVerification.factory'
 import { makeUserSkills } from './factory/userSkills.factory'
 import * as Schema from './schema'
@@ -65,9 +67,9 @@ export async function seed() {
   await db.delete(Schema.projectIssue).execute()
   await db.delete(Schema.projectTimetable).execute()
   console.log(
-    "Clearing 'userProjects', 'userSkills', 'userFollows' and 'userSkillVerification' table",
+    "Clearing 'projectMemberships', 'userSkills', 'userFollows' and 'userSkillVerification' table",
   )
-  await db.delete(Schema.userProjects).execute()
+  await db.delete(Schema.projectMemberships).execute()
   await db.delete(Schema.userSkills).execute()
   await db.delete(Schema.userFollows).execute()
   await db.delete(Schema.userSkillVerification).execute()
@@ -79,6 +81,25 @@ export async function seed() {
   const userData = makeMultiple(75, makeUser)
   const users = await db.insert(Schema.users).values(userData).returning()
   const userIds = users.map((e) => e.id)
+
+  console.log('Creating 1 project')
+  const project = await db
+    .insert(Schema.projects)
+    .values({
+      ...demoProject,
+      createdBy: faker.helpers.arrayElement(userIds),
+    })
+    .returning()
+
+  const usersToApply = userIds.slice(0, 5)
+  console.log('Creating 5 project application')
+  await db.insert(Schema.projectApplication).values(
+    usersToApply.map((userId) => ({
+      ...demoApplication,
+      userId,
+      projectId: project[0].id,
+    })),
+  )
 
   console.log("Clearing 'tag' table")
   await db.delete(Schema.tags).execute()
@@ -191,7 +212,6 @@ export async function seed() {
     makeBrainstormResource(Object.values(brainstormIds)),
   )
   await db.insert(Schema.brainstormResources).values(resourceData).execute()
-
   console.log('Creating 100 skill records')
   const skillData = makeMultiple(100, () => makeSkill()).filter((e) => !!e)
   const skills = await db.insert(Schema.skills).values(skillData).returning()
@@ -212,10 +232,13 @@ export async function seed() {
 
   console.log('Creating 100 userProject records')
   const uniqueUserProjects = new Set<string>()
-  const userProjectData = makeMultiple(100, () =>
-    makeUserProjects(userIds, [undefined] as never, uniqueUserProjects),
+  const projectMembershipData = makeMultiple(100, () =>
+    makeProjectMemberships(userIds, [undefined] as never, uniqueUserProjects),
   ).filter((e) => !!e)
-  await db.insert(Schema.userProjects).values(userProjectData).execute()
+  await db
+    .insert(Schema.projectMemberships)
+    .values(projectMembershipData)
+    .execute()
 
   console.log('Creating 50 userFollow records')
   const userFollowData = makeMultiple(50, () =>

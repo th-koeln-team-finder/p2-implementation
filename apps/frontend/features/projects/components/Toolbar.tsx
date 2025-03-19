@@ -1,9 +1,12 @@
 'use client'
-
 import { useSessionPermission } from '@/features/auth/auth.hooks'
 import { CanUserClient } from '@/features/auth/components/CanUser.client'
+import { Link } from '@/features/i18n/routing'
 import {
-  joinProject,
+  useIsUserAppliedToProject,
+  useIsUserMemberOfProject,
+} from '@/features/projects/project.hooks'
+import {
   toggleProjectBookmark,
   toggleProjectStar,
 } from '@/features/projects/projects.actions'
@@ -20,6 +23,14 @@ type ProjectProps = {
 
 export function Toolbar({ project }: ProjectProps) {
   const t = useTranslations('projects')
+  const stars = project.starCount || 13_000
+  const projectId = project.id
+  const starsString = stars.toLocaleString('en', { notation: 'compact' })
+  const createdById = project.createdBy
+
+  const [isApplied, isLoadingApplication] = useIsUserAppliedToProject(projectId)
+  const [isMember, _isLoadingMemberships] = useIsUserMemberOfProject(projectId)
+
   const [_, startTransition] = useTransition()
   const canCreate = useSessionPermission('project', 'create')
   const [optimisticBookmarked, dispatchOptimisticBookmark] = useOptimistic(
@@ -48,7 +59,7 @@ export function Toolbar({ project }: ProjectProps) {
             await toggleProjectStar(project.id, !optimisticStared)
           }}
         >
-          {project.starCount !== 0 ? project.starCount : ''}
+          {starsString}
           <StarIcon className={cn(optimisticStared && 'fill-foreground')} />
         </Button>
         <Button variant="ghost" type="button" size="icon">
@@ -74,17 +85,38 @@ export function Toolbar({ project }: ProjectProps) {
           </Button>
         </CanUserClient>
       </div>
-      <CanUserClient target="project" action="create">
-        <Button
-          variant="default"
-          size="default"
-          className="ml-2 w-full lg:w-auto"
-          onClick={async () => {
-            await joinProject(project.id)
-          }}
+      {!isMember && (
+        <CanUserClient
+          target="applyProject"
+          action="create"
+          data={{ createdById }}
         >
-          {t('join')}
-        </Button>
+          <Link href={`/projects/${projectId}/apply`}>
+            <Button
+              disabled={isLoadingApplication || isApplied}
+              variant="default"
+              size="default"
+              className="ml-2 w-full lg:w-auto"
+            >
+              {t('join')}
+            </Button>
+          </Link>
+        </CanUserClient>
+      )}
+      <CanUserClient
+        target="projectApplication"
+        action="view"
+        data={{ createdById }}
+      >
+        <Link href={`/projects/${projectId}/overview`}>
+          <Button
+            variant="default"
+            size="default"
+            className="ml-2 w-full lg:w-auto"
+          >
+            {t('goToOverview')}
+          </Button>
+        </Link>
       </CanUserClient>
     </div>
   )

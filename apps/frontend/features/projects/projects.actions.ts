@@ -6,7 +6,11 @@ import { redirect } from '@/features/i18n/routing'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
-import { type TagSelect, Weekdays } from '@repo/database/schema'
+import {
+  type ProjectApplicationInsert,
+  type TagSelect,
+  Weekdays,
+} from '@repo/database/schema'
 import { generateTextEmbeddings } from '@repo/semantic-search'
 import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
@@ -53,6 +57,7 @@ export async function createProject(
       embedding,
       status: payload.status,
       phase: payload.phase,
+      location: payload.address,
     })
     .returning()
 
@@ -273,27 +278,18 @@ export async function toggleProjectBookmark(
   })
 }
 
-export async function joinProject(projectId: string) {
-  const session = await authMiddleware()
-  if (!session?.user?.id) {
-    const locale = await getLocale()
-    return redirect({
-      href: '/error?error=AccessDenied',
-      locale,
-    })
-  }
-
+export async function joinProject(projectId: string, userId: string) {
   if (
     await db.query.participants.findFirst({
       where:
         eq(Schema.participants.projectId, projectId) &&
-        eq(Schema.participants.userId, session.user.id),
+        eq(Schema.participants.userId, userId),
     })
   ) {
   } else {
     await db.insert(Schema.participants).values({
       projectId,
-      userId: session.user.id,
+      userId: userId,
     })
   }
 }
@@ -335,4 +331,45 @@ export async function toggleProjectStar(
 
 export async function revalidateProjects() {
   return await revalidateTag('projects')
+}
+
+export async function createApplication(
+  payload: ProjectApplicationInsert,
+  fileIds: string[],
+) {
+  const [application] = await db
+    .insert(Schema.projectApplication)
+    .values(payload)
+    .returning()
+
+  if (!fileIds.length) {
+    return
+  }
+
+  const filesToInsert = fileIds.map((file) => ({
+    applicationId: application.id,
+    file,
+  }))
+  await db.insert(Schema.projectApplicationFiles).values(filesToInsert)
+}
+
+export async function isUserAppliedToProject(
+  userId: string,
+  projectId: string,
+) {
+  return await db.query.projectApplication.findFirst({
+    where: and(
+      eq(Schema.projectApplication.userId, userId),
+      eq(Schema.projectApplication.projectId, projectId),
+    ),
+  })
+}
+
+export async function isUserMemberOfProject(userId: string, projectId: string) {
+  return !!(await db.query.participants.findFirst({
+    where: and(
+      eq(Schema.projectMemberships.userId, userId),
+      eq(Schema.projectMemberships.projectId, projectId),
+    ),
+  }))
 }
