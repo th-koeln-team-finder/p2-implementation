@@ -80,12 +80,14 @@ export const en = {
     pageTitle: 'Projects',
     location: 'Location',
     join: 'Join the team',
+    goToOverview: 'Go to project overview',
     links: 'Links and other resources',
     phase: 'phase',
     createProjectWarning: 'You need to login',
     createProjectWarningDescription:
       'Please login or register to create a project',
     emptyProjects: 'No projects found',
+    notFound: 'Project not found',
 
     matching: {
       tooltipTitle: 'Matching score',
@@ -141,6 +143,42 @@ export const en = {
     },
     myProjects: {
       pageTitle: 'My Projects',
+    },
+    apply: {
+      title: 'Join the Team',
+      infoTitle: 'About you',
+      applyTitle: 'Your application documents',
+      messageTitle: 'Your message',
+      form: {
+        name: 'Name',
+        checkbox: 'Communication',
+        checkboxText: 'I prefer communication through this platform',
+        mail: 'Email',
+        placeholderMail: 'Enter your email...',
+        phone: 'Phone Number',
+        placeholderPhone: 'Enter your phone number (+49 123456789) ...',
+        fileUpload: 'Upload your portfolio, CV, etc.',
+        message: 'Tell us about yourself and your strengths',
+        placeholderMessage: 'Enter your message...',
+        submit: 'Send Request',
+      },
+    },
+    overview: {
+      title: 'Project Overview',
+      notFound: 'Project not found',
+      impressionsCount:
+        '{count, plural, =1 {One impression} other {# impressions}}',
+      applicationsCount:
+        '{count, plural, =1 {One application} other {# applications}}',
+      likesCount: '{count, plural, =1 {One like} other {# likes}} ',
+      filesAttached:
+        '{count, plural, =1 {One file attached} other {# files attached}}',
+      noApplications: 'No one applied to join this project yet.',
+    },
+    application: {
+      title: 'Application by {name}',
+      acceptApplication: 'Accept',
+      rejectApplication: 'Reject',
     },
   },
   createProjects: {
@@ -388,6 +426,7 @@ export const en = {
         profile: 'Profile notifications',
         selectType: 'Select notification type',
         projectUpdated: 'One of my projects was updated',
+        applicationStatusChanged: 'My membership request was accepted/rejected',
         memberJoinedProject: 'New member joined one of my projects',
         memberLeftProject: 'Member left one of my projects',
         newApplication: 'New application for one of my projects',
@@ -408,6 +447,7 @@ export const en = {
     minLengthX:
       'This field must be at least {amount, plural, =1 {one character} other {# characters}} long',
     number: 'This field must be a number',
+    phone: 'The phone number must be in the format +49 123456789',
     positive: 'This field must be a positive number',
     date: 'This field must be a valid date',
     url: 'This field must be a valid URL',
@@ -445,6 +485,18 @@ export const en = {
       title: 'You have a new follower!',
       message: '{follower} is now following you.',
       linkText: 'View your profile',
+    },
+    membershipAccepted: {
+      title: 'Membership request for {project} was accepted',
+      message: 'Your membership in {project} was accepted. Have fun!',
+    },
+    membershipRejected: {
+      title: 'Membership request for {project} was rejected',
+      message: 'Your membership in {project} was rejected.',
+    },
+    memberJoinedProject: {
+      title: 'New member joined project {project}',
+      message: '{user} is now part of the crew!',
     },
   },
   email: {
