@@ -12,6 +12,7 @@ import {
   primaryKey,
   text,
   timestamp,
+  unique,
   uniqueIndex,
   uuid,
   varchar,
@@ -27,7 +28,7 @@ import {
 
 const VectorSizes = {
   small: 384,
-  large: 1024,
+  large: 384,
 }
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
@@ -169,7 +170,7 @@ export type UserFollowsInsert = typeof userFollows.$inferInsert
  * They may also add other projects to their timeline that they worked on
  * but did not use this platform.
  */
-export const userProjects = pgTable('userProjects', {
+export const projectMemberships = pgTable('projectMemberships', {
   id: uuid().primaryKey().notNull().defaultRandom(),
   userId: uuid('userId')
     .notNull()
@@ -190,9 +191,10 @@ export const userProjects = pgTable('userProjects', {
     .defaultNow()
     .$onUpdate(() => new Date()),
 })
-export type UserProjectsInsert = typeof userProjects.$inferInsert
-export type UserProjectsSelect = typeof userProjects.$inferSelect
+export type ProjectMembershipsInsert = typeof projectMemberships.$inferInsert
+export type ProjectMembershipsSelect = typeof projectMemberships.$inferSelect
 
+// TODO can be removed?
 export const userProjectSettings = pgTable('userProjectSettings', {
   id: uuid().primaryKey().notNull().defaultRandom(),
   userId: uuid('userId')
@@ -246,6 +248,7 @@ export const projects = pgTable('projects', {
   embedding: vector({ dimensions: VectorSizes.large }).notNull(),
   status: varchar({ enum: ['open', 'closed'] }).notNull(),
   phase: text(),
+  location: text(),
   isPublic: boolean().notNull().default(true),
   allowApplications: boolean().notNull().default(true),
   createdAt: timestamp({ mode: 'date' }).defaultNow(),
@@ -436,6 +439,62 @@ export const projectBookmarks = pgTable(
 )
 export type projectBookmarkInsert = typeof projectBookmarks.$inferInsert
 export type projectBookmarkSelect = typeof projectBookmarks.$inferSelect
+
+/**
+ * Apply for a project
+ */
+export const projectApplication = pgTable(
+  'projectApplication',
+  {
+    id: uuid().primaryKey().notNull().defaultRandom(),
+    userId: uuid('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    projectId: uuid('projectId')
+      .notNull()
+      .references(() => projects.id, { onDelete: 'cascade' }),
+    message: text().notNull(),
+    isPinned: boolean('isPinned').notNull().default(false),
+    createdAt: timestamp({ mode: 'date' }).defaultNow(),
+    updatedAt: timestamp({ mode: 'date' })
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (projectApplication) => ({
+    projectApplicationUniqueConstraint: unique(
+      'projectApplicationUniqueConstraint',
+    ).on(projectApplication.projectId, projectApplication.userId),
+  }),
+)
+export type ProjectApplicationInsert = typeof projectApplication.$inferInsert
+export type ProjectApplicationSelect = typeof projectApplication.$inferSelect
+
+export const projectApplicationFiles = pgTable('project_application_files', {
+  id: uuid().primaryKey().notNull().defaultRandom(),
+  applicationId: uuid()
+    .notNull()
+    .references(() => projectApplication.id, { onDelete: 'cascade' }),
+  file: uuid()
+    .notNull()
+    .references(() => uploadedFiles.id, {
+      onDelete: 'cascade',
+    }),
+  createdAt: timestamp({ mode: 'date' }).defaultNow(),
+  updatedAt: timestamp({ mode: 'date' })
+    .defaultNow()
+    .$onUpdate(() => sql`current_timestamp`),
+})
+export type ProjectApplicationFilesInsert =
+  typeof projectApplicationFiles.$inferInsert
+export type ProjectApplicationFilesSelect =
+  typeof projectApplicationFiles.$inferSelect
+
+export const projectImpressions = pgTable('project_impressions', {
+  projectId: uuid('projectId')
+    .notNull()
+    .references(() => projects.id, { onDelete: 'cascade' }),
+  createdAt: timestamp({ mode: 'date' }).notNull().defaultNow(),
+})
 
 /**
  * Data for a single brainstorm
@@ -719,6 +778,11 @@ export const projectRelations = relations(projects, ({ many }) => ({
   }),
   projectSkills: many(projectSkill),
 
+  application: many(projectApplication, {
+    relationName: 'projectApplication',
+  }),
+  projectMemberships: many(projectMemberships),
+
   participants: many(participants),
 
   projectStar: many(projectStar, {
@@ -728,6 +792,7 @@ export const projectRelations = relations(projects, ({ many }) => ({
     relationName: 'projectBookmarks',
   }),
   tags: many(projectTags),
+  impressions: many(projectImpressions),
 }))
 
 export const projectTagRelations = relations(projectTags, ({ one }) => ({
@@ -843,6 +908,35 @@ export const issueRelations = relations(projectIssue, ({ one }) => ({
   }),
 }))
 
+export const projectApplicationRelations = relations(
+  projectApplication,
+  ({ one, many }) => ({
+    project: one(projects, {
+      fields: [projectApplication.projectId],
+      references: [projects.id],
+    }),
+    user: one(users, {
+      fields: [projectApplication.userId],
+      references: [users.id],
+    }),
+    files: many(projectApplicationFiles),
+  }),
+)
+
+export const projectApplicationFilesRelations = relations(
+  projectApplicationFiles,
+  ({ one }) => ({
+    application: one(projectApplication, {
+      fields: [projectApplicationFiles.applicationId],
+      references: [projectApplication.id],
+    }),
+    file: one(uploadedFiles, {
+      fields: [projectApplicationFiles.file],
+      references: [uploadedFiles.id],
+    }),
+  }),
+)
+
 //brainstormRelations
 export const brainstormRelations = relations(brainstorms, ({ one, many }) => ({
   creator: one(users, {
@@ -949,12 +1043,15 @@ export const uploadedFileRelations = relations(uploadedFiles, ({ one }) => ({
     references: [users.id],
   }),
 }))
-export const userProjectRelations = relations(userProjects, ({ one }) => ({
-  project: one(projects, {
-    fields: [userProjects.projectId],
-    references: [projects.id],
+export const projectMembershipsRelations = relations(
+  projectMemberships,
+  ({ one }) => ({
+    project: one(projects, {
+      fields: [projectMemberships.projectId],
+      references: [projects.id],
+    }),
   }),
-}))
+)
 
 export const userSkillVerificationRelations = relations(
   userSkillVerification,
@@ -972,7 +1069,7 @@ export const userSkillVerificationRelations = relations(
 
 export const userRelations = relations(users, ({ one, many }) => ({
   skills: many(userSkills),
-  projects: many(userProjects),
+  projects: many(projectMemberships),
   projectSettings: many(userProjectSettings),
   authenticators: many(authenticators),
   ratings: many(userRatings),

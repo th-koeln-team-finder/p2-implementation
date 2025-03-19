@@ -1,16 +1,16 @@
 import { faker } from '@faker-js/faker/locale/de'
-import type { UserProjectsInsert } from '../schema'
+import type { ProjectMembershipsInsert } from '../schema'
 
-export function makeUserProjects(
+export function makeProjectMemberships(
   userIds: string[],
   projectIds: string[],
   uniqueIds: Set<string>,
-): UserProjectsInsert | null {
+): ProjectMembershipsInsert | null {
   let tries = 0
   let userId = faker.helpers.arrayElement(userIds)
   let projectId = faker.helpers.arrayElement(projectIds)
 
-  while (uniqueIds.has(`${userId}-${projectId}`) && tries < 10) {
+  while (projectId && uniqueIds.has(`${userId}-${projectId}`) && tries < 10) {
     userId = faker.helpers.arrayElement(userIds)
     projectId = faker.helpers.arrayElement(projectIds)
     tries++

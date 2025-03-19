@@ -1,12 +1,15 @@
 'use client'
 
 import {
-  removeUserProject,
-  revalidateUserProjects,
-  updateUserProject,
-} from '@/features/userProjects/userProjects.actions'
-import type { OptimisticPayload } from '@/features/userProjects/userProjects.hooks'
-import type { ProjectSelect, UserProjectsSelect } from '@repo/database/schema'
+  removeProjectMembership,
+  revalidateProjectMemberships,
+  updateProjectMemberships,
+} from '@/features/projectMemberships/projectMemberships.actions'
+import type { OptimisticPayload } from '@/features/projectMemberships/projectMemberships.hooks'
+import type {
+  ProjectMembershipsSelect,
+  ProjectSelect,
+} from '@repo/database/schema'
 import { Button } from '@repo/design-system/components/ui/button'
 import {
   Card,
@@ -25,7 +28,9 @@ export default function ProjectList({
   userProjects,
   setProjectsOptimistic,
 }: {
-  userProjects: (UserProjectsSelect & { project?: ProjectSelect | null })[]
+  userProjects: (ProjectMembershipsSelect & {
+    project?: ProjectSelect | null
+  })[]
   setProjectsOptimistic: (payload: OptimisticPayload) => void
 }) {
   const t = useTranslations()
@@ -35,8 +40,8 @@ export default function ProjectList({
         action: 'delete',
         values: { id },
       })
-      await removeUserProject(id)
-      await revalidateUserProjects()
+      await removeProjectMembership(id)
+      await revalidateProjectMemberships()
     },
     [setProjectsOptimistic],
   )
@@ -50,8 +55,8 @@ export default function ProjectList({
           visible,
         },
       })
-      await updateUserProject(id, { visible })
-      await revalidateUserProjects()
+      await updateProjectMemberships(id, { visible })
+      await revalidateProjectMemberships()
     },
     [setProjectsOptimistic],
   )

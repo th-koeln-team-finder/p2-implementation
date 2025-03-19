@@ -1,6 +1,7 @@
 'use client'
 
 import { debounce } from '@/features/general/utils'
+import { revalidateProjects } from '@/features/projects/projects.actions'
 import { addSkill } from '@/features/skills/skills.actions'
 import { searchSkills } from '@/features/skills/skills.queries'
 import { resetVerification } from '@/features/userSkillVerification/userSkillVerification.action'
@@ -145,6 +146,7 @@ export default function SkillsEdit({
       await updateUserSkillLevel(selectedSkill.skillId, selectedSkill.level)
       await resetVerification(selectedSkill.skillId)
       await revalidateUserSkills()
+      await revalidateProjects()
     }
   }
 

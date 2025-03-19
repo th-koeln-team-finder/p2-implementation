@@ -7,14 +7,8 @@ import { Link } from '@/features/i18n/routing'
 import { getUserWithImage } from '@/features/users/users.query'
 import { Button } from '@repo/design-system/components/ui/button'
 import { DropdownMenuItem } from '@repo/design-system/components/ui/dropdown-menu'
-import { Input } from '@repo/design-system/components/ui/input'
-import {
-  BellIcon,
-  BrainCircuitIcon,
-  SearchIcon,
-  SettingsIcon,
-  Users2Icon,
-} from 'lucide-react'
+import { SidebarTrigger } from '@repo/design-system/components/ui/sidebar'
+import { BrainCircuitIcon, SettingsIcon, Users2Icon } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 export default async function Header() {
@@ -33,18 +27,10 @@ export default async function Header() {
         <ApplicationIcon className="size-16" />
       </a>
 
-      <div className="flex w-full items-center justify-end gap-12 self-stretch">
-        <div className="relative">
-          <Input
-            className="min-w-72 pl-8"
-            type="search"
-            placeholder={translate('placeholderSearchEverywhere')}
-          />
-          <div className="pointer-events-none absolute top-0 bottom-0 left-2 flex flex-row items-center">
-            <SearchIcon className="size-5 text-muted-foreground" />
-          </div>
-        </div>
-
+      <div className="flex w-full items-center md:hidden">
+        <SidebarTrigger className="ml-auto [&_svg]:size-7" />
+      </div>
+      <div className="hidden w-full items-center justify-end gap-12 self-stretch md:flex">
         <nav className="nav flex items-center gap-6">
           <Button
             asChild
@@ -74,15 +60,16 @@ export default async function Header() {
 
           {user ? (
             <UserProfileMenu>
-              <DropdownMenuItem>
-                <Users2Icon /> {translate('settingLinkMyProjects')}
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BrainCircuitIcon /> {translate('settingLinkMyBrainstorms')}
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BellIcon /> {translate('settingLinkNotifications')}
-              </DropdownMenuItem>
+              <Link href="/my-projects">
+                <DropdownMenuItem>
+                  <Users2Icon /> {translate('settingLinkMyProjects')}
+                </DropdownMenuItem>
+              </Link>
+              <Link href="/my-brainstorms">
+                <DropdownMenuItem>
+                  <BrainCircuitIcon /> {translate('settingLinkMyBrainstorms')}
+                </DropdownMenuItem>
+              </Link>
               <Link href="/edit-profile/profile">
                 <DropdownMenuItem>
                   <SettingsIcon /> {translate('settingLinkSettings')}
@@ -90,10 +77,10 @@ export default async function Header() {
               </Link>
             </UserProfileMenu>
           ) : (
-            <>
+            <div className="flex flex-row items-center gap-2">
               <LoginButton />
               <RegisterButton />
-            </>
+            </div>
           )}
         </nav>
       </div>

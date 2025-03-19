@@ -47,6 +47,7 @@ export type CreateProjectFormLinks = {
     title: string
     description: string
   }>
+  address: string
   resources: Array<{
     isDocument: boolean
     label: string
@@ -65,3 +66,12 @@ export type CreateProjectFormValues = CreateProjectFormBasic &
   CreateProjectFormTimeTable &
   CreateProjectFormLinks &
   CreateProjectFormPictures
+
+export type CreateApplicationFormValues = {
+  firstName: string
+  lastName: string
+  mail: string
+  phone: string
+  file: File[]
+  message: string
+}

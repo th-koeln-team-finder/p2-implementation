@@ -13,6 +13,10 @@ import {
   uniqueProjectUsers,
 } from './factory/projects.data'
 import { makeProject } from './factory/projects.factory'
+import { demoApplication } from './factory/projectApplication.data'
+import { makeProjectMemberships } from './factory/projectMemberships.factory'
+import { demoProject } from './factory/projects.data'
+import { makeSkill } from './factory/skill.factory'
 import { makeTag } from './factory/tag.factory'
 import { makeUserFollows } from './factory/userFollows.factory'
 import { makeUserProjects } from './factory/userProjects.factory'
@@ -335,10 +339,13 @@ export async function seed() {
 
   console.log('Creating 100 userProject records')
   const uniqueUserProjects = new Set<string>()
-  const userProjectData = makeMultiple(100, () =>
-    makeUserProjects(userIds, [undefined] as never, uniqueUserProjects),
+  const projectMembershipData = makeMultiple(100, () =>
+    makeProjectMemberships(userIds, [undefined] as never, uniqueUserProjects),
   ).filter((e) => !!e)
-  await db.insert(Schema.userProjects).values(userProjectData).execute()
+  await db
+    .insert(Schema.projectMemberships)
+    .values(projectMembershipData)
+    .execute()
 
   console.log('Creating 50 userFollow records')
   const userFollowData = makeMultiple(50, () =>
