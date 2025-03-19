@@ -15,10 +15,9 @@ import { useState } from 'react'
 export function BrainstormFilterBar() {
   useSignals()
 
+  const [bookmarks, setBookmarks] = useQueryState('bookmarks')
   const translate = useTranslations('brainstorm')
 
-  const [bookmarks, setBookmarks] = useQueryState('bookmarks')
-  const bookmarksPinned = bookmarks === 'pinned'
   const [search, setSearchRaw] = useQueryState('search')
   const [_, setOffset] = useQueryState('offset')
 
@@ -27,6 +26,8 @@ export function BrainstormFilterBar() {
     await Promise.all([setSearchRaw(input), setOffset('0')])
     await revalidateBrainstorms()
   }, 500)
+
+  const bookmarksPinned = bookmarks === 'pinned'
 
   return (
     <div className="mb-8">
