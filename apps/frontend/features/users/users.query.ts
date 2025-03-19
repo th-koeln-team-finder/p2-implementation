@@ -16,6 +16,12 @@ export async function checkUsernameTaken(username: string) {
   })
   return !!result
 }
+export async function checkEmailTaken(email: string) {
+  const result = await db.query.users.findFirst({
+    where: eq(Schema.users.email, email),
+  })
+  return !!result
+}
 
 export const getUser = cache(
   async (id: string): Promise<UserSelect | undefined> =>

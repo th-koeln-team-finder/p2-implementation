@@ -1,16 +1,20 @@
 import { faker } from '@faker-js/faker/locale/de'
 import type { ProjectIssueInsert } from '../schema'
+import { generateTextEmbeddings } from '@repo/semantic-search'
 
-export function makeIssue(projectId: string): ProjectIssueInsert {
+export async function makeIssue(issueData: {
+  projectId: string
+  title: string
+  description: string
+}): Promise<ProjectIssueInsert> {
+  const embedding = await generateTextEmbeddings(
+    `${issueData.title}\n${issueData.description}`,
+  )
   return {
-    projectId,
-    title: faker.internet.username(),
-    description: faker.lorem.lines({ min: 1, max: 4 }),
+    projectId: issueData.projectId,
+    title: issueData.title,
+    description: issueData.description,
+    embedding,
+    createdAt: faker.date.past(),
   }
-}
-export function makeIssues(
-  count: number,
-  projectId: string,
-): ProjectIssueInsert[] {
-  return Array.from({ length: count }, () => makeIssue(projectId))
 }

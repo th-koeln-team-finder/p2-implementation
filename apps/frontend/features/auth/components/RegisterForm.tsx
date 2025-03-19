@@ -1,6 +1,9 @@
 'use client'
 import { revalidateAll } from '@/features/auth/auth.actions'
-import { checkUsernameTaken } from '@/features/users/users.query'
+import {
+  checkEmailTaken,
+  checkUsernameTaken,
+} from '@/features/users/users.query'
 import { useForm } from '@formsignals/form-react'
 import { configureZodAdapter } from '@formsignals/validation-adapter-zod'
 import { useSignals } from '@preact/signals-react/runtime'
@@ -94,6 +97,14 @@ export function RegisterForm() {
                   .email(translate('validation.email'))}
                 validatorOptions={{
                   validateOnChangeIfTouched: true,
+                }}
+                validatorAsync={async (email) => {
+                  const isTaken = await checkEmailTaken(email)
+                  if (!isTaken) return null
+                  return translate('validation.emailTaken')
+                }}
+                validatorAsyncOptions={{
+                  debounceMs: 600,
                 }}
               >
                 <div className="grid gap-2">

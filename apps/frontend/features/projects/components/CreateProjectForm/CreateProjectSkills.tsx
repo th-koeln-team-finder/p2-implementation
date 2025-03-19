@@ -34,7 +34,7 @@ export function CreateProjectSkills() {
 
   const navigationModal = useNavigationModalContext()
   const { data, isLoading, searchInput, setSearchInput } = useSkillSearch(
-    'project',
+    'total',
     true,
   )
 
