@@ -18,7 +18,7 @@ export default async function MyBrainstormsPage({
     bookmarks: string
   }>
 }) {
-  const [translate, { search, offset, bookmarks }] = await Promise.all([
+  const [translate] = await Promise.all([
     getTranslations('brainstorm'),
     searchParams,
   ])
@@ -36,28 +36,12 @@ export default async function MyBrainstormsPage({
         </h1>
 
         <section className="pb-4">
-          <Suspense key={search} fallback={<BrainstormListLoading />}>
-            <BrainstormList
-              search={search}
-              offset={offset}
-              bookmarks={bookmarks}
-              createdById={session.user.id}
-            />
-          </Suspense>
+          <BrainstormList
+            showUserBrainstorms
+          />
           <ScrollTopButton />
         </section>
       </div>
-
-      <CanUserServer target="brainstorm" action="create">
-        <div className="pointer-events-none fixed right-0 bottom-0 left-0 flex flex-row justify-end p-4">
-          <Link href="/brainstorm/create">
-            <Button className="pointer-events-auto">
-              <BrainIcon />
-              {translate('createButton')}
-            </Button>
-          </Link>
-        </div>
-      </CanUserServer>
     </div>
   )
 }

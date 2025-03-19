@@ -14,9 +14,8 @@ export default async function MyProjectsPage({
     } & FilterSearchParams
   >
 }) {
-  const [translate, { search, offset, ...filters }] = await Promise.all([
+  const [translate] = await Promise.all([
     getTranslations('projects'),
-    searchParams,
   ])
 
   const session = await authMiddleware()
@@ -30,10 +29,7 @@ export default async function MyProjectsPage({
         {translate('myProjects.pageTitle')}
       </h1>
       <ProjectList
-        offset={offset}
-        search={search}
-        filters={filters}
-        createdById={session.user.id}
+        showUserProjects
       />
     </div>
   )

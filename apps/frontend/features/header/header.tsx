@@ -75,9 +75,6 @@ export default async function Header() {
                   <BrainCircuitIcon /> {translate('settingLinkMyBrainstorms')}
                 </DropdownMenuItem>
               </Link>
-              <DropdownMenuItem>
-                <BellIcon /> {translate('settingLinkNotifications')}
-              </DropdownMenuItem>
               <Link href="/edit-profile/profile">
                 <DropdownMenuItem>
                   <SettingsIcon /> {translate('settingLinkSettings')}

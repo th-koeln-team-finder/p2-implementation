@@ -6,6 +6,7 @@ import { generateTextEmbeddings } from '@repo/semantic-search'
 import {
   type SQL,
   and,
+  or,
   cosineDistance,
   desc,
   eq,
@@ -120,57 +121,43 @@ export const getProjectItems = cache(
   { tags: ['projects'] },
 )
 
-export const getProjectItemsByCreatorId = cache(
+export const getProjectItemsForUser = cache(
   async (
-    createdById: string,
-    search,
-    filters: ReturnType<typeof parseFilters>,
+    userId: string,
     limit: number,
   ) => {
-    const searchEmbeddings = await generateTextEmbeddings(search ?? '')
-
-    const similarity = sql<number>`(1 - (${cosineDistance(Schema.projects.embedding, searchEmbeddings)}))`
-    const issueSimilarity = sql<number>`(select COALESCE(max(1 - ("issues"."embedding" <=> ${JSON.stringify(searchEmbeddings)})), NULL) from (select "projectIssue"."embedding" from "projectIssue" where "projectIssue"."projectId" = "projects".id) as "issues")`
-
-    const totalSimilarity = sql<number>`(${similarity} * 2 + ${issueSimilarity}) / 3`
-    const totalSimilarityNoIssue = sql<number>`${similarity}`
-
-    const correctTotalSimilarity = sql<number>`CASE WHEN ${issueSimilarity} IS NULL THEN ${totalSimilarityNoIssue} ELSE ${totalSimilarity} END`
-
-    const minDateFilterValue = filters[FilterKeys.minCreationDate]
-    const maxDateFilterValue = filters[FilterKeys.maxCreationDate]
-    const minCreationDateFilter = minDateFilterValue
-      ? gte(Schema.projects.createdAt, minDateFilterValue)
-      : sql`true`
-    const maxCreationDateFilter = maxDateFilterValue
-      ? lte(Schema.projects.createdAt, maxDateFilterValue)
-      : sql`true`
-    const creationDateFilter = and(minCreationDateFilter, maxCreationDateFilter)
-
-    return db.query.projects.findMany({
-      extras: {
-        totalSimilarity: search
-          ? correctTotalSimilarity.as('totalSimilarity')
-          : sql<number>`NULL`.as('totalSimilarity'),
-        similarity: search
-          ? similarity.as('similarity')
-          : sql<number>`NULL`.as('similarity'),
-        issueSimilarity: search
-          ? issueSimilarity.as('issueSimilarity')
-          : sql<number>`NULL`.as('issueSimilarity'),
-      },
+    const isBookmarked = sql<boolean>`EXISTS (SELECT id FROM "project_bookmark" bookmark WHERE bookmark."projectId" = "projects"."id" AND bookmark."userId" = ${userId})`
+    const isStared  = sql<boolean>`EXISTS (SELECT id FROM "project_star" star WHERE star."projectId" = "projects"."id" AND star."userId" = ${userId})`
+    const projectStars = sql<string>`(SELECT COUNT(*) FROM "project_star" star WHERE star."projectId" = "projects"."id")`
+    return await db.query.projects.findMany({
       columns: {
         embedding: false,
       },
-      where: and(
-        eq(Schema.projects.createdById, createdById),
-        gte(correctTotalSimilarity, 0.4),
-        eq(Schema.projects.isPublic, true),
-        creationDateFilter,
+      extras: {
+        isBookmarked: isBookmarked.as('isBookmarked'),
+        isStared: isStared.as('isStared'),
+        projectStars: projectStars.as('projectStars'),
+      },
+      with: {
+        projectPictures: {
+          with: {
+            uploadedFile: true,
+          },
+        },
+        tags: {
+          with: {
+            tag: true,
+          },
+        },
+      },
+      where: or(
+        eq(Schema.projects.createdBy, userId),
+        eq(isBookmarked, true),
+        eq(isStared, true),
+        sql`EXISTS (SELECT id FROM "participants" participant WHERE participant."projectId" = "projects"."id" AND participant."userId" = ${userId})`,
       ),
       limit,
       orderBy: [
-        search && desc(correctTotalSimilarity),
         desc(Schema.projects.createdAt),
       ].filter(Boolean),
     })

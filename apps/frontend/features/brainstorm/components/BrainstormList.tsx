@@ -1,46 +1,45 @@
-import { authMiddleware } from '@/auth'
-import { revalidateBrainstorms } from '@/features/brainstorm/brainstorm.actions'
-import {
-  getBrainstorms,
-  getBrainstormsByCreatorID,
-} from '@/features/brainstorm/brainstorm.queries'
-import { BrainstormListEntry } from '@/features/brainstorm/components/BrainstormListEntry'
-import { LazyLoader } from '@/features/general/components/LazyLoader'
-import { Masonry } from '@repo/design-system/components/ui/Masonry'
-import { getTranslations } from 'next-intl/server'
+import {authMiddleware} from '@/auth'
+import {revalidateBrainstorms} from '@/features/brainstorm/brainstorm.actions'
+import {getBrainstorms, getBrainstormsForUser,} from '@/features/brainstorm/brainstorm.queries'
+import {BrainstormListEntry} from '@/features/brainstorm/components/BrainstormListEntry'
+import {LazyLoader} from '@/features/general/components/LazyLoader'
+import {Masonry} from '@repo/design-system/components/ui/Masonry'
+import {getTranslations} from 'next-intl/server'
 
-const pageSize = 15
-
-export async function BrainstormList({
-  search,
-  offset,
-  bookmarks,
-  createdById,
-}: {
+type BrainstormListProps = {
   search: string
   offset: string
   bookmarks: string
-  createdById?: string
-}) {
+  showUserBrainstorms?: false
+}
+
+type MyBrainstormsListProps = {
+  offset?: string
+  showUserBrainstorms: true
+}
+
+const pageSize = 15
+
+export async function BrainstormList(
+  props: BrainstormListProps | MyBrainstormsListProps,
+) {
   const session = await authMiddleware()
   const translate = await getTranslations('brainstorm')
 
-  const offsetNumber = Number.parseInt(offset ?? '0')
+  const offsetNumber = Number.parseInt(props.offset ?? '0')
   const limit = pageSize + offsetNumber
-  const brainstorms = createdById
-    ? await getBrainstormsByCreatorID(
-        createdById,
-        session?.user?.id,
-        search,
-        bookmarks === 'pinned',
-        limit,
-      )
-    : await getBrainstorms(
-        session?.user?.id,
-        search,
-        bookmarks === 'pinned',
-        limit,
-      )
+  let brainstorms = []
+  if (session?.user?.id && props.showUserBrainstorms) {
+    brainstorms = await getBrainstormsForUser(session.user.id, limit)
+  } else {
+    const { search, bookmarks } = props as BrainstormListProps
+    brainstorms = await getBrainstorms(
+      session?.user?.id,
+      search,
+      bookmarks === 'pinned',
+      limit,
+    )
+  }
 
   const hasMore = limit <= brainstorms.length
 
