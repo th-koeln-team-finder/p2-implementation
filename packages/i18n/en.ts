@@ -141,6 +141,9 @@ export const en = {
     team: {
       title: 'Team Members',
     },
+    myProjects: {
+      pageTitle: 'My Projects',
+    },
     apply: {
       title: 'Join the Team',
       infoTitle: 'About you',
@@ -294,6 +297,9 @@ export const en = {
       sortOptionMostRecent: 'Most recent',
       sortOptionMostPopular: 'Most popular',
       reply: 'Reply',
+    },
+    myBrainstorms: {
+      pageTitle: 'My Brainstorms',
     },
   },
   tag: {

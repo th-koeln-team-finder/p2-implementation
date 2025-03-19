@@ -146,6 +146,9 @@ export const de: Language = {
     team: {
       title: 'Team-Mitglieder',
     },
+    myProjects: {
+      pageTitle: 'Meine Projekte',
+    },
     apply: {
       title: 'Werde Teil des Teams',
       infoTitle: 'Infos über dich',
@@ -301,6 +304,9 @@ export const de: Language = {
       sortOptionMostRecent: 'Neueste',
       sortOptionMostPopular: 'Beliebteste',
       reply: 'Antworten',
+    },
+    myBrainstorms: {
+      pageTitle: 'Meine Brainstorms',
     },
   },
   tag: {

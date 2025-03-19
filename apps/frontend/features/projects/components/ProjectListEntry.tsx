@@ -1,7 +1,10 @@
 import { FilePreview } from '@/features/file-upload/components/FilePreview'
 import { Link } from '@/features/i18n/routing'
 import { ProjectListEntryToolbar } from '@/features/projects/components/ProjectListEntryToolbar'
-import type { getProjectItems } from '@/features/projects/projects.queries'
+import type {
+  getProjectItems,
+  getProjectItemsForUser,
+} from '@/features/projects/projects.queries'
 import { TagList } from '@/features/tag/components/TagList'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import {
@@ -21,19 +24,27 @@ import { ShellIcon } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 import Image from 'next/image'
 
-type FindAProjectListEntryProps = {
-  project: Awaited<ReturnType<typeof getProjectItems>>[number]
+type FindAProject = Awaited<ReturnType<typeof getProjectItems>>[number]
+type MyProjects = Awaited<ReturnType<typeof getProjectItemsForUser>>[number]
+
+type ProjectListEntryProps = {
+  project: FindAProject | MyProjects
 }
 
-export async function ProjectListEntry({
-  project,
-}: FindAProjectListEntryProps) {
+export function checkIsFindAProject(
+  project: ProjectListEntryProps['project'],
+): project is FindAProject {
+  return 'projectTotalMatchScore' in project
+}
+
+export async function ProjectListEntry({ project }: ProjectListEntryProps) {
   const matchingTranslate = await getTranslations('projects.matching')
   const firstImage = project.projectPictures?.[0]
   return (
     <Link href={`/projects/${project.id}`}>
       <Card className="relative h-full">
-        {project.projectTotalMatchScore &&
+        {checkIsFindAProject(project) &&
+          project.projectTotalMatchScore &&
           +project.projectTotalMatchScore > 0 && (
             <TooltipProvider>
               <Tooltip delayDuration={100}>
@@ -99,32 +110,34 @@ export async function ProjectListEntry({
         )}
 
         <CardHeader>
-          <div className="-mb-2 flex flex-row flex-wrap gap-1 text-xs">
-            {project.totalSimilarity && (
-              <span className="rounded bg-muted px-1 text-muted-foreground/80">
-                similarity:{' '}
-                <span className="text-muted-foreground">
-                  {project.totalSimilarity?.toFixed(2)}
+          {checkIsFindAProject(project) && (
+            <div className="-mb-2 flex flex-row flex-wrap gap-1 text-xs">
+              {project.totalSimilarity && (
+                <span className="rounded bg-muted px-1 text-muted-foreground/80">
+                  similarity:{' '}
+                  <span className="text-muted-foreground">
+                    {project.totalSimilarity?.toFixed(2)}
+                  </span>
                 </span>
-              </span>
-            )}
-            {project.similarity && (
-              <span className="rounded bg-muted px-1 text-muted-foreground/80">
-                content:{' '}
-                <span className="text-muted-foreground">
-                  {project.similarity?.toFixed(2)}
+              )}
+              {project.similarity && (
+                <span className="rounded bg-muted px-1 text-muted-foreground/80">
+                  content:{' '}
+                  <span className="text-muted-foreground">
+                    {project.similarity?.toFixed(2)}
+                  </span>
                 </span>
-              </span>
-            )}
-            {project.issueSimilarity && (
-              <span className="rounded bg-muted px-1 text-muted-foreground/80">
-                issues:{' '}
-                <span className="text-muted-foreground">
-                  {project.issueSimilarity?.toFixed(2)}
+              )}
+              {project.issueSimilarity && (
+                <span className="rounded bg-muted px-1 text-muted-foreground/80">
+                  issues:{' '}
+                  <span className="text-muted-foreground">
+                    {project.issueSimilarity?.toFixed(2)}
+                  </span>
                 </span>
-              </span>
-            )}
-          </div>
+              )}
+            </div>
+          )}
           <div className="flex flex-row items-center justify-between gap-2">
             <CardTitle className="text-xl">{project.name}</CardTitle>
             <ProjectListEntryToolbar

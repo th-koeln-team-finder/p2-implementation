@@ -12,7 +12,7 @@ import { useState } from 'react'
 export function BrainstormFilterBar() {
   useSignals()
 
-  const [bookmarks, setBookmarks] = useQueryState('bookmarks')
+  const [bookmarks, _setBookmarks] = useQueryState('bookmarks')
   const translate = useTranslations('brainstorm')
 
   const [search, setSearchRaw] = useQueryState('search')
@@ -24,7 +24,7 @@ export function BrainstormFilterBar() {
     await revalidateBrainstorms()
   }, 500)
 
-  const bookmarksPinned = bookmarks === 'pinned'
+  const _bookmarksPinned = bookmarks === 'pinned'
 
   return (
     <div className="mb-8">
