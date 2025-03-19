@@ -1,11 +1,16 @@
+import fs from 'node:fs'
+import http from 'node:http'
+import path from 'node:path'
 import { faker } from '@faker-js/faker/locale/de'
 import { config } from 'dotenv'
 import { drizzle } from 'drizzle-orm/node-postgres'
+import { Client } from 'minio'
 import { brainstormData, uniqueBrainstormTags } from './factory/brainstorm.data'
 import { makeBrainstorm } from './factory/brainstorm.factory'
 import { makeBrainstormComment } from './factory/brainstormComment.factory'
 import { makeBrainstormCommentLike } from './factory/brainstormCommentLike.factory'
 import { makeBrainstormResource } from './factory/brainstormResource.factory'
+import { makeIssue } from './factory/issues.factory'
 import {
   projectsData,
   uniqueProjectSkills,
@@ -13,23 +18,14 @@ import {
   uniqueProjectUsers,
 } from './factory/projects.data'
 import { makeProject } from './factory/projects.factory'
-import { demoApplication } from './factory/projectApplication.data'
 import { makeProjectMemberships } from './factory/projectMemberships.factory'
-import { demoProject } from './factory/projects.data'
-import { makeSkill } from './factory/skill.factory'
 import { makeTag } from './factory/tag.factory'
 import { makeUserFollows } from './factory/userFollows.factory'
-import { makeUserProjects } from './factory/userProjects.factory'
 import { makeUserSkillVerification } from './factory/userSkillVerification.factory'
 import { makeUserSkills } from './factory/userSkills.factory'
+import { userDescriptions } from './factory/users.data'
 import * as Schema from './schema'
 import { type ProjectResourceInsert, type UserInsert, Weekdays } from './schema'
-import { userDescriptions } from './factory/users.data'
-import { makeIssue } from './factory/issues.factory'
-import { Client } from 'minio'
-import fs from 'node:fs'
-import http from 'node:http'
-import path from 'node:path'
 
 config()
 config({ path: '.env.local', override: true })
@@ -44,20 +40,6 @@ const db = drizzle({
 export function makeMultiple<T>(count: number, maker: () => T): T[] {
   return Array.from({ length: count }, maker)
 }
-export async function makeMultipleAsync<T>(
-  count: number,
-  maker: () => Promise<T>,
-): Promise<T[]> {
-  const data = [] as T[]
-  for (let i = 0; i < count; i++) {
-    const entry = await maker()
-    if (!entry) {
-      continue
-    }
-    data.push(entry)
-  }
-  return data
-}
 
 export async function seed() {
   console.log('### Seeding test data ###')
@@ -68,7 +50,7 @@ export async function seed() {
   await db.delete(Schema.userSkillVerification).execute()
   await db.delete(Schema.userRatings).execute()
   await db.delete(Schema.userFollows).execute()
-  await db.delete(Schema.userProjects).execute()
+  await db.delete(Schema.projectMemberships).execute()
   await db.delete(Schema.userProjectSettings).execute()
   await db.delete(Schema.skills).execute()
   await db.delete(Schema.projects).execute()

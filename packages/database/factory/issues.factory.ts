@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker/locale/de'
-import type { ProjectIssueInsert } from '../schema'
 import { generateTextEmbeddings } from '@repo/semantic-search'
+import type { ProjectIssueInsert } from '../schema'
 
 export async function makeIssue(issueData: {
   projectId: string
