@@ -18,6 +18,7 @@ import type {OptimisticPayload} from "@/features/brainstorm/brainstormComment.ho
 import {ProjectSelect, type UserSelect} from "@repo/database/schema";
 import {CreateProjectFormValues, PopulatedProject} from "@/features/projects/projects.types";
 import {useRouter} from "@/features/i18n/routing";
+import {useSession} from "next-auth/react";
 
 
 type ProjectProps = {
@@ -31,8 +32,8 @@ export function Toolbar({
 }:ProjectProps) {
     const t = useTranslations('projects')
     const router = useRouter()
-    const [sessionUser, setUser] = useState<UserSelect>()
-    const isCreator = sessionUser?.id === project.createdBy
+    const { data: session } = useSession()
+    const isCreator = session?.user?.id === project.createdBy
 
     const [_, startTransition] = useTransition()
     const canCreate = useSessionPermission('project', 'create')
@@ -48,11 +49,6 @@ export function Toolbar({
       return payload
     },
   )
-    useEffect(() => {
-        (async () => {
-            setUser(await getUserProfile())
-        })()
-    }, [])
   return (
     <div className="flex flex-row items-center gap-2">
       <div className="flex flex-row items-center gap-1">
@@ -100,18 +96,16 @@ export function Toolbar({
                 className="ml-2 w-full lg:w-auto"
                 onClick={async () => {
                     if (isCreator) {
-
                         router.push(`/projects/${project.id}/findSomeone`)
                     } else {
                         await joinProject(project.id)
                     }
                 }}
             >
-                {isCreator ? "findSomeone" : t('join')}
+                {isCreator ?"find Someone": t('join') }
             </Button>
         </CanUserClient>
     </div>
   )
 }
-
-//TODO Logik der einzelnen Buttons hinzufügen (Teilen, Merken etc.)
+//TODO: JoinButton sollte nur angezeigt werden, wenn man nicht der Ersteller des Projekts ist. Im Moment wird kurzeitig der Join Button angezeigt.

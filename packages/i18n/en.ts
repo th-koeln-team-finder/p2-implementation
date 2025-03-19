@@ -131,6 +131,9 @@ export const en = {
       title: 'Team Members',
     },
   },
+  findSomeone: {
+    pageTitle: 'Find someone',
+  },
   createProjects: {
     fieldRequired: 'This field is required',
     location: 'Location',

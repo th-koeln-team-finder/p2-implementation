@@ -11,7 +11,7 @@ import Image from 'next/image'
 import { FilePreview } from '@/features/file-upload/components/FilePreview'
 import { ProjectListEntryToolbar } from '@/features/projects/components/ProjectListEntryToolbar'
 
-type FindAProjectListEntryProps = {
+export type FindAProjectListEntryProps = {
   project: Awaited<ReturnType<typeof getProjectItems>>[number]
 }
 

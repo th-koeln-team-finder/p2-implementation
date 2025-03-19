@@ -59,6 +59,7 @@ export function SkillScale(
     'loggedInUserId' in props ? props.loggedInUserId : undefined
   const translate = useTranslations()
 
+
   return (
     <div className="w-full">
       <h2 className="mb-2 font-medium text-2xl">{title}</h2>
@@ -89,7 +90,7 @@ export function SkillScale(
                 loggedInUserId={loggedInUserId}
               />
             </CollapsibleContent>
-            {skills.length > 5 && (
+            {skills.length < 5 && (
               <div className="-bottom-1 sticky flex flex-row bg-background pt-2">
                 <CollapsibleTrigger asChild>
                   <Button variant="ghost" className="mx-auto">
@@ -126,7 +127,7 @@ function isUserSkillList(
   return 'showVerificationControl' in props
 }
 
-function SkillPointList(
+export function SkillPointList(
   props: ProjectSkillPointListProps | UserSkillPointListProps,
 ) {
   const translate = useTranslations()
@@ -188,7 +189,7 @@ type SkillPointsProps = {
 
 const array5 = Array.from({ length: 5 }, (_, i) => i)
 
-function SkillPoints({ currentLevel }: SkillPointsProps) {
+export function SkillPoints({ currentLevel }: SkillPointsProps) {
   return (
     <div className="flex flex-row gap-2">
       {array5.map((level) => (

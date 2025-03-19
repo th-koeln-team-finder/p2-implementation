@@ -799,6 +799,9 @@ export const projectSkillRelations = relations(projectSkill, ({ one }) => ({
 export const skillProjectRelations = relations(skills, ({ many }) => ({
   projectSkills: many(projectSkill),
 }))
+export const skillUserRelations = relations(skills, ({ many }) => ({
+    userSkills: many(userSkills),
+}))
 
 export const timetableRelations = relations(projectTimetable, ({ one }) => ({
   project: one(projects, {

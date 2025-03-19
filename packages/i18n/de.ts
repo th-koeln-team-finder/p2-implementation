@@ -136,6 +136,9 @@ export const de: Language = {
       title: 'Team-Mitglieder',
     },
   },
+  findSomeone: {
+    pageTitle: 'Finde Mitglieder',
+  },
   createProjects: {
     fieldRequired: 'Diese Eingabe ist erforderlich',
 

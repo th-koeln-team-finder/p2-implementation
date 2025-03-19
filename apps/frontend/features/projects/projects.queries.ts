@@ -1,10 +1,13 @@
 import { FilterKeys } from '@/features/projects/components/FilterBar/filterbar.constants'
+
 import type { parseFilters } from '@/features/projects/components/FilterBar/filterbar.utils'
 import { Schema, db } from '@repo/database'
 import { projects } from '@repo/database/schema'
 import { generateTextEmbeddings } from '@repo/semantic-search'
 import { and, cosineDistance, desc, eq, gte, lte, sql } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
+import {UserFilterKeys} from "@/features/projects/components/FindSomeone/FindSomeone.constants";
+import {parseUserFilters} from "@/features/projects/components/FindSomeone/FindSomeone.utils";
 
 export const getProjectItems = cache(
   async (
@@ -181,4 +184,21 @@ export const getProjectItem = cache(
     }),
   ['getProjectItem'],
   { tags: ['projects'] },
+)
+
+export const getUsers = cache(
+    ()=>
+
+  db.query.users.findMany({
+        with: {
+          image: true,
+          skills: {
+            with: {
+              skill: true
+            }
+          }
+        }
+  }),
+    ['getUsers'],
+    {tags:['users']},
 )
