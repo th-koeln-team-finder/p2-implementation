@@ -1,20 +1,20 @@
+import CreateProjectPicturePreviewCarousel from '@/features/projects/components/CreateProjectForm/CreateProjectPicturePreviewCarousel'
 import { ProjectIssuesList } from '@/features/projects/components/ProjectIssuesList'
 import { ProjectResourcePreview } from '@/features/projects/components/ProjectResourcePreview'
 import { ProjectTimetable } from '@/features/projects/components/ProjectTimetable'
 import ProjectTitle from '@/features/projects/components/ProjectTitle'
 import TeamMembers from '@/features/projects/components/TeamMembers'
+import { getUserProfile } from '@/features/projects/projects.actions'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { SkillScale } from '@/features/skills/components/SkillScale'
+import { TagList } from '@/features/tag/components/TagList'
 import { useFormContext } from '@formsignals/form-react'
+import { useSignalEffect } from '@preact/signals-react'
 import { useSignals } from '@preact/signals-react/runtime'
 import { type UserSelect, Weekdays } from '@repo/database/schema'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { useTranslations } from 'next-intl'
-import { getUserProfile } from '@/features/projects/projects.actions'
 import { useEffect, useState } from 'react'
-import { useSignalEffect } from '@preact/signals-react'
-import CreateProjectPicturePreviewCarousel from '@/features/projects/components/CreateProjectForm/CreateProjectPicturePreviewCarousel'
-import {BrainstormTagList} from "@/features/brainstorm/components/brainstorm-details/BrainstormTagList";
 
 export function CreateProjectPreview({
   progressState,
@@ -63,20 +63,18 @@ export function CreateProjectPreview({
       }
     }
   })
-  console.log(formValues.tags+"tags")
-  const tagList=formValues.tags.map(tag => ({
-      tag: {
-        id: tag.value, // oder eine geeignete ID, falls `value` nicht eindeutig ist
-        name: tag.label
-      }
-    }))
+  const tagList = formValues.tags.map((tag) => ({
+    tag: {
+      id: tag.value, // oder eine geeignete ID, falls `value` nicht eindeutig ist
+      name: tag.label,
+    },
+  }))
   return (
     <div className="inline-flex flex-col items-start justify-start gap-4 self-stretch">
       <ProjectTitle title={formValues.name} subtitle={formValues.phase} />
-  <div className='flex flex-col w-full pr-3'>
-    <BrainstormTagList tags={tagList } />
-
-  </div>
+      <div className="flex w-full flex-col pr-3">
+        <TagList tags={tagList} />
+      </div>
       <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
         <CreateProjectPicturePreviewCarousel
           images={fieldPreviews}

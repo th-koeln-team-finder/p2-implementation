@@ -5,7 +5,7 @@ export type PopulatedProject = ProjectSelect & {
   starCount: string
 
   isStared: boolean
-  tags: { tag: { id:string; name:string } }[]
+  tags: { tag: { id: string; name: string } }[]
   //  tagSimilarity: number //is this necessary?
 }
 
@@ -48,13 +48,14 @@ export type CreateProjectFormLinks = {
     title: string
     description: string
   }>
+  address: string
   resources: Array<{
     isDocument: boolean
     label: string
     href: string
     file: File[]
   }>
-  tags:{label:string; value:string}[],
+  tags: { label: string; value: string }[]
 }
 export type CreateProjectFormPictures = {
   pictures: File[]
@@ -66,3 +67,12 @@ export type CreateProjectFormValues = CreateProjectFormBasic &
   CreateProjectFormTimeTable &
   CreateProjectFormLinks &
   CreateProjectFormPictures
+
+export type CreateApplicationFormValues = {
+  firstName: string
+  lastName: string
+  mail: string
+  phone: string
+  file: File[]
+  message: string
+}

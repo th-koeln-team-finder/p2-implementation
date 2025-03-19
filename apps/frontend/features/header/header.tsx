@@ -8,12 +8,7 @@ import { getUserWithImage } from '@/features/users/users.query'
 import { Button } from '@repo/design-system/components/ui/button'
 import { DropdownMenuItem } from '@repo/design-system/components/ui/dropdown-menu'
 import { SidebarTrigger } from '@repo/design-system/components/ui/sidebar'
-import {
-  BellIcon,
-  BrainCircuitIcon,
-  SettingsIcon,
-  Users2Icon,
-} from 'lucide-react'
+import { BrainCircuitIcon, SettingsIcon, Users2Icon } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 export default async function Header() {
@@ -65,15 +60,16 @@ export default async function Header() {
 
           {user ? (
             <UserProfileMenu>
-              <DropdownMenuItem>
-                <Users2Icon /> {translate('settingLinkMyProjects')}
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BrainCircuitIcon /> {translate('settingLinkMyBrainstorms')}
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BellIcon /> {translate('settingLinkNotifications')}
-              </DropdownMenuItem>
+              <Link href="/my-projects">
+                <DropdownMenuItem>
+                  <Users2Icon /> {translate('settingLinkMyProjects')}
+                </DropdownMenuItem>
+              </Link>
+              <Link href="/my-brainstorms">
+                <DropdownMenuItem>
+                  <BrainCircuitIcon /> {translate('settingLinkMyBrainstorms')}
+                </DropdownMenuItem>
+              </Link>
               <Link href="/edit-profile/profile">
                 <DropdownMenuItem>
                   <SettingsIcon /> {translate('settingLinkSettings')}

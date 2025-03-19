@@ -6,7 +6,11 @@ import { redirect } from '@/features/i18n/routing'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
-import {type TagSelect, Weekdays} from '@repo/database/schema'
+import {
+  type ProjectApplicationInsert,
+  type TagSelect,
+  Weekdays,
+} from '@repo/database/schema'
 import { generateTextEmbeddings } from '@repo/semantic-search'
 import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
@@ -44,7 +48,6 @@ export async function createProject(
   const embedding = await generateTextEmbeddings(
     `${payload.name}\n${descriptionTextValue}`,
   )
-console.log('payload'+ payload.createdBy)
   const [project] = await db
     .insert(Schema.projects)
     .values({
@@ -54,46 +57,44 @@ console.log('payload'+ payload.createdBy)
       embedding,
       status: payload.status,
       phase: payload.phase,
+      location: payload.address,
     })
     .returning()
 
   const newTags = await Promise.all(
-      payload.tags
-          .filter((tag) => tag.value.startsWith('new:'))
-          .map(async (tag) => {
-            const name = tag.value.replace('new:', '')
-            const embedding = await generateTextEmbeddings(name, 'small')
-            return {
-              name,
-              embedding,
-            }
-          }),
-  )
-    let createdTags = [] as TagSelect[]
-    if (newTags.length > 0) {
-        createdTags = await db.insert(Schema.tags).values(newTags).returning()
-    }
-  const projectTags = payload.tags
-      .map((tag) => {
-        const tagId = tag.value.startsWith('new:')
-            ? createdTags.find((t) => t.name === tag.value.replace('new:', ''))?.id
-            : tag.value
-        if (!tagId) {
-          console.error('Error creating tag', tag)
-          return null
-        }
+    payload.tags
+      .filter((tag) => tag.value.startsWith('new:'))
+      .map(async (tag) => {
+        const name = tag.value.replace('new:', '')
+        const embedding = await generateTextEmbeddings(name, 'small')
         return {
-          projectId: project.id,
-          tagId,
+          name,
+          embedding,
         }
-      })
-      .filter((e) => !!e)
-    if(projectTags.length) {
-        await db.insert(Schema.projectTags).values(projectTags).returning()
-
-    }
-
-
+      }),
+  )
+  let createdTags = [] as TagSelect[]
+  if (newTags.length > 0) {
+    createdTags = await db.insert(Schema.tags).values(newTags).returning()
+  }
+  const projectTags = payload.tags
+    .map((tag) => {
+      const tagId = tag.value.startsWith('new:')
+        ? createdTags.find((t) => t.name === tag.value.replace('new:', ''))?.id
+        : tag.value
+      if (!tagId) {
+        console.error('Error creating tag', tag)
+        return null
+      }
+      return {
+        projectId: project.id,
+        tagId,
+      }
+    })
+    .filter((e) => !!e)
+  if (projectTags.length) {
+    await db.insert(Schema.projectTags).values(projectTags).returning()
+  }
 
   if (payload.participants[0].Users.id) {
     await db.insert(Schema.participants).values({
@@ -247,7 +248,8 @@ export async function toggleProjectBookmark(
   shouldBookmark: boolean,
 ) {
   const session = await authMiddleware()
-  if (!session?.user?.id) {
+  const canUserBookmark = await hasSessionPermission('project', 'bookmark')
+  if (!session?.user?.id || !canUserBookmark) {
     const locale = await getLocale()
     return redirect({
       href: '/error?error=AccessDenied',
@@ -276,27 +278,18 @@ export async function toggleProjectBookmark(
   })
 }
 
-export async function joinProject(projectId: string) {
-  const session = await authMiddleware()
-  if (!session?.user?.id) {
-    const locale = await getLocale()
-    return redirect({
-      href: '/error?error=AccessDenied',
-      locale,
-    })
-  }
-
+export async function joinProject(projectId: string, userId: string) {
   if (
     await db.query.participants.findFirst({
       where:
         eq(Schema.participants.projectId, projectId) &&
-        eq(Schema.participants.userId, session.user.id),
+        eq(Schema.participants.userId, userId),
     })
   ) {
   } else {
     await db.insert(Schema.participants).values({
       projectId,
-      userId: session.user.id,
+      userId: userId,
     })
   }
 }
@@ -338,4 +331,45 @@ export async function toggleProjectStar(
 
 export async function revalidateProjects() {
   return await revalidateTag('projects')
+}
+
+export async function createApplication(
+  payload: ProjectApplicationInsert,
+  fileIds: string[],
+) {
+  const [application] = await db
+    .insert(Schema.projectApplication)
+    .values(payload)
+    .returning()
+
+  if (!fileIds.length) {
+    return
+  }
+
+  const filesToInsert = fileIds.map((file) => ({
+    applicationId: application.id,
+    file,
+  }))
+  await db.insert(Schema.projectApplicationFiles).values(filesToInsert)
+}
+
+export async function isUserAppliedToProject(
+  userId: string,
+  projectId: string,
+) {
+  return await db.query.projectApplication.findFirst({
+    where: and(
+      eq(Schema.projectApplication.userId, userId),
+      eq(Schema.projectApplication.projectId, projectId),
+    ),
+  })
+}
+
+export async function isUserMemberOfProject(userId: string, projectId: string) {
+  return !!(await db.query.participants.findFirst({
+    where: and(
+      eq(Schema.projectMemberships.userId, userId),
+      eq(Schema.projectMemberships.projectId, projectId),
+    ),
+  }))
 }

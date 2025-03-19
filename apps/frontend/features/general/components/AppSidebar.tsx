@@ -24,7 +24,6 @@ import {
   SidebarMenuItem,
 } from '@repo/design-system/components/ui/sidebar'
 import {
-  BellIcon,
   BrainCircuitIcon,
   ChevronsUpDownIcon,
   SettingsIcon,
@@ -104,15 +103,17 @@ export async function AppSidebar() {
                   align="end"
                   sideOffset={4}
                 >
-                  <DropdownMenuItem>
-                    <Users2Icon /> {translate('settingLinkMyProjects')}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <BrainCircuitIcon /> {translate('settingLinkMyBrainstorms')}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <BellIcon /> {translate('settingLinkNotifications')}
-                  </DropdownMenuItem>
+                  <Link href="/my-projects">
+                    <DropdownMenuItem>
+                      <Users2Icon /> {translate('settingLinkMyProjects')}
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link href="/my-brainstorms">
+                    <DropdownMenuItem>
+                      <BrainCircuitIcon />{' '}
+                      {translate('settingLinkMyBrainstorms')}
+                    </DropdownMenuItem>
+                  </Link>
                   <Link href="/edit-profile/profile">
                     <DropdownMenuItem>
                       <SettingsIcon /> {translate('settingLinkSettings')}

@@ -1,38 +1,51 @@
+import { authMiddleware } from '@/auth'
 import { revalidateBrainstorms } from '@/features/brainstorm/brainstorm.actions'
 import { LazyLoader } from '@/features/general/components/LazyLoader'
 import type { FilterSearchParams } from '@/features/projects/components/FilterBar/filterbar.constants'
 import { parseFilters } from '@/features/projects/components/FilterBar/filterbar.utils'
 import { ProjectListEntry } from '@/features/projects/components/ProjectListEntry'
-import { getProjectItems } from '@/features/projects/projects.queries'
+import {
+  getProjectItems,
+  getProjectItemsForUser,
+} from '@/features/projects/projects.queries'
 import { getTranslations } from 'next-intl/server'
-import { authMiddleware } from '@/auth'
 
 type ProjectListProps = {
   search?: string
   offset?: string
   filters: FilterSearchParams
+  showUserProjects?: false
+}
+
+type MyProjectsListProps = {
+  offset?: string
+  showUserProjects: true
 }
 
 const pageSize = 15
 
-export async function ProjectList({
-  search,
-  offset,
-  filters,
-}: ProjectListProps) {
+export async function ProjectList(
+  props: ProjectListProps | MyProjectsListProps,
+) {
   const session = await authMiddleware()
   const translate = await getTranslations('projects')
+  let projects = []
 
-  const parsedFilters = parseFilters(filters)
-
-  const offsetNumber = Number.parseInt(offset ?? '0')
+  const offsetNumber = Number.parseInt(props.offset ?? '0')
   const limit = pageSize + offsetNumber
-  const projects = await getProjectItems(
-    search,
-    parsedFilters,
-    limit,
-    session?.user?.id,
-  )
+
+  if (session?.user?.id && props.showUserProjects) {
+    projects = await getProjectItemsForUser(session.user.id, limit)
+  } else {
+    const { search, filters } = props as ProjectListProps
+    projects = await getProjectItems(
+      search || '',
+      parseFilters(filters),
+      limit,
+      session?.user?.id,
+    )
+  }
+
   const hasMore = limit <= projects.length
 
   return (

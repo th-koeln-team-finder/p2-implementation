@@ -1,3 +1,5 @@
+import { FilePreview } from '@/features/file-upload/components/FilePreview'
+import type { UploadedFileSelect } from '@repo/database/schema'
 import {
   Carousel,
   CarouselContent,
@@ -5,8 +7,6 @@ import {
   CarouselPagination,
 } from '@repo/design-system/components/customCarousel'
 import { Card, CardContent } from '@repo/design-system/components/ui/card'
-import type { UploadedFileSelect } from '@repo/database/schema'
-import { FilePreview } from '@/features/file-upload/components/FilePreview'
 import Image from 'next/image'
 
 export type ImageCarouselPicture = {

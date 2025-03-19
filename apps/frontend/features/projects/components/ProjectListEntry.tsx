@@ -1,25 +1,97 @@
+import { FilePreview } from '@/features/file-upload/components/FilePreview'
 import { Link } from '@/features/i18n/routing'
-import type { getProjectItems } from '@/features/projects/projects.queries'
+import { ProjectListEntryToolbar } from '@/features/projects/components/ProjectListEntryToolbar'
+import type {
+  getProjectItems,
+  getProjectItemsForUser,
+} from '@/features/projects/projects.queries'
+import { TagList } from '@/features/tag/components/TagList'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import {
   Card,
+  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from '@repo/design-system/components/ui/card'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@repo/design-system/components/ui/tooltip'
+import { ShellIcon } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import Image from 'next/image'
-import { FilePreview } from '@/features/file-upload/components/FilePreview'
-import { ProjectListEntryToolbar } from '@/features/projects/components/ProjectListEntryToolbar'
 
-export type FindAProjectListEntryProps = {
-  project: Awaited<ReturnType<typeof getProjectItems>>[number]
+type FindAProject = Awaited<ReturnType<typeof getProjectItems>>[number]
+type MyProjects = Awaited<ReturnType<typeof getProjectItemsForUser>>[number]
+
+export type ProjectListEntryProps = {
+  project: FindAProject | MyProjects
 }
 
-export function ProjectListEntry({ project }: FindAProjectListEntryProps) {
+export function checkIsFindAProject(
+  project: ProjectListEntryProps['project'],
+): project is FindAProject {
+  return 'projectTotalMatchScore' in project
+}
+
+export async function ProjectListEntry({ project }: ProjectListEntryProps) {
+  const matchingTranslate = await getTranslations('projects.matching')
   const firstImage = project.projectPictures?.[0]
   return (
     <Link href={`/projects/${project.id}`}>
-      <Card className="h-full">
+      <Card className="relative h-full">
+        {checkIsFindAProject(project) &&
+          project.projectTotalMatchScore &&
+          +project.projectTotalMatchScore > 0 && (
+            <TooltipProvider>
+              <Tooltip delayDuration={100}>
+                <TooltipTrigger className="absolute top-1 left-1 flex flex-row items-center gap-1 rounded bg-muted px-2 py-1 text-foreground text-xs">
+                  <ShellIcon className="size-3" />
+                  {(project.projectTotalMatchScore * 100).toFixed(0)}
+                </TooltipTrigger>
+                <TooltipContent>
+                  <h6 className="font-semibold text-lg">
+                    {matchingTranslate('tooltipTitle')}
+                  </h6>
+                  <p className="mb-2 max-w-xs text-muted-foreground">
+                    {matchingTranslate('tooltipDescription')}
+                  </p>
+                  <table className="text-left" cellSpacing="0">
+                    <tbody>
+                      <tr className="bg-card">
+                        <th className="p-1">
+                          {matchingTranslate('skillMatchingScore')}
+                        </th>
+                        <td className="min-w-12 p-1 text-right">
+                          {(project.projectSkillMatchScore * 100).toFixed(0)}
+                        </td>
+                      </tr>
+                      <tr className="bg-card/40">
+                        <th className="p-1">
+                          {matchingTranslate('interestMatchingScore')}
+                        </th>
+                        <td className="min-w-12 p-1 text-right">
+                          {(project.projectTagMatchScore * 100).toFixed(0)}
+                        </td>
+                      </tr>
+                      <tr className="border-border border-t bg-card">
+                        <th className="p-1">
+                          {matchingTranslate('totalMatchingScore')}
+                        </th>
+                        <td className="min-w-12 p-1 text-right">
+                          {(project.projectTotalMatchScore * 100).toFixed(0)}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+
         {firstImage?.uploadedFile ? (
           <FilePreview
             file={firstImage.uploadedFile}
@@ -36,33 +108,36 @@ export function ProjectListEntry({ project }: FindAProjectListEntryProps) {
             alt={project.name}
           />
         )}
+
         <CardHeader>
-          <div className="-mb-2 flex flex-row flex-wrap gap-1 text-xs">
-            {project.totalSimilarity && (
-              <span className="rounded bg-muted px-1 text-muted-foreground/80">
-                similarity:{' '}
-                <span className="text-muted-foreground">
-                  {project.totalSimilarity?.toFixed(2)}
+          {checkIsFindAProject(project) && (
+            <div className="-mb-2 flex flex-row flex-wrap gap-1 text-xs">
+              {project.totalSimilarity && (
+                <span className="rounded bg-muted px-1 text-muted-foreground/80">
+                  similarity:{' '}
+                  <span className="text-muted-foreground">
+                    {project.totalSimilarity?.toFixed(2)}
+                  </span>
                 </span>
-              </span>
-            )}
-            {project.similarity && (
-              <span className="rounded bg-muted px-1 text-muted-foreground/80">
-                content:{' '}
-                <span className="text-muted-foreground">
-                  {project.similarity?.toFixed(2)}
+              )}
+              {project.similarity && (
+                <span className="rounded bg-muted px-1 text-muted-foreground/80">
+                  content:{' '}
+                  <span className="text-muted-foreground">
+                    {project.similarity?.toFixed(2)}
+                  </span>
                 </span>
-              </span>
-            )}
-            {project.issueSimilarity && (
-              <span className="rounded bg-muted px-1 text-muted-foreground/80">
-                issues:{' '}
-                <span className="text-muted-foreground">
-                  {project.issueSimilarity?.toFixed(2)}
+              )}
+              {project.issueSimilarity && (
+                <span className="rounded bg-muted px-1 text-muted-foreground/80">
+                  issues:{' '}
+                  <span className="text-muted-foreground">
+                    {project.issueSimilarity?.toFixed(2)}
+                  </span>
                 </span>
-              </span>
-            )}
-          </div>
+              )}
+            </div>
+          )}
           <div className="flex flex-row items-center justify-between gap-2">
             <CardTitle className="text-xl">{project.name}</CardTitle>
             <ProjectListEntryToolbar
@@ -79,7 +154,9 @@ export function ProjectListEntry({ project }: FindAProjectListEntryProps) {
             )}
           </CardDescription>
         </CardHeader>
-        {/* TODO Add tags to projects */}
+        <CardContent>
+          <TagList tags={project.tags} splitUp={4} />
+        </CardContent>
       </Card>
     </Link>
   )

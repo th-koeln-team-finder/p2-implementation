@@ -84,12 +84,23 @@ export const de: Language = {
     pageTitle: 'Projekte',
     location: 'Standort/Treffpunkt',
     join: 'Team beitreten',
+    goToOverview: 'Zur Projektübersicht',
     links: 'Links und andere Resourcen',
     phase: 'Phase',
     createProjectWarning: 'Sie müssen sich anmelden',
     createProjectWarningDescription:
       'Sie müssen sich anmelden, um ein Projekt zu erstellen',
     emptyProjects: 'Keine Projekte gefunden',
+    notFound: 'Projekt nicht gefunden',
+
+    matching: {
+      tooltipTitle: 'Übereinstimmung',
+      tooltipDescription:
+        'Die Übereinstimmung zeigt, wie gut deine Fähigkeiten und Interessen mit den Anforderungen des Projekts übereinstimmen. Es ist ein Wert zwischen 0 und 100.',
+      skillMatchingScore: 'Fähigkeiten',
+      interestMatchingScore: 'Interessen',
+      totalMatchingScore: 'Gesamt',
+    },
 
     filterbar: {
       searchPlaceholder: 'Suche nach Projekten...',
@@ -134,6 +145,46 @@ export const de: Language = {
     },
     team: {
       title: 'Team-Mitglieder',
+    },
+    myProjects: {
+      pageTitle: 'Meine Projekte',
+    },
+    apply: {
+      title: 'Werde Teil des Teams',
+      infoTitle: 'Infos über dich',
+      applyTitle: 'Deine Bewerbungsunterlagen',
+      messageTitle: 'Deine Nachricht',
+      form: {
+        name: 'Name',
+        checkbox: 'Kommunikation',
+        checkboxText: 'Ich bevorzuge die Kommunikation über diese Plattform',
+        mail: 'Email-Adresse',
+        placeholderMail: 'Gib deine Email-Adresse ein...',
+        phone: 'Telefonnummer',
+        placeholderPhone: 'Gib deine Telefonnummer (+49 123456789) ein...',
+        fileUpload: 'Lade dein Portfolio, Lebenslauf etc. hoch',
+        message: 'Erzähl uns von dir und deinen Stärken',
+        placeholderMessage: 'Gib deine Nachricht ein...',
+        submit: 'Anfrage senden',
+      },
+    },
+    overview: {
+      title: 'Projektübersicht',
+      notFound: 'Projekt nicht gefunden',
+      impressionsCount:
+        '{count, plural, =1 {Eine Impression} other {# Impressionen}} ',
+      applicationsCount:
+        '{count, plural, =1 {Eine Bewerbung} other {# Bewerbungen}}',
+      likesCount: '{count, plural, =1 {Ein Like} other {# Likes}}',
+      filesAttached:
+        '{count, plural, =1 {Eine Datei angehängt} other {# Dateien angehängt}} ',
+      noApplications:
+        'Bis jetzt hat sich noch niemand für das Projekt beworben.',
+    },
+    application: {
+      title: 'Bewerbung von {name}',
+      acceptApplication: 'Annehmen',
+      rejectApplication: 'Ablehnen',
     },
   },
   findSomeone: {
@@ -257,9 +308,11 @@ export const de: Language = {
       sortOptionMostPopular: 'Beliebteste',
       reply: 'Antworten',
     },
+    myBrainstorms: {
+      pageTitle: 'Meine Brainstorms',
+    },
   },
   tag: {
-
     labelTags: 'Tags',
     placeholderTags: 'Tags hinzufügen...',
     loadingTags: 'Tags werden geladen...',
@@ -385,6 +438,8 @@ export const de: Language = {
         selectType: 'Typ auswählen',
         projectUpdated:
           'Ein Projekt, dem ich beigetreten bin, wurde aktualisiert',
+        applicationStatusChanged:
+          'Mein Mitgliedschaftsantrag wurde angenommen/abgelehnt',
         memberJoinedProject:
           'Ein neues Mitglied ist einem meiner Projekte beigetreten',
         memberLeftProject: 'Ein Mitglied hat ein Projekt verlassen',
@@ -406,6 +461,7 @@ export const de: Language = {
     minLengthX:
       'Dieses Feld muss mindestens {amount, plural, =1 {ein Zeichen} other {# Zeichen}} lang sein',
     number: 'Dieses Feld muss eine Zahl sein',
+    phone: 'Die Telefonnummer muss im Format +49 123456789 sein',
     positive: 'Dieses Feld muss eine positive Zahl sein',
     date: 'Dieses Feld muss ein gültiges Datum sein',
     url: 'Dieses Feld muss eine gültige URL sein',
@@ -443,6 +499,19 @@ export const de: Language = {
       title: 'Neuer Follower',
       message: '{follower} folgt dir jetzt.',
       linkText: 'Zu deinem Profil',
+    },
+    membershipAccepted: {
+      title: 'Mitgliedschaft in {project} akzeptiert',
+      message:
+        'Deine Mitgliedschaft in {project} wurde akzeptiert. Viel Erfolg!',
+    },
+    membershipRejected: {
+      title: 'Mitgliedschaft in {project} abgelehnt',
+      message: 'Deine Mitgliedschaft in {project} wurde abgelehnt.',
+    },
+    memberJoinedProject: {
+      title: 'Neues Mitglied im Projekt {project}',
+      message: '{user} ist jetzt Teil der Crew!',
     },
   },
   email: {
