@@ -40,7 +40,7 @@ export default async function Profile({ user }: { user: UserWithImage }) {
   const skills: UserSkill[] = (await getUserSkills(user.id)).map(
     (userSkill) => ({
       id: userSkill.id,
-      name: userSkill.skill?.skill || '',
+      label: userSkill.skill?.skill || '',
       level: userSkill.level,
       verifications: userSkill.verificationCount,
       isVerified: userSkill.isVerified,
@@ -103,10 +103,7 @@ export default async function Profile({ user }: { user: UserWithImage }) {
         <SkillScale
           title={translate('users.skills')}
           emptySkillsMessage={translate('users.emptySkills')}
-          skills={skills.map((skill) => ({
-            label: skill.name,
-            level: skill.level,
-          }))}
+          skills={skills}
           showVerificationControl={!isOwnProfile}
           loggedInUserId={loggedInUser?.id}
         />
