@@ -51,7 +51,7 @@ export async function ApplicationList({ projectId }: ApplicationListProps) {
             className="flex grow flex-col"
             href={`/projects/${projectId}/overview/${app.id}`}
           >
-            <div className="mb-2 font-bold text-lg text-muted-foreground">
+            <div className="mb-2 font-bold text-lg">
               {app.user.firstName} {app.user.lastName}
               {!!app.user.firstName || !!app.user.lastName ? (
                 <span className="ml-4 text-sm">{app.user.name}</span>
@@ -60,7 +60,7 @@ export async function ApplicationList({ projectId }: ApplicationListProps) {
               )}
             </div>
 
-            <div className="max-h-10 overflow-hidden">
+            <div className="max-h-10 overflow-hidden text-muted-foreground">
               {app.message && (
                 <WysiwygRenderer value={app.message} renderAsString />
               )}

@@ -1,5 +1,6 @@
 import { EyeIcon, StarIcon, TextIcon } from 'lucide-react'
 
+import { authMiddleware } from '@/auth'
 import { getApplicationsForProject } from '@/features/Application/applications.queries'
 import { ApplicationList } from '@/features/Application/components/ApplicationList'
 import { hasSessionPermission } from '@/features/auth/auth.utils'
@@ -14,10 +15,11 @@ type ApplicationDetailProps = {
 export default async function ApplicationOverview({
   projectId,
 }: ApplicationDetailProps) {
+  const session = await authMiddleware()
   const [locale, translate, project, applications] = await Promise.all([
     getLocale(),
     getTranslations(),
-    getProjectItem(projectId),
+    getProjectItem(projectId, session?.user?.id),
     getApplicationsForProject(projectId),
   ])
 
