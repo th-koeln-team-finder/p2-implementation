@@ -1,10 +1,13 @@
-import {authMiddleware} from '@/auth'
-import {revalidateBrainstorms} from '@/features/brainstorm/brainstorm.actions'
-import {getBrainstorms, getBrainstormsForUser,} from '@/features/brainstorm/brainstorm.queries'
-import {BrainstormListEntry} from '@/features/brainstorm/components/BrainstormListEntry'
-import {LazyLoader} from '@/features/general/components/LazyLoader'
-import {Masonry} from '@repo/design-system/components/ui/Masonry'
-import {getTranslations} from 'next-intl/server'
+import { authMiddleware } from '@/auth'
+import { revalidateBrainstorms } from '@/features/brainstorm/brainstorm.actions'
+import {
+  getBrainstorms,
+  getBrainstormsForUser,
+} from '@/features/brainstorm/brainstorm.queries'
+import { BrainstormListEntry } from '@/features/brainstorm/components/BrainstormListEntry'
+import { LazyLoader } from '@/features/general/components/LazyLoader'
+import { Masonry } from '@repo/design-system/components/ui/Masonry'
+import { getTranslations } from 'next-intl/server'
 
 type BrainstormListProps = {
   search: string

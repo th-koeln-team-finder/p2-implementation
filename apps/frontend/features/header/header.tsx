@@ -8,12 +8,7 @@ import { getUserWithImage } from '@/features/users/users.query'
 import { Button } from '@repo/design-system/components/ui/button'
 import { DropdownMenuItem } from '@repo/design-system/components/ui/dropdown-menu'
 import { SidebarTrigger } from '@repo/design-system/components/ui/sidebar'
-import {
-  BellIcon,
-  BrainCircuitIcon,
-  SettingsIcon,
-  Users2Icon,
-} from 'lucide-react'
+import { BrainCircuitIcon, SettingsIcon, Users2Icon } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 export default async function Header() {

@@ -1,22 +1,10 @@
 import { authMiddleware } from '@/auth'
 import { redirect } from '@/features/i18n/routing'
-import type { FilterSearchParams } from '@/features/projects/components/FilterBar/filterbar.constants'
 import { ProjectList } from '@/features/projects/components/ProjectList'
 import { getLocale, getTranslations } from 'next-intl/server'
 
-export default async function MyProjectsPage({
-  searchParams,
-}: {
-  searchParams: Promise<
-    {
-      search: string
-      offset: string
-    } & FilterSearchParams
-  >
-}) {
-  const [translate] = await Promise.all([
-    getTranslations('projects'),
-  ])
+export default async function MyProjectsPage() {
+  const [translate] = await Promise.all([getTranslations('projects')])
 
   const session = await authMiddleware()
   if (!session?.user?.id) {
@@ -28,9 +16,7 @@ export default async function MyProjectsPage({
       <h1 className="mb-4 font-semibold text-4xl">
         {translate('myProjects.pageTitle')}
       </h1>
-      <ProjectList
-        showUserProjects
-      />
+      <ProjectList showUserProjects />
     </div>
   )
 }

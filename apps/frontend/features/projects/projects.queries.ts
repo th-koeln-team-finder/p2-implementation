@@ -6,12 +6,12 @@ import { generateTextEmbeddings } from '@repo/semantic-search'
 import {
   type SQL,
   and,
-  or,
   cosineDistance,
   desc,
   eq,
   gte,
   lte,
+  or,
   sql,
 } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
@@ -122,12 +122,9 @@ export const getProjectItems = cache(
 )
 
 export const getProjectItemsForUser = cache(
-  async (
-    userId: string,
-    limit: number,
-  ) => {
+  async (userId: string, limit: number) => {
     const isBookmarked = sql<boolean>`EXISTS (SELECT id FROM "project_bookmark" bookmark WHERE bookmark."projectId" = "projects"."id" AND bookmark."userId" = ${userId})`
-    const isStared  = sql<boolean>`EXISTS (SELECT id FROM "project_star" star WHERE star."projectId" = "projects"."id" AND star."userId" = ${userId})`
+    const isStared = sql<boolean>`EXISTS (SELECT id FROM "project_star" star WHERE star."projectId" = "projects"."id" AND star."userId" = ${userId})`
     const projectStars = sql<string>`(SELECT COUNT(*) FROM "project_star" star WHERE star."projectId" = "projects"."id")`
     return await db.query.projects.findMany({
       columns: {
@@ -157,9 +154,7 @@ export const getProjectItemsForUser = cache(
         sql`EXISTS (SELECT id FROM "participants" participant WHERE participant."projectId" = "projects"."id" AND participant."userId" = ${userId})`,
       ),
       limit,
-      orderBy: [
-        desc(Schema.projects.createdAt),
-      ].filter(Boolean),
+      orderBy: [desc(Schema.projects.createdAt)].filter(Boolean),
     })
   },
   ['getProjectItems'],

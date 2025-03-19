@@ -1,7 +1,7 @@
 import { BrainstormCacheTags } from '@/features/brainstorm/brainstorm.constants'
 import { Schema, db } from '@repo/database'
 import { generateTextEmbeddings } from '@repo/semantic-search'
-import {cosineDistance, desc, eq, or, sql} from 'drizzle-orm'
+import { cosineDistance, desc, eq, or, sql } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
 
 export const getBrainstorms = cache(
@@ -83,11 +83,7 @@ export const getBrainstorms = cache(
 )
 
 export const getBrainstormsForUser = cache(
-  async (
-    userId: string,
-    limit = 25,
-    offset = 0,
-  ) => {
+  async (userId: string, limit = 25, offset = 0) => {
     const isBookmarked = sql<boolean>`(EXISTS (SELECT id FROM "brainstorm_bookmark" bookmark WHERE bookmark."brainstormId" = "brainstorms"."id" AND bookmark."userId" = ${userId}))`
 
     const where = or(
@@ -122,9 +118,7 @@ export const getBrainstormsForUser = cache(
       limit,
       offset,
       where,
-      orderBy: [
-        desc(Schema.brainstorms.createdAt),
-      ].filter(Boolean),
+      orderBy: [desc(Schema.brainstorms.createdAt)].filter(Boolean),
     })
   },
   ['getBrainstorms'],

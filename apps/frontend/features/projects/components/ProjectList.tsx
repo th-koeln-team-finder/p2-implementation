@@ -24,7 +24,9 @@ type MyProjectsListProps = {
 
 const pageSize = 15
 
-export async function ProjectList(props: ProjectListProps | MyProjectsListProps) {
+export async function ProjectList(
+  props: ProjectListProps | MyProjectsListProps,
+) {
   const session = await authMiddleware()
   const translate = await getTranslations('projects')
   let projects = []
@@ -33,12 +35,9 @@ export async function ProjectList(props: ProjectListProps | MyProjectsListProps)
   const limit = pageSize + offsetNumber
 
   if (session?.user?.id && props.showUserProjects) {
-    projects = await getProjectItemsForUser(
-      session.user.id,
-      limit,
-    )
+    projects = await getProjectItemsForUser(session.user.id, limit)
   } else {
-    const { search,  filters } = props as ProjectListProps
+    const { search, filters } = props as ProjectListProps
     projects = await getProjectItems(
       search || '',
       parseFilters(filters),

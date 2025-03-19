@@ -1,11 +1,11 @@
-import {authMiddleware} from '@/auth'
-import {LoginButton} from '@/features/auth/components/LoginButton'
-import {RegisterButton} from '@/features/auth/components/RegisterButton'
-import {SignOutMenuItem} from '@/features/auth/components/SignOutMenuItem'
-import {UserAvatar} from '@/features/auth/components/UserAvatar'
-import {ApplicationIconText} from '@/features/general/components/ApplicationIconText'
-import {Link} from '@/features/i18n/routing'
-import {getUserWithImage} from '@/features/users/users.query'
+import { authMiddleware } from '@/auth'
+import { LoginButton } from '@/features/auth/components/LoginButton'
+import { RegisterButton } from '@/features/auth/components/RegisterButton'
+import { SignOutMenuItem } from '@/features/auth/components/SignOutMenuItem'
+import { UserAvatar } from '@/features/auth/components/UserAvatar'
+import { ApplicationIconText } from '@/features/general/components/ApplicationIconText'
+import { Link } from '@/features/i18n/routing'
+import { getUserWithImage } from '@/features/users/users.query'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,8 +23,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@repo/design-system/components/ui/sidebar'
-import {BrainCircuitIcon, ChevronsUpDownIcon, SettingsIcon, Users2Icon,} from 'lucide-react'
-import {getTranslations} from 'next-intl/server'
+import {
+  BrainCircuitIcon,
+  ChevronsUpDownIcon,
+  SettingsIcon,
+  Users2Icon,
+} from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
 export async function AppSidebar() {
   const [translate, session] = await Promise.all([

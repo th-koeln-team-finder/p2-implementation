@@ -1,13 +1,8 @@
 import { authMiddleware } from '@/auth'
-import { CanUserServer } from '@/features/auth/components/CanUser.server'
 import { BrainstormList } from '@/features/brainstorm/components/BrainstormList'
-import { BrainstormListLoading } from '@/features/brainstorm/components/loading/BrainstormListLoading'
-import { Link, redirect } from '@/features/i18n/routing'
+import { redirect } from '@/features/i18n/routing'
 import { ScrollTopButton } from '@repo/design-system/components/custom/ScrollTopButton'
-import { Button } from '@repo/design-system/components/ui/button'
-import { BrainIcon } from 'lucide-react'
 import { getLocale, getTranslations } from 'next-intl/server'
-import { Suspense } from 'react'
 
 export default async function MyBrainstormsPage({
   searchParams,
@@ -36,9 +31,7 @@ export default async function MyBrainstormsPage({
         </h1>
 
         <section className="pb-4">
-          <BrainstormList
-            showUserBrainstorms
-          />
+          <BrainstormList showUserBrainstorms />
           <ScrollTopButton />
         </section>
       </div>
