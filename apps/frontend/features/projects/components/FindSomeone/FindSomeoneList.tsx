@@ -1,7 +1,7 @@
 import {authMiddleware} from "@/auth";
 import {type getProjectItems, getUsers} from "@/features/projects/projects.queries";
 import {UserFilterSearchParams} from "@/features/projects/components/FindSomeone/FindSomeone.constants";
-import { ProjectListEntry} from "@/features/projects/components/FindUserEntry";
+import { FindSomeoneListEntry} from "@/features/projects/components/FindUserEntry";
 import {FindAProjectListEntryProps} from "@/features/projects/components/ProjectListEntry";
 
 
@@ -32,8 +32,10 @@ export async function FindSomeoneList({
             <div className="container mx-auto my-4 max-w-screen-xl px-4">
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
 
-                    {users.map((user) => (
-                        ProjectListEntry({user})
+                    {users.map((user,index) => (
+                       <div key={index}>
+                           {FindSomeoneListEntry({user})}
+                        </div>
                     ))}
                 </div>
             </div>

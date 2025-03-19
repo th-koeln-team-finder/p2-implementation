@@ -136,15 +136,17 @@ export default function UserProjectCreate({
               name="leftDate"
               validateMixin={['joinedDate']}
               transformFromBinding={(dateString: string) => {
+
+                if (!dateString) return null
                 const date = parse(dateString, 'dd.MM.y', new Date())
-                if (Number.isNaN(date.getTime())) return null
+                if (Number.isNaN(date.getTime())) return [undefined, t('validation.date')]
                 return date
               }}
               transformToBinding={(value, isValid, buffer = '') =>
                 isValid ? (value ? format(value, 'dd.MM.y') : '') : buffer
               }
               validator={z
-                .tuple([z.date().optional(), z.date().optional()])
+                .tuple([z.date().nullable().optional(), z.date().nullable().optional()])
                 .refine(([leftDate, joinedDate]) => {
                   if (!leftDate || !joinedDate) return true
                   return joinedDate < leftDate

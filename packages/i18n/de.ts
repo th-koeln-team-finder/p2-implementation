@@ -419,7 +419,7 @@ export const de: Language = {
       url: 'URL',
       urlPlaceholder: 'Wo können Leute mehr über dich erfahren?',
       occupation: 'Beschäftigung',
-      occupationPlaceholder: 'Was machst du?',
+      occupationPlaceholder: 'ich bin... ',
       location: 'Standort',
       locationPlaceholder: 'Wo machst du was auch immer du machst?',
       firstName: 'Vorname',

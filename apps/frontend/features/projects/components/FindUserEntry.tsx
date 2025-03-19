@@ -1,52 +1,50 @@
-import { Link } from '@/features/i18n/routing'
-import {getProjectItems, getUsers} from '@/features/projects/projects.queries'
-import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
-import {
-    Card,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@repo/design-system/components/ui/card'
+import {getUsers} from '@/features/projects/projects.queries'
+import {WysiwygRenderer} from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
+import {Card, CardContent, CardDescription, CardTitle,} from '@repo/design-system/components/ui/card'
 import Image from 'next/image'
-import { FilePreview } from '@/features/file-upload/components/FilePreview'
-import { ProjectListEntryToolbar } from '@/features/projects/components/ProjectListEntryToolbar'
-import type {UploadedFileSelect, UserSelect} from "@repo/database/schema";
-import {CollapsibleContent} from "@repo/design-system/components/ui/collapsible";
-import {SkillPointList, SkillPoints} from "@/features/skills/components/SkillScale";
+import {Button} from "@repo/design-system/components/ui/button";
+import {UserRoundPlus} from "lucide-react";
+import {UserWithImage} from "@/features/users/users.types";
+import {Avatar} from "@repo/design-system/components/ui/avatar";
+import {UserAvatar} from "@/features/auth/components/UserAvatar";
+import Link from "next/link";
 
 
-export type PopulatedUser ={
-    user: Awaited<ReturnType<typeof getUsers>>[number]}
+export function FindSomeoneListEntry({user}: { user: UserWithImage }) {
 
-export function ProjectListEntry({ user }: PopulatedUser) {
     return (
-
+        <Link href={`/profile/${user.id}`}>
             <Card className="h-full">
-                <div className="flex flex-col items-center justify-between p-4 gap-2">
-                    <div className={"flex flex-row justify-between gap-2 "}>
-                        <Image
-                            className="h-full rounded-full object-cover"
-                            src="/images/image-placeholder.jpg"
-                            height={96}
-                            width={96}
-                            alt={user.name}
-                        />
-                        <CardHeader>
+                <CardContent className="flex flex-col items-center relative justify-between p-4 gap-2">
+                    <Button variant={"ghost"} className="right-2 top-2 absolute">
+                        <UserRoundPlus className={"size-5"}/>
+                    </Button>
+                    <div className={"flex flex-row w-full justify-between gap-4 "}>
+                        <UserAvatar user={user} className="w-20 h-20"/>
+                        <div className="space-y-2 w-full">
                             <div className="flex flex-row items-center justify-between gap-2">
-                                <p className={"text-sm "}>{"beschäftigt"}</p>
+                                <p className={"text-sm"}>{user.occupation ?? " "}</p>
                             </div>
                             <div className="flex flex-row items-center justify-between gap-2">
                                 <CardTitle className="text-l">{user.name}</CardTitle>
                             </div>
 
-                            <CardDescription className="max-h-10 overflow-hidden">
+                            <CardDescription className="max-h-13 line-clamp-3 overflow-hidden">
                                 {user.bio && (
                                     <WysiwygRenderer value={user.bio} renderAsString/>
                                 )}
                             </CardDescription>
-                        </CardHeader>
+                        </div>
+
                     </div>
-                    <div className={"flex flex-col w-full justify-between gap-2"}>
+                </CardContent>
+            </Card>
+        </Link>
+    )
+}
+
+/*
+<div className={"flex flex-col w-full justify-between gap-2"}>
                         {user.skills.length && (
                         user.skills.map((skill,index) =>
                             index<2 && (
@@ -57,7 +55,4 @@ export function ProjectListEntry({ user }: PopulatedUser) {
                             )
                         ))}
                     </div>
-                </div>
-            </Card>
-)
-}
+ */

@@ -18,6 +18,7 @@ import {
 import { unstable_cache as cache } from 'next/cache'
 import {UserFilterKeys} from "@/features/projects/components/FindSomeone/FindSomeone.constants";
 import {parseUserFilters} from "@/features/projects/components/FindSomeone/FindSomeone.utils";
+import type {UserWithImage} from "@/features/users/users.types";
 
 type FilterParams = ReturnType<typeof parseFilters>
 
@@ -232,16 +233,11 @@ export const getProjectItem = cache(
 )
 
 export const getUsers = cache(
-    ()=>
+    (): Promise<UserWithImage[]> =>
 
   db.query.users.findMany({
         with: {
           image: true,
-          skills: {
-            with: {
-              skill: true
-            }
-          }
         }
   }),
     ['getUsers'],
