@@ -7,13 +7,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@repo/design-system/components/customCarousel'
-import { useTranslations } from 'next-intl'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@repo/design-system/components/ui/tooltip'
+import { useTranslations } from 'next-intl'
 
 export type CarouselItemProp = {
   projectRole?: string

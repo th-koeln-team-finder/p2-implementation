@@ -3,6 +3,7 @@ import { CanUserServer } from '@/features/auth/components/CanUser.server'
 import { UserAvatar } from '@/features/auth/components/UserAvatar'
 import { getSingleBrainstorm } from '@/features/brainstorm/brainstorm.queries'
 import { getCommentsForBrainstorm } from '@/features/brainstorm/brainstormComment.queries'
+import { WhiteboardContainer } from '@/features/brainstorm/components/WhiteboardContainer'
 import { BrainstormBookmarkButton } from '@/features/brainstorm/components/brainstorm-details/BrainstormBookmarkButton'
 import { BrainstormLinksResources } from '@/features/brainstorm/components/brainstorm-details/BrainstormLinksResources'
 import { DeleteBrainstormButton } from '@/features/brainstorm/components/brainstorm-details/DeleteBrainstormButton'
@@ -19,7 +20,6 @@ import { Label } from '@repo/design-system/components/ui/label'
 import { cn } from '@repo/design-system/lib/utils'
 import { ChevronLeftIcon } from 'lucide-react'
 import { getLocale, getTranslations } from 'next-intl/server'
-import { WhiteboardContainer } from '@/features/brainstorm/components/WhiteboardContainer'
 
 type BrainstormDetailsProps = {
   brainstormId: string

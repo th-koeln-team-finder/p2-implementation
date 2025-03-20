@@ -1,9 +1,9 @@
 'use client'
 
-import { useRef, useState } from 'react'
-import { MaximizeIcon, MinimizeIcon } from 'lucide-react'
-import { SyncedWhiteboard } from '@repo/design-system/components/whiteboard'
 import { Button } from '@repo/design-system/components/ui/button'
+import { SyncedWhiteboard } from '@repo/design-system/components/whiteboard'
+import { MaximizeIcon, MinimizeIcon } from 'lucide-react'
+import { useRef, useState } from 'react'
 
 type WhiteboardContainerProps = {
   roomId: string
