@@ -25,7 +25,8 @@ import {
 } from '@repo/design-system/components/ui/sidebar'
 import {
   BrainCircuitIcon,
-  ChevronsUpDownIcon, MessagesSquareIcon,
+  ChevronsUpDownIcon,
+  MessagesSquareIcon,
   SettingsIcon,
   Users2Icon,
 } from 'lucide-react'

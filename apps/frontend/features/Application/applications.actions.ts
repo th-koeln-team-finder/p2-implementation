@@ -128,7 +128,7 @@ export async function rejectApplication(applicationId: string) {
   )
 }
 
-const removeApplication = async (applicationId: string) => {
+const _removeApplication = async (applicationId: string) => {
   await db
     .delete(Schema.projectApplication)
     .where(eq(Schema.projectApplication.id, applicationId))

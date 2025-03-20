@@ -512,7 +512,7 @@ export const en = {
     emptyApplications: 'No applications found',
     emptyInvitations: 'No invitations found',
     retractApplication: 'Retract application',
-  }
+  },
 }
 
 type PathOf<T> = {

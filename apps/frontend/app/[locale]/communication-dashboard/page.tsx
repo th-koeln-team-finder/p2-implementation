@@ -1,9 +1,9 @@
-import {authMiddleware} from "@/auth";
-import {Link, redirect} from "@/features/i18n/routing";
-import {getLocale, getTranslations} from "next-intl/server";
-import {getApplicationsForUser} from "@/features/Application/applications.queries";
-import {WysiwygRenderer} from "@repo/design-system/components/WysiwygEditor/WysiwygRenderer";
-import RetractApplicationButton from "@/features/Application/components/RetractApplicationButton";
+import { authMiddleware } from '@/auth'
+import { getApplicationsForUser } from '@/features/Application/applications.queries'
+import RetractApplicationButton from '@/features/Application/components/RetractApplicationButton'
+import { Link, redirect } from '@/features/i18n/routing'
+import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 export default async function CommunicationDashboard() {
   const session = await authMiddleware()
@@ -26,9 +26,7 @@ export default async function CommunicationDashboard() {
 
   return (
     <main className="container mx-auto my-4 px-4">
-      <h1 className="mb-8 font-semibold text-4xl">
-        {translate('title')}
-      </h1>
+      <h1 className="mb-8 font-semibold text-4xl">{translate('title')}</h1>
 
       <h2 className="mb-4 font-bold text-2xl">{translate('invitations')}</h2>
 
@@ -38,7 +36,7 @@ export default async function CommunicationDashboard() {
         </div>
       )}
 
-      <hr className="my-8 "/>
+      <hr className="my-8 " />
 
       <h2 className="mb-4 font-bold text-2xl">{translate('applications')}</h2>
 
@@ -48,31 +46,29 @@ export default async function CommunicationDashboard() {
         </div>
       )}
       {applications?.map((app) => (
-        <div
-          key={app.id}
-          className="flex w-full flex-row gap-4 border-b py-4"
-        >
+        <div key={app.id} className="flex w-full flex-row gap-4 border-b py-4">
           <div className="flex grow flex-col">
-            <span
-              className="text-sm text-muted-foreground italic mb-1">{app.createdAt && dateFormatter.format(app.createdAt)}</span>
+            <span className="mb-1 text-muted-foreground text-sm italic">
+              {app.createdAt && dateFormatter.format(app.createdAt)}
+            </span>
             <Link
-              className="font-bold hover:underline mb-2"
+              className="mb-2 font-bold hover:underline"
               href={`/projects/${app.projectId}`}
             >
-              {translate('projectName', {name: app.project.name})}
+              {translate('projectName', { name: app.project.name })}
             </Link>
             <Link
-              className="line-clamp-3 border-l-4 p-4 bg-muted overflow-hidden italic hover:bg-muted/70"
+              className="line-clamp-3 overflow-hidden border-l-4 bg-muted p-4 italic hover:bg-muted/70"
               href={`/communication-dashboard/application/${app.id}`}
             >
               {app.message && (
-                <WysiwygRenderer value={app.message} renderAsString/>
+                <WysiwygRenderer value={app.message} renderAsString />
               )}
             </Link>
           </div>
 
-          <div className="flex flex-col flex-1 items-end gap-2 justify-center">
-            <RetractApplicationButton applicationId={app.id}/>
+          <div className="flex flex-1 flex-col items-end justify-center gap-2">
+            <RetractApplicationButton applicationId={app.id} />
           </div>
         </div>
       ))}

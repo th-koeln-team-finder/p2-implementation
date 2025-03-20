@@ -524,5 +524,5 @@ export const de: Language = {
     emptyApplications: 'Keine Bewerbungen gefunden',
     emptyInvitations: 'Keine Einladungen gefunden',
     retractApplication: 'Bewerbung zurückziehen',
-  }
+  },
 }
