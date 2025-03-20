@@ -69,7 +69,6 @@ export function CreateProjectForm() {
   const steps = [
     { id: 'basics', title: t('stepper.main') },
     { id: 'skills', title: t('stepper.skills') },
-    { id: 'timetable', title: t('stepper.timeManagement') },
     { id: 'links', title: t('stepper.details') },
     { id: 'review', title: t('stepper.preview') },
   ]
@@ -172,9 +171,12 @@ export function CreateProjectForm() {
   const skillsGroup = useFieldGroup(form, ['skills'], {
     onSubmit: () => setCurrentIndex(2),
   })
-  const timeGroup = useFieldGroup(
+  const linksGroup = useFieldGroup(
     form,
     [
+      'tags',
+      'issues',
+      'resources',
       'timetableOutput',
       'ttMon',
       'ttTue',
@@ -189,9 +191,6 @@ export function CreateProjectForm() {
       onSubmit: () => setCurrentIndex(3),
     },
   )
-  const linksGroup = useFieldGroup(form, ['issues', 'resources'], {
-    onSubmit: () => setCurrentIndex(4),
-  })
 
   //Zeitplan
   const [timetableFormat, setTimetableFormat] = useState('')
@@ -227,7 +226,6 @@ export function CreateProjectForm() {
         if (isSkillFieldInvalid) return
         return await skillsGroup.handleSubmit()
       },
-      async () => await timeGroup.handleSubmit(),
       async () => {
         const issueFields = form.fields
           .peek()
@@ -257,7 +255,6 @@ export function CreateProjectForm() {
     [
       basicFieldGroup.handleSubmit,
       linksGroup.handleSubmit,
-      timeGroup.handleSubmit,
       form.fields.peek,
       skillsGroup.handleSubmit,
     ],
@@ -321,7 +318,7 @@ export function CreateProjectForm() {
                 return null
               }}
             >
-              <div className="w-full">
+              <div className="w-full px-1">
                 <Label>{t('resources.fileUpload')}</Label>
                 <FileUploadForm
                   accepts="image/jpeg,image/jpg,image/png"
@@ -368,13 +365,17 @@ export function CreateProjectForm() {
         </form.FormProvider>
       </ContentItem>
 
-      <ContentItem stepId="timetable">
-        <form.FormProvider>
-          <div className="flex w-full flex-col gap-4">
-            <div className="w-full lg:w-1/2">
+      <ContentItem stepId="links">
+        <div className="flex w-full flex-col gap-8">
+          <div>
+            <h2 className="font-semibold text-2xl">{t('titleTimetable')}</h2>
+            <p className="mb-2 text-muted-foreground text-sm">
+              {t('descriptionTimetable')}
+            </p>
+
+            <div className="w-full">
               <form.FieldProvider name="timetableOutput" defaultValue="noTable">
-                <div>
-                  <Label>{t('timetable.title')}</Label>
+                <div className="mb-2">
                   <SelectForm
                     onValueChange={(value) => setTimetableFormat(value)}
                     value={timetableFormat}
@@ -398,8 +399,8 @@ export function CreateProjectForm() {
             </div>
 
             {timetableFormat === 'table' && (
-              <div className="flex w-full flex-col gap-4 lg:flex-row">
-                <div className="w-1/7">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
+                <div>
                   <form.FieldProvider name="ttMon">
                     <Label>{t('timetable.days.monday')}</Label>
                     <InputForm
@@ -408,7 +409,7 @@ export function CreateProjectForm() {
                     />
                   </form.FieldProvider>
                 </div>
-                <div className="w-1/7">
+                <div>
                   <form.FieldProvider name="ttTue">
                     <Label>{t('timetable.days.tuesday')}</Label>
                     <InputForm
@@ -417,7 +418,7 @@ export function CreateProjectForm() {
                     />
                   </form.FieldProvider>
                 </div>
-                <div className="w-1/7">
+                <div>
                   <form.FieldProvider name="ttWed">
                     <Label>{t('timetable.days.wednesday')}</Label>
                     <InputForm
@@ -426,7 +427,7 @@ export function CreateProjectForm() {
                     />
                   </form.FieldProvider>
                 </div>
-                <div className="w-1/7">
+                <div>
                   <form.FieldProvider name="ttThu">
                     <Label>{t('timetable.days.thursday')}</Label>
                     <InputForm
@@ -435,7 +436,7 @@ export function CreateProjectForm() {
                     />
                   </form.FieldProvider>
                 </div>
-                <div className="w-1/7">
+                <div>
                   <form.FieldProvider name="ttFri">
                     <Label>{t('timetable.days.friday')}</Label>
                     <InputForm
@@ -444,7 +445,7 @@ export function CreateProjectForm() {
                     />
                   </form.FieldProvider>
                 </div>
-                <div className="w-1/7">
+                <div>
                   <form.FieldProvider name="ttSat">
                     <Label>{t('timetable.days.saturday')}</Label>
                     <InputForm
@@ -453,7 +454,7 @@ export function CreateProjectForm() {
                     />
                   </form.FieldProvider>
                 </div>
-                <div className="w-1/7">
+                <div>
                   <form.FieldProvider name="ttSun">
                     <Label>{t('timetable.days.sunday')}</Label>
                     <InputForm
@@ -465,87 +466,87 @@ export function CreateProjectForm() {
               </div>
             )}
             {timetableFormat === 'custom' && (
-              <div className="w-full lg:w-1/2">
-                <form.FieldProvider
-                  name="timetableCustom"
-                  validator={() => {
-                    if (!editorRef.current) return null
-                    return getStringContentFromEditor(editorRef.current)
-                      .length <= 0
-                      ? translateError('required')
-                      : null
-                  }}
-                >
-                  <div>
-                    <WysiwygEditorForm
-                      editorRef={editorRef}
-                      placeholder={t('timetable.customPlaceholder')}
-                    />
-                    <FieldError />
-                  </div>
-                </form.FieldProvider>
-              </div>
-            )}
-            {timetableFormat === 'noTable' && (
-              <div className="w-full lg:w-1/2" />
-            )}
-          </div>
-        </form.FormProvider>
-      </ContentItem>
-
-      <ContentItem stepId="links">
-        <form.FieldProvider
-          name="tags"
-          validator={z
-            .array(
-              z.object({
-                label: z.string(),
-                value: z.string(),
-              }),
-            )
-            .min(1, translateError('required'))}
-        >
-          <div className="flex w-full flex-col ">
-            <Label>{TagTranslations('labelTags')}</Label>
-            <div className="flex flex-col gap-4 py-2">
-              <MultiValueAutoCompleteForm
-                containerId="popoverref"
-                onOpenChange={(open) => {
-                  if (!navigationModal) return
-                  navigationModal.setBlockBackNavigation(open)
+              <form.FieldProvider
+                name="timetableCustom"
+                validator={() => {
+                  if (!editorRef.current) return null
+                  return getStringContentFromEditor(editorRef.current).length <=
+                    0
+                    ? translateError('required')
+                    : null
                 }}
-                searchInput={searchInput}
-                onSearchInputChange={setSearchInput}
-                data={data ?? []}
-                isLoading={isLoading}
-                placeholder={TagTranslations('placeholderTags')}
-                emptyMessage={TagTranslations('emptyTags')}
-                loadingMessage={TagTranslations('loadingTags')}
-                enableCommaSeparation
-                enableTagUse
-              />
-              <FieldError />
-            </div>
+              >
+                <div>
+                  <WysiwygEditorForm
+                    editorRef={editorRef}
+                    placeholder={t('timetable.customPlaceholder')}
+                  />
+                  <FieldError />
+                </div>
+              </form.FieldProvider>
+            )}
           </div>
-        </form.FieldProvider>
-        <form.FormProvider>
-          <div className="flex w-full flex-col">
-            <Label>{t('issues.sectionTitle')}</Label>
+
+          <form.FieldProvider
+            name="tags"
+            validator={z
+              .array(
+                z.object({
+                  label: z.string(),
+                  value: z.string(),
+                }),
+              )
+              .min(1, translateError('required'))}
+          >
+            <div>
+              <h2 className="font-semibold text-2xl">{t('titleTags')}</h2>
+              <p className="mb-2 text-muted-foreground text-sm">
+                {t('descriptionTags')}
+              </p>
+              <div className="flex flex-col gap-4 py-2">
+                <MultiValueAutoCompleteForm
+                  containerId="popoverref"
+                  onOpenChange={(open) => {
+                    if (!navigationModal) return
+                    navigationModal.setBlockBackNavigation(open)
+                  }}
+                  searchInput={searchInput}
+                  onSearchInputChange={setSearchInput}
+                  data={data ?? []}
+                  isLoading={isLoading}
+                  placeholder={TagTranslations('placeholderTags')}
+                  emptyMessage={TagTranslations('emptyTags')}
+                  loadingMessage={TagTranslations('loadingTags')}
+                  enableCommaSeparation
+                  enableTagUse
+                />
+                <FieldError />
+              </div>
+            </div>
+          </form.FieldProvider>
+
+          <div>
+            <h2 className="font-semibold text-2xl">{t('titleIssues')}</h2>
+            <p className="mb-2 text-muted-foreground text-sm">
+              {t('descriptionIssues')}
+            </p>
             <form.FieldProvider name="issues">
               <CreateProjectIssueList />
             </form.FieldProvider>
           </div>
-          <div className="flex w-full flex-col gap-4 lg:flex-row">
-            <div className="w-full">
-              <Label>{t('linksTitle')}</Label>
-              <div>
-                <form.FieldProvider name="resources">
-                  <CreateProjectLinksList progressState={progressState} />
-                </form.FieldProvider>
-              </div>
+
+          <div>
+            <h2 className="font-semibold text-2xl">{t('titleResources')}</h2>
+            <p className="mb-2 text-muted-foreground text-sm">
+              {t('descriptionResources')}
+            </p>
+            <div>
+              <form.FieldProvider name="resources">
+                <CreateProjectLinksList progressState={progressState} />
+              </form.FieldProvider>
             </div>
           </div>
-        </form.FormProvider>
+        </div>
       </ContentItem>
 
       <ContentItem stepId="review">

@@ -1,5 +1,6 @@
 'use client'
 
+import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import * as React from 'react'
 import { Button } from '../components/ui/button'
@@ -36,7 +37,7 @@ const StepperComponent = ({
 
   return (
     <div className="flex w-full flex-col items-center">
-      <div className="mx-auto mb-16 w-fit">
+      <div className="mx-auto w-fit">
         <nav aria-label="Steps Navigation" className="group my-4">
           <ol
             className="flex flex-wrap items-center justify-between gap-2"
@@ -44,28 +45,47 @@ const StepperComponent = ({
           >
             {steps.map((step, index) => (
               <React.Fragment key={step.id}>
-                <li className="flex items-center gap-4">
+                <li
+                  className={cn(
+                    'hidden flex-col items-center sm:flex lg:flex-row lg:gap-4',
+                    index === currentIndex && 'flex',
+                  )}
+                >
                   <div
                     aria-current={index === currentIndex ? 'step' : undefined}
                     aria-posinset={index + 1}
                     aria-setsize={steps.length}
-                    className={`flex size-10 items-center justify-center rounded-full ${
-                      index <= currentIndex
-                        ? 'bg-primary text-white'
-                        : 'border-2 border-primary border-dotted bg-transparent text-primary '
-                    }`}
+                    className={cn(
+                      'flex size-10 items-center justify-center rounded-full',
+                      index < currentIndex &&
+                        'bg-primary/60 text-primary-foreground/60',
+                      index === currentIndex &&
+                        'bg-primary text-primary-foreground',
+                      index > currentIndex &&
+                        'border-2 border-border border-dotted bg-transparent text-muted-foreground',
+                    )}
                   >
                     {index + 1}
                   </div>
                   <span
-                    className={`font-medium text-sm ${index < currentIndex ? 'text-primary' : 'text-muted-foreground'}`}
+                    className={cn(
+                      'font-medium text-sm',
+                      index < currentIndex && 'text-primary/60',
+                      index === currentIndex && 'text-primary',
+                      index > currentIndex && 'text-muted-foreground',
+                    )}
                   >
                     {step.title}
                   </span>
                 </li>
                 {index < steps.length - 1 && (
                   <div
-                    className={`-translate-y-1/2 h-2 min-w-20 flex-1 border-b-2 ${index < currentIndex ? 'border-primary border-solid' : 'border-gray-400 border-dotted'}`}
+                    className={cn(
+                      '-translate-y-1/2 hidden h-2 min-w-20 flex-1 border-b-2 sm:block',
+                      index < currentIndex
+                        ? 'border-primary border-solid'
+                        : 'border-gray-400 border-dotted',
+                    )}
                   />
                 )}
               </React.Fragment>
@@ -76,7 +96,7 @@ const StepperComponent = ({
 
       <div className="mb-20 w-full">{stepContent}</div>
 
-      <div className="fixed bottom-0 z-[99] flex w-full justify-between bg-background py-6">
+      <div className="fixed bottom-0 z-[99] flex w-full items-center justify-between bg-background py-6">
         <div className="relative left-4 flex justify-center text-muted-foreground text-sm">
           {translate('createProjects.stepper.step')} {currentIndex + 1}{' '}
           {translate('createProjects.stepper.of')} {steps.length}
@@ -99,7 +119,7 @@ const StepperComponent = ({
           )}
           {onReset && (
             <Button
-              className="rounded bg-gray-400 px-4 py-2 text-white hover:bg-gray-500"
+              className="rounded bg-gray-400 px-4 py-2 text-foreground hover:bg-gray-500"
               onClick={onReset}
             >
               {translate('createProjects.stepper.reset')}
@@ -107,7 +127,7 @@ const StepperComponent = ({
           )}
           {currentIndex === steps.length - 1 && (
             <Button
-              className="rounded px-4 py-2 text-white hover:bg-primary"
+              className="rounded px-4 py-2 text-foreground hover:bg-primary"
               onClick={onDone}
               disabled={doneDisabled}
             >

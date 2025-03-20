@@ -13,7 +13,7 @@ import {
 import type { PopulatedProject } from '@/features/projects/projects.types'
 import { Button } from '@repo/design-system/components/ui/button'
 import { cn } from '@repo/design-system/lib/utils'
-import { BookmarkIcon, LinkIcon, StarIcon } from 'lucide-react'
+import { BookmarkIcon, StarIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useOptimistic, useTransition } from 'react'
 
@@ -46,7 +46,7 @@ export function Toolbar({ project }: ProjectProps) {
     },
   )
   return (
-    <div className="flex flex-row items-center gap-2">
+    <div className="ml-auto flex flex-col items-end gap-2 md:ml-0 md:flex-row md:items-center">
       <div className="flex flex-row items-center gap-1">
         <Button
           variant="ghost"
@@ -61,9 +61,6 @@ export function Toolbar({ project }: ProjectProps) {
         >
           {starsString}
           <StarIcon className={cn(optimisticStared && 'fill-foreground')} />
-        </Button>
-        <Button variant="ghost" type="button" size="icon">
-          <LinkIcon />
         </Button>
         <CanUserClient target="project" action="create">
           <Button

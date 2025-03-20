@@ -127,7 +127,7 @@ export const de: Language = {
     issueList: {
       showMore: 'mehr anzeigen',
       showLess: 'weniger anzeigen',
-      issueTitle: 'Issues für Neueinsteiger',
+      issueTitle: 'Aufgaben für Neueinsteiger',
     },
     skillScale: {
       skillTitle: 'Benötigte Fähigkeiten',
@@ -193,6 +193,20 @@ export const de: Language = {
     location: 'Ort',
     locationPlaceholder: 'Adresse...',
     linksTitle: 'Links & Ressourcen',
+
+    titleTimetable: 'Zeitplan',
+    descriptionTimetable:
+      'Haben Sie einen spezifischen Zeitplan für Ihr Projekt über den Nutzer Bescheid wissen sollten?',
+    titleTags: 'Tags',
+    descriptionTags:
+      'Fügen Sie Tags hinzu, um es einfacher zu machen, von anderen Benutzern gefunden zu werden.',
+    titleIssues: 'Initiale Aufgaben',
+    descriptionIssues:
+      'Diese Aufgaben helfen neuen Mitgliedern dabei zu verstehen, was für Ihr Projekt wichtig ist.',
+    titleResources: 'Links & Ressourcen',
+    descriptionResources:
+      'Fügen Sie Links und andere Ressourcen hinzu, die für Ihr Projekt wichtig sind.',
+
     main: {
       name: 'Projektname',
       namePlaceholder: 'Name des Projekts...',
@@ -220,18 +234,18 @@ export const de: Language = {
       customPlaceholder: 'Benutzerdefinierter Zeitplan...',
     },
     issues: {
-      sectionTitle: '(Github) Issues',
-      addIssue: 'Issue hinzufügen',
+      sectionTitle: 'Aufgaben',
+      addIssue: 'Aufgabe hinzufügen',
       title: 'Titel',
-      titlePlaceholder: 'Titel des Issues...',
+      titlePlaceholder: 'Titel der Aufgabe...',
       description: 'Beschreibung',
-      descPlaceholder: 'Beschreibung des Issues...',
+      descPlaceholder: 'Beschreibung der Aufgabe...',
     },
     resources: {
       selection: 'Auswahl',
       select: {
         link: 'Link',
-        fileUpload: 'Datei hochladen',
+        fileUpload: 'Datei',
       },
       label: 'Label',
       labelPlaceholder: 'Name des Links...',
