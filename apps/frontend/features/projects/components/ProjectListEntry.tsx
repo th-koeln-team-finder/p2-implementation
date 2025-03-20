@@ -136,6 +136,14 @@ export async function ProjectListEntry({ project }: ProjectListEntryProps) {
                   </span>
                 </span>
               )}
+              {project.tagSimilarity && (
+                <span className="rounded bg-muted px-1 text-muted-foreground/80">
+                  tags:{' '}
+                  <span className="text-muted-foreground">
+                    {project.tagSimilarity?.toFixed(2)}
+                  </span>
+                </span>
+              )}
             </div>
           )}
           <div className="flex flex-row items-center justify-between gap-2">
