@@ -27,7 +27,7 @@ import Image from 'next/image'
 type FindAProject = Awaited<ReturnType<typeof getProjectItems>>[number]
 type MyProjects = Awaited<ReturnType<typeof getProjectItemsForUser>>[number]
 
-type ProjectListEntryProps = {
+export type ProjectListEntryProps = {
   project: FindAProject | MyProjects
 }
 
@@ -133,6 +133,14 @@ export async function ProjectListEntry({ project }: ProjectListEntryProps) {
                   issues:{' '}
                   <span className="text-muted-foreground">
                     {project.issueSimilarity?.toFixed(2)}
+                  </span>
+                </span>
+              )}
+              {project.tagSimilarity && (
+                <span className="rounded bg-muted px-1 text-muted-foreground/80">
+                  tags:{' '}
+                  <span className="text-muted-foreground">
+                    {project.tagSimilarity?.toFixed(2)}
                   </span>
                 </span>
               )}

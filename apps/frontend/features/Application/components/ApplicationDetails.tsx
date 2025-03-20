@@ -5,7 +5,7 @@ import { useRouter } from '@/features/i18n/routing'
 import { createApplication } from '@/features/projects/projects.actions'
 import { useForm } from '@formsignals/form-react'
 import { ZodAdapter } from '@formsignals/validation-adapter-zod'
-import { useComputed, useSignals } from '@preact/signals-react/runtime'
+import { useSignals } from '@preact/signals-react/runtime'
 import { FieldError } from '@repo/design-system/components/FormErrors'
 import {
   WysiwygEditorForm,
@@ -84,9 +84,6 @@ export default function ApplicationDetail({
       }, 1000)
     },
   })
-  const _prefersInternalCommunication = useComputed(() => {
-    return form.data.value.checkbox.value
-  })
 
   const editorRef = useLexicalEditorRef()
 
@@ -107,20 +104,6 @@ export default function ApplicationDetail({
             {alertMessage}
           </div>
         )}
-
-        <div className="text-lg">{t('infoTitle')}</div>
-        <div className="mb-6 flex w-full flex-col gap-4 lg:flex-row">
-          <div className="w-full lg:mb-4 lg:w-1/2">
-            <Label>{t('form.name')}</Label>
-            {session?.user?.firstName && session?.user?.lastName ? (
-              <p>
-                {session?.user?.firstName} {session?.user?.lastName}
-              </p>
-            ) : (
-              <p>{session?.user?.name}</p>
-            )}
-          </div>
-        </div>
 
         <div className="text-lg">{t('messageTitle')}</div>
         <div className="mb-6 flex w-full flex-col gap-4 lg:flex-row">
@@ -146,7 +129,6 @@ export default function ApplicationDetail({
             </form.FieldProvider>
           </div>
         </div>
-
         <div className="text-lg">{t('applyTitle')}</div>
         <div className="mb-6 flex w-full flex-col gap-4 lg:flex-row">
           <div className="w-full lg:mb-4">

@@ -1,4 +1,5 @@
 import { FilterKeys } from '@/features/projects/components/FilterBar/filterbar.constants'
+
 import type { parseFilters } from '@/features/projects/components/FilterBar/filterbar.utils'
 import { Schema, db } from '@repo/database'
 import { projects } from '@repo/database/schema'
@@ -25,14 +26,19 @@ export const getProjectItems = cache(
     limit: number,
     userId?: string,
   ) => {
-    const searchEmbeddings = await generateTextEmbeddings(search ?? '')
+    const searchEmbeddings = await generateTextEmbeddings(search ?? '', 'large')
+    const tagSearchEmbeddings = await generateTextEmbeddings(
+      search ?? '',
+      'small',
+    )
 
     const {
       similarity,
       issueSimilarity,
+      tagSimilarity,
       correctTotalSimilarity,
       grossSimilarity,
-    } = getSimilarityScores(searchEmbeddings)
+    } = getSimilarityScores(searchEmbeddings, tagSearchEmbeddings)
 
     const {
       projectTotalMatchScore,
@@ -81,6 +87,9 @@ export const getProjectItems = cache(
         issueSimilarity: search
           ? issueSimilarity.as('issueSimilarity')
           : sql<number>`NULL`.as('issueSimilarity'),
+        tagSimilarity: search
+          ? tagSimilarity.as('tagSimilarity')
+          : sql<number>`NULL`.as('tagSimilarity'),
       },
       columns: {
         embedding: false,
@@ -234,16 +243,25 @@ export const addProjectImpression = async (projectId: string) => {
   })
 }
 
-function getSimilarityScores(searchEmbeddings: number[]) {
+function getSimilarityScores(
+  searchEmbeddings: number[],
+  tagSearchEmbeddings: number[],
+) {
   const similarity = sql<number>`(1 - (${cosineDistance(Schema.projects.embedding, searchEmbeddings)}))`
   const issueSimilarity = sql<number>`(select COALESCE(max(1 - ("issues"."embedding" <=> ${JSON.stringify(searchEmbeddings)})), NULL) from (select "projectIssue"."embedding" from "projectIssue" where "projectIssue"."projectId" = "projects".id) as "issues")`
-  const totalSimilarity = sql<number>`(${similarity} * 2 + ${issueSimilarity}) / 3`
-  const totalSimilarityNoIssue = sql<number>`${similarity}`
-  const correctTotalSimilarity = sql<number>`CASE WHEN ${issueSimilarity} IS NULL THEN ${totalSimilarityNoIssue} ELSE ${totalSimilarity} END`
+  const tagSimilarity = sql<number>`(select COALESCE(max(1 - ("tags"."embedding" <=> ${JSON.stringify(tagSearchEmbeddings)})), NULL) from (select "tag"."embedding" from "project_tag" left join "tag" on "project_tag"."tagId" = "tag".id where "project_tag"."projectId" = "projects".id) as "tags")`
+
+  const totalSimilarity = sql<number>`(${similarity} * 2 + ${issueSimilarity} + (1 / (0.79 + EXP(-11.4*${tagSimilarity} + 9.75)))) / 4`
+  const totalSimilarityNoIssue = sql<number>`(${similarity} * 2 + (1 / (0.79 + EXP(-11.4*${tagSimilarity} + 9.75)))) / 3`
+  const totalSimilarityNoTag = sql<number>`(${similarity} * 2 + ${issueSimilarity}) / 3`
+  const totalSimilarityNoIssueTag = sql<number>`${similarity}`
+
+  const correctTotalSimilarity = sql<number>`CASE WHEN ${issueSimilarity} IS NULL AND ${tagSimilarity} IS NULL THEN ${totalSimilarityNoIssueTag} WHEN ${issueSimilarity} IS NULL THEN ${totalSimilarityNoIssue} WHEN ${tagSimilarity} IS NULL THEN ${totalSimilarityNoTag} ELSE ${totalSimilarity} END`
   const grossSimilarity = sql<number>`ROUND(CAST(${correctTotalSimilarity} AS numeric), 2)`
   return {
     similarity,
     issueSimilarity,
+    tagSimilarity,
     correctTotalSimilarity,
     grossSimilarity,
   }

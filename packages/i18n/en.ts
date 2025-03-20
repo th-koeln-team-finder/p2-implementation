@@ -164,6 +164,14 @@ export const en = {
         submit: 'Send Request',
       },
     },
+    invite: {
+      title: 'send a invite to join the team',
+      form: {
+        message: 'write a something about your project',
+        placeholderMessage: 'Enter your message...',
+        submit: 'Send invite',
+      },
+    },
     overview: {
       title: 'Project Overview',
       notFound: 'Project not found',
@@ -175,12 +183,16 @@ export const en = {
       filesAttached:
         '{count, plural, =1 {One file attached} other {# files attached}}',
       noApplications: 'No one applied to join this project yet.',
+      applicationTitle: 'Applications',
     },
     application: {
       title: 'Application by {name}',
       acceptApplication: 'Accept',
       rejectApplication: 'Reject',
     },
+  },
+  findSomeone: {
+    pageTitle: 'Find someone',
   },
   createProjects: {
     fieldRequired: 'This field is required',

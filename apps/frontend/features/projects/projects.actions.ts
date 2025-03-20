@@ -4,11 +4,13 @@ import { authMiddleware } from '@/auth'
 import { hasSessionPermission } from '@/features/auth/auth.utils'
 import { redirect } from '@/features/i18n/routing'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
+import { getUserWithImage } from '@/features/users/users.query'
 import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
 import {
   type ProjectApplicationInsert,
   type TagSelect,
+  type UserInvitationsInsert,
   Weekdays,
 } from '@repo/database/schema'
 import { generateTextEmbeddings } from '@repo/semantic-search'
@@ -240,7 +242,7 @@ async function createProjectSkills(
 
 export async function getUserProfile() {
   const session = await authMiddleware()
-  return session?.user
+  return session?.user?.id ? getUserWithImage(session?.user?.id) : undefined
 }
 
 export async function toggleProjectBookmark(
@@ -331,6 +333,10 @@ export async function toggleProjectStar(
 
 export async function revalidateProjects() {
   return await revalidateTag('projects')
+}
+
+export async function createInvitation(payload: UserInvitationsInsert) {
+  await db.insert(Schema.userInvitations).values(payload)
 }
 
 export async function createApplication(

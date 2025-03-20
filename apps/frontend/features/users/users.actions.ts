@@ -22,7 +22,8 @@ export async function updateUserData(user: Partial<UserInsert>) {
 }
 
 export async function revalidateUser() {
-  return await revalidateTag('user')
+  await revalidateTag('user')
+  await revalidateTag('users')
 }
 
 export async function deleteUser(id: string) {
