@@ -5,7 +5,7 @@ import { useRouter } from '@/features/i18n/routing'
 import { createApplication } from '@/features/projects/projects.actions'
 import { useForm } from '@formsignals/form-react'
 import { ZodAdapter } from '@formsignals/validation-adapter-zod'
-import { useComputed, useSignals } from '@preact/signals-react/runtime'
+import { useSignals } from '@preact/signals-react/runtime'
 import { FieldError } from '@repo/design-system/components/FormErrors'
 import {
   WysiwygEditorForm,
@@ -18,6 +18,10 @@ import { UserPlusIcon } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
+import { FileUploadForm } from '@repo/design-system/components/custom/file-upload'
+import { FileInlinePreviewsForm } from '@repo/design-system/components/custom/file-inline-previews-form'
+import { FileListForm } from '@repo/design-system/components/custom/file-list-form'
+import { clientEnv } from '@repo/env/client'
 
 type ApplyFormValues = {
   bucketPrefix: string
@@ -41,7 +45,7 @@ export default function ApplicationDetail({
   const translateError = useTranslations('validation')
 
   const [alertMessage, setAlertMessage] = useState<string | null>(null)
-  const [_progressState, uploadFile, resetFileProgress] = useFileUpload()
+  const [progressState, uploadFile, resetFileProgress] = useFileUpload()
 
   const form = useForm<ApplyFormValues, typeof ZodAdapter>({
     validatorAdapter: ZodAdapter,
@@ -79,9 +83,6 @@ export default function ApplicationDetail({
         router.replace(`/projects/${projectId}`)
       }, 1000)
     },
-  })
-  const _prefersInternalCommunication = useComputed(() => {
-    return form.data.value.checkbox.value
   })
 
   const editorRef = useLexicalEditorRef()
@@ -129,6 +130,29 @@ export default function ApplicationDetail({
           </div>
         </div>
         <div className="text-lg">{t('applyTitle')}</div>
+        <div className="mb-6 flex w-full flex-col gap-4 lg:flex-row">
+          <div className="w-full lg:mb-4">
+            <form.FieldProvider name="file">
+              <Label>{t('form.fileUpload')}</Label>
+              <FileUploadForm
+                accepts="image/jpeg,image/png,application/pdf"
+                multiple
+                placeholder={
+                  <FileInlinePreviewsForm
+                    progressState={progressState}
+                    maxFileSize={clientEnv.NEXT_PUBLIC_MAX_FILE_SIZE}
+                  />
+                }
+              />
+              <FieldError />
+              <FileListForm
+                className="my-2"
+                progressState={progressState}
+                maxFileSize={clientEnv.NEXT_PUBLIC_MAX_FILE_SIZE}
+              />
+            </form.FieldProvider>
+          </div>
+        </div>
 
         <div className="mb-6 flex w-full justify-center">
           <Button
