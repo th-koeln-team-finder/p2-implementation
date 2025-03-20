@@ -1,4 +1,6 @@
 'use client'
+import type { CreateBrainstormResourceFile } from '@/features/brainstorm/brainstorm.types'
+import { URL_REGEX } from '@/features/general/url.utils'
 import type { CreateProjectFormLinks } from '@/features/projects/projects.types'
 import { useFieldContext } from '@formsignals/form-react'
 import type { ZodAdapter } from '@formsignals/validation-adapter-zod'
@@ -8,6 +10,7 @@ import { FileUploadForm } from '@repo/design-system/components/custom/file-uploa
 import { Button } from '@repo/design-system/components/ui/button'
 import { InputForm } from '@repo/design-system/components/ui/input'
 import { Label } from '@repo/design-system/components/ui/label'
+import { Progress } from '@repo/design-system/components/ui/progress'
 import {
   SelectContent,
   SelectForm,
@@ -16,11 +19,8 @@ import {
 import { clientEnv } from '@repo/env/client'
 import { CheckIcon, PlusIcon, TrashIcon } from 'lucide-react'
 import { useFormatter, useTranslations } from 'next-intl'
-import { z } from 'zod'
-import { URL_REGEX } from '@/features/general/url.utils'
-import type { CreateBrainstormResourceFile } from '@/features/brainstorm/brainstorm.types'
 import { Fragment } from 'react'
-import { Progress } from '@repo/design-system/components/ui/progress'
+import { z } from 'zod'
 
 export function CreateProjectLinksList({
   progressState,

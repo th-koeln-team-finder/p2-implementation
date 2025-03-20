@@ -1,5 +1,6 @@
 'use client'
 import VerificationControl from '@/features/userSkills/components/VerificationControl'
+import { Rating } from '@repo/design-system/components/custom/rating'
 import { Button } from '@repo/design-system/components/ui/button'
 import {
   Collapsible,
@@ -14,7 +15,6 @@ import {
 } from '@repo/design-system/components/ui/tooltip'
 import { BadgeCheck, ChevronDownIcon, SquircleIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { Rating } from '@repo/design-system/components/custom/rating'
 
 type ProjectSkill = {
   label: string
