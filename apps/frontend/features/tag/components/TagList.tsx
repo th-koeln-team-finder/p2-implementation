@@ -19,7 +19,7 @@ export function TagList({ tags, splitUp = 0 }: BrainstormTagListProps) {
   const tagsToShow = tags.slice(0, splitUp)
   const otherTags = tags.slice(splitUp)
   return (
-    <div className="flex flex-row flex-wrap gap-1">
+    <div className="flex flex-row flex-wrap gap-1 self-start">
       {(splitUp ? tagsToShow : tags).map(({ tag }) => (
         <Badge variant="tag" key={tag.id} className="text-nowrap">
           {tag.name}
@@ -29,7 +29,14 @@ export function TagList({ tags, splitUp = 0 }: BrainstormTagListProps) {
         <TooltipProvider>
           <Tooltip delayDuration={300}>
             <TooltipTrigger>
-              <Badge variant="outline" className="text-nowrap">
+              <Badge
+                variant="outline"
+                className="text-nowrap"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  e.preventDefault()
+                }}
+              >
                 {translate('xMore', { amount: otherTags.length })}
               </Badge>
             </TooltipTrigger>

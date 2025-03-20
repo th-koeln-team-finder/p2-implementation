@@ -362,6 +362,52 @@ export async function seed() {
     .values(userSkillVerificationData)
     .execute()
 
+  function getRandomUniqueUserMap<Key extends string>(
+    key: Key,
+    otherIds: string[],
+    min = 5,
+    max = 15,
+  ): Array<{ userId: string } & { [key in Key]: string }> {
+    const pairs = userIds.flatMap((userId) =>
+      makeMultiple(
+        faker.number.int({ min, max }),
+        () => `${userId}::${faker.helpers.arrayElement(otherIds)}`,
+      ),
+    )
+    const uniquePairs = new Set<string>(pairs)
+    return Array.from(uniquePairs).map((pair) => {
+      const [userId, projectId] = pair.split('::')
+      return { userId, [key]: projectId }
+    }) as Array<{ userId: string } & { [key in Key]: string }>
+  }
+
+  console.log('Creating 5-15 brainstorm bookmarks per user')
+  const uniqueBrainstormBookmarks = getRandomUniqueUserMap(
+    'brainstormId',
+    Object.values(brainstormIds),
+  )
+  await db
+    .insert(Schema.brainstormBookmarks)
+    .values(uniqueBrainstormBookmarks)
+    .execute()
+
+  console.log('Creating 5-15 project bookmarks per user')
+  const uniqueProjectBookmarks = getRandomUniqueUserMap(
+    'projectId',
+    Object.values(projectIds),
+  )
+  await db
+    .insert(Schema.projectBookmarks)
+    .values(uniqueProjectBookmarks)
+    .execute()
+
+  console.log('Creating 5-15 project stars per user')
+  const uniqueProjectStars = getRandomUniqueUserMap(
+    'projectId',
+    Object.values(projectIds),
+  )
+  await db.insert(Schema.projectStar).values(uniqueProjectStars).execute()
+
   console.log('### Seeding complete ###')
   process.exit(0)
 }

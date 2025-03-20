@@ -17,6 +17,13 @@ export async function checkUsernameTaken(username: string) {
   return !!result
 }
 
+export async function checkEmailTaken(email: string) {
+  const result = await db.query.users.findFirst({
+    where: eq(Schema.users.email, email),
+  })
+  return !!result
+}
+
 export const getUsers = cache(
   async (projectId: string, limit: number, userId?: string) => {
     const { skillMatchScore, projectTagMatchScore, totalMatchScore } =

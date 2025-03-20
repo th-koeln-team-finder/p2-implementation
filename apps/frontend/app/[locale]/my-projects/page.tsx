@@ -4,12 +4,11 @@ import { ProjectList } from '@/features/projects/components/ProjectList'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 export default async function MyProjectsPage() {
-  const [translate] = await Promise.all([getTranslations('projects')])
-
   const session = await authMiddleware()
   if (!session?.user?.id) {
     return redirect({ href: '/', locale: await getLocale() })
   }
+  const [translate] = await Promise.all([getTranslations('projects')])
 
   return (
     <div className="container mx-auto px-4">

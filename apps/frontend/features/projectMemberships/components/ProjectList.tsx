@@ -68,8 +68,10 @@ export default function ProjectList({
         name: project.projectName || project.project?.name || '',
         description:
           project.projectDescription || project.project?.description || '',
-        joinedDate: new Date(project.projectJoinedDate ?? ''),
-        leftDate: new Date(project.projectLeftDate ?? ''),
+        joinedDate: project.projectJoinedDate
+          ? new Date(project.projectJoinedDate)
+          : undefined,
+        leftDate: project.projectLeftDate ? new Date() : undefined,
         visible: project.visible,
       })),
     [userProjects],
@@ -85,7 +87,7 @@ export default function ProjectList({
           <CardHeader>
             <CardTitle>{project.name}</CardTitle>
             <CardDescription>
-              {format(project.joinedDate, 'MMM yyyy')} -{' '}
+              {project.joinedDate && format(project.joinedDate, 'MMM yyyy')} -{' '}
               {project.leftDate
                 ? format(project.leftDate, 'MMM yyyy')
                 : t('users.settings.projects.present')}

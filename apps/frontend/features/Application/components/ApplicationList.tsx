@@ -28,7 +28,7 @@ export async function ApplicationList({ projectId }: ApplicationListProps) {
   return (
     <div>
       {application.length === 0 && (
-        <div className="border-t-2 px-2 py-4 text-muted-foreground italic">
+        <div className="px-2 py-4 text-muted-foreground italic">
           {translate('noApplications')}
         </div>
       )}

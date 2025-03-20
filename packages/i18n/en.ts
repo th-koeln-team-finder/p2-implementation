@@ -123,7 +123,7 @@ export const en = {
     issueList: {
       showMore: 'Show more',
       showLess: 'Show less',
-      issueTitle: 'Issues for starters',
+      issueTitle: 'Tasks for starters',
     },
     skillScale: {
       skillTitle: 'Skills needed',
@@ -198,6 +198,20 @@ export const en = {
     location: 'Location',
     locationPlaceholder: 'Address...',
     linksTitle: 'Links & Other Resources',
+
+    titleTimetable: 'Timetable',
+    descriptionTimetable:
+      'Do you have a specific schedule that people interested in your project should know about?',
+    titleTags: 'Tags',
+    descriptionTags:
+      'Add tags to your project to make it easier to find for others.',
+    titleIssues: 'Initial Tasks',
+    descriptionIssues:
+      'These tasks help people understand what needs to be done in your project.',
+    titleResources: 'Links & Other Resources',
+    descriptionResources:
+      'Add links or files that are important for your project.',
+
     main: {
       name: 'Projektname',
       namePlaceholder: 'Title of the project...',
@@ -225,7 +239,7 @@ export const en = {
       customPlaceholder: 'Custom timetable...',
     },
     issues: {
-      sectionTitle: '(Github) Issues',
+      sectionTitle: 'Initial Tasks',
       addIssue: 'Add Issue',
       title: 'Title',
       titlePlaceholder: 'Title of the issue...',
@@ -456,6 +470,7 @@ export const en = {
     required: 'This field is required',
     email: 'This field must be a valid email',
     usernameTaken: 'This username is already taken',
+    emailTaken: 'This email is already taken',
     minLengthX:
       'This field must be at least {amount, plural, =1 {one character} other {# characters}} long',
     number: 'This field must be a number',

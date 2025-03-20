@@ -109,12 +109,12 @@ export default function NotificationForm({ user }: { user: UserSelect }) {
               className={`mb-4 overflow-hidden transition-opacity ${isActive.value ? '' : 'opacity-50'}`}
               key={type}
             >
-              <CardHeader className="p-0">
-                <CardTitle className="mb-4 border-b px-6 py-4 text-xl">
+              <CardHeader>
+                <CardTitle className="mb-2 text-xl">
                   {t(`users.settings.notifications.${type}`)}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="divide-y divide-solid *:py-2 first:*:pt-0 last:*:pb-0">
+              <CardContent className="flex flex-col gap-4">
                 {notificationType.map((notification) => {
                   return (
                     <div
@@ -130,7 +130,7 @@ export default function NotificationForm({ user }: { user: UserSelect }) {
                           t(`users.settings.notifications.${notification}`)
                         }
                       </Label>
-                      <div className="space-x-1">
+                      <div className="flex flex-col items-end gap-1 sm:flex-row sm:items-center">
                         <form.FieldProvider
                           name={`${notification}_push` as keyof UserInsert}
                         >

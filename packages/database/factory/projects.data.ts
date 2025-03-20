@@ -7778,7 +7778,11 @@ export const projectsData = [
     isPublic: true,
     allowApplications: true,
   },
-]
+].map((e) => {
+  if (e.description.root.children[0]?.type !== 'code') return e
+  e.description.root.children[0].type = 'paragraph'
+  return e
+})
 
 const skills = new Set(
   projectsData.flatMap((e) => e.skills.map((e) => e.skill)),
