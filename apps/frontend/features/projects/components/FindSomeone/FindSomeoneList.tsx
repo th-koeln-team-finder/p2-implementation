@@ -1,5 +1,8 @@
 import { FindSomeoneListEntry } from '@/features/projects/components/FindUserEntry'
 import { getUsers } from '@/features/users/users.query'
+import { authMiddleware } from '@/auth'
+import { LazyLoader } from '@/features/general/components/LazyLoader'
+import { revalidateUser } from '@/features/users/users.actions'
 
 type FindSomeoneListProps = {
   search?: string
@@ -14,18 +17,30 @@ export async function FindSomeoneList({
   offset,
   search,
 }: FindSomeoneListProps) {
-  const users = await getUsers(projectId)
+  const session = await authMiddleware()
 
-  if (!users.length) return null
+  const offsetNumber = Number.parseInt(offset ?? '0')
+  const limit = pageSize + offsetNumber
+
+  const users = await getUsers(projectId, limit, session?.user?.id)
+  const hasMore = limit <= users.length
+
   return (
     <div className="container mx-auto my-4 max-w-screen-xl px-4">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {users.map((user) => (
-          <div key={user.id}>
-            <FindSomeoneListEntry user={user} projectId={projectId} />
-          </div>
+          <FindSomeoneListEntry
+            key={user.id}
+            user={user}
+            projectId={projectId}
+          />
         ))}
       </div>
+      <LazyLoader
+        hasMore={hasMore}
+        pageSize={pageSize}
+        onInvalidate={revalidateUser}
+      />
     </div>
   )
 }
