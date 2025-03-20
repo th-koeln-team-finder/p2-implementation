@@ -1,48 +1,31 @@
-import {authMiddleware} from "@/auth";
-import {type getProjectItems, getUsers} from "@/features/projects/projects.queries";
-import {UserFilterSearchParams} from "@/features/projects/components/FindSomeone/FindSomeone.constants";
-import { FindSomeoneListEntry} from "@/features/projects/components/FindUserEntry";
-import {FindAProjectListEntryProps} from "@/features/projects/components/ProjectListEntry";
+import { FindSomeoneListEntry } from '@/features/projects/components/FindUserEntry'
+import { getUsers } from '@/features/users/users.query'
 
-
-type FindSomeoneListProps={
-    search?: string
-    filters: UserFilterSearchParams
+type FindSomeoneListProps = {
+  search?: string
+  offset?: string
+  projectId: string
 }
 
 const pageSize = 15
 
 export async function FindSomeoneList({
-                                }:FindSomeoneListProps
-) {
-    const session = await authMiddleware()
-    const limit = pageSize
+  projectId,
+  offset,
+  search,
+}: FindSomeoneListProps) {
+  const users = await getUsers(projectId)
 
-    const projectId= session?.user?.id
-
-    if(!projectId){
-        console.log("Project not found")
-            return null
-    }
-    const users = await getUsers()
-
-        if(!users.length) return null
-    return (
-        <>
-            <div className="container mx-auto my-4 max-w-screen-xl px-4">
-                <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-
-                    {users.map((user,index) => (
-                       <div key={index}>
-                           {FindSomeoneListEntry({user})}
-                        </div>
-                    ))}
-                </div>
-            </div>
-            </>
-            )
-
-            }
-
-
-
+  if (!users.length) return null
+  return (
+    <div className="container mx-auto my-4 max-w-screen-xl px-4">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        {users.map((user) => (
+          <div key={user.id}>
+            <FindSomeoneListEntry user={user} projectId={projectId} />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}

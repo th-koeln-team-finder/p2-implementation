@@ -174,6 +174,7 @@ export const en = {
       filesAttached:
         '{count, plural, =1 {One file attached} other {# files attached}}',
       noApplications: 'No one applied to join this project yet.',
+      applicationTitle: 'Applications',
     },
     application: {
       title: 'Application by {name}',

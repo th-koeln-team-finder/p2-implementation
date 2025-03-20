@@ -16,9 +16,6 @@ import {
   sql,
 } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
-import {UserFilterKeys} from "@/features/projects/components/FindSomeone/FindSomeone.constants";
-import {parseUserFilters} from "@/features/projects/components/FindSomeone/FindSomeone.utils";
-import type {UserWithImage} from "@/features/users/users.types";
 
 type FilterParams = ReturnType<typeof parseFilters>
 
@@ -230,18 +227,6 @@ export const getProjectItem = cache(
     }),
   ['getProjectItem'],
   { tags: ['projects'] },
-)
-
-export const getUsers = cache(
-    (): Promise<UserWithImage[]> =>
-
-  db.query.users.findMany({
-        with: {
-          image: true,
-        }
-  }),
-    ['getUsers'],
-    {tags:['users']},
 )
 
 export const addProjectImpression = async (projectId: string) => {

@@ -17,6 +17,17 @@ export async function checkUsernameTaken(username: string) {
   return !!result
 }
 
+export const getUsers = cache(
+  (projectId: string): Promise<UserWithImage[]> =>
+    db.query.users.findMany({
+      with: {
+        image: true,
+      },
+    }),
+  ['getUsers'],
+  { tags: ['users'] },
+)
+
 export const getUser = cache(
   async (id: string): Promise<UserSelect | undefined> =>
     db.query.users.findFirst({
@@ -27,13 +38,14 @@ export const getUser = cache(
 )
 
 export const getUserWithImage = cache(
-  async (id: string): Promise<UserWithImage | undefined> =>
-    db.query.users.findFirst({
+  (id: string): Promise<UserWithImage | undefined> => {
+    return db.query.users.findFirst({
       where: eq(users.id, id),
       with: {
         image: true,
       },
-    }),
+    })
+  },
   ['getUser'],
   { tags: ['user'] },
 )

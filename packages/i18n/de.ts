@@ -180,6 +180,7 @@ export const de: Language = {
         '{count, plural, =1 {Eine Datei angehängt} other {# Dateien angehängt}} ',
       noApplications:
         'Bis jetzt hat sich noch niemand für das Projekt beworben.',
+      applicationTitle: 'Bewerbungen',
     },
     application: {
       title: 'Bewerbung von {name}',
