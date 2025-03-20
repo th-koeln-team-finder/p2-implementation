@@ -29,14 +29,7 @@ export function TagList({ tags, splitUp = 0 }: BrainstormTagListProps) {
         <TooltipProvider>
           <Tooltip delayDuration={300}>
             <TooltipTrigger>
-              <Badge
-                variant="outline"
-                className="text-nowrap"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  e.preventDefault()
-                }}
-              >
+              <Badge variant="outline" className="text-nowrap">
                 {translate('xMore', { amount: otherTags.length })}
               </Badge>
             </TooltipTrigger>

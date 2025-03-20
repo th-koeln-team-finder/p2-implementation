@@ -23,7 +23,7 @@ export default function TeamMembers({
 
   return (
     <div>
-      <h2 className="mb-2 font-medium text-xl">{t('team.title')}</h2>
+      <h2 className="mb-2 font-medium text-2xl">{t('team.title')}</h2>
       <Carousel className="mx-8">
         <CarouselContent className="px-4">
           {participants.map((participant) => (
@@ -36,6 +36,7 @@ export default function TeamMembers({
                 className="aspect-square h-auto w-full flex-1"
                 fallbackClassName="text-xs"
               />
+
               <p className="mt-1 text-center">{participant.users.name}</p>
 
               <p className="text-center text-muted-foreground text-xs leading-3">

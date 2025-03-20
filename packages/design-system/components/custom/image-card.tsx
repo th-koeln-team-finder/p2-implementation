@@ -21,7 +21,7 @@ const ImageCard = React.forwardRef<
     <Image src={imageUrl} alt="Image" layout="fill" objectFit="cover" />
 
     {/* Overlay mit Deckkraft */}
-    <div className="absolute inset-0 bg-black/50" />
+    <div className="absolute inset-0 bg-black/40" />
 
     <div
       className={`relative my-auto flex h-auto w-full flex-col gap-4 px-10 py-7 lg:gap-8 lg:px-20 lg:py-14 ${cardFull ? 'lg:flex-row' : 'lg:flex-col'}`}
@@ -51,7 +51,7 @@ const ImageCardTitle = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      'text-center font-semibold text-foreground text-lg sm:text-2xl xl:text-3xl',
+      'text-center font-semibold text-white text-xl lg:text-3xl',
       className,
     )}
     {...props}
@@ -59,13 +59,25 @@ const ImageCardTitle = React.forwardRef<
 ))
 ImageCardTitle.displayName = 'ImageCardTitle'
 
+const ImageCardDescription = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn('text-center text-sm text-white', className)}
+    {...props}
+  />
+))
+ImageCardDescription.displayName = 'ImageCardDescription'
+
 const ImageCardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('text-center text-foreground text-sm sm:text-lg', className)}
+    className={cn('m-0 pt-0 text-center text-white text-xl', className)}
     {...props}
   />
 ))
@@ -84,5 +96,6 @@ export {
   ImageCardHeader,
   ImageCardFooter,
   ImageCardTitle,
+  ImageCardDescription,
   ImageCardContent,
 }

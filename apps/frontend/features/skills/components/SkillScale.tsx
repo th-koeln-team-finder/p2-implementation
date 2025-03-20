@@ -1,6 +1,5 @@
 'use client'
 import VerificationControl from '@/features/userSkills/components/VerificationControl'
-import { Rating } from '@repo/design-system/components/custom/rating'
 import { Button } from '@repo/design-system/components/ui/button'
 import {
   Collapsible,
@@ -13,7 +12,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@repo/design-system/components/ui/tooltip'
-import { BadgeCheck, ChevronDownIcon, SquircleIcon } from 'lucide-react'
+import { BadgeCheck, ChevronDownIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 type ProjectSkill = {
@@ -62,7 +61,7 @@ export function SkillScale(
 
   return (
     <div className="w-full">
-      <h2 className="mb-2 font-medium text-xl">{title}</h2>
+      <h2 className="mb-2 font-medium text-2xl">{title}</h2>
 
       {!skills.length && (
         <p className="text-muted-foreground text-sm italic">
@@ -79,18 +78,18 @@ export function SkillScale(
         >
           <Collapsible className="group">
             <SkillPointList
-              list={skills.slice(0, 6)}
+              list={skills.slice(0, 5)}
               showVerificationControl={showVerificationControl}
               loggedInUserId={loggedInUserId}
             />
             <CollapsibleContent>
               <SkillPointList
-                list={skills.slice(6)}
+                list={skills.slice(5)}
                 showVerificationControl={showVerificationControl}
                 loggedInUserId={loggedInUserId}
               />
             </CollapsibleContent>
-            {skills.length > 6 && (
+            {skills.length < 5 && (
               <div className="-bottom-1 sticky flex flex-row bg-background pt-2">
                 <CollapsibleTrigger asChild>
                   <Button variant="ghost" className="mx-auto">
@@ -136,41 +135,31 @@ export function SkillPointList(
     <div className="flex flex-col gap-1">
       {isUserSkillList(props)
         ? props.list.map((skill) => (
-            <div
-              key={skill.label}
-              className="flex flex-row items-center justify-between gap-4 px-1 py-0.5 odd:bg-muted"
-            >
-              <p className="text-sm">{skill.label}</p>
-              <div className="flex items-center gap-2">
-                <Rating
-                  disabled
-                  rating={skill.level}
-                  totalStars={5}
-                  Icon={<SquircleIcon />}
-                  showText={false}
-                  className="md:ml-auto"
-                  rowClassName="gap-0.5"
-                  starClassName="size-4"
-                />
+            <div key={skill.label} className="flex flex-row justify-between">
+              <p>{skill.label}</p>
+              <div className="flex items-center gap-4">
+                <SkillPoints currentLevel={skill.level} />
 
-                {skill.verifications !== undefined &&
-                  skill.verifications > 0 && (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger className="flex items-center gap-1 text-primary text-sm">
-                          <BadgeCheck size={16} />
-                          <span>{skill.verifications}</span>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>
-                            {translate('users.verificationTooltip', {
-                              verifications: skill.verifications,
-                            })}
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  )}
+                <div className="flex w-10 items-center justify-center gap-2">
+                  {skill.verifications !== undefined &&
+                    skill.verifications > 0 && (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger className="flex items-center gap-1 text-fuchsia-700 text-sm">
+                            <BadgeCheck size={16} />
+                            <span>{skill.verifications}</span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>
+                              {translate('users.verificationTooltip', {
+                                verifications: skill.verifications,
+                              })}
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
+                </div>
                 {props.showVerificationControl && props.loggedInUserId && (
                   <div className="flex justify-end">
                     <VerificationControl

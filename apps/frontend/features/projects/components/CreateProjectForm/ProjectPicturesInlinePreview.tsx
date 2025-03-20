@@ -43,19 +43,14 @@ export function ProjectPicturesInlinePreview({
     }
   })
 
-  if (!fieldPreviews.length)
-    return (
-      <p className="px-2 text-center text-sm">
-        {translate('placeholderTextMultiple')}
-      </p>
-    )
+  if (!fieldPreviews.length) return translate('placeholderTextMultiple')
 
   return (
     <div className="m-4">
       <p className="mb-2 text-center text-sm">
         {translate('placeholderTextMultiple')}
       </p>
-      <div className="grid max-h-72 max-w-xl grid-cols-1 gap-2 overflow-auto pr-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid max-h-72 max-w-xl grid-cols-3 gap-2 overflow-auto pr-2">
         {fieldPreviews.map(
           ([key, file, filename, filetype, filesize], index) => (
             <div key={key} className="relative">

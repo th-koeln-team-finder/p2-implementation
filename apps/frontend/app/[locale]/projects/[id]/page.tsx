@@ -33,7 +33,7 @@ export default async function Projects({
 
   return (
     <div className="mx-auto inline-flex w-full max-w-screen-xl flex-col items-center justify-start gap-4 p-4">
-      <div className="flex w-full flex-col items-start sm:flex-row md:justify-between">
+      <div className="inline-flex items-start justify-between self-stretch">
         <ProjectTitle
           title={project.name}
           subtitle={
@@ -42,9 +42,9 @@ export default async function Projects({
         />
         <Toolbar project={project} />
       </div>
-
-      <TagList tags={project.tags} />
-
+      <div className="flex w-full flex-col pr-3">
+        <TagList tags={project.tags} />
+      </div>
       <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
         <ImageCarousel images={project.projectPictures ?? []} />
         <SkillScale
@@ -73,7 +73,7 @@ export default async function Projects({
 
         {!!project.resources.length && (
           <div className="flex flex-col gap-1">
-            <h2 className="mb-2 font-medium text-xl">
+            <h2 className="mb-2 font-medium text-2xl">
               {translations('links')}
             </h2>
             {project.resources.map((res) => (
