@@ -525,6 +525,11 @@ export const en = {
     emptyInvitations: 'No invitations found',
     retractApplication: 'Retract application',
   },
+  invitations: {
+    title: 'Invitation for: {name}',
+    rejectInvitation: 'Reject invitation',
+    acceptInvitation: 'Accept invitation',
+  },
 }
 
 type PathOf<T> = {

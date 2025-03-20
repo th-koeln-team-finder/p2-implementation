@@ -3,6 +3,8 @@
 import { authMiddleware } from '@/auth'
 import { hasSessionPermission } from '@/features/auth/auth.utils'
 import { redirect } from '@/features/i18n/routing'
+import { sendNotificationByType } from '@/features/notifications/notifications.actions'
+import { addProjectMembership } from '@/features/projectMemberships/projectMemberships.actions'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
 import { getUserWithImage } from '@/features/users/users.query'
 import { db } from '@repo/database'
@@ -280,7 +282,11 @@ export async function toggleProjectBookmark(
   })
 }
 
-export async function joinProject(projectId: string, userId: string) {
+export async function joinProject(
+  projectId: string,
+  userId: string,
+  sendNotificationToCreator = true,
+) {
   if (
     await db.query.participants.findFirst({
       where:
@@ -293,6 +299,18 @@ export async function joinProject(projectId: string, userId: string) {
       projectId,
       userId: userId,
     })
+
+    await addProjectMembership({
+      projectId: projectId,
+      userId: userId,
+      projectJoinedDate: new Date().toDateString(),
+    })
+
+    await sendMemberAddedNotification(
+      userId,
+      projectId,
+      sendNotificationToCreator,
+    )
   }
 }
 export async function toggleProjectStar(
@@ -378,4 +396,40 @@ export async function isUserMemberOfProject(userId: string, projectId: string) {
       eq(Schema.projectMemberships.projectId, projectId),
     ),
   }))
+}
+
+export async function sendMemberAddedNotification(
+  userId: string,
+  projectId: string,
+  sendToCreator = true,
+) {
+  const project = await db.query.projects.findFirst({
+    where: eq(Schema.projects.id, projectId),
+    with: {
+      participants: true,
+    },
+  })
+  const user = await db.query.users.findFirst({
+    where: eq(Schema.users.id, userId),
+  })
+
+  if (!project) {
+    throw new Error('Project not found')
+  }
+  if (!user) {
+    throw new Error('User not found')
+  }
+
+  const projectMemberIds = project.participants
+    .map((participants) => participants.userId)
+    .filter(
+      (id) => id !== userId && (!sendToCreator || id !== project.createdBy),
+    )
+  await sendNotificationByType(projectMemberIds, 'memberJoinedProject', {
+    title: [
+      'notifications.memberJoinedProject.title',
+      { project: project.name },
+    ],
+    body: ['notifications.memberJoinedProject.message', { user: user.name }],
+  })
 }

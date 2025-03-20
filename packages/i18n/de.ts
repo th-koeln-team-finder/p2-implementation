@@ -172,7 +172,7 @@ export const de: Language = {
     invite: {
       title: 'Sende eine Einladung an die Person',
       form: {
-        message: 'erzähl etwas über das Projekt',
+        message: 'Erzähl etwas über das Projekt',
         placeholderMessage: 'Gib eine Nachricht ein...',
         submit: 'Einladung senden',
       },
@@ -536,5 +536,10 @@ export const de: Language = {
     emptyApplications: 'Keine Bewerbungen gefunden',
     emptyInvitations: 'Keine Einladungen gefunden',
     retractApplication: 'Bewerbung zurückziehen',
+  },
+  invitations: {
+    title: 'Einladung zu: {name}',
+    rejectInvitation: 'Einladung ablehnen',
+    acceptInvitation: 'Einladung annehmen',
   },
 }

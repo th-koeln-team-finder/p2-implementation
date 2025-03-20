@@ -1,7 +1,6 @@
 'use server'
 
 import { sendNotificationByType } from '@/features/notifications/notifications.actions'
-import { addProjectMembership } from '@/features/projectMemberships/projectMemberships.actions'
 import {
   isUserMemberOfProject,
   joinProject,
@@ -27,12 +26,7 @@ export async function acceptApplication(applicationId: string) {
   const application = await db.query.projectApplication.findFirst({
     where: eq(Schema.projectApplication.id, applicationId),
     with: {
-      project: {
-        with: {
-          participants: true,
-        },
-      },
-      user: true,
+      project: true,
     },
   })
   if (!application) {
@@ -41,17 +35,9 @@ export async function acceptApplication(applicationId: string) {
   if (await isUserMemberOfProject(application.userId, application.projectId)) {
     throw new Error('User is already member of project')
   }
-  await joinProject(application.projectId, application.userId)
-  await addProjectMembership({
-    projectId: application.projectId,
-    userId: application.userId,
-    projectJoinedDate: new Date().toDateString(),
-  })
+  await joinProject(application.projectId, application.userId, false)
   // Remove the application
-  await db
-    .delete(Schema.projectApplication)
-    .where(eq(Schema.projectApplication.id, applicationId))
-  await revalidateApplications()
+  await removeApplication(applicationId)
 
   // send "membershipAccepted" notification
   await sendNotificationByType(
@@ -68,30 +54,10 @@ export async function acceptApplication(applicationId: string) {
       ],
     },
   )
-
-  // send "memberJoinedProject" notification
-  const projectMemberIds = application.project.participants
-    .map((participants) => participants.userId)
-    .filter(
-      (id) => id !== application.userId && id !== application.project.createdBy,
-    )
-  await sendNotificationByType(projectMemberIds, 'memberJoinedProject', {
-    title: [
-      'notifications.memberJoinedProject.title',
-      { project: application.project.name },
-    ],
-    body: [
-      'notifications.memberJoinedProject.message',
-      { user: application.user.name },
-    ],
-  })
 }
 
 export async function retractApplication(applicationId: string) {
-  await db
-    .delete(Schema.projectApplication)
-    .where(eq(Schema.projectApplication.id, applicationId))
-  await revalidateApplications()
+  await removeApplication(applicationId)
 }
 
 export async function rejectApplication(applicationId: string) {
@@ -106,10 +72,7 @@ export async function rejectApplication(applicationId: string) {
   }
 
   // Remove the application
-  await db
-    .delete(Schema.projectApplication)
-    .where(eq(Schema.projectApplication.id, applicationId))
-  await revalidateApplications()
+  await removeApplication(applicationId)
 
   // send "membershipRejected" notification
   await sendNotificationByType(
@@ -128,7 +91,7 @@ export async function rejectApplication(applicationId: string) {
   )
 }
 
-const _removeApplication = async (applicationId: string) => {
+const removeApplication = async (applicationId: string) => {
   await db
     .delete(Schema.projectApplication)
     .where(eq(Schema.projectApplication.id, applicationId))

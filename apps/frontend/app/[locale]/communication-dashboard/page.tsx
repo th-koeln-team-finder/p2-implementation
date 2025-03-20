@@ -2,6 +2,8 @@ import { authMiddleware } from '@/auth'
 import { getApplicationsForUser } from '@/features/Application/applications.queries'
 import RetractApplicationButton from '@/features/Application/components/RetractApplicationButton'
 import { Link, redirect } from '@/features/i18n/routing'
+import ManageInvitationButton from '@/features/invitation/components/ManageInvitationButtons'
+import { getInvitationsForUser } from '@/features/invitation/invitations.queries'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { getLocale, getTranslations } from 'next-intl/server'
 
@@ -17,7 +19,7 @@ export default async function CommunicationDashboard() {
   }
   const translate = await getTranslations('communicationDashboard')
   const applications = await getApplicationsForUser(session.user.id)
-  const invitations = []
+  const invitations = await getInvitationsForUser(session.user.id)
   const dateFormatter = new Intl.DateTimeFormat(locale, {
     year: 'numeric',
     month: 'long',
@@ -35,6 +37,40 @@ export default async function CommunicationDashboard() {
           {translate('emptyInvitations')}
         </div>
       )}
+      {invitations?.map((invitation) => (
+        <div
+          key={invitation.id}
+          className="flex w-full flex-row gap-4 border-b py-4"
+        >
+          <div className="flex grow flex-col">
+            <span className="mb-1 text-muted-foreground text-sm italic">
+              {invitation.createdAt &&
+                dateFormatter.format(invitation.createdAt)}
+            </span>
+            <Link
+              className="mb-2 font-bold hover:underline"
+              href={`/projects/${invitation.projectId}`}
+            >
+              {translate('projectName', { name: invitation.project.name })}
+            </Link>
+            <Link
+              className="line-clamp-3 overflow-hidden border-l-4 bg-muted p-4 italic hover:bg-muted/70"
+              href={`/communication-dashboard/invitation/${invitation.id}`}
+            >
+              {invitation.message && (
+                <WysiwygRenderer value={invitation.message} renderAsString />
+              )}
+            </Link>
+          </div>
+
+          <div className="flex flex-1 flex-col items-end justify-center gap-2">
+            <ManageInvitationButton
+              invitationId={invitation.id}
+              projectId={invitation.project.id}
+            />
+          </div>
+        </div>
+      ))}
 
       <hr className="my-8 " />
 
