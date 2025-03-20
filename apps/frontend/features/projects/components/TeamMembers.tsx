@@ -8,6 +8,12 @@ import {
   CarouselPrevious,
 } from '@repo/design-system/components/customCarousel'
 import { useTranslations } from 'next-intl'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@repo/design-system/components/ui/tooltip'
 
 export type CarouselItemProp = {
   projectRole?: string
@@ -29,14 +35,25 @@ export default function TeamMembers({
           {participants.map((participant) => (
             <CarouselItem
               key={participant.users.id}
-              className="flex basis-1/3 flex-col sm:basis-1/4 md:basis-1/5 lg:basis-1/6"
+              className="flex basis-1/3 flex-col px-3 sm:basis-1/4 lg:basis-1/5"
             >
               <UserAvatar
                 user={participant.users}
                 className="aspect-square h-auto w-full flex-1"
                 fallbackClassName="text-xs"
               />
-              <p className="mt-1 text-center">{participant.users.name}</p>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger className="flex flex-col items-center">
+                    <p className="mt-1 max-w-[6ch] truncate text-center sm:max-w-[6ch] lg:max-w-[8ch]">
+                      {participant.users.name}
+                    </p>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{participant.users.name}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
               <p className="text-center text-muted-foreground text-xs leading-3">
                 {participant.projectRole}{' '}
