@@ -3,17 +3,21 @@ import { generateTextEmbeddings } from '@repo/semantic-search'
 import type { BrainstormInsert } from '../schema'
 
 export async function makeBrainstorm(
-  title: string,
-  description: string,
-  descriptionText: string,
-  createdByIds: string[],
+  userIds: string[],
+  brainstormData: {
+    title: string
+    description: unknown
+    descriptionText: string
+  },
 ): Promise<BrainstormInsert> {
-  const embedding = await generateTextEmbeddings(`${title}\n${descriptionText}`)
+  const embedding = await generateTextEmbeddings(
+    `${brainstormData.title}\n${brainstormData.descriptionText}`,
+  )
   return {
-    title,
-    description,
+    title: brainstormData.title,
+    description: JSON.stringify(brainstormData.description),
     embedding,
-    createdById: faker.helpers.arrayElement(createdByIds),
+    createdById: faker.helpers.arrayElement(userIds),
     createdAt: faker.date.past(),
   }
 }

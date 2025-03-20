@@ -28,7 +28,7 @@ import {
 
 const VectorSizes = {
   small: 384,
-  large: 384,
+  large: 1024,
 }
 
 export const pgRoles = pgEnum('role', RolesValues as [string, ...string[]])
@@ -178,7 +178,7 @@ export const projectMemberships = pgTable('projectMemberships', {
   id: uuid().primaryKey().notNull().defaultRandom(),
   userId: uuid('userId')
     .notNull()
-    .references(() => users.id),
+    .references(() => users.id, { onDelete: 'cascade' }),
   // for projects from this platform
   projectId: uuid('projectId').references(() => projects.id, {
     onDelete: 'cascade',
@@ -203,10 +203,10 @@ export const userProjectSettings = pgTable('userProjectSettings', {
   id: uuid().primaryKey().notNull().defaultRandom(),
   userId: uuid('userId')
     .notNull()
-    .references(() => users.id),
+    .references(() => users.id, { onDelete: 'cascade' }),
   projectId: uuid('projectId')
     .notNull()
-    .references(() => projects.id),
+    .references(() => projects.id, { onDelete: 'cascade' }),
   enableNotifications: boolean().notNull().default(true),
   preferredNotificationChannel: varchar({ enum: ['email', 'push', 'both'] })
     .notNull()

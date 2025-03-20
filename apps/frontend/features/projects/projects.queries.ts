@@ -26,7 +26,7 @@ export const getProjectItems = cache(
     limit: number,
     userId?: string,
   ) => {
-    const searchEmbeddings = await generateTextEmbeddings(search ?? '')
+    const searchEmbeddings = await generateTextEmbeddings(search ?? '', 'large')
 
     const {
       similarity,
