@@ -11,7 +11,7 @@ import { TagList } from '@/features/tag/components/TagList'
 import { useFormContext } from '@formsignals/form-react'
 import { useSignalEffect } from '@preact/signals-react'
 import { useSignals } from '@preact/signals-react/runtime'
-import { type UserSelect, Weekdays } from '@repo/database/schema'
+import { Weekdays } from '@repo/database/schema'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
@@ -23,7 +23,8 @@ export function CreateProjectPreview({
   const t = useTranslations('projects')
   const form = useFormContext<CreateProjectFormValues>()
   const formValues = form.json.value
-  const [sessionUser, setUser] = useState<UserSelect>()
+  const [sessionUser, setUser] =
+    useState<Awaited<ReturnType<typeof getUserProfile>>>()
 
   const timetabledata: { description: string; weekdays: string }[] = [
     { description: formValues.ttMon, weekdays: Weekdays.monday },
@@ -82,7 +83,6 @@ export function CreateProjectPreview({
         />
         <SkillScale
           title={t('skillScale.skillTitle')}
-          emptySkillsMessage={t('skillScale.emptySkills')}
           skills={formValues.skills.map((skill) => ({
             label: skill.value.startsWith('new:')
               ? skill.value.replace('new:', '')

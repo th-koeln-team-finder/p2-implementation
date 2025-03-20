@@ -16,6 +16,7 @@ import { generateTextEmbeddings } from '@repo/semantic-search'
 import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
 import { revalidateTag } from 'next/cache'
+import { getUserWithImage } from '@/features/users/users.query'
 
 async function authCheckCreateProject() {
   const session = await authMiddleware()
@@ -241,7 +242,7 @@ async function createProjectSkills(
 
 export async function getUserProfile() {
   const session = await authMiddleware()
-  return session?.user
+  return session?.user?.id ? getUserWithImage(session?.user?.id) : undefined
 }
 
 export async function toggleProjectBookmark(
