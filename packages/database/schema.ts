@@ -102,7 +102,11 @@ export const userSkills = pgTable(
       .$onUpdate(() => new Date()),
   },
   (userSkill) => ({
-    validLevel: check('valid_userSkill_level', sql`${userSkill.level} >= 0`),
+    validLevel: check(
+      'valid_userSkill_level',
+      sql`${userSkill.level}
+        >= 0`,
+    ),
   }),
 )
 export type UserSkillsInsert = typeof userSkills.$inferInsert
@@ -300,7 +304,8 @@ export const projectSkill = pgTable(
     pk: primaryKey({ columns: [projectSkill.projectId, projectSkill.skillId] }),
     validLevel: check(
       'valid_projectSkill_level',
-      sql`${projectSkill.level} >= 0`,
+      sql`${projectSkill.level}
+            >= 0`,
     ),
   }),
 )
@@ -468,6 +473,32 @@ export const projectApplication = pgTable(
 )
 export type ProjectApplicationInsert = typeof projectApplication.$inferInsert
 export type ProjectApplicationSelect = typeof projectApplication.$inferSelect
+
+export const userInvitations = pgTable(
+  'userInvitations',
+  {
+    id: uuid().primaryKey().notNull().defaultRandom(),
+    userId: uuid('userId')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    projectId: uuid('projectId')
+      .notNull()
+      .references(() => projects.id, { onDelete: 'cascade' }),
+    message: text().notNull(),
+    createdAt: timestamp({ mode: 'date' }).defaultNow(),
+    updatedAt: timestamp({ mode: 'date' })
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (userInvitations) => ({
+    userInvitationUniqueConstraint: unique('userInvitationUniqueConstraint').on(
+      userInvitations.projectId,
+      userInvitations.userId,
+    ),
+  }),
+)
+export type UserInvitationsInsert = typeof userInvitations.$inferInsert
+export type UserInvitationsSelect = typeof userInvitations.$inferSelect
 
 export const projectApplicationFiles = pgTable('project_application_files', {
   id: uuid().primaryKey().notNull().defaultRandom(),
@@ -781,6 +812,10 @@ export const projectRelations = relations(projects, ({ many }) => ({
   application: many(projectApplication, {
     relationName: 'projectApplication',
   }),
+  userInvitations: many(userInvitations, {
+    relationName: 'userInvitations',
+  }),
+
   projectMemberships: many(projectMemberships),
 
   participants: many(participants),
@@ -831,10 +866,6 @@ export const participantsRelation = relations(participants, ({ one }) => ({
   }),
 }))
 
-export const userParticipantsRelation = relations(users, ({ many }) => ({
-  participants: many(participants),
-}))
-
 export const projectSkillRelations = relations(projectSkill, ({ one }) => ({
   skill: one(skills, {
     fields: [projectSkill.skillId],
@@ -848,6 +879,9 @@ export const projectSkillRelations = relations(projectSkill, ({ one }) => ({
 
 export const skillProjectRelations = relations(skills, ({ many }) => ({
   projectSkills: many(projectSkill),
+}))
+export const skillUserRelations = relations(skills, ({ many }) => ({
+  userSkills: many(userSkills),
 }))
 
 export const timetableRelations = relations(projectTimetable, ({ one }) => ({
@@ -920,6 +954,19 @@ export const projectApplicationRelations = relations(
       references: [users.id],
     }),
     files: many(projectApplicationFiles),
+  }),
+)
+export const userInvitationRelations = relations(
+  userInvitations,
+  ({ one }) => ({
+    project: one(projects, {
+      fields: [userInvitations.projectId],
+      references: [projects.id],
+    }),
+    user: one(users, {
+      fields: [userInvitations.userId],
+      references: [users.id],
+    }),
   }),
 )
 
@@ -1072,6 +1119,8 @@ export const userRelations = relations(users, ({ one, many }) => ({
   projects: many(projectMemberships),
   projectSettings: many(userProjectSettings),
   authenticators: many(authenticators),
+  applications: many(projectApplication),
+  invitations: many(userInvitations),
   ratings: many(userRatings),
   follows: many(userFollows),
   image: one(uploadedFiles, {
@@ -1079,4 +1128,5 @@ export const userRelations = relations(users, ({ one, many }) => ({
     references: [uploadedFiles.id],
   }),
   userSkillVerification: many(userSkillVerification),
+  participation: many(participants),
 }))

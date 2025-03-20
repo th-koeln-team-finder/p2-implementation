@@ -3,6 +3,7 @@ import type { ProjectSelect, UserInsert } from '@repo/database/schema'
 export type PopulatedProject = ProjectSelect & {
   isBookmarked: boolean
   starCount: string
+
   isStared: boolean
   tags: { tag: { id: string; name: string } }[]
   //  tagSimilarity: number //is this necessary?

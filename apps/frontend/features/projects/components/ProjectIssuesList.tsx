@@ -19,7 +19,7 @@ import { useTranslations } from 'next-intl'
 export function ProjectIssuesList({
   listOfIssues,
 }: {
-  listOfIssues: ProjectIssueSelect[]
+  listOfIssues: Pick<ProjectIssueSelect, 'title' | 'description'>[]
 }) {
   const translate = useTranslations()
 
@@ -60,26 +60,26 @@ export function ProjectIssuesList({
 }
 
 type ProjectIssuesListContentProps = {
-  issues: ProjectIssueSelect[]
+  issues: Pick<ProjectIssueSelect, 'title' | 'description'>[]
 }
 
 function ProjectIssuesListContent({ issues }: ProjectIssuesListContentProps) {
   return (
     <div className="flex flex-col gap-2">
       {issues.map((issue) => (
-        <ProjectIssuesListItem issue={issue} key={issue.id ?? issue.title} />
+        <ProjectIssuesListItem issue={issue} key={issue.title} />
       ))}
     </div>
   )
 }
 
 type ProjectIssuesListItemProps = {
-  issue: ProjectIssueSelect
+  issue: Pick<ProjectIssueSelect, 'title' | 'description'>
 }
 
 function ProjectIssuesListItem({ issue }: ProjectIssuesListItemProps) {
   return (
-    <Card key={issue.id}>
+    <Card>
       <CardHeader className="p-2">
         <CardTitle>{issue.title}</CardTitle>
         <CardDescription>{issue.description}</CardDescription>

@@ -1,11 +1,12 @@
-import { EyeIcon, StarIcon, TextIcon } from 'lucide-react'
+import { EyeIcon, StarIcon, TextIcon, UserPlusIcon } from 'lucide-react'
 
 import { authMiddleware } from '@/auth'
 import { getApplicationsForProject } from '@/features/Application/applications.queries'
 import { ApplicationList } from '@/features/Application/components/ApplicationList'
 import { hasSessionPermission } from '@/features/auth/auth.utils'
-import { redirect } from '@/features/i18n/routing'
+import { Link, redirect } from '@/features/i18n/routing'
 import { getProjectItem } from '@/features/projects/projects.queries'
+import { Button } from '@repo/design-system/components/ui/button'
 import { getLocale, getTranslations } from 'next-intl/server'
 
 type ApplicationDetailProps = {
@@ -71,6 +72,17 @@ export default async function ApplicationOverview({
         </div>
       </div>
 
+      <div className="mt-2 mb-1 flex flex-row items-center justify-between">
+        <h2 className="font-semibold text-2xl">
+          {translate('projects.overview.applicationTitle')}
+        </h2>
+        <Link href={`/projects/${projectId}/findSomeone`}>
+          <Button>
+            <UserPlusIcon />
+            Find Someone
+          </Button>
+        </Link>
+      </div>
       <ApplicationList projectId={projectId} />
     </div>
   )

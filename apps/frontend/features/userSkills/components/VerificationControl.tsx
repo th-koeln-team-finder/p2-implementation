@@ -30,14 +30,14 @@ export default function VerificationControl({
   const t = useTranslations('users')
   const [loading, setLoading] = useState(false)
 
-  const verifySkill = async (skillId: string) => {
+  const verifySkill = async () => {
     setLoading(true)
     await verifyUserSkill(verifierId, skillId)
     await revalidateUserSkills()
     setLoading(false)
   }
 
-  const unverifySkill = async (skillId: string) => {
+  const unverifySkill = async () => {
     setLoading(true)
     await unverifyUserSkill(verifierId, skillId)
     await revalidateUserSkills()
@@ -52,9 +52,9 @@ export default function VerificationControl({
             size="sm"
             onClick={async () => {
               if (isVerified) {
-                await unverifySkill(skillId)
+                await unverifySkill()
               } else {
-                await verifySkill(skillId)
+                await verifySkill()
               }
             }}
             disabled={loading}
