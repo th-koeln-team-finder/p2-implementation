@@ -7,7 +7,7 @@ import {
 
 const modelTypes = {
   small: 'Xenova/multilingual-e5-small', // Vector size: 384
-  large: 'Xenova/bge-large-en-v1.5', // Vector size: 1024
+  large: 'Xenova/multilingual-e5-small', // Vector size: 1024
 } as const
 
 // Use the Singleton pattern to enable lazy construction of the pipeline.

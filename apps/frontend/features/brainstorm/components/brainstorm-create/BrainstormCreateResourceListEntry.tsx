@@ -64,7 +64,7 @@ export function BrainstormCreateResourceListEntry({
         <div className="flex flex-row">
           <field.SubFieldProvider name="type">
             <SelectForm
-              triggerClassName="m-0 w-[11ch] rounded-none rounded-l border-input bg-muted p-0 py-0 pr-2 pl-3 font-bold text-input"
+              triggerClassName="m-0 text-sm w-[8ch] rounded-none rounded-l border-input bg-muted p-0 py-0 pr-2 pl-2 font-bold text-input"
               open={selectOpen}
               onOpenChange={(open) => {
                 setSelectOpen(open)
@@ -95,7 +95,7 @@ export function BrainstormCreateResourceListEntry({
               <div className="flex-1">
                 <InputForm
                   placeholder={translate('resourcePlaceholderLink')}
-                  className="rounded-none rounded-r"
+                  className="rounded-none rounded-r text-sm"
                 />
                 <FieldError />
               </div>
@@ -159,7 +159,7 @@ function FileNamePreviewForm({ uploadProgress }: FileNamePreviewFormProps) {
   const fileName = field.data.value?.[0]?.data?.value?.name
   if (!fileName) {
     return (
-      <p className="text-muted-foreground text-sm">
+      <p className="font-normal text-muted-foreground text-sm">
         {translate('brainstorm.createForm.resourcePlaceholderFile')}
       </p>
     )
