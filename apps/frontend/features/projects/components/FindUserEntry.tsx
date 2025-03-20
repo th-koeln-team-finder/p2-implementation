@@ -1,22 +1,22 @@
+import { UserAvatar } from '@/features/auth/components/UserAvatar'
+import type { getUsers } from '@/features/users/users.query'
 import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
+import { Button } from '@repo/design-system/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardTitle,
 } from '@repo/design-system/components/ui/card'
-import { Button } from '@repo/design-system/components/ui/button'
-import { ShellIcon, UserRoundPlus } from 'lucide-react'
-import { UserAvatar } from '@/features/auth/components/UserAvatar'
-import Link from 'next/link'
-import type { getUsers } from '@/features/users/users.query'
-import { getTranslations } from 'next-intl/server'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@repo/design-system/components/ui/tooltip'
+import { ShellIcon, UserRoundPlus } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
+import Link from 'next/link'
 
 type FindSomeoneListEntryProps = {
   user: Awaited<ReturnType<typeof getUsers>>[number]

@@ -12,12 +12,8 @@ import {
   getStringContentFromEditor,
   useLexicalEditorRef,
 } from '@repo/design-system/components/WysiwygEditor'
-import { FileInlinePreviewsForm } from '@repo/design-system/components/custom/file-inline-previews-form'
-import { FileListForm } from '@repo/design-system/components/custom/file-list-form'
-import { FileUploadForm } from '@repo/design-system/components/custom/file-upload'
 import { Button } from '@repo/design-system/components/ui/button'
 import { Label } from '@repo/design-system/components/ui/label'
-import { clientEnv } from '@repo/env/client'
 import { UserPlusIcon } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
@@ -45,7 +41,7 @@ export default function ApplicationDetail({
   const translateError = useTranslations('validation')
 
   const [alertMessage, setAlertMessage] = useState<string | null>(null)
-  const [progressState, uploadFile, resetFileProgress] = useFileUpload()
+  const [_progressState, uploadFile, resetFileProgress] = useFileUpload()
 
   const form = useForm<ApplyFormValues, typeof ZodAdapter>({
     validatorAdapter: ZodAdapter,

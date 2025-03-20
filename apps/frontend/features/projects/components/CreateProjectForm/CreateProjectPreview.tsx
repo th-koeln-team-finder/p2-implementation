@@ -36,7 +36,7 @@ export function CreateProjectPreview({
   ]
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       setUser(await getUserProfile())
     })()
   }, [])

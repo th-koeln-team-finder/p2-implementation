@@ -163,10 +163,10 @@ export const en = {
         submit: 'Send Request',
       },
     },
-    invite:{
+    invite: {
       title: 'send a invite to join the team',
       form: {
-        message:'write a something about your project',
+        message: 'write a something about your project',
         placeholderMessage: 'Enter your message...',
         submit: 'Send invite',
       },

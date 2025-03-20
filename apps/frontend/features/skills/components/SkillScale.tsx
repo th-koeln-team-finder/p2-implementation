@@ -59,7 +59,6 @@ export function SkillScale(
     'loggedInUserId' in props ? props.loggedInUserId : undefined
   const translate = useTranslations()
 
-
   return (
     <div className="w-full">
       <h2 className="mb-2 font-medium text-2xl">{title}</h2>

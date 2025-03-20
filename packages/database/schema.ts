@@ -474,7 +474,6 @@ export const projectApplication = pgTable(
 export type ProjectApplicationInsert = typeof projectApplication.$inferInsert
 export type ProjectApplicationSelect = typeof projectApplication.$inferSelect
 
-
 export const userInvitations = pgTable(
   'userInvitations',
   {

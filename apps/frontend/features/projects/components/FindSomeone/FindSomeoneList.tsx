@@ -1,8 +1,8 @@
-import { FindSomeoneListEntry } from '@/features/projects/components/FindUserEntry'
-import { getUsers } from '@/features/users/users.query'
 import { authMiddleware } from '@/auth'
 import { LazyLoader } from '@/features/general/components/LazyLoader'
+import { FindSomeoneListEntry } from '@/features/projects/components/FindUserEntry'
 import { revalidateUser } from '@/features/users/users.actions'
+import { getUsers } from '@/features/users/users.query'
 
 type FindSomeoneListProps = {
   search?: string
@@ -15,7 +15,6 @@ const pageSize = 15
 export async function FindSomeoneList({
   projectId,
   offset,
-  search,
 }: FindSomeoneListProps) {
   const session = await authMiddleware()
 

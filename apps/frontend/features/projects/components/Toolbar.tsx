@@ -1,23 +1,22 @@
 'use client'
+import { useSessionPermission } from '@/features/auth/auth.hooks'
 import { CanUserClient } from '@/features/auth/components/CanUser.client'
 import { Link } from '@/features/i18n/routing'
+import { useRouter } from '@/features/i18n/routing'
 import {
   useIsUserAppliedToProject,
   useIsUserMemberOfProject,
 } from '@/features/projects/project.hooks'
 import {
-
-    toggleProjectBookmark, toggleProjectStar,
-
+  toggleProjectBookmark,
+  toggleProjectStar,
 } from '@/features/projects/projects.actions'
 import type { PopulatedProject } from '@/features/projects/projects.types'
 import { Button } from '@repo/design-system/components/ui/button'
 import { cn } from '@repo/design-system/lib/utils'
 import { BookmarkIcon, LinkIcon, StarIcon } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
-import {useSessionPermission} from "@/features/auth/auth.hooks";
-import {useRouter} from "@/features/i18n/routing";
-import {useSession} from "next-auth/react";
 
 import { useOptimistic, useTransition } from 'react'
 
@@ -26,7 +25,7 @@ type ProjectProps = {
 }
 
 export function Toolbar({ project }: ProjectProps) {
-    const t = useTranslations('projects')
+  const t = useTranslations('projects')
   const stars = project.starCount || 13_000
   const projectId = project.id
   const starsString = stars.toLocaleString('en', { notation: 'compact' })
@@ -35,13 +34,13 @@ export function Toolbar({ project }: ProjectProps) {
   const [isApplied, isLoadingApplication] = useIsUserAppliedToProject(projectId)
   const [isMember, _isLoadingMemberships] = useIsUserMemberOfProject(projectId)
 
-    const router = useRouter()
-    const { data: session } = useSession()
-    const isCreator = session?.user?.id === project.createdBy
+  const _router = useRouter()
+  const { data: session } = useSession()
+  const _isCreator = session?.user?.id === project.createdBy
 
-    const [_, startTransition] = useTransition()
-    const canCreate = useSessionPermission('project', 'create')
-    const [optimisticBookmarked, dispatchOptimisticBookmark] = useOptimistic(
+  const [_, startTransition] = useTransition()
+  const canCreate = useSessionPermission('project', 'create')
+  const [optimisticBookmarked, dispatchOptimisticBookmark] = useOptimistic(
     project.isBookmarked,
     (_, payload: boolean) => {
       return payload

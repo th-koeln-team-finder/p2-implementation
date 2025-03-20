@@ -8,7 +8,8 @@ import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
 import {
   type ProjectApplicationInsert,
-  type TagSelect, UserInvitationsInsert,
+  type TagSelect,
+  type UserInvitationsInsert,
   Weekdays,
 } from '@repo/database/schema'
 import { generateTextEmbeddings } from '@repo/semantic-search'
@@ -333,12 +334,8 @@ export async function revalidateProjects() {
   return await revalidateTag('projects')
 }
 
-export async function createInvitation(
-    payload: UserInvitationsInsert
-){
-    await db
-    .insert(Schema.userInvitations)
-    .values(payload)
+export async function createInvitation(payload: UserInvitationsInsert) {
+  await db.insert(Schema.userInvitations).values(payload)
 }
 
 export async function createApplication(

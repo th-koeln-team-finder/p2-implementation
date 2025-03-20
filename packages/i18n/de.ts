@@ -168,13 +168,13 @@ export const de: Language = {
         submit: 'Anfrage senden',
       },
     },
-    invite:{
-        title: 'Sende eine Einladung an die Person',
-        form: {
-          message:'erzähl etwas über das Projekt',
-          placeholderMessage: 'Gib eine Nachricht ein...',
-            submit: 'Einladung senden',
-        },
+    invite: {
+      title: 'Sende eine Einladung an die Person',
+      form: {
+        message: 'erzähl etwas über das Projekt',
+        placeholderMessage: 'Gib eine Nachricht ein...',
+        submit: 'Einladung senden',
+      },
     },
     overview: {
       title: 'Projektübersicht',
