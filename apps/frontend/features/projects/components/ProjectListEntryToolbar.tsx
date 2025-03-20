@@ -1,5 +1,6 @@
 'use client'
 
+import { useSessionPermission } from '@/features/auth/auth.hooks'
 import { CanUserClient } from '@/features/auth/components/CanUser.client'
 import {
   revalidateProjects,
@@ -15,7 +16,6 @@ import {
   useOptimistic,
   useTransition,
 } from 'react'
-import { useSessionPermission } from '@/features/auth/auth.hooks'
 
 type FindAProjectListEntryProps = {
   projectId: string

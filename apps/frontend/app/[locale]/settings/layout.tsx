@@ -1,3 +1,5 @@
+import { authMiddleware } from '@/auth'
+import { redirect } from '@/features/i18n/routing'
 import { SidebarNav } from '@/features/users/components/SidebarNav'
 import {
   BadgeCheck,
@@ -7,8 +9,6 @@ import {
   SquareUserIcon,
 } from 'lucide-react'
 import { getLocale, getTranslations } from 'next-intl/server'
-import { authMiddleware } from '@/auth'
-import { redirect } from '@/features/i18n/routing'
 
 export default async function EditProfileLayout({
   children,

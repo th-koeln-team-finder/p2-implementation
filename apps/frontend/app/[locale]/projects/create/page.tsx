@@ -2,9 +2,9 @@ import { hasSessionPermission } from '@/features/auth/auth.utils'
 import { LoginButton } from '@/features/auth/components/LoginButton'
 import { RegisterButton } from '@/features/auth/components/RegisterButton'
 import { CreateProjectForm } from '@/features/projects/components/CreateProjectForm'
+import { Card, CardContent } from '@repo/design-system/components/ui/card'
 import { BanIcon } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
-import { Card, CardContent } from '@repo/design-system/components/ui/card'
 
 export default async function CreateAProject() {
   const canCreateProject = await hasSessionPermission('project', 'create')

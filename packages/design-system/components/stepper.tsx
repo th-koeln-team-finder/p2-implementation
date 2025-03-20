@@ -1,9 +1,9 @@
 'use client'
 
-import { cn } from '../lib/utils'
 import { useTranslations } from 'next-intl'
 import * as React from 'react'
 import { Button } from '../components/ui/button'
+import { cn } from '../lib/utils'
 
 const StepperComponent = ({
   steps,

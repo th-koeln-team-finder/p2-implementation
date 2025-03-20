@@ -1,6 +1,8 @@
+import { authMiddleware } from '@/auth'
 import { AppSidebar } from '@/features/general/components/AppSidebar'
 import Header from '@/features/header/header'
 import { routing } from '@/features/i18n/routing'
+import RegisterPush from '@/features/notifications/components/RegisterPush'
 import {
   SidebarInset,
   SidebarProvider,
@@ -9,8 +11,6 @@ import { SessionProvider } from 'next-auth/react'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { notFound } from 'next/navigation'
-import RegisterPush from '@/features/notifications/components/RegisterPush'
-import { authMiddleware } from '@/auth'
 
 export default async function RootLayout({
   children,

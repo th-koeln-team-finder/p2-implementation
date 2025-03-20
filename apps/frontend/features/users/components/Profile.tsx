@@ -14,10 +14,10 @@ import PreviouslyWorkedOn from '@/features/users/components/PreviouslyWorkedOn'
 import { getUser } from '@/features/users/users.query'
 import type { UserWithImage } from '@/features/users/users.types'
 import type { UserSelect } from '@repo/database/schema'
+import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import { Button } from '@repo/design-system/components/ui/button'
 import { UserPen } from 'lucide-react'
 import { getLocale, getTranslations } from 'next-intl/server'
-import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 
 export default async function Profile({ user }: { user: UserWithImage }) {
   const translate = await getTranslations()
