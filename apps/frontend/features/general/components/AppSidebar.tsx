@@ -3,6 +3,7 @@ import { LoginButton } from '@/features/auth/components/LoginButton'
 import { RegisterButton } from '@/features/auth/components/RegisterButton'
 import { SignOutMenuItem } from '@/features/auth/components/SignOutMenuItem'
 import { UserAvatar } from '@/features/auth/components/UserAvatar'
+import { AppSidebarLink } from '@/features/general/components/AppSidebarLink'
 import { ApplicationIconText } from '@/features/general/components/ApplicationIconText'
 import { Link } from '@/features/i18n/routing'
 import { getUserWithImage } from '@/features/users/users.query'
@@ -103,22 +104,22 @@ export async function AppSidebar() {
                   align="end"
                   sideOffset={4}
                 >
-                  <Link href="/my-projects">
+                  <AppSidebarLink href="/my-projects">
                     <DropdownMenuItem>
                       <Users2Icon /> {translate('settingLinkMyProjects')}
                     </DropdownMenuItem>
-                  </Link>
-                  <Link href="/my-brainstorms">
+                  </AppSidebarLink>
+                  <AppSidebarLink href="/my-brainstorms">
                     <DropdownMenuItem>
                       <BrainCircuitIcon />{' '}
                       {translate('settingLinkMyBrainstorms')}
                     </DropdownMenuItem>
-                  </Link>
-                  <Link href="/settings/profile">
+                  </AppSidebarLink>
+                  <AppSidebarLink href="/settings/profile">
                     <DropdownMenuItem>
                       <SettingsIcon /> {translate('settingLinkSettings')}
                     </DropdownMenuItem>
-                  </Link>
+                  </AppSidebarLink>
                   <DropdownMenuSeparator />
                   <SignOutMenuItem />
                 </DropdownMenuContent>

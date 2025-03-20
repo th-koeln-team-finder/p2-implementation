@@ -57,7 +57,7 @@ export default async function EditProfileLayout({
 
   return (
     <main className="container mx-auto my-4 px-4">
-      <h1 className="mb-8 font-bold text-3xl">{translate('title')}</h1>
+      <h1 className="mb-8 font-bold text-2xl">{translate('title')}</h1>
 
       <div className="flex flex-col lg:flex-row">
         <aside className="lg:-mx-4 mb-6 border-b bg-sidebar pb-6 lg:mr-6 lg:mb-0 lg:w-1/5 lg:border-b-0 lg:pr-6 lg:pb-0">
