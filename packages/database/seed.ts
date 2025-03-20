@@ -11,6 +11,7 @@ import { makeBrainstormComment } from './factory/brainstormComment.factory'
 import { makeBrainstormCommentLike } from './factory/brainstormCommentLike.factory'
 import { makeBrainstormResource } from './factory/brainstormResource.factory'
 import { makeIssue } from './factory/issues.factory'
+import { makeProjectMemberships } from './factory/projectMemberships.factory'
 import {
   projectsData,
   uniqueProjectSkills,
@@ -18,7 +19,6 @@ import {
   uniqueProjectUsers,
 } from './factory/projects.data'
 import { makeProject } from './factory/projects.factory'
-import { makeProjectMemberships } from './factory/projectMemberships.factory'
 import { makeTag } from './factory/tag.factory'
 import { makeUserFollows } from './factory/userFollows.factory'
 import { makeUserSkillVerification } from './factory/userSkillVerification.factory'
