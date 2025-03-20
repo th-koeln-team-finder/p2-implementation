@@ -4,6 +4,7 @@ import { authMiddleware } from '@/auth'
 import { hasSessionPermission } from '@/features/auth/auth.utils'
 import { redirect } from '@/features/i18n/routing'
 import type { CreateProjectFormValues } from '@/features/projects/projects.types'
+import { getUserWithImage } from '@/features/users/users.query'
 import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
 import {
@@ -16,7 +17,6 @@ import { generateTextEmbeddings } from '@repo/semantic-search'
 import { and, eq } from 'drizzle-orm'
 import { getLocale } from 'next-intl/server'
 import { revalidateTag } from 'next/cache'
-import { getUserWithImage } from '@/features/users/users.query'
 
 async function authCheckCreateProject() {
   const session = await authMiddleware()
