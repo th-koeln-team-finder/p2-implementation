@@ -95,13 +95,6 @@ export async function seed() {
     users.map((e) => [`${e.firstName} ${e.lastName}`, e.id]),
   )
 
-  console.log('Uploading "rock.png" to Minio')
-  const fileId = await uploadToMinio(
-    './demo-images/rock.png',
-    'testing/test.png',
-    faker.helpers.arrayElement(userIds),
-  )
-
   console.log(`Creating ${projectsData.length} projects`)
   const [initialProjectData, ...restProjectsData] = projectsData
   // Loading the first one like this so the embeddings model can get loaded
@@ -116,12 +109,32 @@ export async function seed() {
     .returning()
   const projectIds = Object.fromEntries(projects.map((e) => [e.name, e.id]))
 
+  console.log('Uploading project pictures to Minio')
+  const fileIds = Object.fromEntries(
+    await Promise.all(
+      projectsData.flatMap((project) =>
+        project.file.map(
+          async (file): Promise<[string, string]> => [
+            file.image,
+            await uploadToMinio(
+              file.image,
+              `projects/${projectIds[project.name]}/${file.image.replace('demo-images/', '')}`,
+              faker.helpers.arrayElement(userIds),
+            ),
+          ],
+        ),
+      ),
+    ),
+  )
+
   console.log('Creating project picture records')
-  const projectPictureData = Object.values(projectIds).map((projectId) => ({
-    projectId,
-    fileUpload: fileId,
-    label: 'Testing',
-  }))
+  const projectPictureData = projectsData.flatMap((project) =>
+    project.file.map((file) => ({
+      projectId: projectIds[project.name],
+      fileUpload: fileIds[file.image],
+      label: project.name,
+    })),
+  )
   await db.insert(Schema.projectPicture).values(projectPictureData).execute()
 
   console.log(`Creating ${brainstormData.length} brainstorms`)

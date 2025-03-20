@@ -2,8 +2,8 @@ export const projectsData = [
   {
     name: 'EcoTrack',
     file: [
-      {image: '/demo-images/eco-track(2)-min.jpg'},
-      {image: '/demo-images/eco-track(4)-min.jpg'},
+      { image: 'demo-images/eco-track(2)-min.jpg' },
+      { image: 'demo-images/eco-track(4)-min.jpg' },
     ],
     descriptionText:
       '# EcoTrack - Your Carbon Footprint Companion\n\nEcoTrack is a revolutionary platform that enables individuals and businesses to track, analyze, and reduce their carbon footprint through real-time data and AI-powered insights. Our mission is to make sustainability accessible, actionable, and engaging for everyone.\n\n## Key Features\n- **Carbon Footprint Calculator**: Input daily activities and receive real-time calculations on your environmental impact.\n- **AI-Powered Insights**: Personalized recommendations on reducing emissions based on your lifestyle.\n- **Integration with Smart Devices**: Connect with IoT devices, such as smart meters and wearables, to track energy consumption and mobility data.\n- **Community Challenges**: Participate in sustainability challenges, track collective impact, and compete with friends and companies.\n- **Dashboard & Reports**: Visualize trends, analyze improvements, and export data for reporting.\n\n## Why Join EcoTrack?\n- Work on a meaningful project that contributes to environmental sustainability.\n- Gain experience in AI, data analytics, and full-stack development.\n- Collaborate with a passionate and interdisciplinary team.\n- Make a real-world impact by helping people and companies transition to greener lifestyles.',
@@ -412,11 +412,11 @@ export const projectsData = [
   {
     name: 'HealthSync',
     file: [
-      {image: '/demo-images/health-sync.jpg'},
-      {image: '/demo-images/health-sync(2).jpg'},
-      {image: '/demo-images/health-sync(3).jpg'},
-      {image: '/demo-images/health-sync(4).jpg'},
-      {image: '/demo-images/health-sync(6).jpg'},
+      { image: 'demo-images/health-sync.jpg' },
+      { image: 'demo-images/health-sync(2).jpg' },
+      { image: 'demo-images/health-sync(3).jpg' },
+      { image: 'demo-images/health-sync(4).jpg' },
+      { image: 'demo-images/health-sync(6).jpg' },
     ],
     descriptionText:
       '# HealthSync: Your Health, Unified  \nHealthSync is a **secure platform** that consolidates all your health records in one place. From doctor visits to lab results and prescriptions, HealthSync ensures your medical history is always accessible and up-to-date.  \n\n### Key Benefits:  \n- **Centralized Records**: Access all your health data in one app.  \n- **AI Insights**: Get personalized health recommendations based on your history.  \n- **Emergency Access**: Share critical health information with doctors in emergencies.  \n\n**Motivation**:  \n> "Managing health records across multiple providers can be chaotic and inefficient. HealthSync empowers individuals to take control of their health data and make informed decisions."',
@@ -725,10 +725,10 @@ export const projectsData = [
   {
     name: 'CodeCollab',
     file: [
-      {image: '/demo-images/code-collab.jpg'},
-      {image: '/demo-images/code-collab(2)-min.jpg'},
-      {image: '/demo-images/code-collab(3)-min.jpg'},
-      {image: '/demo-images/code-collab(4).jpg'},
+      { image: 'demo-images/code-collab.jpg' },
+      { image: 'demo-images/code-collab(2)-min.jpg' },
+      { image: 'demo-images/code-collab(3)-min.jpg' },
+      { image: 'demo-images/code-collab(4).jpg' },
     ],
     descriptionText:
       'CodeCollab is a web-based platform that allows developers to collaborate on code in real-time, similar to Google Docs but tailored for coding. It supports multiple programming languages, version control integration, and live debugging. **Motivation**: Remote work and open-source collaboration are on the rise, but existing tools often lack seamless real-time collaboration features. CodeCollab aims to bridge this gap and make coding together more efficient.',
@@ -834,9 +834,9 @@ export const projectsData = [
   {
     name: 'ArtVerse',
     file: [
-      {image: '/demo-images/artverse.jpg'},
-      {image: '/demo-images/artverse(3)-min.jpg'},
-      {image: '/demo-images/artverse(5)-min.jpg'},
+      { image: 'demo-images/artverse.jpg' },
+      { image: 'demo-images/artverse(3)-min.jpg' },
+      { image: 'demo-images/artverse(5)-min.jpg' },
     ],
     descriptionText:
       '# ArtVerse - The Digital Art Marketplace & Community\n\nArtVerse is a decentralized platform that connects artists with collectors, enabling seamless digital art trading using blockchain technology. Our goal is to create a fair and transparent ecosystem for digital artists worldwide.\n\n## Key Features\n- **NFT Marketplace**: Mint, buy, and sell digital artwork securely.\n- **Community & Collaboration**: Connect with other artists, participate in challenges, and showcase your work.\n- **Smart Contracts for Licensing**: Ensure fair royalties through automated payments.\n- **Virtual Exhibitions**: Display and experience digital art in an immersive environment.\n- **Cross-Chain Compatibility**: Support for multiple blockchain networks.\n\n## Why Join ArtVerse?\n- Work at the intersection of blockchain and digital art.\n- Gain experience in smart contracts and decentralized applications.\n- Contribute to a growing community of digital creators.\n- Help shape the future of digital art trading.',
@@ -1229,9 +1229,9 @@ export const projectsData = [
   {
     name: 'MindSpace - Virtual Co-Working Platform',
     file: [
-      {image: '/demo-images/mind-space.jpg'},
-      {image: '/demo-images/mind-space(2).jpg'},
-      {image: '/demo-images/mind-space(3).jpg'},
+      { image: 'demo-images/mind-space.jpg' },
+      { image: 'demo-images/mind-space(2).jpg' },
+      { image: 'demo-images/mind-space(3).jpg' },
     ],
     descriptionText:
       '# \uD83E\uDDE0 MindSpace: Work Together, Apart  \nMindSpace is a **virtual co-working platform** that recreates the experience of working in a shared office. It includes features like virtual desks, break rooms, and AI-powered productivity tools.  \n\n### Features:  \n- **Virtual Desks**: Claim a spot in a shared virtual office.  \n- **Break Rooms**: Take breaks and chat with others.  \n- **AI Tools**: Get productivity tips and focus reminders.  \n\n**Motivation**:  \n> "Remote work can feel isolating, and distractions at home are common. MindSpace brings back the structure and camaraderie of a physical office, helping remote workers stay focused and connected."',
@@ -1510,8 +1510,8 @@ export const projectsData = [
   {
     name: 'Learnly',
     file: [
-      {image: '/demo-images/learnly.jpg'},
-      {image: '/demo-images/learnly(4).jpg'},
+      { image: 'demo-images/learnly.jpg' },
+      { image: 'demo-images/learnly(4).jpg' },
     ],
     descriptionText:
       "# Learnly - Personalized Learning Made Easy\n\nLearnly is an AI-powered learning platform that adapts to individual students' needs, providing personalized study plans and interactive content. Our goal is to make high-quality education accessible to everyone, anywhere in the world.\n\n## Key Features\n- **AI-Driven Learning Paths**: Adaptive study plans based on performance.\n- **Interactive Exercises**: Gamified quizzes and problem-solving challenges.\n- **Live Tutor Support**: Connect with expert tutors in real-time.\n- **Multi-Language Support**: Learn in different languages with AI-assisted translations.\n- **Progress Tracking & Analytics**: Detailed insights into learning progress.\n\n## Why Join Learnly?\n- Work on a project that revolutionizes education.\n- Gain experience in AI-driven personalization and ed-tech.\n- Collaborate with educators, engineers, and AI specialists.\n- Help students reach their full potential through technology.",
@@ -1890,9 +1890,9 @@ export const projectsData = [
   {
     name: 'CodeBuddy',
     file: [
-      {image: '/demo-images/codebuddy.jpg'},
-      {image: '/demo-images/codebuddy(3)-min.jpg'},
-      {image: '/demo-images/codebuddy(4).jpg'},
+      { image: 'demo-images/codebuddy.jpg' },
+      { image: 'demo-images/codebuddy(3)-min.jpg' },
+      { image: 'demo-images/codebuddy(4).jpg' },
     ],
     descriptionText:
       'CodeBuddy ist eine Plattform für Entwickler, um gemeinsam an Projekten zu arbeiten, Wissen auszutauschen und sich gegenseitig zu unterstützen. Egal, ob Anfänger oder erfahrener Profi – hier findet jeder Gleichgesinnte zum Coden und Lernen.\n\n**Funktionen:**\n- Open-Source-Projektfindung\n- Echtzeit-Coding-Sessions\n- Peer-Review-System\n- Mentoring-Programme\n\nMach mit und werde Teil einer aktiven Entwickler-Community!',
@@ -2090,9 +2090,9 @@ export const projectsData = [
   {
     name: 'GreenTrack',
     file: [
-      {image: '/demo-images/greentrack.jpg'},
-      {image: '/demo-images/greentrack(2).jpg'},
-      {image: '/demo-images/greentrack(4).jpg'},
+      { image: 'demo-images/greentrack.jpg' },
+      { image: 'demo-images/greentrack(2).jpg' },
+      { image: 'demo-images/greentrack(4).jpg' },
     ],
     descriptionText:
       'Nachhaltigkeit trifft Technologie: GreenTrack hilft Unternehmen und Einzelpersonen, ihren CO₂-Fußabdruck zu überwachen und nachhaltige Entscheidungen zu treffen.\n\n**Was wir bieten:**\n- Automatische Berechnung des CO₂-Ausstoßes\n- Empfehlungen für nachhaltigere Alternativen\n- Unternehmenstracking mit ESG-Reports\n- Gamification-Elemente für mehr Motivation\n\nLass uns gemeinsam eine grünere Zukunft gestalten!',
@@ -2308,9 +2308,9 @@ export const projectsData = [
   {
     name: 'MentalSpace',
     file: [
-      {image: '/demo-images/mental-space.jpg'},
-      {image: '/demo-images/mental-space(2).jpg'},
-      {image: '/demo-images/mental-space(3).jpg'},
+      { image: 'demo-images/mental-space.jpg' },
+      { image: 'demo-images/mental-space(2).jpg' },
+      { image: 'demo-images/mental-space(3).jpg' },
     ],
     descriptionText:
       'Achtsamkeit für den digitalen Alltag: MentalSpace ist eine App für mentale Gesundheit, die Nutzer mit Meditationen, Entspannungsübungen und personalisierten Routinen unterstützt.\n\n**Wichtige Features:**\n- AI-gestützte Entspannungstechniken\n- Mood-Tracking & Tagebuchfunktion\n- Geführte Meditationen\n- Integration mit Wearables für HRV-Messung\n\nUnsere Mission: Stress reduzieren und Wohlbefinden steigern!',
@@ -2524,9 +2524,9 @@ export const projectsData = [
   {
     name: 'FoodRescue',
     file: [
-      {image: '/demo-images/food-rescue(2).jpg'},
-      {image: '/demo-images/food-rescue(3).jpg'},
-      {image: '/demo-images/food-rescue(4).jpg'},
+      { image: 'demo-images/food-rescue(2).jpg' },
+      { image: 'demo-images/food-rescue(3).jpg' },
+      { image: 'demo-images/food-rescue(4).jpg' },
     ],
     descriptionText:
       '#FoodResue \nJährlich werden Millionen Tonnen Lebensmittel verschwendet. FoodRescue setzt sich dafür ein, überschüssige Lebensmittel an Bedürftige zu verteilen.\n\n**Lösungsansätze:**\n- Matching-System zwischen Supermärkten und Hilfsorganisationen\n- Optimierte Logistik mit KI-gestützten Routen\n- App für Echtzeit-Anfragen\n- Transparenz & Reporting für Spenden\n\nJede Mahlzeit zählt – hilf uns, Lebensmittelverschwendung zu minimieren!',
@@ -2747,8 +2747,8 @@ export const projectsData = [
   {
     name: 'EventSphere',
     file: [
-      {image: '/demo-images/event-sphere(2).jpg'},
-      {image: '/demo-images/event-sphere(4).jpg'},
+      { image: 'demo-images/event-sphere(2).jpg' },
+      { image: 'demo-images/event-sphere(4).jpg' },
     ],
     descriptionText:
       'Die Zukunft des Event-Managements: EventSphere erleichtert die Planung, Organisation und Vermarktung von Veranstaltungen jeder Art.\n\n**Unsere Plattform bietet:**\n- Intelligente Event-Planung mit KI\n- Ticketing & Teilnehmer-Management\n- Interaktive Event-Apps\n- Networking-Funktionen & Livestream-Integration\n\nOb Konferenzen, Festivals oder private Feiern – EventSphere macht Event-Management einfach und effizient!',
@@ -2959,8 +2959,8 @@ export const projectsData = [
   {
     name: 'SoundHive',
     file: [
-      {image: '/demo-images/soundhive.jpg'},
-      {image: '/demo-images/soundhive(3).jpg'},
+      { image: 'demo-images/soundhive.jpg' },
+      { image: 'demo-images/soundhive(3).jpg' },
     ],
     descriptionText:
       'Musik neu gedacht: SoundHive verbindet Künstler mit Produzenten, um gemeinsam an Tracks zu arbeiten – in Echtzeit und weltweit.\n\n**Features:**\n- Kollaborative Musikproduktion\n- Cloud-Speicher für Tracks\n- KI-Mastering-Tool\n- Community-basierte Musikprojekte\n\nVon der Idee zum Hit – gemeinsam!',
@@ -3149,10 +3149,10 @@ export const projectsData = [
   {
     name: 'SmartGarden',
     file: [
-      {image: '/demo-images/smart-garden.jpg'},
-      {image: '/demo-images/smart-garden(2).jpg'},
-      {image: '/demo-images/smart-garden(3)-min.jpg'},
-      {image: '/demo-images/smart-garden(4).jpg'},
+      { image: 'demo-images/smart-garden.jpg' },
+      { image: 'demo-images/smart-garden(2).jpg' },
+      { image: 'demo-images/smart-garden(3)-min.jpg' },
+      { image: 'demo-images/smart-garden(4).jpg' },
     ],
     descriptionText:
       'Gärtnern mit Technologie: SmartGarden nutzt IoT und KI, um Pflanzen optimal zu pflegen und Wasserverschwendung zu vermeiden.\n\n**Vorteile:**\n- Automatische Bewässerungssteuerung\n- Pflanzenerkennung per Kamera\n- Wettervorhersage-Integration\n- App-Steuerung für individuelle Anpassungen',
@@ -3331,9 +3331,9 @@ export const projectsData = [
   {
     name: 'CryptoLedger',
     file: [
-      {image: '/demo-images/cryptoledger-min.jpg'},
-      {image: '/demo-images/cryptoledger(2).jpg'},
-      {image: '/demo-images/cryptoledger(3)-min.jpg'},
+      { image: 'demo-images/cryptoledger-min.jpg' },
+      { image: 'demo-images/cryptoledger(2).jpg' },
+      { image: 'demo-images/cryptoledger(3)-min.jpg' },
     ],
     descriptionText:
       'Finanzen sicher und transparent: CryptoLedger bietet eine dezentrale Plattform für die Verwaltung von Kryptowährungstransaktionen.\n\n**Kernfunktionen:**\n- Sichere Wallet-Integration\n- Automatisierte Steuerberechnungen\n- Multi-Blockchain-Support\n- Echtzeit-Analyse der Transaktionen',
@@ -3521,9 +3521,9 @@ export const projectsData = [
   {
     name: 'Plant Care Assistant',
     file: [
-      {image: '/demo-images/plant-care.jpg'},
-      {image: '/demo-images/plant-care(2).jpg'},
-      {image: '/demo-images/plant-care(3).jpg'},
+      { image: 'demo-images/plant-care.jpg' },
+      { image: 'demo-images/plant-care(2).jpg' },
+      { image: 'demo-images/plant-care(3).jpg' },
     ],
     descriptionText:
       'Plant Care Assistant ist eine App, die dir hilft, deine Pflanzen gesund zu halten, indem sie Erinnerungen für das Gießen und Düngen liefert und spezifische Pflegehinweise für verschiedene Pflanzenarten bietet. Die App nutzt künstliche Intelligenz, um die Bedürfnisse deiner Pflanzen anhand von Standort- und Umgebungsdaten automatisch anzupassen.\n\n**Funktionen:**\n- Pflanzenpflege-Tracker: Verfolge das Wachstum deiner Pflanzen und erhalte pflegeleichte Erinnerungen.\n- KI-basierte Empfehlungen: Anhand von Wetterdaten und deinem Standort werden individuelle Pflegetipps gegeben.\n- Pflanzenbibliothek: Eine umfangreiche Datenbank von Pflanzen mit detaillierten Informationen zu Pflege, Lichtbedarf und Wachstum.\n- Community-Feature: Teile deine Pflanzenerfolge und -tipps mit anderen Nutzern und tausche Erfahrungen aus.',
@@ -3709,8 +3709,8 @@ export const projectsData = [
   {
     name: 'Fitness Challenges',
     file: [
-      {image: '/demo-images/fitness-challenge.jpg'},
-      {image: '/demo-images/fitness-challenge(2).jpg'},
+      { image: 'demo-images/fitness-challenge.jpg' },
+      { image: 'demo-images/fitness-challenge(2).jpg' },
     ],
     descriptionText:
       'Fitness Challenges ist eine App, die dich zu körperlicher Aktivität anregt, indem du dich selbst und mit anderen in verschiedenen Fitness-Wettkämpfen misst. Sie bietet tägliche, wöchentliche und monatliche Herausforderungen an, an denen du teilnehmen kannst, und verfolgt deine Fortschritte auf einer ansprechenden, spielerischen Art und Weise.\n\n**Hauptfunktionen:**\n- Tägliche und wöchentliche Herausforderungen: Trainiere für verschiedene Ziele wie Ausdauer, Kraft oder Flexibilität.\n- Soziale Integration: Fordere Freunde und andere Nutzer zu Herausforderungen heraus.\n- Personalisierte Workouts: Erhalte maßgeschneiderte Trainingspläne basierend auf deinen Fitnesszielen.\n- Fortschrittsverfolgung: Sieh dir deine Verbesserungen im Zeitverlauf an und erhalte Feedback.\n- Leaderboards: Vergleiche deine Leistungen mit anderen Nutzern in der Community.',
@@ -3929,9 +3929,9 @@ export const projectsData = [
   {
     name: 'Smart Home',
     file: [
-      {image: '/demo-images/smart-home.jpg'},
-      {image: '/demo-images/smart-home(2).jpg'},
-      {image: '/demo-images/smart-home(3).jpg'},
+      { image: 'demo-images/smart-home.jpg' },
+      { image: 'demo-images/smart-home(2).jpg' },
+      { image: 'demo-images/smart-home(3).jpg' },
     ],
     descriptionText:
       'Smart Home ist eine innovative Lösung, die dir hilft, dein Zuhause über eine benutzerfreundliche App zu automatisieren. Mit integrierten IoT-Geräten wie intelligenten Thermostaten, Beleuchtungssystemen und Sicherheitssystemen kannst du Energie sparen und dein Zuhause sicherer und komfortabler machen.\n\n**Features:**\n- Intelligente Heizungssteuerung: Reduziere Heizkosten durch automatische Anpassung der Temperatur.\n- Sicherheitssysteme: Verwalte Überwachungskameras und Alarmsysteme direkt über die App.\n- Energieoptimierung: Bekomme Empfehlungen zur Reduzierung deines Energieverbrauchs.\n- Fernsteuerung: Steuere alle Geräte bequem von deinem Smartphone aus.\n- Integration von Smart Devices: Verbinde dein System mit gängigen Geräten wie Alexa, Google Home und vielen anderen.',
@@ -4137,9 +4137,9 @@ export const projectsData = [
   {
     name: 'Budget Travel Planner',
     file: [
-      {image: '/demo-images/budget-travel-min.jpg'},
-      {image: '/demo-images/budget-travel(2)-min.jpg'},
-      {image: '/demo-images/budget-travel(4).jpg'},
+      { image: 'demo-images/budget-travel-min.jpg' },
+      { image: 'demo-images/budget-travel(2)-min.jpg' },
+      { image: 'demo-images/budget-travel(4).jpg' },
     ],
     descriptionText:
       'Budget Travel Planner ist die ideale App für reisefreudige Menschen, die ihre Abenteuer ohne hohe Ausgaben planen möchten. Die App hilft, günstige Flüge, Hotels und Aktivitäten zu finden, basierend auf deinem Budget und deinen Reisezielen.\n\n**Funktionen:**\n- Flug- und Hotelvergleich: Finde die besten Angebote basierend auf deinen Vorgaben.\n- Tagesausflüge und Aktivitäten: Empfehlungen für kostengünstige Aktivitäten vor Ort.\n- Budget Tracker: Behalte deine Ausgaben während deiner Reise im Blick.\n- Reiseplanung: Erstelle eine detaillierte Reiseplanung, die dir hilft, dein Budget zu maximieren.\n- Offline-Nutzung: Verwende die App auch ohne Internetverbindung während deiner Reise.',
@@ -4355,10 +4355,10 @@ export const projectsData = [
   {
     name: 'App für Wanderrouten',
     file: [
-      {images: '/demo-images/wandern.jpg'},
-      {images: '/demo-images/wandern(2).jpg'},
-      {images: '/demo-images/wandern(3).jpg'},
-      {images: '/demo-images/wandern(4).jpg'},
+      { image: 'demo-images/wandern.jpg' },
+      { image: 'demo-images/wandern(2).jpg' },
+      { image: 'demo-images/wandern(3).jpg' },
+      { image: 'demo-images/wandern(4).jpg' },
     ],
     descriptionText:
       'Die App, die dir hilft, die besten Wanderwege in deiner Umgebung zu finden und deine Touren zu planen. Egal, ob du ein Anfänger oder ein erfahrener Wanderer bist, die App bietet detaillierte Karten, Bewertungen und Tipps für jeden Weg.\n\n**Hauptfunktionen:**\n- Routen-Planer: Erstelle deine eigene Wanderroute mit personalisierten Zielen.\n- GPS-Tracking: Verfolge deine Wanderung und teile sie mit anderen Nutzern.\n- Bewertungs- und Kommentarsystem: Lies Erfahrungen von anderen Wanderern und teile deine eigenen.\n- Schwierigkeitseinstufung: Wähle Wanderungen je nach deinem Fitnesslevel.\n- Offline-Karten: Speichere Routen auf deinem Gerät, um sie auch ohne Mobilfunknetz zu nutzen.',
@@ -4558,9 +4558,7 @@ export const projectsData = [
   },
   {
     name: 'Community Garden Initiative',
-    file: [
-      {image: '/demo-images/community-garden(2).jpg'},
-    ],
+    file: [{ image: 'demo-images/community-garden(2).jpg' }],
     descriptionText:
       'Die Community Garden Initiative zielt darauf ab, städtische Gemeinschaften zu fördern, indem Nachbarn zusammenkommen, um gemeinsame Gärten zu gestalten. Das Projekt bringt Menschen zusammen, um nicht nur frische Lebensmittel anzubauen, sondern auch soziale Bindungen zu schaffen und das städtische Umfeld zu verschönern. Es beinhaltet Workshops zu nachhaltigem Gärtnern und regelmäßige Treffen zur Pflege der Gärten.\n\n**Ziele:**\n- Förderung der Selbstversorgung durch den Anbau von frischen Produkten.\n- Stärkung des Gemeinschaftsgefühls und der Zusammenarbeit.\n- Aufklärung über nachhaltige Anbaumethoden und deren Vorteile.\n- Verschönerung des Stadtbildes durch grüne Oasen.',
     description: {
@@ -4753,8 +4751,8 @@ export const projectsData = [
   {
     name: 'Local Art Exhibition',
     file: [
-      {image: '/demo-images/local-art.jpg'},
-      {image: '/demo-images/local-art(2).jpg'},
+      { image: 'demo-images/local-art.jpg' },
+      { image: 'demo-images/local-art(2).jpg' },
     ],
     descriptionText:
       'Die Local Art Exhibition ist eine Plattform, um lokale Künstler zu fördern und ihre Werke der breiten Öffentlichkeit zugänglich zu machen. Das Projekt beinhaltet die Organisation einer Ausstellung, die nicht nur Kunstwerke zeigt, sondern auch Veranstaltungen, wie Kunstworkshops und Künstlergespräche, beinhaltet. Ziel ist es, die lokale Kunstszene zu stärken und ein kreatives Umfeld zu schaffen, das die Kultur in der Region fördert.\n\n**Hauptziele:**\n- Förderung der lokalen Kunstszene und der Künstler.\n- Bereitstellung einer Plattform für den Austausch zwischen Künstlern und der Öffentlichkeit.\n- Organisation von Workshops und interaktiven Veranstaltungen zur Kunstbildung.',
@@ -4937,9 +4935,9 @@ export const projectsData = [
   {
     name: 'Refugee Support Network',
     file: [
-      {image: '/demo-images/refugee-support.jpg'},
-      {image: '/demo-images/refugee-support(3).jpg'},
-      {image: '/demo-images/refugee-support(4).jpg'},
+      { image: 'demo-images/refugee-support.jpg' },
+      { image: 'demo-images/refugee-support(3).jpg' },
+      { image: 'demo-images/refugee-support(4).jpg' },
     ],
     descriptionText:
       'Das Refugee Support Network ist ein soziales Projekt, das geflüchteten Menschen hilft, sich in ihrer neuen Umgebung zurechtzufinden. Das Netzwerk bietet eine Vielzahl von Unterstützungsmöglichkeiten, darunter Sprachkurse, psychologische Betreuung, Jobvermittlung und Hilfe bei administrativen Aufgaben. Durch freiwillige Helfer wird eine enge Betreuung und Integration der Flüchtlinge in die Gesellschaft ermöglicht.\n\n**Ziele:**\n- Integration von Flüchtlingen in die lokale Gemeinschaft.\n- Bereitstellung von sprachlicher und sozialer Unterstützung.\n- Unterstützung bei der Arbeitsmarktintegration und der beruflichen Weiterbildung.',
@@ -5107,9 +5105,9 @@ export const projectsData = [
   {
     name: 'Environmental Awareness Campaign',
     file: [
-      {image: '/demo-images/environmental-awareness.jpg'},
-      {image: '/demo-images/environmental-awareness(2).jpg'},
-      {image: '/demo-images/environmental-awareness(3).jpg'},
+      { image: 'demo-images/environmental-awareness.jpg' },
+      { image: 'demo-images/environmental-awareness(2).jpg' },
+      { image: 'demo-images/environmental-awareness(3).jpg' },
     ],
     descriptionText:
       'Die Environmental Awareness Campaign ist ein Projekt, das sich darauf konzentriert, das Bewusstsein für den Umweltschutz zu fördern. Ziel ist es, die Menschen für die Dringlichkeit des Klimawandels und die Bedeutung von nachhaltigen Lebensweisen zu sensibilisieren. Das Projekt umfasst sowohl Informationsveranstaltungen als auch praktische Aktionen wie Baumplantagen und Müllsammelaktionen.\n\n**Ziele:**\n- Aufklärung über Umweltprobleme und ihre Lösungen.\n- Organisation von lokalen Aktionen zur Bekämpfung von Umweltverschmutzung.\n- Förderung von nachhaltigen Konsumgewohnheiten in der Bevölkerung.',
@@ -5282,8 +5280,8 @@ export const projectsData = [
   {
     name: 'Youth Mentorship Program',
     file: [
-      {image: '/demo-images/youth-mentorship.jpg'},
-      {image: '/demo-images/youth-mentorship(3).jpg'},
+      { image: 'demo-images/youth-mentorship.jpg' },
+      { image: 'demo-images/youth-mentorship(3).jpg' },
     ],
     descriptionText:
       'The Youth Mentorship Program is designed to provide guidance and support to young people from underprivileged backgrounds. By pairing experienced mentors with mentees, the program aims to foster personal development, academic success, and career preparedness. Through regular meetings and activities, mentors help their mentees set goals, improve their skills, and navigate challenges they may face in school or their future careers.\n\n**Goals:**\n- Provide guidance and mentorship to youth in need.\n- Equip young people with the skills they need to succeed academically and professionally.\n- Build stronger, supportive relationships within the community.',
@@ -5438,9 +5436,9 @@ export const projectsData = [
   },
   {
     name: 'Digital Literacy for Seniors',
-    file :[
-      {image: '/demo-images/digital-literacy-min.jpg'},
-      {image: '/demo-images/digital-literacy(4).jpg'},
+    file: [
+      { image: 'demo-images/digital-literacy-min.jpg' },
+      { image: 'demo-images/digital-literacy(4).jpg' },
     ],
     descriptionText:
       'Digital Literacy for Seniors aims to bridge the gap between older generations and the fast-paced digital world. The project focuses on teaching essential digital skills to senior citizens, helping them navigate smartphones, social media, online banking, and video calls. By providing workshops and one-on-one tutoring, this initiative empowers seniors to stay connected and active in an increasingly digital society.\n\n**Goals:**\n- Empower seniors with essential digital skills.\n- Improve their ability to stay connected with family and friends.\n- Help seniors feel more confident in using technology for daily tasks.',
@@ -5599,9 +5597,9 @@ export const projectsData = [
   {
     name: 'Beach Clean-Up Project',
     file: [
-      {image: '/demo-images/beach-clean(2)-min.jpg'},
-      {image: '/demo-images/beach-clean(3)-min.jpg'},
-      {image: '/demo-images/beach-clean(4)-min.jpg'},
+      { image: 'demo-images/beach-clean(2)-min.jpg' },
+      { image: 'demo-images/beach-clean(3)-min.jpg' },
+      { image: 'demo-images/beach-clean(4)-min.jpg' },
     ],
     descriptionText:
       'The Beach Clean-Up Project focuses on preserving coastal environments by organizing regular clean-up events. Volunteers work together to remove plastic waste and other pollutants from beaches, promoting environmental awareness. In addition to cleaning efforts, the project educates the public about the harmful effects of pollution on marine life and how individuals can contribute to cleaner oceans.\n\n**Goals:**\n- Clean and preserve local beaches.\n- Raise awareness about ocean pollution and its impact on marine life.\n- Engage the community in environmental protection efforts.',
@@ -5759,9 +5757,9 @@ export const projectsData = [
   {
     name: 'Cooking for a Cause',
     file: [
-      {image: '/demo-images/cooking-min.jpg'},
-      {image: '/demo-images/cooking(3)-min.jpg'},
-      {image: '/demo-images/cooking(4)-min.jpg'},
+      { image: 'demo-images/cooking-min.jpg' },
+      { image: 'demo-images/cooking(3)-min.jpg' },
+      { image: 'demo-images/cooking(4)-min.jpg' },
     ],
     descriptionText:
       'Cooking for a Cause is a project aimed at providing free meals to people in need while offering culinary training to underserved individuals. Volunteers cook and distribute nutritious meals to homeless shelters and food banks, and at the same time, participants gain valuable skills in cooking and kitchen management. The project also hosts community dinners to raise awareness about food insecurity and foster a sense of unity among residents.\n\n**Goals:**\n- Provide healthy meals to people in need.\n- Offer culinary training and skill-building opportunities.\n- Raise awareness about food insecurity and homelessness.',
@@ -5913,8 +5911,8 @@ export const projectsData = [
   {
     name: 'Urban Music Festival',
     file: [
-      {image: '/demo-images/urban-music(2).jpg'},
-      {image: '/demo-images/urban-music(3).jpg'},
+      { image: 'demo-images/urban-music(2).jpg' },
+      { image: 'demo-images/urban-music(3).jpg' },
     ],
     descriptionText:
       'The Urban Music Festival brings together diverse musical talents from various genres, aiming to celebrate and showcase the cultural richness of urban life. The event is a multi-day festival featuring performances from local and international artists, food trucks, and art installations. Additionally, workshops and panel discussions will be held to discuss the evolution of urban music and its impact on modern culture.\n\n**Goals:**\n- Celebrate urban culture and music diversity.\n- Provide a platform for emerging artists.\n- Educate attendees about the role of music in cultural expression.',
@@ -6072,9 +6070,9 @@ export const projectsData = [
   {
     name: 'Outdoor Adventure Club',
     file: [
-      {image: '/demo-images/outdoor-adventure(2)-min.jpg'},
-      {image: '/demo-images/outdoor-adventure(3).jpg'},
-      {image: '/demo-images/outdoor-adventure(4).jpg'},
+      { image: 'demo-images/outdoor-adventure(2)-min.jpg' },
+      { image: 'demo-images/outdoor-adventure(3).jpg' },
+      { image: 'demo-images/outdoor-adventure(4).jpg' },
     ],
     descriptionText:
       "The Outdoor Adventure Club connects people who are passionate about exploring the natural world. This project organizes weekly hiking trips, camping excursions, and outdoor skills workshops. Whether it's learning survival tactics, navigating through wilderness, or simply enjoying the beauty of nature, the club aims to foster a sense of adventure and environmental stewardship among its members.\n\n**Goals:**\n- Provide safe and enjoyable outdoor experiences.\n- Teach survival and wilderness skills.\n- Promote environmental conservation through outdoor activities.",
@@ -6229,9 +6227,7 @@ export const projectsData = [
   },
   {
     name: 'Local Farmers Market Revitalization',
-    file: [
-      {image: '/demo-images/local-farmers(3).jpg'},
-    ],
+    file: [{ image: 'demo-images/local-farmers(3).jpg' }],
     descriptionText:
       "The Local Farmers' Market Revitalization project is focused on revitalizing a community's local market by bringing in more diverse vendors, promoting sustainable agriculture, and increasing community engagement. This initiative aims to support local farmers, artisans, and small businesses while providing access to fresh, organic produce and goods. The project includes marketing strategies, vendor recruitment, and creating educational activities about sustainable farming and healthy eating.\n\n**Goals:**\n- Reinvigorate the farmers' market with more diverse vendors.\n- Promote sustainability and healthy eating in the community.\n- Increase public awareness of the benefits of supporting local agriculture.",
     description: {
@@ -6388,9 +6384,9 @@ export const projectsData = [
   {
     name: 'Charity Dog Walking Service',
     file: [
-      {image: '/demo-images/charity-dog-walking.jpg'},
-      {image: '/demo-images/charity-dog-walking(2).jpg'},
-      {image: '/demo-images/charity-dog-walking(3)-min.jpg'},
+      { image: 'demo-images/charity-dog-walking.jpg' },
+      { image: 'demo-images/charity-dog-walking(2).jpg' },
+      { image: 'demo-images/charity-dog-walking(3)-min.jpg' },
     ],
     descriptionText:
       'The Charity Dog Walking Service offers free dog walking to elderly or disabled individuals who may have difficulty taking care of their pets. The project pairs volunteers with pet owners in need, ensuring that dogs get regular exercise while their owners receive the help they need. In addition to dog walking, the initiative hosts adoption events to encourage responsible pet ownership and raise funds for local animal shelters.\n\n**Goals:**\n- Provide free dog walking services to people in need.\n- Raise awareness about pet adoption and care.\n- Support local animal shelters and rescue organizations.',
@@ -6545,9 +6541,7 @@ export const projectsData = [
   },
   {
     name: 'Urban Green Space Restoration',
-    file: [
-      {image: '/demo-images/urban-green-space.jpg'},
-    ],
+    file: [{ image: 'demo-images/urban-green-space.jpg' }],
     descriptionText:
       'Urban Green Space Restoration aims to transform neglected or underutilized urban areas into thriving green spaces that benefit both the environment and local communities. The project focuses on planting trees, creating community gardens, and providing educational programs on environmental sustainability. By restoring green spaces, the project also contributes to reducing urban heat islands and improving air quality, while giving residents a place to relax and connect with nature.\n\n**Goals:**\n- Convert neglected urban spaces into green, usable areas.\n- Educate the community about sustainable practices.\n- Foster a sense of ownership and pride in the local environment.',
     description: {
@@ -6701,9 +6695,9 @@ export const projectsData = [
   {
     name: 'AI-Powered Language Tutor',
     file: [
-      {image: '/demo-images/ai-powered-language.jpg'},
-      {image: '/demo-images/ai-powered-language(2).jpg'},
-      {image: '/demo-images/ai-powered-language(3).jpg'},
+      { image: 'demo-images/ai-powered-language.jpg' },
+      { image: 'demo-images/ai-powered-language(2).jpg' },
+      { image: 'demo-images/ai-powered-language(3).jpg' },
     ],
     descriptionText:
       'Join us in developing an AI-powered language tutor that personalizes lessons based on a learner’s progress and interests. This project aims to make language learning more effective and engaging using speech recognition, adaptive quizzes, and AI-driven feedback. \n\n**Why Join?**\n- Work with cutting-edge AI and NLP technology.\n- Contribute to an educational tool that helps people worldwide.\n- Gain experience in machine learning, UX/UI design, and educational psychology.',
@@ -6852,9 +6846,9 @@ export const projectsData = [
   {
     name: 'Sustainable Urban Farming App',
     file: [
-      {image: '/demo-images/sustainable-farming.jpg'},
-      {image: '/demo-images/sustainable-farming(2).jpg'},
-      {image: '/demo-images/sustainable-farming(4)-min.jpg'},
+      { image: 'demo-images/sustainable-farming.jpg' },
+      { image: 'demo-images/sustainable-farming(2).jpg' },
+      { image: 'demo-images/sustainable-farming(4)-min.jpg' },
     ],
     descriptionText:
       'We’re creating an app that helps city dwellers grow their own food, even in small spaces. The app will provide guidance on vertical farming, hydroponics, and plant care based on local climate data.\n\n**Why Join?**\n- Support sustainability and urban farming initiatives.\n- Work on a practical tool that promotes self-sufficiency.\n- Gain experience in IoT integration and agricultural technology.',
@@ -7003,8 +6997,8 @@ export const projectsData = [
   {
     name: 'Interactive Children’s Storytelling Platform',
     file: [
-      {image: '/demo-images/interactive-children-storytelling.jpg'},
-      {image: '/demo-images/interactive-children-storytelling(2).jpg'},
+      { image: 'demo-images/interactive-children-storytelling.jpg' },
+      { image: 'demo-images/interactive-children-storytelling(2).jpg' },
     ],
     descriptionText:
       'We are developing a digital storytelling platform where children can shape their own adventures by making choices that influence the storyline. The platform will incorporate animations, voice narration, and interactive elements.\n\n**Why Join?**\n- Contribute to an engaging and educational tool for children.\n- Work on creative storytelling and interactive media.\n- Gain experience in game design and multimedia development.',
@@ -7153,9 +7147,9 @@ export const projectsData = [
   {
     name: 'Local Food Rescue Network',
     file: [
-      {image: '/demo-images/local-food-rescue-min.jpg'},
-      {image: '/demo-images/local-food-rescue(2).jpg'},
-      {image: '/demo-images/local-food-rescue(3)-min.jpg'},
+      { image: 'demo-images/local-food-rescue-min.jpg' },
+      { image: 'demo-images/local-food-rescue(2).jpg' },
+      { image: 'demo-images/local-food-rescue(3)-min.jpg' },
     ],
     descriptionText:
       'Every day, tons of edible food go to waste while many people struggle with food insecurity. Our project aims to build a platform connecting restaurants, grocery stores, and individuals with local charities and food banks to redistribute surplus food efficiently.\n\n**Why Join?**\n- Make a real impact on reducing food waste and supporting communities.\n- Work on logistics optimization and sustainable solutions.\n- Gain experience in social entrepreneurship and app development.',
@@ -7316,9 +7310,9 @@ export const projectsData = [
   {
     name: 'Collaborative Online Music Studio',
     file: [
-      {image: '/demo-images/online-music-studio.jpg'},
-      {image: '/demo-images/online-music-studio(2).jpg'},
-      {image: '/demo-images/online-music-studio(3).jpg'},
+      { image: 'demo-images/online-music-studio.jpg' },
+      { image: 'demo-images/online-music-studio(2).jpg' },
+      { image: 'demo-images/online-music-studio(3).jpg' },
     ],
     descriptionText:
       'Musicians worldwide struggle to collaborate remotely in real-time. This project aims to create an online music studio where artists can record, edit, and mix tracks together seamlessly, even from different locations.\n\n**Why Join?**\n- Innovate in the field of online music production.\n- Work on real-time audio processing and synchronization challenges.\n- Contribute to a tool that fosters global creativity.',
@@ -7470,9 +7464,9 @@ export const projectsData = [
   {
     name: 'Ethical Fashion Marketplace',
     file: [
-      {image: '/demo-images/ethical-fashion-marketplace.jpg'},
-      {image: '/demo-images/ethical-fashion-marketplace(2).jpg'},
-      {image: '/demo-images/ethical-fashion-marketplace(3).jpg'},
+      { image: 'demo-images/ethical-fashion-marketplace.jpg' },
+      { image: 'demo-images/ethical-fashion-marketplace(2).jpg' },
+      { image: 'demo-images/ethical-fashion-marketplace(3).jpg' },
     ],
     descriptionText:
       'Fast fashion harms the environment and exploits workers. We are building an online marketplace where consumers can buy from ethical and sustainable fashion brands, supporting fair wages and eco-friendly production.\n\n**Why Join?**\n- Support ethical consumerism and sustainability.\n- Gain experience in e-commerce and supply chain transparency.\n- Contribute to a meaningful shift in the fashion industry.',
@@ -7633,8 +7627,8 @@ export const projectsData = [
   {
     name: 'Gamified Language Learning App',
     file: [
-      {image: '/demo-images/gamified-language-learning.jpg'},
-      {image: '/demo-images/gamified-language-learning(2)-min.jpg'},
+      { image: 'demo-images/gamified-language-learning.jpg' },
+      { image: 'demo-images/gamified-language-learning(2)-min.jpg' },
     ],
     descriptionText:
       'Many language learners struggle with motivation. This project is about creating a gamified mobile app that rewards users for practicing daily, engaging in real conversations, and completing fun challenges.\n\n**Why Join?**\n- Combine gamification with education to make learning more enjoyable.\n- Gain experience in mobile app development and UX design.\n- Help people stay committed to language learning.',
