@@ -40,13 +40,11 @@ export default async function ApplicationOverview({
   }
 
   return (
-    <div className="container mx-auto max-w-screen-lg px-4">
-      <div className="mb-16 font-bold text-xl">
-        {translate('projects.overview.title')} - {project.name}
-      </div>
+    <div className="container mx-auto px-4">
+      <h2 className="mb-4 font-bold text-2xl">{project.name}</h2>
 
-      <div className="mb-16 flex w-full flex-row gap-4">
-        <div className="flex w-1/3 flex-col items-center">
+      <div className="grid grid-cols-6 gap-4">
+        <div className="col-span-3 flex flex-col items-center sm:col-span-2">
           <EyeIcon className="mb-8 h-12 w-12 text-primary lg:h-24 lg:w-24" />
           <div className="text-center font-bold text-md lg:text-lg">
             {translate('projects.overview.impressionsCount', {
@@ -54,7 +52,7 @@ export default async function ApplicationOverview({
             })}
           </div>
         </div>
-        <div className="flex w-1/3 flex-col items-center">
+        <div className="col-span-3 flex flex-col items-center sm:col-span-2">
           <TextIcon className="mb-8 h-12 w-12 text-primary lg:h-24 lg:w-24" />
           <div className="text-center font-bold text-md lg:text-lg">
             {translate('projects.overview.applicationsCount', {
@@ -62,7 +60,7 @@ export default async function ApplicationOverview({
             })}
           </div>
         </div>
-        <div className="flex w-1/3 flex-col items-center">
+        <div className="col-span-6 flex flex-col items-center sm:col-span-2">
           <StarIcon className="mb-8 h-12 w-12 text-primary lg:h-24 lg:w-24" />
           <div className="text-center font-bold text-md lg:text-lg">
             {translate('projects.overview.likesCount', {
@@ -72,17 +70,21 @@ export default async function ApplicationOverview({
         </div>
       </div>
 
-      <div className="mt-2 mb-1 flex flex-row items-center justify-between">
-        <h2 className="font-semibold text-2xl">
+      <div className="mt-8 mb-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <h2 className="font-semibold text-xl">
           {translate('projects.overview.applicationTitle')}
         </h2>
-        <Link href={`/projects/${projectId}/findSomeone`}>
+        <Link
+          href={`/projects/${projectId}/findSomeone`}
+          className="ml-auto sm:ml-0"
+        >
           <Button>
             <UserPlusIcon />
             Find Someone
           </Button>
         </Link>
       </div>
+
       <ApplicationList projectId={projectId} />
     </div>
   )
