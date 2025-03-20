@@ -31,16 +31,14 @@ export default function ImageCarousel({
           .filter((i) => i.uploadedFile)
           .map((image) => (
             <CarouselItem key={image.id}>
-              <Card>
-                <CardContent className="flex aspect-auto h-64 items-center justify-center overflow-hidden rounded-lg bg-muted p-0">
-                  <FilePreview
-                    file={image.uploadedFile as UploadedFileSelect}
-                    className="h-full w-full object-contain"
-                    height={800}
-                    width={1200}
-                  />
-                </CardContent>
-              </Card>
+              <div className="flex aspect-auto h-64 items-center justify-center overflow-hidden rounded-lg">
+                <FilePreview
+                  file={image.uploadedFile as UploadedFileSelect}
+                  className="h-full w-full object-contain"
+                  height={800}
+                  width={1200}
+                />
+              </div>
             </CarouselItem>
           ))}
         {!images.length && (

@@ -294,6 +294,8 @@ const CarouselPagination: React.FC<{ items: unknown[] }> = ({ items }) => {
     }
   }, [api])
 
+  if (items.length <= 1) return null
+
   return (
     <div className="mt-4 flex justify-center space-x-2">
       {items.map((_, index) => (

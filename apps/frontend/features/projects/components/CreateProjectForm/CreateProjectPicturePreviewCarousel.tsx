@@ -23,17 +23,15 @@ export default function CreateProjectPicturePreviewCarousel({
       <CarouselContent>
         {images.map((image) => (
           <CarouselItem key={image}>
-            <Card>
-              <CardContent className="flex aspect-auto h-64 items-center justify-center overflow-hidden rounded-lg bg-muted p-0">
-                <Image
-                  className="h-full w-full object-contain"
-                  src={image}
-                  height={800}
-                  width={1200}
-                  alt="palm-trees"
-                />
-              </CardContent>
-            </Card>
+            <div className="flex aspect-auto h-64 items-center justify-center overflow-hidden rounded-lg">
+              <Image
+                className="h-full w-full object-contain"
+                src={image}
+                height={800}
+                width={1200}
+                alt="palm-trees"
+              />
+            </div>
           </CarouselItem>
         ))}
         {!images.length && (
