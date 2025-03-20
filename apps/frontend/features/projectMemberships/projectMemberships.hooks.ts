@@ -13,7 +13,7 @@ export type OptimisticPayload =
         visible: boolean
         projectName: string
         projectJoinedDate: string
-        projectLeftDate: string
+        projectLeftDate: string | null
         projectDescription: string
       }
     }

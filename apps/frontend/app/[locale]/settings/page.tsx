@@ -5,7 +5,7 @@ export default async function EditProfile() {
   const locale = await getLocale()
 
   return redirect({
-    href: '/edit-profile/profile',
+    href: '/settings/profile',
     locale,
   })
 }

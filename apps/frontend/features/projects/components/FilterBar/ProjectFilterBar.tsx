@@ -286,7 +286,7 @@ export function ProjectFilterBar() {
                 </form.FieldProvider>
               </div>
             </div>
-            <div className="ml-auto flex flex-row gap-2">
+            <div className="flex flex-col gap-2 sm:ml-auto sm:flex-row">
               <Button
                 variant="ghost"
                 type="button"

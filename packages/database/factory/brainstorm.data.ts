@@ -7800,7 +7800,11 @@ export const brainstormData = [
       'Adding a community section where users can share outfit ideas, ask for feedback, and participate in style challenges would make the app more social and fun.',
     ],
   },
-]
+].map((e) => {
+  if (e.description.root.children[0]?.type !== 'code') return e
+  e.description.root.children[0].type = 'paragraph'
+  return e
+})
 
 const tags = new Set(brainstormData.flatMap((e) => e.tags))
 export const uniqueBrainstormTags = Array.from(tags)

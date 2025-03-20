@@ -58,7 +58,7 @@ export default function UserProjectCreate({
         visible: true,
         projectName: values.name,
         projectJoinedDate: values.joinedDate.toISOString(),
-        projectLeftDate: values.leftDate?.toISOString() || '',
+        projectLeftDate: values.leftDate?.toISOString() ?? null,
         projectDescription: values.description,
       }
       setProjectsOptimistic({
@@ -87,7 +87,9 @@ export default function UserProjectCreate({
           <CardContent className="space-y-4">
             <form.FieldProvider
               name="name"
-              validator={z.string({ required_error: t('validation.required') })}
+              validator={z
+                .string({ required_error: t('validation.required') })
+                .min(1, t('validation.required'))}
             >
               <div className="space-y-2">
                 <Label htmlFor="name">
@@ -100,7 +102,12 @@ export default function UserProjectCreate({
                 <FieldError />
               </div>
             </form.FieldProvider>
-            <form.FieldProvider name="description">
+            <form.FieldProvider
+              name="description"
+              validator={z
+                .string({ required_error: t('validation.required') })
+                .min(1, t('validation.required'))}
+            >
               <div className="space-y-2">
                 <Label htmlFor="description">
                   {t('users.settings.projects.projectDescription')}
@@ -119,7 +126,7 @@ export default function UserProjectCreate({
               transformFromBinding={(dateString: string) => {
                 const date = parse(dateString, 'dd.MM.y', new Date())
                 if (Number.isNaN(date.getTime()))
-                  return [undefined, t('validation.date')]
+                  return [date, t('validation.date')]
                 return date
               }}
               transformToBinding={(value, isValid, buffer = '') =>
@@ -139,7 +146,7 @@ export default function UserProjectCreate({
                 if (!dateString) return null
                 const date = parse(dateString, 'dd.MM.y', new Date())
                 if (Number.isNaN(date.getTime()))
-                  return [undefined, t('validation.date')]
+                  return [null, t('validation.date')]
                 return date
               }}
               transformToBinding={(value, isValid, buffer = '') =>
