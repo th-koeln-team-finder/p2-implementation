@@ -21,6 +21,7 @@ export const de: Language = {
     linkBrainstorm: 'Brainstorm',
     settingLinkMyProjects: 'Meine Projekte',
     settingLinkMyBrainstorms: 'Meine Brainstorms',
+    settingLinkApplicationsAndInvitations: 'Bewerbungen & Einladungen',
     settingLinkNotifications: 'Benachrichtigungen',
     settingLinkSettings: 'Einstellungen',
   },
@@ -515,4 +516,13 @@ export const de: Language = {
     buttonFallback: 'Zu Collaborize',
     footer: 'collaborize.com ・ Diese E-Mail wurde automatisch generiert',
   },
+  communicationDashboard: {
+    title: 'Bewerbungen & Einladungen',
+    invitations: 'Einladungen',
+    applications: 'Meine Bewerbungen',
+    projectName: 'Projekt: {name}',
+    emptyApplications: 'Keine Bewerbungen gefunden',
+    emptyInvitations: 'Keine Einladungen gefunden',
+    retractApplication: 'Bewerbung zurückziehen',
+  }
 }

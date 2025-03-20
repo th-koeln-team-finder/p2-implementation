@@ -87,6 +87,13 @@ export async function acceptApplication(applicationId: string) {
   })
 }
 
+export async function retractApplication(applicationId: string) {
+  await db
+    .delete(Schema.projectApplication)
+    .where(eq(Schema.projectApplication.id, applicationId))
+  await revalidateApplications()
+}
+
 export async function rejectApplication(applicationId: string) {
   const application = await db.query.projectApplication.findFirst({
     where: eq(Schema.projectApplication.id, applicationId),
@@ -119,4 +126,11 @@ export async function rejectApplication(applicationId: string) {
       ],
     },
   )
+}
+
+const removeApplication = async (applicationId: string) => {
+  await db
+    .delete(Schema.projectApplication)
+    .where(eq(Schema.projectApplication.id, applicationId))
+  await revalidateApplications()
 }

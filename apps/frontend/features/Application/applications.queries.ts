@@ -54,3 +54,22 @@ export const getApplication = cache(
   ['getApplication'],
   { tags: ['applications'] },
 )
+
+export const getApplicationsForUser = cache(
+  async (id: string) => {
+    return await db.query.projectApplication.findMany({
+      where: and(eq(Schema.projectApplication.userId, id)),
+      with: {
+        project: true,
+        user: {
+          with: {
+            image: true,
+          },
+        },
+      },
+      orderBy: [desc(Schema.projectApplication.createdAt)],
+    })
+  },
+  ['getApplicationsForUser'],
+  { tags: ['applications'] },
+)
