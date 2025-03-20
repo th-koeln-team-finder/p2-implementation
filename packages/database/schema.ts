@@ -471,6 +471,9 @@ export const projectApplication = pgTable(
     ).on(projectApplication.projectId, projectApplication.userId),
   }),
 )
+export type ProjectApplicationInsert = typeof projectApplication.$inferInsert
+export type ProjectApplicationSelect = typeof projectApplication.$inferSelect
+
 
 export const userInvitations = pgTable(
   'userInvitations',
@@ -495,9 +498,8 @@ export const userInvitations = pgTable(
     ),
   }),
 )
-
-export type ProjectApplicationInsert = typeof projectApplication.$inferInsert
-export type ProjectApplicationSelect = typeof projectApplication.$inferSelect
+export type UserInvitationsInsert = typeof userInvitations.$inferInsert
+export type UserInvitationsSelect = typeof userInvitations.$inferSelect
 
 export const projectApplicationFiles = pgTable('project_application_files', {
   id: uuid().primaryKey().notNull().defaultRandom(),

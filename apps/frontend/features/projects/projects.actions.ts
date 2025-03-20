@@ -8,7 +8,7 @@ import { db } from '@repo/database'
 import * as Schema from '@repo/database/schema'
 import {
   type ProjectApplicationInsert,
-  type TagSelect,
+  type TagSelect, UserInvitationsInsert,
   Weekdays,
 } from '@repo/database/schema'
 import { generateTextEmbeddings } from '@repo/semantic-search'
@@ -331,6 +331,14 @@ export async function toggleProjectStar(
 
 export async function revalidateProjects() {
   return await revalidateTag('projects')
+}
+
+export async function createInvitation(
+    payload: UserInvitationsInsert
+){
+    await db
+    .insert(Schema.userInvitations)
+    .values(payload)
 }
 
 export async function createApplication(

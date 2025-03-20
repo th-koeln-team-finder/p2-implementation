@@ -4,38 +4,26 @@ import { hasSessionPermission } from '@/features/auth/auth.utils'
 import { redirect } from '@/features/i18n/routing'
 import { getProjectItem } from '@/features/projects/projects.queries'
 import { getLocale } from 'next-intl/server'
+import InvitationDetail from "@/features/invitation/components/InvitationDetails";
 
 export default async function Invite({
-                                              params,
-                                          }: {
-    params: Promise<{ id: string }>
+                                         params,
+                                     }: {
+    params: Promise<{ id: string,userId:string }>
 }) {
-    const { id } = await params
+    const { id ,userId} = await params
     const locale = await getLocale()
     const session = await authMiddleware()
     const project = await getProjectItem(id, session?.user?.id)
     if (!project) {
         return redirect({
-            href: `/project/${id}`,
-            locale,
-        })
-    }
-
-    const canCreateApplication = await hasSessionPermission(
-        'applyProject',
-        'create',
-        { createdById: project.createdBy },
-    )
-    if (!canCreateApplication) {
-        return redirect({
-            locale,
             href: `/projects/${id}`,
+            locale,
         })
     }
-
     return (
         <div className="container mx-auto px-4">
-            <ApplicationDetail userId={id} />
+            <InvitationDetail userId={userId} projectId={id}/>
         </div>
     )
 }

@@ -14,7 +14,7 @@ export function FindSomeoneListEntry({user,projectId}: { user: UserWithImage,pro
         <Link href={`/profile/${user.id}`}>
             <Card className="h-full">
                 <CardContent className="flex flex-col items-center relative justify-between p-4 gap-2">
-                    <Link href={`/projects/${projectId}/invite`}>
+                    <Link href={`/projects/${projectId}/invite/${user.id}`}>
                      <Button variant={"ghost"} className="right-2 top-2 absolute">
                         <UserRoundPlus className="size-5"/>
                     </Button>
