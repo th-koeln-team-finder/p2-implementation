@@ -6,6 +6,7 @@ import {createApplication, createInvitation} from '@/features/projects/projects.
 import { useForm } from '@formsignals/form-react'
 import { ZodAdapter } from '@formsignals/validation-adapter-zod'
 import { useComputed, useSignals } from '@preact/signals-react/runtime'
+import { UserSelect } from '@repo/database/schema'
 import { FieldError } from '@repo/design-system/components/FormErrors'
 import {
     WysiwygEditorForm,
@@ -22,6 +23,9 @@ import { UserPlusIcon } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
+import {UserAvatar} from "@/features/auth/components/UserAvatar";
+import {CardTitle} from "@repo/design-system/components/ui/card";
+import {UserWithImage} from "@/features/users/users.types";
 
 type InviteFormValues = {
     message: string
@@ -29,11 +33,11 @@ type InviteFormValues = {
 
 type InvitationDetailProps = {
     projectId: string
-    userId:string
+    user:UserWithImage
 }
 
 export default function InvitationDetail({
-                                              projectId,userId
+                                              projectId,user
                                           }: InvitationDetailProps) {
     useSignals()
 
@@ -50,12 +54,10 @@ export default function InvitationDetail({
         },
         onSubmit: async (values) => {
             // if (!session?.user?.id)
-
-
             await createInvitation(
                 {
                     projectId: projectId,
-                    userId: userId,
+                    userId: user.id,
                     message: values.message,
                 },
             )
@@ -87,13 +89,24 @@ export default function InvitationDetail({
                 <h1 className="mb-6 font-semibold text-2xl">{t('title')}</h1>
 
                 {alertMessage && (
-                    <div className="-translate-x-1/2 fixed top-4 left-1/2 z-101 rounded-lg border-2 border-primary bg-background p-8 text-normal">
+                    <div
+                        className="-translate-x-1/2 fixed top-4 left-1/2 z-101 rounded-lg border-2 border-primary bg-background p-8 text-normal">
                         {alertMessage}
                     </div>
                 )}
-
-                <div className="mb-6 flex w-full flex-col gap-4 lg:flex-row">
-                    <div className="mb-4 w-full">
+                <div className="flex w-full mb-6 flex-row justify-between gap-4 ">
+                    <UserAvatar user={user} className="h-20 w-20"/>
+                    <div className="w-full space-y-2">
+                        <div className="flex flex-row items-center justify-between gap-2">
+                            <p className={'text-sm'}>{user.occupation ?? ' '}</p>
+                        </div>
+                        <div className="flex flex-row items-center justify-between gap-2">
+                            <CardTitle className="text-l">{user.name}</CardTitle>
+                        </div>
+                    </div>
+                </div>
+                <div className="mb-6 flex w-full flex-row  lg:flex-row">
+                    <div className="mb-4 gap-4 w-full">
                         <form.FieldProvider
                             name="message"
                             validator={() => {
@@ -110,7 +123,7 @@ export default function InvitationDetail({
                                     editorRef={editorRef}
                                     placeholder={t('form.placeholderMessage')}
                                 />
-                                <FieldError />
+                                <FieldError/>
                             </div>
                         </form.FieldProvider>
                     </div>
@@ -122,7 +135,7 @@ export default function InvitationDetail({
                             await form.handleSubmit()
                         }}
                     >
-                        <UserPlusIcon />
+                        <UserPlusIcon/>
                         {t('form.submit')}
                     </Button>
                 </div>

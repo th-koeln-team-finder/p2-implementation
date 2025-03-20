@@ -5,6 +5,7 @@ import { redirect } from '@/features/i18n/routing'
 import { getProjectItem } from '@/features/projects/projects.queries'
 import { getLocale } from 'next-intl/server'
 import InvitationDetail from "@/features/invitation/components/InvitationDetails";
+import {getUser, getUserWithImage} from "@/features/users/users.query";
 
 export default async function Invite({
                                          params,
@@ -15,7 +16,8 @@ export default async function Invite({
     const locale = await getLocale()
     const session = await authMiddleware()
     const project = await getProjectItem(id, session?.user?.id)
-    if (!project) {
+    const user = await getUserWithImage(userId)
+    if (!project||!user) {
         return redirect({
             href: `/projects/${id}`,
             locale,
@@ -23,7 +25,8 @@ export default async function Invite({
     }
     return (
         <div className="container mx-auto px-4">
-            <InvitationDetail userId={userId} projectId={id}/>
+
+            <InvitationDetail user={user} projectId={id}/>
         </div>
     )
 }
