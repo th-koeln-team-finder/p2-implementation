@@ -487,17 +487,7 @@ export function CreateProjectForm() {
             )}
           </div>
 
-          <form.FieldProvider
-            name="tags"
-            validator={z
-              .array(
-                z.object({
-                  label: z.string(),
-                  value: z.string(),
-                }),
-              )
-              .min(1, translateError('required'))}
-          >
+          <form.FieldProvider name="tags">
             <div>
               <h2 className="font-semibold text-2xl">{t('titleTags')}</h2>
               <p className="mb-2 text-muted-foreground text-sm">
