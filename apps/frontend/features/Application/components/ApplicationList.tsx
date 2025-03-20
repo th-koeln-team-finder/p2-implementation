@@ -60,7 +60,7 @@ export async function ApplicationList({ projectId }: ApplicationListProps) {
               )}
             </div>
 
-            <div className="max-h-10 overflow-hidden text-muted-foreground">
+            <div className="line-clamp-3 overflow-hidden text-muted-foreground">
               {app.message && (
                 <WysiwygRenderer value={app.message} renderAsString />
               )}

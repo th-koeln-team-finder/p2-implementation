@@ -108,20 +108,6 @@ export default function ApplicationDetail({
           </div>
         )}
 
-        <div className="text-lg">{t('infoTitle')}</div>
-        <div className="mb-6 flex w-full flex-col gap-4 lg:flex-row">
-          <div className="w-full lg:mb-4 lg:w-1/2">
-            <Label>{t('form.name')}</Label>
-            {session?.user?.firstName && session?.user?.lastName ? (
-              <p>
-                {session?.user?.firstName} {session?.user?.lastName}
-              </p>
-            ) : (
-              <p>{session?.user?.name}</p>
-            )}
-          </div>
-        </div>
-
         <div className="text-lg">{t('messageTitle')}</div>
         <div className="mb-6 flex w-full flex-col gap-4 lg:flex-row">
           <div className="mb-4 w-full">
@@ -146,31 +132,7 @@ export default function ApplicationDetail({
             </form.FieldProvider>
           </div>
         </div>
-
         <div className="text-lg">{t('applyTitle')}</div>
-        <div className="mb-6 flex w-full flex-col gap-4 lg:flex-row">
-          <div className="w-full lg:mb-4">
-            <form.FieldProvider name="file">
-              <Label>{t('form.fileUpload')}</Label>
-              <FileUploadForm
-                accepts="image/jpeg,image/png,application/pdf"
-                multiple
-                placeholder={
-                  <FileInlinePreviewsForm
-                    progressState={progressState}
-                    maxFileSize={clientEnv.NEXT_PUBLIC_MAX_FILE_SIZE}
-                  />
-                }
-              />
-              <FieldError />
-              <FileListForm
-                className="my-2"
-                progressState={progressState}
-                maxFileSize={clientEnv.NEXT_PUBLIC_MAX_FILE_SIZE}
-              />
-            </form.FieldProvider>
-          </div>
-        </div>
 
         <div className="mb-6 flex w-full justify-center">
           <Button

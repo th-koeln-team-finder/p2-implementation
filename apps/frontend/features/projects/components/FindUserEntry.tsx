@@ -1,7 +1,5 @@
-import {getUsers} from '@/features/projects/projects.queries'
 import {WysiwygRenderer} from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 import {Card, CardContent, CardDescription, CardTitle,} from '@repo/design-system/components/ui/card'
-import Image from 'next/image'
 import {Button} from "@repo/design-system/components/ui/button";
 import {UserRoundPlus} from "lucide-react";
 import {UserWithImage} from "@/features/users/users.types";
@@ -10,15 +8,17 @@ import {UserAvatar} from "@/features/auth/components/UserAvatar";
 import Link from "next/link";
 
 
-export function FindSomeoneListEntry({user}: { user: UserWithImage }) {
+export function FindSomeoneListEntry({user,projectId}: { user: UserWithImage,projectId:string }) {
 
     return (
         <Link href={`/profile/${user.id}`}>
             <Card className="h-full">
                 <CardContent className="flex flex-col items-center relative justify-between p-4 gap-2">
-                    <Button variant={"ghost"} className="right-2 top-2 absolute">
-                        <UserRoundPlus className={"size-5"}/>
+                    <Link href={`/projects/${projectId}/invite`}>
+                     <Button variant={"ghost"} className="right-2 top-2 absolute">
+                        <UserRoundPlus className="size-5"/>
                     </Button>
+                    </Link>
                     <div className={"flex flex-row w-full justify-between gap-4 "}>
                         <UserAvatar user={user} className="w-20 h-20"/>
                         <div className="space-y-2 w-full">

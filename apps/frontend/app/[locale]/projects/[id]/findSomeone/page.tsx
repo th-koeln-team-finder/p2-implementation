@@ -1,4 +1,6 @@
-import { getTranslations } from 'next-intl/server'
+
+
+import {getTranslations} from 'next-intl/server'
 import { FindSomeoneList } from '@/features/projects/components/FindSomeone/FindSomeoneList'
 
 export default async function FindSomeone({
