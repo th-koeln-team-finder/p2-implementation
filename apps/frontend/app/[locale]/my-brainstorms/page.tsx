@@ -13,15 +13,20 @@ export default async function MyBrainstormsPage({
     bookmarks: string
   }>
 }) {
+  const session = await authMiddleware()
+  const locale = await getLocale()
+
+  if (!session || !session.user?.id) {
+    return redirect({
+      href: '/',
+      locale,
+    })
+  }
+
   const [translate] = await Promise.all([
     getTranslations('brainstorm'),
     searchParams,
   ])
-
-  const session = await authMiddleware()
-  if (!session?.user?.id) {
-    return redirect({ href: '/', locale: await getLocale() })
-  }
 
   return (
     <div className="h-screen">

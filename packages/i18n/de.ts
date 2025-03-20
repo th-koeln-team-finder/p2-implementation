@@ -481,6 +481,7 @@ export const de: Language = {
     required: 'Dieses Feld ist erforderlich',
     email: 'Dieses Feld muss eine gültige E-Mail-Adresse sein',
     usernameTaken: 'Dieser Benutzername ist bereits vergeben',
+    emailTaken: 'Diese E-Mail-Adresse ist bereits vergeben',
     minLengthX:
       'Dieses Feld muss mindestens {amount, plural, =1 {ein Zeichen} other {# Zeichen}} lang sein',
     number: 'Dieses Feld muss eine Zahl sein',

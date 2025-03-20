@@ -114,7 +114,7 @@ export async function AppSidebar() {
                       {translate('settingLinkMyBrainstorms')}
                     </DropdownMenuItem>
                   </Link>
-                  <Link href="/edit-profile/profile">
+                  <Link href="/settings/profile">
                     <DropdownMenuItem>
                       <SettingsIcon /> {translate('settingLinkSettings')}
                     </DropdownMenuItem>

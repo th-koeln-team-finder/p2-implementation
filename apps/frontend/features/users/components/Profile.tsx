@@ -17,6 +17,7 @@ import type { UserSelect } from '@repo/database/schema'
 import { Button } from '@repo/design-system/components/ui/button'
 import { UserPen } from 'lucide-react'
 import { getLocale, getTranslations } from 'next-intl/server'
+import { WysiwygRenderer } from '@repo/design-system/components/WysiwygEditor/WysiwygRenderer'
 
 export default async function Profile({ user }: { user: UserWithImage }) {
   const translate = await getTranslations()
@@ -49,10 +50,8 @@ export default async function Profile({ user }: { user: UserWithImage }) {
 
   return (
     <div>
-      <div className="flex flex-col items-center gap-4 md:flex-row md:items-start">
-        <div className="md:w-1/4">
-          <UserAvatar user={user} className="h-32 w-32" />
-        </div>
+      <div className="flex flex-col items-center gap-8 md:flex-row md:items-start md:gap-16">
+        <UserAvatar user={user} className="h-32 w-32" />
 
         <div>
           <div className="mb-2 flex flex-1 flex-col space-y-2">
@@ -72,7 +71,7 @@ export default async function Profile({ user }: { user: UserWithImage }) {
             <div className="flex items-center gap-8">
               <h1 className="inline font-bold text-3xl">{user.name}</h1>
               {isOwnProfile ? (
-                <Link href="/edit-profile/profile">
+                <Link href="/settings/profile">
                   <Button>
                     <UserPen />
                     {translate('users.editProfile')}
@@ -95,21 +94,19 @@ export default async function Profile({ user }: { user: UserWithImage }) {
               </p>
             )}
           </div>
-          {/* TODO Re-add user bio */}
-          {/*{user.bio && <ProfileBio bio={user.bio}/>}*/}
+          {user.bio && <WysiwygRenderer value={user.bio} />}
         </div>
       </div>
       <div className="mt-8">
         <SkillScale
           title={translate('users.skills')}
-          emptySkillsMessage={translate('users.emptySkills')}
           skills={skills}
           showVerificationControl={!isOwnProfile}
           loggedInUserId={loggedInUser?.id}
         />
       </div>
       <div className="mt-8">
-        <h2 className="mb-2 font-bold text-2xl">
+        <h2 className="mb-2 font-bold text-xl">
           {translate('users.previouslyWorkedOn')}
         </h2>
         <PreviouslyWorkedOn userId={user.id} />

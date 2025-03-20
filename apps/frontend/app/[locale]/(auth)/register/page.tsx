@@ -2,7 +2,7 @@ import { RegisterForm } from '@/features/auth/components/RegisterForm'
 
 export default function Register() {
   return (
-    <main className="container mx-auto grid h-screen place-content-center">
+    <main className="container mx-auto grid h-screen place-content-center p-4">
       <RegisterForm />
     </main>
   )

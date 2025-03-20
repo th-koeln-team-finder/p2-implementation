@@ -15,6 +15,7 @@ import {
   useOptimistic,
   useTransition,
 } from 'react'
+import { useSessionPermission } from '@/features/auth/auth.hooks'
 
 type FindAProjectListEntryProps = {
   projectId: string
@@ -83,14 +84,20 @@ export function ProjectListEntryToolbar({
       dispatchOptimisticStarCount,
     ],
   )
+
+  const canLikeProject = useSessionPermission('project', 'like')
+
   return (
     <div className="flex flex-row items-center gap-1">
-      <CanUserClient target="project" action="like">
-        <Button variant="ghost" size="sm" onClick={handleStar}>
-          {optimisticStarCount}
-          <StarIcon className={cn(optimisticStared && 'fill-foreground')} />
-        </Button>
-      </CanUserClient>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={canLikeProject ? handleStar : undefined}
+        disabled={!canLikeProject}
+      >
+        {optimisticStarCount}
+        <StarIcon className={cn(optimisticStared && 'fill-foreground')} />
+      </Button>
       <CanUserClient target="project" action="bookmark">
         <Button variant="ghost" size="icon" onClick={handleBookmark}>
           <BookmarkIcon

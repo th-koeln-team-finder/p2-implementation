@@ -188,7 +188,7 @@ export function MultiValueAutoComplete<T extends string>({
                       onSelect={() => onSelectItem(option)}
                     >
                       <p className="text-xs md:text-sm">{option.label}</p>
-                      <p className="ml-auto hidden text-muted-foreground text-xs md:block md:text-sm">
+                      <p className="ml-auto text-muted-foreground text-xs sm:text-sm">
                         {option.labelRight}
                       </p>
                       <Check

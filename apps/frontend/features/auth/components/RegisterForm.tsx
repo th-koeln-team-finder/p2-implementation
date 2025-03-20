@@ -1,6 +1,9 @@
 'use client'
 import { revalidateAll } from '@/features/auth/auth.actions'
-import { checkUsernameTaken } from '@/features/users/users.query'
+import {
+  checkEmailTaken,
+  checkUsernameTaken,
+} from '@/features/users/users.query'
 import { useForm } from '@formsignals/form-react'
 import { configureZodAdapter } from '@formsignals/validation-adapter-zod'
 import { useSignals } from '@preact/signals-react/runtime'
@@ -42,7 +45,7 @@ export function RegisterForm() {
 
   return (
     <form.FormProvider>
-      <Card className="mx-auto w-screen max-w-md">
+      <Card className="w-96">
         <form
           onSubmit={(e) => {
             e.preventDefault()
@@ -94,6 +97,14 @@ export function RegisterForm() {
                   .email(translate('validation.email'))}
                 validatorOptions={{
                   validateOnChangeIfTouched: true,
+                }}
+                validatorAsync={async (email) => {
+                  const isTaken = await checkEmailTaken(email)
+                  if (!isTaken) return null
+                  return translate('validation.usernameTaken')
+                }}
+                validatorAsyncOptions={{
+                  debounceMs: 600,
                 }}
               >
                 <div className="grid gap-2">

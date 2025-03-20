@@ -470,6 +470,7 @@ export const en = {
     required: 'This field is required',
     email: 'This field must be a valid email',
     usernameTaken: 'This username is already taken',
+    emailTaken: 'This email is already taken',
     minLengthX:
       'This field must be at least {amount, plural, =1 {one character} other {# characters}} long',
     number: 'This field must be a number',
