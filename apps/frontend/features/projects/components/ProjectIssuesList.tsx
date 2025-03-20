@@ -25,7 +25,7 @@ export function ProjectIssuesList({
 
   return (
     <div className="w-full">
-      <h2 className="mb-2 font-medium text-xl">
+      <h2 className="mb-2 font-medium text-2xl">
         {translate('projects.issueList.issueTitle')}
       </h2>
 

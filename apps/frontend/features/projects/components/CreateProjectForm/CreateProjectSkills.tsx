@@ -69,7 +69,7 @@ export function CreateProjectSkills() {
         loadingMessage={translateSkill('loadingMessage')}
         emptyMessage={translateSkill('emptyMessage')}
       />
-      <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {!field.data.value.length && (
           <p className="col-span-full p-2 text-center text-muted-foreground text-sm italic">
             {t('emptySkills')}
@@ -90,25 +90,24 @@ function CreateProjectSkillsEntry() {
   return (
     <div className="flex flex-row items-center rounded bg-muted p-2 text-sm">
       <p>{field.data.value.label.value}</p>
-      <div className="ml-auto flex flex-row items-center gap-2">
-        <field.SubFieldProvider name="level">
-          <RatingForm
-            totalStars={5}
-            showText={false}
-            Icon={<SquircleIcon />}
-            rowClassName="gap-0.5"
-            starClassName="size-4"
-          />
-        </field.SubFieldProvider>
-        <Button
-          variant="destructive"
-          size="icon"
-          className="ml-auto h-6 w-6 [&_svg]:size-3"
-          onClick={() => field.removeSelfFromArray()}
-        >
-          <TrashIcon />
-        </Button>
-      </div>
+      <field.SubFieldProvider name="level">
+        <RatingForm
+          totalStars={5}
+          showText={false}
+          Icon={<SquircleIcon />}
+          className="ml-auto"
+          rowClassName="gap-0.5"
+          starClassName="size-4"
+        />
+      </field.SubFieldProvider>
+      <Button
+        variant="destructive"
+        size="icon"
+        className="mt-2 ml-auto h-6 w-6 md:mt-0 md:ml-4 [&_svg]:size-3"
+        onClick={() => field.removeSelfFromArray()}
+      >
+        <TrashIcon />
+      </Button>
     </div>
   )
 }

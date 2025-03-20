@@ -9,9 +9,8 @@ import { Button } from '@repo/design-system/components/ui/button'
 import { InputForm } from '@repo/design-system/components/ui/input'
 import { Label } from '@repo/design-system/components/ui/label'
 import { TextareaForm } from '@repo/design-system/components/ui/textarea'
-import { PlusIcon, TrashIcon } from 'lucide-react'
+import { MinusIcon, PlusIcon } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { z } from 'zod'
 
 export function CreateProjectIssueList() {
   useSignals()
@@ -24,55 +23,60 @@ export function CreateProjectIssueList() {
   >()
 
   const t = useTranslations('createProjects')
-  const translateValidation = useTranslations('validation')
   return (
-    <div className="flex flex-col gap-4">
+    <>
       {field.data.value.map((issue, index) => (
-        <div key={issue.key} className="flex flex-row gap-2">
-          <div className="w-full">
-            <div className="flex-1">
-              <field.SubFieldProvider
-                name={`${index}.title`}
-                validator={z.string().min(1, translateValidation('required'))}
-              >
-                <Label>{t('issues.title')}</Label>
-                <InputForm placeholder={t('issues.titlePlaceholder')} />
-                <FieldError />
-              </field.SubFieldProvider>
-            </div>
+        <div key={issue.key} className="flex flex-col gap-4 lg:flex-row">
+          <div className="w-full lg:w-1/2">
+            <field.SubFieldProvider name={`${index}.title`}>
+              <Label>{t('issues.title')}</Label>
+              <InputForm placeholder={t('issues.titlePlaceholder')} />
+              <FieldError />
+            </field.SubFieldProvider>
+          </div>
 
-            <div className="flex-1">
-              <Label>{t('issues.description')}</Label>
+          <div className="w-full lg:w-1/2">
+            <Label>{t('issues.description')}</Label>
+            <div className="flex w-full flex-col justify-between gap-4 lg:flex-row">
               <div className="flex w-full flex-col">
-                <field.SubFieldProvider
-                  name={`${index}.description`}
-                  validator={z.string().min(1, translateValidation('required'))}
-                >
+                <field.SubFieldProvider name={`${index}.description`}>
                   <TextareaForm placeholder={t('issues.descPlaceholder')} />
                   <FieldError />
                 </field.SubFieldProvider>
               </div>
+
+              <div className="mt-4 flex gap-2 lg:mt-0">
+                <Button
+                  onClick={() => field.removeValueFromArray(index)}
+                  variant="outline"
+                  className="mb-auto rounded-full p-2"
+                  size="icon"
+                >
+                  <MinusIcon />
+                </Button>
+                <Button
+                  onClick={() =>
+                    field.pushValueToArray({ title: '', description: '' })
+                  }
+                  className="mb-auto rounded-full"
+                  size="icon"
+                >
+                  <PlusIcon />
+                </Button>
+              </div>
             </div>
           </div>
-
-          <Button
-            onClick={() => field.removeValueFromArray(index)}
-            variant="destructive"
-            size="icon"
-            className="mt-6 min-w-9"
-          >
-            <TrashIcon />
-          </Button>
         </div>
       ))}
-      <Button
-        onClick={() => field.pushValueToArray({ title: '', description: '' })}
-        variant="outline"
-        className="w-fit"
-      >
-        <PlusIcon />
-        {t('issues.addIssue')}
-      </Button>
-    </div>
+      {field.data.value.length === 0 && (
+        <Button
+          onClick={() => field.pushValueToArray({ title: '', description: '' })}
+          className="my-3"
+          style={{ width: 'fit-content' }}
+        >
+          {t('issues.addIssue')}
+        </Button>
+      )}
+    </>
   )
 }

@@ -71,7 +71,7 @@ export function CreateProjectPreview({
     },
   }))
   return (
-    <div className="mx-auto inline-flex w-full flex-col items-center justify-start gap-4">
+    <div className="inline-flex flex-col items-start justify-start gap-4 self-stretch">
       <ProjectTitle title={formValues.name} subtitle={formValues.phase} />
       <div className="flex w-full flex-col pr-3">
         <TagList tags={tagList} />
@@ -91,7 +91,7 @@ export function CreateProjectPreview({
           }))}
         />
 
-        <div className="md:col-span-2">
+        <div className="col-span-2">
           {formValues.description && (
             <WysiwygRenderer value={formValues.description} />
           )}
@@ -101,7 +101,11 @@ export function CreateProjectPreview({
           participants={sessionUser ? [{ users: sessionUser }] : []}
         />
 
-        {!!timetable.length && <ProjectTimetable timetable={timetable} />}
+        {!!timetable.length && (
+          <div className="relative inline-flex w-full flex-col items-start justify-start gap-2 lg:w-1/2">
+            <ProjectTimetable timetable={timetable} />
+          </div>
+        )}
 
         {!!formValues.issues.length && (
           <ProjectIssuesList listOfIssues={formValues.issues} />
