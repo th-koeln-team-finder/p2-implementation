@@ -168,6 +168,14 @@ export const de: Language = {
         submit: 'Anfrage senden',
       },
     },
+    invite: {
+      title: 'Sende eine Einladung an die Person',
+      form: {
+        message: 'erzähl etwas über das Projekt',
+        placeholderMessage: 'Gib eine Nachricht ein...',
+        submit: 'Einladung senden',
+      },
+    },
     overview: {
       title: 'Projektübersicht',
       notFound: 'Projekt nicht gefunden',
@@ -180,12 +188,16 @@ export const de: Language = {
         '{count, plural, =1 {Eine Datei angehängt} other {# Dateien angehängt}} ',
       noApplications:
         'Bis jetzt hat sich noch niemand für das Projekt beworben.',
+      applicationTitle: 'Bewerbungen',
     },
     application: {
       title: 'Bewerbung von {name}',
       acceptApplication: 'Annehmen',
       rejectApplication: 'Ablehnen',
     },
+  },
+  findSomeone: {
+    pageTitle: 'Finde Mitglieder',
   },
   createProjects: {
     fieldRequired: 'Diese Eingabe ist erforderlich',
@@ -430,7 +442,7 @@ export const de: Language = {
       url: 'URL',
       urlPlaceholder: 'Wo können Leute mehr über dich erfahren?',
       occupation: 'Beschäftigung',
-      occupationPlaceholder: 'Was machst du?',
+      occupationPlaceholder: 'ich bin... ',
       location: 'Standort',
       locationPlaceholder: 'Wo machst du was auch immer du machst?',
       firstName: 'Vorname',

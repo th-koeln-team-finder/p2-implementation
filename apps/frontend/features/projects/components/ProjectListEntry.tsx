@@ -27,7 +27,7 @@ import Image from 'next/image'
 type FindAProject = Awaited<ReturnType<typeof getProjectItems>>[number]
 type MyProjects = Awaited<ReturnType<typeof getProjectItemsForUser>>[number]
 
-type ProjectListEntryProps = {
+export type ProjectListEntryProps = {
   project: FindAProject | MyProjects
 }
 

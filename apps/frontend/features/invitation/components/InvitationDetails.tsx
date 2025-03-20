@@ -1,8 +1,8 @@
 'use client'
-
-import { useFileUpload } from '@/features/file-upload/file-upload.hooks'
+import { UserAvatar } from '@/features/auth/components/UserAvatar'
 import { useRouter } from '@/features/i18n/routing'
-import { createApplication } from '@/features/projects/projects.actions'
+import { createInvitation } from '@/features/projects/projects.actions'
+import type { UserWithImage } from '@/features/users/users.types'
 import { useForm } from '@formsignals/form-react'
 import { ZodAdapter } from '@formsignals/validation-adapter-zod'
 import { useSignals } from '@preact/signals-react/runtime'
@@ -12,65 +12,45 @@ import {
   getStringContentFromEditor,
   useLexicalEditorRef,
 } from '@repo/design-system/components/WysiwygEditor'
-import { FileInlinePreviewsForm } from '@repo/design-system/components/custom/file-inline-previews-form'
-import { FileListForm } from '@repo/design-system/components/custom/file-list-form'
-import { FileUploadForm } from '@repo/design-system/components/custom/file-upload'
 import { Button } from '@repo/design-system/components/ui/button'
+import { CardTitle } from '@repo/design-system/components/ui/card'
 import { Label } from '@repo/design-system/components/ui/label'
-import { clientEnv } from '@repo/env/client'
 import { UserPlusIcon } from 'lucide-react'
-import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
-type ApplyFormValues = {
-  bucketPrefix: string
-  file: File[]
+type InviteFormValues = {
   message: string
 }
 
-type ApplicationDetailProps = {
+type InvitationDetailProps = {
   projectId: string
+  user: UserWithImage
 }
 
-export default function ApplicationDetail({
+export default function InvitationDetail({
   projectId,
-}: ApplicationDetailProps) {
+  user,
+}: InvitationDetailProps) {
   useSignals()
 
-  const { data: session } = useSession()
   const router = useRouter()
-
-  const t = useTranslations('projects.apply')
+  const t = useTranslations('projects.invite')
   const translateError = useTranslations('validation')
-
   const [alertMessage, setAlertMessage] = useState<string | null>(null)
-  const [progressState, uploadFile, resetFileProgress] = useFileUpload()
 
-  const form = useForm<ApplyFormValues, typeof ZodAdapter>({
+  const form = useForm<InviteFormValues, typeof ZodAdapter>({
     validatorAdapter: ZodAdapter,
     defaultValues: {
-      bucketPrefix: 'test',
-      file: [] as File[],
       message: '',
     },
     onSubmit: async (values) => {
-      if (!session?.user?.id) return
-
-      const fileIds = await Promise.all(
-        values.file.map((file) =>
-          uploadFile(values.bucketPrefix, file.name, file),
-        ),
-      )
-
-      await createApplication(
-        {
-          projectId,
-          userId: session.user.id,
-          message: values.message,
-        },
-        fileIds.filter((e): e is string => !!e),
-      )
+      // if (!session?.user?.id)
+      await createInvitation({
+        projectId: projectId,
+        userId: user.id,
+        message: values.message,
+      })
 
       setAlertMessage('Deine Anfrage wurde versendet.')
       setTimeout(() => {
@@ -78,7 +58,6 @@ export default function ApplicationDetail({
       }, 5000)
 
       setTimeout(() => {
-        resetFileProgress()
         form.reset()
         router.replace(`/projects/${projectId}`)
       }, 1000)
@@ -104,10 +83,19 @@ export default function ApplicationDetail({
             {alertMessage}
           </div>
         )}
-
-        <div className="text-lg">{t('messageTitle')}</div>
-        <div className="mb-6 flex w-full flex-col gap-4 lg:flex-row">
-          <div className="mb-4 w-full">
+        <div className="mb-6 flex w-full flex-row justify-between gap-4 ">
+          <UserAvatar user={user} className="h-20 w-20" />
+          <div className="w-full space-y-2">
+            <div className="flex flex-row items-center justify-between gap-2">
+              <p className={'text-sm'}>{user.occupation ?? ' '}</p>
+            </div>
+            <div className="flex flex-row items-center justify-between gap-2">
+              <CardTitle className="text-l">{user.name}</CardTitle>
+            </div>
+          </div>
+        </div>
+        <div className="mb-6 flex w-full flex-row lg:flex-row">
+          <div className="mb-4 w-full gap-4">
             <form.FieldProvider
               name="message"
               validator={() => {
@@ -129,31 +117,6 @@ export default function ApplicationDetail({
             </form.FieldProvider>
           </div>
         </div>
-        <div className="text-lg">{t('applyTitle')}</div>
-        <div className="mb-6 flex w-full flex-col gap-4 lg:flex-row">
-          <div className="w-full lg:mb-4">
-            <form.FieldProvider name="file">
-              <Label>{t('form.fileUpload')}</Label>
-              <FileUploadForm
-                accepts="image/jpeg,image/png,application/pdf"
-                multiple
-                placeholder={
-                  <FileInlinePreviewsForm
-                    progressState={progressState}
-                    maxFileSize={clientEnv.NEXT_PUBLIC_MAX_FILE_SIZE}
-                  />
-                }
-              />
-              <FieldError />
-              <FileListForm
-                className="my-2"
-                progressState={progressState}
-                maxFileSize={clientEnv.NEXT_PUBLIC_MAX_FILE_SIZE}
-              />
-            </form.FieldProvider>
-          </div>
-        </div>
-
         <div className="mb-6 flex w-full justify-center">
           <Button
             type="submit"

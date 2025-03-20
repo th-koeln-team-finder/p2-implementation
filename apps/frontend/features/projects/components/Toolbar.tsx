@@ -2,6 +2,7 @@
 import { useSessionPermission } from '@/features/auth/auth.hooks'
 import { CanUserClient } from '@/features/auth/components/CanUser.client'
 import { Link } from '@/features/i18n/routing'
+import { useRouter } from '@/features/i18n/routing'
 import {
   useIsUserAppliedToProject,
   useIsUserMemberOfProject,
@@ -14,7 +15,9 @@ import type { PopulatedProject } from '@/features/projects/projects.types'
 import { Button } from '@repo/design-system/components/ui/button'
 import { cn } from '@repo/design-system/lib/utils'
 import { BookmarkIcon, StarIcon } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
+
 import { useOptimistic, useTransition } from 'react'
 
 type ProjectProps = {
@@ -30,6 +33,10 @@ export function Toolbar({ project }: ProjectProps) {
 
   const [isApplied, isLoadingApplication] = useIsUserAppliedToProject(projectId)
   const [isMember, _isLoadingMemberships] = useIsUserMemberOfProject(projectId)
+
+  const _router = useRouter()
+  const { data: session } = useSession()
+  const _isCreator = session?.user?.id === project.createdBy
 
   const [_, startTransition] = useTransition()
   const canCreate = useSessionPermission('project', 'create')
@@ -118,5 +125,4 @@ export function Toolbar({ project }: ProjectProps) {
     </div>
   )
 }
-
-//TODO Logik der einzelnen Buttons hinzufügen (Teilen, Merken etc.)
+//TODO: JoinButton sollte nur angezeigt werden, wenn man nicht der Ersteller des Projekts ist. Im Moment wird kurzeitig der Join Button angezeigt.
