@@ -27,6 +27,7 @@ import {
 import {
   BrainCircuitIcon,
   ChevronsUpDownIcon,
+  MessagesSquareIcon,
   SettingsIcon,
   Users2Icon,
 } from 'lucide-react'
@@ -113,6 +114,12 @@ export async function AppSidebar() {
                     <DropdownMenuItem>
                       <BrainCircuitIcon />{' '}
                       {translate('settingLinkMyBrainstorms')}
+                    </DropdownMenuItem>
+                  </AppSidebarLink>
+                  <AppSidebarLink href="/communication-dashboard">
+                    <DropdownMenuItem>
+                      <MessagesSquareIcon />{' '}
+                      {translate('settingLinkApplicationsAndInvitations')}
                     </DropdownMenuItem>
                   </AppSidebarLink>
                   <AppSidebarLink href="/settings/profile">

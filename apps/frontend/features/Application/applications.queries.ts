@@ -3,7 +3,7 @@ import { and, desc, eq, sql } from 'drizzle-orm'
 import { unstable_cache as cache } from 'next/cache'
 
 export const getApplicationsForProject = cache(
-  async (id: string, _userId?: string) => {
+  async (id: string) => {
     const attachmentCount =
       sql<number>`(SELECT COUNT(*) FROM "project_application_files" WHERE project_application_files."applicationId" = "projectApplication".id)`.as(
         'attachmentCount',
@@ -52,5 +52,24 @@ export const getApplication = cache(
     })
   },
   ['getApplication'],
+  { tags: ['applications'] },
+)
+
+export const getApplicationsForUser = cache(
+  async (id: string) => {
+    return await db.query.projectApplication.findMany({
+      where: and(eq(Schema.projectApplication.userId, id)),
+      with: {
+        project: true,
+        user: {
+          with: {
+            image: true,
+          },
+        },
+      },
+      orderBy: [desc(Schema.projectApplication.createdAt)],
+    })
+  },
+  ['getApplicationsForUser'],
   { tags: ['applications'] },
 )

@@ -19,6 +19,7 @@ export const en = {
     linkBrainstorm: 'Brainstorm',
     settingLinkMyProjects: 'My Projects',
     settingLinkMyBrainstorms: 'My Brainstorms',
+    settingLinkApplicationsAndInvitations: 'Applications & Invitations',
     settingLinkNotifications: 'Notifications',
     settingLinkSettings: 'Settings',
   },
@@ -529,6 +530,20 @@ export const en = {
   email: {
     buttonFallback: 'Zu Collaborize',
     footer: 'Collaborize ・ This is an automated email',
+  },
+  communicationDashboard: {
+    title: 'Communication Dashboard',
+    invitations: 'Invitations',
+    applications: 'My applications',
+    projectName: 'Project: {name}',
+    emptyApplications: 'No applications found',
+    emptyInvitations: 'No invitations found',
+    retractApplication: 'Retract application',
+  },
+  invitations: {
+    title: 'Invitation for: {name}',
+    rejectInvitation: 'Reject invitation',
+    acceptInvitation: 'Accept invitation',
   },
 }
 

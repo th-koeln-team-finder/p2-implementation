@@ -8,7 +8,12 @@ import { getUserWithImage } from '@/features/users/users.query'
 import { Button } from '@repo/design-system/components/ui/button'
 import { DropdownMenuItem } from '@repo/design-system/components/ui/dropdown-menu'
 import { SidebarTrigger } from '@repo/design-system/components/ui/sidebar'
-import { BrainCircuitIcon, SettingsIcon, Users2Icon } from 'lucide-react'
+import {
+  BrainCircuitIcon,
+  MessagesSquareIcon,
+  SettingsIcon,
+  Users2Icon,
+} from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 export default async function Header() {
@@ -68,6 +73,12 @@ export default async function Header() {
               <Link href="/my-brainstorms">
                 <DropdownMenuItem>
                   <BrainCircuitIcon /> {translate('settingLinkMyBrainstorms')}
+                </DropdownMenuItem>
+              </Link>
+              <Link href="/communication-dashboard">
+                <DropdownMenuItem>
+                  <MessagesSquareIcon />{' '}
+                  {translate('settingLinkApplicationsAndInvitations')}
                 </DropdownMenuItem>
               </Link>
               <Link href="/settings/profile">

@@ -21,6 +21,7 @@ export const de: Language = {
     linkBrainstorm: 'Brainstorm',
     settingLinkMyProjects: 'Meine Projekte',
     settingLinkMyBrainstorms: 'Meine Brainstorms',
+    settingLinkApplicationsAndInvitations: 'Bewerbungen & Einladungen',
     settingLinkNotifications: 'Benachrichtigungen',
     settingLinkSettings: 'Einstellungen',
   },
@@ -171,7 +172,7 @@ export const de: Language = {
     invite: {
       title: 'Sende eine Einladung an die Person',
       form: {
-        message: 'erzähl etwas über das Projekt',
+        message: 'Erzähl etwas über das Projekt',
         placeholderMessage: 'Gib eine Nachricht ein...',
         submit: 'Einladung senden',
       },
@@ -541,5 +542,19 @@ export const de: Language = {
   email: {
     buttonFallback: 'Zu Collaborize',
     footer: 'collaborize.com ・ Diese E-Mail wurde automatisch generiert',
+  },
+  communicationDashboard: {
+    title: 'Bewerbungen & Einladungen',
+    invitations: 'Einladungen',
+    applications: 'Meine Bewerbungen',
+    projectName: 'Projekt: {name}',
+    emptyApplications: 'Keine Bewerbungen gefunden',
+    emptyInvitations: 'Keine Einladungen gefunden',
+    retractApplication: 'Bewerbung zurückziehen',
+  },
+  invitations: {
+    title: 'Einladung zu: {name}',
+    rejectInvitation: 'Einladung ablehnen',
+    acceptInvitation: 'Einladung annehmen',
   },
 }
