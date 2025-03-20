@@ -18,7 +18,7 @@ export async function checkUsernameTaken(username: string) {
 }
 
 export const getUsers = cache(
-  (projectId: string): Promise<UserWithImage[]> =>
+  async (projectId: string): Promise<UserWithImage[]> =>
     db.query.users.findMany({
       with: {
         image: true,
@@ -38,7 +38,7 @@ export const getUser = cache(
 )
 
 export const getUserWithImage = cache(
-  (id: string): Promise<UserWithImage | undefined> => {
+  async (id: string): Promise<UserWithImage | undefined> => {
     return db.query.users.findFirst({
       where: eq(users.id, id),
       with: {
