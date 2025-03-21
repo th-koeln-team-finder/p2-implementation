@@ -291,7 +291,7 @@ function getMatchScores(userId: string | undefined) {
         (SELECT GREATEST(COUNT(DISTINCT pt."tagId") * 1.0, 1.0)
          FROM project_tag pt
          WHERE pt."projectId" = "projects"."id")), 0)`
-  const projectTotalMatchScore = sql<number>`ROUND(CAST((${projectSkillMatchScore} + ${projectTagMatchScore}) / 2 as numeric), 2)`
+  const projectTotalMatchScore = sql<number>`ROUND(CAST((${projectSkillMatchScore} + ${projectTagMatchScore} * 2) / 3 as numeric), 2)`
   return {
     projectSkillMatchScore,
     projectTagMatchScore,
