@@ -1,5 +1,6 @@
 import { getPublicFileUrl } from '@/features/file-upload/file-upload.actions'
 import type { UploadedFileSelect } from '@repo/database/schema'
+import Image from 'next/image'
 
 type FilePreviewProps = {
   className?: string
@@ -18,7 +19,8 @@ export async function FilePreview({
   if (file.fileType.startsWith('image')) {
     // Since the Next Image is fetching the actual image via the server, we cannot use the public url
     return (
-      <img
+      <Image
+        unoptimized
         src={serverUrl}
         alt="file preview"
         className={className}
