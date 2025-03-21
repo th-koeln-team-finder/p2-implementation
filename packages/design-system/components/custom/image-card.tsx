@@ -51,7 +51,7 @@ const ImageCardTitle = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      'text-center font-semibold text-foreground text-lg sm:text-2xl xl:text-3xl',
+      'text-center font-semibold text-lg text-white sm:text-2xl xl:text-3xl',
       className,
     )}
     {...props}
@@ -65,7 +65,7 @@ const ImageCardContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('text-center text-foreground text-sm sm:text-lg', className)}
+    className={cn('text-center text-sm text-white sm:text-lg', className)}
     {...props}
   />
 ))
