@@ -29,6 +29,7 @@ import { Label } from '@repo/design-system/components/ui/label'
 import { BadgeCheck, Trash } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { type MutableRefObject, useCallback, useRef, useState } from 'react'
+import { revalidateUser } from '@/features/users/users.actions'
 
 export default function SkillsEdit({
   userSkills,
@@ -108,12 +109,16 @@ export default function SkillsEdit({
       level: 1,
     })
     await revalidateUserSkills()
+    await revalidateProjects()
+    await revalidateUser()
   }
 
   const handleRemoveSkill = async (skillId: string) => {
     setOptimisticUserSkills({ action: 'delete', values: { id: skillId } })
     await removeUserSkill(skillId)
     await revalidateUserSkills()
+    await revalidateProjects()
+    await revalidateUser()
   }
 
   const handleUpdateSkillLevel = async (skillId: string, level: number) => {
@@ -133,6 +138,8 @@ export default function SkillsEdit({
     })
     await updateUserSkillLevel(skillId, level)
     await revalidateUserSkills()
+    await revalidateProjects()
+    await revalidateUser()
   }
 
   const confirmUpdateSkillLevel = async () => {
@@ -147,6 +154,7 @@ export default function SkillsEdit({
       await resetVerification(selectedSkill.skillId)
       await revalidateUserSkills()
       await revalidateProjects()
+      await revalidateUser()
     }
   }
 
