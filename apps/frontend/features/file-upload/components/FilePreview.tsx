@@ -21,7 +21,7 @@ export async function FilePreview({
     return (
       <Image
         unoptimized
-        src={serverUrl}
+        src={publicUrl}
         alt="file preview"
         className={className}
         width={width}
