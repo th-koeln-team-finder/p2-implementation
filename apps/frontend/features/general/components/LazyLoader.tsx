@@ -57,7 +57,11 @@ export function LazyLoader({
           <Loader2Icon className="size-8 animate-spin" />
         </div>
       )}
-      {hasMore && !isLoadingReal && <div ref={ref}>Loading...</div>}
+      {hasMore && !isLoadingReal && (
+        <div ref={ref} className="text-transparent">
+          .
+        </div>
+      )}
     </>
   )
 }
