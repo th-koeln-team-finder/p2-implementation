@@ -11,7 +11,7 @@ export default async function CreateAProject() {
   const translate = await getTranslations('projects')
   if (!canCreateProject) {
     return (
-      <div className="container mx-auto grid h-screen place-content-center p-4">
+      <div className="container mx-auto grid flex-1 place-content-center p-4">
         <Card className="w-96">
           <CardContent className="flex flex-col items-center gap-4 py-4">
             <BanIcon className="text-destructive" size={128} />

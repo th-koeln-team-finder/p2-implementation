@@ -29,7 +29,7 @@ export default async function MyBrainstormsPage({
   ])
 
   return (
-    <div className="h-screen">
+    <div className="flex-1">
       <div className="container mx-auto px-4">
         <h1 className="mb-4 font-semibold text-4xl">
           {translate('myBrainstorms.pageTitle')}
